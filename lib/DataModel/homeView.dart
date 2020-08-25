@@ -32,12 +32,13 @@ class _HomeViewState extends State<HomeView>{
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
             if(snapshot.hasData){
               work = snapshot.data.documents.map((doc) => Work.fromMap(doc.data, doc.documentID)).toList();
+              print(work.length);
               return ListView.builder(
                 itemCount: work.length,
                 itemBuilder: (buildContext, index){
                   return Container(
                     child: Text(
-                      index.toString()
+                      work.length.toString()
                     ),
                   );
                 },

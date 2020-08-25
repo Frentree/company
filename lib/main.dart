@@ -8,54 +8,55 @@ import 'package:companyplaylist/locator.dart';
 import 'package:companyplaylist/DataModel/router.dart';
 
 void main() {
+  setupLocator();
   runApp(MyApp());
 }
-
-class MyApp extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => locator<CRUDModel>())
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        title: 'TEST',
-        onGenerateRoute: Router.generateRoute,
-      ),
-    );
-  }
-}
-
-//class MyApp extends StatelessWidget {
-//  // This widget is the root of your application.
+//
+//class MyApp extends StatelessWidget{
 //  @override
 //  Widget build(BuildContext context) {
 //    return MultiProvider(
 //      providers: [
-//        ChangeNotifierProvider<UserProvider>(
-//          create: (_) => UserProvider(),
-//        )
+//        ChangeNotifierProvider(create: (_) => locator<CRUDModel>())
 //      ],
 //      child: MaterialApp(
-//        title: 'Flutter Demo',
-//        theme: ThemeData(
-//          primarySwatch: Colors.blue,
-//          visualDensity: VisualDensity.adaptivePlatformDensity,
-//        ),
-//        home: AuthPage(),
-//
-//        //달력 한국어 반영
-//        localizationsDelegates: [
-//          GlobalMaterialLocalizations.delegate,
-//          GlobalWidgetsLocalizations.delegate
-//        ],
-//        supportedLocales: [
-//          const Locale('en', 'US'),
-//          const Locale('ko', 'KO'),
-//        ],
+//        debugShowCheckedModeBanner: false,
+//        initialRoute: '/',
+//        title: 'TEST',
+//        onGenerateRoute: Router.generateRoute,
 //      ),
 //    );
 //  }
 //}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserProvider>(
+          create: (_) => UserProvider(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: AuthPage(),
+
+        //달력 한국어 반영
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('ko', 'KO'),
+        ],
+      ),
+    );
+  }
+}

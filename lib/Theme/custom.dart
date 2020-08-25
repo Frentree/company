@@ -173,6 +173,7 @@ ExpansionTile work(String type, String startTime, String endTime, String title, 
 
 
                                   {
+
                                     Navigator.pop(context);
                                   },
                                 ),

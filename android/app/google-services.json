@@ -1,34 +1,71 @@
 {
   "project_info": {
-    "project_number": "974604163982",
-    "firebase_url": "https://company-playlist.firebaseio.com",
-    "project_id": "company-playlist",
-    "storage_bucket": "company-playlist.appspot.com"
+    "project_number": "35952526312",
+    "firebase_url": "https://app-dev-c912f.firebaseio.com",
+    "project_id": "app-dev-c912f",
+    "storage_bucket": "app-dev-c912f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:974604163982:android:0fa894c8f7231f5323a2df",
+        "mobilesdk_app_id": "1:35952526312:android:13c3c6a65bcbec53",
         "android_client_info": {
-          "package_name": "minji.companyplaylist"
+          "package_name": "com.example.myapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "974604163982-d2ph91eckhjg3u034hk1o2ath9bs36e1.apps.googleusercontent.com",
+          "client_id": "35952526312-f19h2vpko7mm01ive4bpogk38er7accd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "d9f94b531ded4a7d6c352ecb3c9a8860301c0ae8"
+          }
+        },
+        {
+          "client_id": "35952526312-6dcladum1nr71q1d3d1lprffb9g6ce5q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDYnLvV4Fam2QQiDTNBfuCDP6uiF7Xe2Z0"
+          "current_key": "AIzaSyBMY4QuMcd8wHDyr64Kw3_f2H5OWhVTYvE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "974604163982-d2ph91eckhjg3u034hk1o2ath9bs36e1.apps.googleusercontent.com",
+              "client_id": "35952526312-6dcladum1nr71q1d3d1lprffb9g6ce5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35952526312:android:e3933c6bae642ad0601a5d",
+        "android_client_info": {
+          "package_name": "minji.companyplaylist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35952526312-6dcladum1nr71q1d3d1lprffb9g6ce5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMY4QuMcd8wHDyr64Kw3_f2H5OWhVTYvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35952526312-6dcladum1nr71q1d3d1lprffb9g6ce5q.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

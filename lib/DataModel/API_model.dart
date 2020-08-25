@@ -9,27 +9,27 @@ class Api{
     ref = _db.collection(path);
   }
 
-  Future<QuerySnapshot> getDataCollection(){
-    return ref.getDocuments();
-  }
+Future<QuerySnapshot> getDataCollection(){
+  return ref.getDocuments();
+}
 
-  Stream<QuerySnapshot> streamDataCollection(){
-    return ref.snapshots();
-  }
+Stream<QuerySnapshot> streamDataCollection(){
+  return ref.snapshots();
+}
 
-  Future<DocumentSnapshot> getDocumentById(String id){
-    return ref.document(id).get();
-  }
+Future<DocumentSnapshot> getDocumentById(String id){
+  return ref.document(id).get();
+}
 
-  Future<void> removeDocument(String id){
-    return ref.document(id).delete();
-  }
+Future<void> removeDocument(String id){
+  return ref.document(id).delete();
+}
 
-  Future<DocumentReference> addDocument(Map data){
-    return ref.add(data);
-  }
+Future<DocumentReference> addDocument(Map data){
+  return ref.add(data);
+}
 
-  Future<void> updateDocument(Map data, String id){
-    return ref.document(id).updateData(data);
-  }
+Future<void> updateDocument(Map data, String id){
+  return ref.document(id).updateData(data);
+}
 }
