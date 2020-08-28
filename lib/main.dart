@@ -43,8 +43,8 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+          //visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
         home: AuthPage(),
 
         //달력 한국어 반영
