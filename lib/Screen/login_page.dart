@@ -100,7 +100,7 @@ class LoginPageState extends State<LoginPage>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "로그인",
+                    "로그인 (admin/fren1212)",
                     style: customStyle(18, 'Medium', blue_color)
                   ),
                   SizedBox(

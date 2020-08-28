@@ -16,7 +16,11 @@ packages:
     source: hosted
     version: "2.0.0"
   characters:
+<<<<<<< HEAD
     dependency: transitive
+=======
+    dependency: "direct main"
+>>>>>>> ios_junhyun
     description:
       name: characters
       url: "https://pub.dartlang.org"

@@ -35,7 +35,11 @@ dependencies:
   shared_preferences: ^0.5.6+3
   image_picker: ^0.6.7+4
   flutter_picker: ^1.1.5
+<<<<<<< HEAD
   get_it: ^4.0.4
+=======
+  characters: ^1.0.0
+>>>>>>> ios_junhyun
 
   flutter_localizations:
     sdk: flutter
