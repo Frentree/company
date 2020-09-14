@@ -7,32 +7,36 @@ import 'package:provider/provider.dart';
 import 'package:companyplaylist/widgets/button.dart';
 import 'package:companyplaylist/widgets/textFromField.dart';
 
-class LoginPage extends StatefulWidget {
+
+class CreateCompanyPage extends StatefulWidget{
   @override
-  LoginPageState createState() => LoginPageState();
+  CreateCompanyPageState createState() => CreateCompanyPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
-  TextEditingController _idTextCon;
-  TextEditingController _passwordTextCon;
+class CreateCompanyPageState extends State<CreateCompanyPage>{
+
+  TextEditingController _companyNameTextCon;
+  TextEditingController _bossNameTextCon;
+  TextEditingController _companyCodeTextCon;
 
   @override
   void initState(){
     super.initState();
-    _idTextCon = TextEditingController();
-    _passwordTextCon = TextEditingController();
+    _companyNameTextCon = TextEditingController();
+    _bossNameTextCon = TextEditingController();
+    _companyCodeTextCon = TextEditingController();
   }
 
   @override
   void dispose(){
-    _idTextCon.dispose();
-    _passwordTextCon.dispose();
+    _companyNameTextCon.dispose();
+    _bossNameTextCon.dispose();
+    _companyCodeTextCon.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
 
     return Column(
@@ -40,7 +44,7 @@ class LoginPageState extends State<LoginPage> {
       children: <Widget>[
         //상단 글자
         Text(
-          "로그인",
+          "회사생성",
           style: customStyle(18, "Medium", blueColor),
         ),
 
@@ -53,34 +57,32 @@ class LoginPageState extends State<LoginPage> {
         Container(
           child: Column(
             children: <Widget>[
-              textFormField(_idTextCon, "이메일"),
-              textFormField(_passwordTextCon, "비밀번호")
+              textFormField(_companyNameTextCon, "회사명"),
+              textFormField(_bossNameTextCon, "대표자 성함"),
+//              readOlnyTextFormField(_companyCodeTextCon, "회사코드", () async {
+//                _companyCodeTextCon.text = await companyCodeCheck();
+//              })
             ],
           ),
         ),
 
         //공백
         SizedBox(
-          height: customHeight(context, 0.05),
+          height: customHeight(context, 0.07),
         ),
 
-        //로그인 버튼
-        Row(
-          children: <Widget>[
-            Spacer(),
-            loginScreenRaisedBtn(context, blueColor, "로그인", whiteColor, null),
-            Spacer(),
-          ],
-        ),
+        textBtn("직장만들기", customStyle(15, "Regular", mainColor), null),
 
+        //공백
         SizedBox(
-          height: customHeight(context, 0.01),
+          height: customHeight(context, 0.07),
         ),
 
+        //회원가입 버튼
         Row(
           children: <Widget>[
             Spacer(),
-            loginScreenRaisedBtn(context, whiteColor, "회원가입", blueColor, ()=>loginScreenChangeProvider.setPageIndex(1)),
+            loginScreenRaisedBtn(context, blueColor, "회사등록", whiteColor, () => loginScreenChangeProvider.setPageIndex(2)),
             Spacer(),
           ],
         ),
@@ -88,4 +90,3 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 }
-
