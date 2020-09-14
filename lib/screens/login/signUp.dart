@@ -11,6 +11,7 @@ import 'package:companyplaylist/provider/firebaseLogin.dart';
 import 'package:companyplaylist/Src/validate.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/Src/userCrud.dart';
+import 'package:companyplaylist/widgets/alarm/alertDialog.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -126,22 +127,21 @@ class SignUpPageState extends State<SignUpPage> {
                   "회원가입",
                   whiteColor,
                   _validate.isBtnActiveList.contains(false) ? null : () async {
-                    //DB에 저장
-//                    bool singUpResult = await _firebaseAuthProvider.signUpWithEmail(_mailTextCon.text, _passwordTextCon.text);
-//                    print(singUpResult);
-//                    _user.id = _firebaseAuthProvider.getUser().uid;
-//                    print("UID" + _user.id);
-//                    if(singUpResult == true){
-//                      _userCrud.addUser(_user,_user.id);
-//                      loginScreenChangeProvider.setPageIndexAndString(4, _mailTextCon.text);
-//                    }
-//
-//                    if(singUpResult == false){
-//                      String errorMessage = _firebaseAuthProvider.getLastFirebaseMessage();
-//                      if(errorMessage == "ERROR_EMAIL_ALREADY_IN_USE"){
-//                        showAlertDialog(context, "회원가입 실패!", "이미 사용중인 이메일 입니다.");
-//                      }
-//                    }
+                    bool singUpResult = await _firebaseAuthProvider.signUpWithEmail(_mailTextCon.text, _passwordTextCon.text);
+                    print(singUpResult);
+                    _user.id = _firebaseAuthProvider.getUser().uid;
+                    print("UID" + _user.id);
+                    if(singUpResult == true){
+                      _userCrud.addUser(_user,_user.id);
+                      loginScreenChangeProvider.setPageIndexAndString(4, _mailTextCon.text);
+                    }
+
+                    if(singUpResult == false){
+                      String errorMessage = _firebaseAuthProvider.getLastFirebaseMessage();
+                      if(errorMessage == "ERROR_EMAIL_ALREADY_IN_USE"){
+                        showAlertDialog(context, "회원가입 실패!", "이미 사용중인 이메일 입니다.");
+                      }
+                    }
                   }
               ),
               Spacer(),

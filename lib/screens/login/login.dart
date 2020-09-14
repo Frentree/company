@@ -1,3 +1,5 @@
+import 'package:companyplaylist/Screen/home_page.dart';
+import 'package:companyplaylist/provider/firebaseLogin.dart';
 import 'package:flutter/material.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
@@ -34,7 +36,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
 
     LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
-
+    FirebaseAuthProvider firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -68,7 +70,7 @@ class LoginPageState extends State<LoginPage> {
         Row(
           children: <Widget>[
             Spacer(),
-            loginScreenRaisedBtn(context, blueColor, "로그인", whiteColor, null),
+            loginScreenRaisedBtn(context, blueColor, "로그인", whiteColor, () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))),
             Spacer(),
           ],
         ),
