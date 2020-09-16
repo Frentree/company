@@ -1,7 +1,7 @@
 import 'package:companyplaylist/screens/login/signUpMain.dart';
 import 'package:flutter/material.dart';
-import 'package:companyplaylist/provider/loginScreenChange.dart';
-import 'package:companyplaylist/provider/firebaseLogin.dart';
+import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
+import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:provider/provider.dart';
 
 void main() {

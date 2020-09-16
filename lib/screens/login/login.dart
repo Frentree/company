@@ -1,13 +1,22 @@
-import 'package:companyplaylist/Screen/home_page.dart';
-import 'package:companyplaylist/provider/firebaseLogin.dart';
+//Flutter
 import 'package:flutter/material.dart';
+
+//Const
 import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/provider/loginScreenChange.dart';
+import 'package:companyplaylist/consts/widgetSize.dart';
+
+//Widget
+import 'package:companyplaylist/widgets/button/raisedButton.dart';
+import 'package:companyplaylist/widgets/form/textFormField.dart';
+
+//Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/widgets/button.dart';
-import 'package:companyplaylist/widgets/textFromField.dart';
+import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
+import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
+
+//Screen
+import 'package:companyplaylist/screens/login/signUp.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,19 +24,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  TextEditingController _idTextCon;
+  //TextEditingController
+  TextEditingController _mailTextCon;
   TextEditingController _passwordTextCon;
 
   @override
   void initState(){
     super.initState();
-    _idTextCon = TextEditingController();
+    _mailTextCon = TextEditingController();
     _passwordTextCon = TextEditingController();
   }
 
   @override
   void dispose(){
-    _idTextCon.dispose();
+    _mailTextCon.dispose();
     _passwordTextCon.dispose();
     super.dispose();
   }
@@ -35,11 +45,16 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
 
+    //화면 이동을 위한 Provider
     LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
+
+    //Firebase 로그인을 위한 Provider
     FirebaseAuthProvider firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+
         //상단 글자
         Text(
           "로그인",
@@ -55,7 +70,7 @@ class LoginPageState extends State<LoginPage> {
         Container(
           child: Column(
             children: <Widget>[
-              textFormField(_idTextCon, "이메일"),
+              textFormField(_mailTextCon, "이메일"),
               textFormField(_passwordTextCon, "비밀번호")
             ],
           ),
@@ -70,7 +85,13 @@ class LoginPageState extends State<LoginPage> {
         Row(
           children: <Widget>[
             Spacer(),
-            loginScreenRaisedBtn(context, blueColor, "로그인", whiteColor, () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))),
+            loginScreenRaisedBtn(
+              context,
+              blueColor,
+              "로그인",
+              whiteColor,
+              () => firebaseAuthProvider.singInWithEmail(_mailTextCon.text, _passwordTextCon.text)
+            ),
             Spacer(),
           ],
         ),
@@ -82,7 +103,13 @@ class LoginPageState extends State<LoginPage> {
         Row(
           children: <Widget>[
             Spacer(),
-            loginScreenRaisedBtn(context, whiteColor, "회원가입", blueColor, ()=>loginScreenChangeProvider.setPageIndex(1)),
+            loginScreenRaisedBtn(
+              context,
+              whiteColor,
+              "회원가입",
+              blueColor,
+              () => loginScreenChangeProvider.setPageName("signUp")
+            ),
             Spacer(),
           ],
         ),

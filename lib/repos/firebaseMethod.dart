@@ -1,3 +1,4 @@
+//Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreApi{
@@ -31,9 +32,5 @@ class FirestoreApi{
 
   Future<void> updateDocument(Map data, String id){
     return ref.document(id).updateData(data);
-  }
-
-  Future<DocumentReference> setDocument(Map data, String id){
-    return ref.document(id).setData(data);
   }
 }

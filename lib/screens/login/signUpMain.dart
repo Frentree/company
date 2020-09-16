@@ -1,29 +1,39 @@
-import 'package:flutter/cupertino.dart';
+//Flutter
 import 'package:flutter/material.dart';
+
+//Const
 import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/provider/loginScreenChange.dart';
+import 'package:companyplaylist/consts/widgetSize.dart';
+
+//Provider
 import 'package:provider/provider.dart';
+import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
+
+//Screen
 import 'package:companyplaylist/screens/login/login.dart';
 import 'package:companyplaylist/screens/login/signUp.dart';
-import 'package:companyplaylist/screens/login/signUpCode.dart';
-import 'package:companyplaylist/screens/login/companyCreate.dart';
-import 'package:companyplaylist/screens/login/emailAuth.dart';
+
 
 class SignUpMainPage extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-
     LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
 
-    List<Widget> _page = [LoginPage(), SignUpPage(), SignUpCodePage(), CreateCompanyPage(), EamilAuthPage()];
+    Map<String,Widget> _page = {
+      "login" : LoginPage(),
+      "signUp" : SignUpPage(),
+    };
 
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: mainColor,
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).unfocus();
+          print(scaffoldKey);
         },
 
         child: Column(
@@ -36,6 +46,7 @@ class SignUpMainPage extends StatelessWidget {
                   color: mainColor
               ),
 
+              //앱 이름 및 버전 표시
               child: Column(
                 children: <Widget>[
                   SizedBox(
@@ -72,7 +83,7 @@ class SignUpMainPage extends StatelessWidget {
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
                     color: whiteColor
                 ),
-                child: SingleChildScrollView(child: _page[loginScreenChangeProvider.getPageIndex()]),
+                child: SingleChildScrollView(child: _page[loginScreenChangeProvider.getPageName()]),
               ),
             )
           ],
