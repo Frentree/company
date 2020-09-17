@@ -44,6 +44,9 @@ dateSetBottomSheet(BuildContext context) async {
                               "취소",
                               style: customStyle(14, 'Regular', red_color),
                             ),
+                            onTap: (){ // date navigator close
+                              Navigator.pop(context);
+                            },
                           ),
                           Text(
                             "날짜 선택",
@@ -84,6 +87,8 @@ dateSetBottomSheet(BuildContext context) async {
                               ),
                               onTap: () {
                                 print("날짜");
+                                date = Format().dateFormat(DateTime.now());
+                                Navigator.of(context).pop(date);
                               },
                             )
                           ],
@@ -108,8 +113,10 @@ dateSetBottomSheet(BuildContext context) async {
                                 Format().dateFormat(DateTime.now().add(Duration(days: 1))),
                                 style: customStyle(14, 'Regular', top_color),
                               ),
-                              onTap: () {
+                              onTap: () { // 달력 날짜 선택시
                                 print("날짜");
+                                date = Format().dateFormat(DateTime.now().add(Duration(days: 1)));
+                                Navigator.pop(context);
                               },
                             )
                           ],
@@ -125,6 +132,8 @@ dateSetBottomSheet(BuildContext context) async {
                                 style: customStyle(14, 'Regular', top_color),
                               ),
                               onTap: () {
+                                date = Format().dateFormat(DateTime.now().add(Duration(days: 7)));
+                                Navigator.pop(context);
                                 print("텍스트");
                               },
                             ),
@@ -135,13 +144,15 @@ dateSetBottomSheet(BuildContext context) async {
                                     Format().dateFormat(DateTime.now().add(Duration(days: 7))),
                                     style: customStyle(14, 'Regular', top_color),
                                   ),
-                                  Text(
+                                 /* Text(
                                       "$startTime ~ $endTime"
-                                  ),
+                                  ),*/
                                 ],
                               ),
                               onTap: () {
-
+                                //date = Format().dateFormat(DateTime.now().add(Duration(days: 7)));
+                                date = Format().dateFormat(DateTime.now().add(Duration(days: 7)));
+                                Navigator.pop(context);
                               },
                             )
                           ],
