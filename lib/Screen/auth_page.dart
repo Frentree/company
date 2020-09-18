@@ -5,7 +5,7 @@
 //
 ////Screen
 //import 'package:companyplaylist/Screen/home_page.dart';
-//import 'package:companyplaylist/Screen/login_page.dart';
+//import 'package:companyplaylist/screens/login/login.dart';
 //
 ////Code
 //import 'package:companyplaylist/Src/user_provider_code.dart';
@@ -17,6 +17,7 @@
 //    UserProvider up = Provider.of<UserProvider>(context);
 //
 //    if(up.getUserEmail() != null){
+//      if()
 //      return HomePage();
 //    }
 //

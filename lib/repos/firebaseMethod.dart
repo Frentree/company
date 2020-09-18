@@ -1,12 +1,19 @@
+//Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreApi{
   final Firestore _db = Firestore.instance;
-  final String path;
+  String path;
+  String secondPath;
+  String documentId;
   CollectionReference ref;
 
-  FirestoreApi(this.path){
+  FirestoreApi.onePath(this.path){
     ref = _db.collection(path);
+  }
+
+  FirestoreApi.twoPath(this.path, this.secondPath, this.documentId){
+    ref = _db.collection(path).document(documentId).collection(secondPath);
   }
 
   Future<QuerySnapshot> getDataCollection(){
@@ -33,7 +40,7 @@ class FirestoreApi{
     return ref.document(id).updateData(data);
   }
 
-  Future<DocumentReference> setDocument(Map data, String id){
+  Future<void> setDocument(Map data, String id){
     return ref.document(id).setData(data);
   }
 }

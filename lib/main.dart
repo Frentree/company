@@ -1,7 +1,11 @@
+import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
+import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/screens/auth.dart';
+import 'package:companyplaylist/screens/login/companySetMain.dart';
 import 'package:companyplaylist/screens/login/signUpMain.dart';
 import 'package:flutter/material.dart';
-import 'package:companyplaylist/provider/loginScreenChange.dart';
-import 'package:companyplaylist/provider/firebaseLogin.dart';
+import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
+import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -36,9 +40,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<LoginScreenChangeProvider>(
           create: (_) => LoginScreenChangeProvider(),
         ),
+        ChangeNotifierProvider<CompanyScreenChangeProvider>(
+          create: (_) => CompanyScreenChangeProvider(),
+        ),
         ChangeNotifierProvider<FirebaseAuthProvider>(
           create: (_) => FirebaseAuthProvider(),
+        ),
+        ChangeNotifierProvider<LoginUserInfoProvider>(
+          create: (_) => LoginUserInfoProvider(),
         )
+
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -46,7 +57,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SignUpMainPage(),
+        home: AuthPage()
+        //home: CompanySetMain(),
+        //home: SignUpMainPage(),
       ),
     );
   }

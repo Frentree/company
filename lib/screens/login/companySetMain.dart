@@ -8,23 +8,20 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
+import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
 
 //Screen
-import 'package:companyplaylist/screens/login/login.dart';
-import 'package:companyplaylist/screens/login/signUp.dart';
 import 'package:companyplaylist/screens/login/userTypeSelect.dart';
+import 'package:companyplaylist/screens/login/companyCreate.dart';
 
-
-class SignUpMainPage extends StatelessWidget {
+class CompanySetMain extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
+    CompanyScreenChangeProvider companyScreenChangeProvider = Provider.of<CompanyScreenChangeProvider>(context);
 
     Map<String,Widget> _page = {
-      "login" : LoginPage(),
-      "signUp" : SignUpPage(),
       "userTypeSelect": UserTypeSelectPage(),
+      "companyCreate" : CompanyCreatePage(),
     };
 
     return Scaffold(
@@ -33,7 +30,6 @@ class SignUpMainPage extends StatelessWidget {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-
         child: Column(
           children: <Widget>[
             //상단 로고
@@ -81,7 +77,7 @@ class SignUpMainPage extends StatelessWidget {
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
                     color: whiteColor
                 ),
-                child: SingleChildScrollView(child: _page[loginScreenChangeProvider.getPageName()]),
+                child: SingleChildScrollView(child: _page[companyScreenChangeProvider.getPageName()]),
               ),
             )
           ],
