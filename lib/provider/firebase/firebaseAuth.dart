@@ -13,6 +13,9 @@ class FirebaseAuthProvider with ChangeNotifier {
   //로그인한 사용자
   FirebaseUser _user;
 
+  //유저 데이터 업데이트
+  UserUpdateInfo updateInfo = UserUpdateInfo();
+
   //폰 인증 여부 변수
   bool _isPhoneVerify = false;
 
@@ -81,7 +84,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   }
 
   //이메일로 회원 가입
-  Future<bool> signUpWithEmail(String mail, String password) async {
+  Future<bool> signUpWithEmail(String mail, String password, String name) async {
     try {
       AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: mail,
@@ -89,6 +92,8 @@ class FirebaseAuthProvider with ChangeNotifier {
       );
 
       if(result.user != null) {
+        updateInfo.displayName = name;
+        result.user.updateProfile(updateInfo);
         return true;
       }
 
@@ -108,7 +113,6 @@ class FirebaseAuthProvider with ChangeNotifier {
           email: mail,
           password: password
       );
-
       if(result != null) {
         setUer(result.user);
         return true;

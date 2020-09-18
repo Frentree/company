@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 
 //Screen
-import 'package:companyplaylist/Screen/home_page.dart';
+import 'package:companyplaylist/screens/login/companySetMain.dart';
 import 'package:companyplaylist/screens/login/signUpMain.dart';
 
 //Code
@@ -14,10 +15,10 @@ class AuthPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = Provider.of<UserProvider>(context);
+    FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context);
 
-    if(up.getUserEmail() != null){
-      return HomePage();
+    if(_firebaseAuthProvider.getUser() != null){
+      return CompanySetMain();
     }
 
     else{

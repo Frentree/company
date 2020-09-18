@@ -13,33 +13,29 @@ import 'package:companyplaylist/repos/showSnackBarMethod.dart';
 //Model
 import 'package:companyplaylist/models/userModel.dart';
 
-Future<void> signUp(BuildContext context, String smsCode, String mail, String password, User user) async {
-  print("회원가입 메소드 실행");
-  print("코드값 $smsCode");
-  print("이메일 $mail");
-  print("비밀번호 $password");
-  print("사용자 $user");
+class SignUpMethod{
+  Future<void> signUpWithFirebaseAuth(BuildContext context, String smsCode, String mail, String password, String name, User user) async {
+    FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
 
-  FirebaseAuthProvider _firebaseAuthProvider = FirebaseAuthProvider();
+    LoginScreenChangeProvider _loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context, listen: false);
+    CrudRepository _userCrud = CrudRepository();
+    print(_firebaseAuthProvider.verificationId);
+    bool _codeConfirmResult = await _firebaseAuthProvider.isVerifySuccess(smsCode);
 
-  LoginScreenChangeProvider _loginScreenChangeProvider = LoginScreenChangeProvider();
-  CrudRepository _userCrud = CrudRepository();
-  print(_firebaseAuthProvider.verificationId);
-  bool _codeConfirmResult = await _firebaseAuthProvider.isVerifySuccess(smsCode);
-  print("코드 인증값 확인 $_codeConfirmResult");
+    if(_codeConfirmResult == true){
 
-  if(_codeConfirmResult == true){
-
-    bool _signUpEmailResult = await _firebaseAuthProvider.signUpWithEmail(mail, password);
-    if(_signUpEmailResult == true){
-      _userCrud.addUserDataToFirebase(user);
-      _loginScreenChangeProvider.setPageName("login");
+      bool _signUpEmailResult = await _firebaseAuthProvider.signUpWithEmail(mail, password, name);
+      if(_signUpEmailResult == true){
+        _userCrud.setUserDataToFirebase(user, mail);
+        showFunctionSuccessMessage(context, "회원가입을 축하합니다!");
+        _loginScreenChangeProvider.setPageName("login");
+      }
+      else{
+        showLastFirebaseMessage(context, _firebaseAuthProvider.manageErrorMessage());
+      }
     }
     else{
       showLastFirebaseMessage(context, _firebaseAuthProvider.manageErrorMessage());
     }
-  }
-  else{
-    showLastFirebaseMessage(context, _firebaseAuthProvider.manageErrorMessage());
   }
 }

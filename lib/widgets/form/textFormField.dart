@@ -23,7 +23,7 @@ TextFormField textFormField(TextEditingController textEditingController, String 
 }
 
 //뒤에 아이콘이 추가된 TextFormField
-TextFormField textFormFieldWithSuffixIcon(TextEditingController textEditingController, String hintText, Widget suffixWidget){
+TextFormField textFormFieldWithSuffixIcon(TextEditingController textEditingController, String hintText, {Widget suffixWidget}){
   return TextFormField(
     textAlignVertical: TextAlignVertical.center,
     controller: textEditingController,
@@ -44,19 +44,20 @@ TextFormField textFormFieldWithSuffixIcon(TextEditingController textEditingContr
 }
 
 //읽기 전용 TextFormField
-TextFormField readOlnyTextFormField(TextEditingController textEditingController, String hintText, Function onTap){
+TextFormField readOlnyTextFormField(TextEditingController textEditingController, String hintText, {Function onTap, Widget suffixWidget}){
   return TextFormField(
     showCursor: false,
     readOnly: true,
     controller: textEditingController,
     decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: customStyle(15, "Regular", mainColor),
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: textFieldUnderLine,
-            )
+      hintText: hintText,
+      hintStyle: customStyle(15, "Regular", mainColor),
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: textFieldUnderLine,
         )
+      ),
+      suffixIcon: suffixWidget
     ),
     onTap: onTap,
   );

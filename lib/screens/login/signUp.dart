@@ -15,13 +15,10 @@ import 'package:flutter/rendering.dart';
 //Provider
 import 'package:provider/provider.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 
 //Repos
 import 'package:companyplaylist/repos/firebasecrud/CrudRepository.dart';
 import 'package:companyplaylist/repos/login/loginRepository.dart';
-import 'package:companyplaylist/repos/showSnackBarMethod.dart';
-import 'package:companyplaylist/repos/login/signUpMethod.dart';
 
 //Model
 import 'package:companyplaylist/models/userModel.dart';
@@ -47,7 +44,6 @@ class SignUpPageState extends State<SignUpPage> {
   final _formKeyPasswordConfirm = GlobalKey<FormState>();
   final _formKeyPhone = GlobalKey<FormState>();
 
-  //유효성 체크
   LoginRepository _loginRepository = LoginRepository();
 
   //UserDataCrudToFirebase
@@ -90,18 +86,16 @@ class SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    //화면 이동 Provider
-    LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
-    
     //Firebase 인증 Provider
-    FirebaseAuthProvider firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context);
+    FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context);
 
     //User data model
     _newUser = User(
         id: null,
         mail: _mailTextCon.text,
         name: _nameTextCon.text,
-        phone: _phoneNumberTextCon.text
+        phone: _phoneNumberTextCon.text,
+        companyCode: null,
     );
 
     return Container(
@@ -178,7 +172,7 @@ class SignUpPageState extends State<SignUpPage> {
                    (value) => _loginRepository.validationRegExpCheckMessage("전화번호", value),
                    (text) {
                      bool _result = _loginRepository.isFormValidation(_formKeyPhone.currentState.validate());
-                     firebaseAuthProvider.setPhonVerifyResultFalse();
+                     _firebaseAuthProvider.setPhonVerifyResultFalse();
                      setState(() {
                        isFormValidation[4] = _result;
                      });
@@ -202,7 +196,7 @@ class SignUpPageState extends State<SignUpPage> {
                 blueColor,
                 "인증번호 요청",
                 whiteColor,
-                isFormValidation[4] ? () => firebaseAuthProvider.verifyPhone(_phoneNumberTextCon.text) : null
+                isFormValidation[4] ? () => _firebaseAuthProvider.verifyPhone(_phoneNumberTextCon.text) : null
               ),
               Spacer(),
             ],
@@ -214,7 +208,7 @@ class SignUpPageState extends State<SignUpPage> {
           ),
 
           //인증번호 입력 칸
-          (firebaseAuthProvider.getPhoneVerifyResult() && isFormValidation[4]) ? Container(
+          (_firebaseAuthProvider.getPhoneVerifyResult() && isFormValidation[4]) ? Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -258,9 +252,7 @@ class SignUpPageState extends State<SignUpPage> {
                   blueColor,
                   "회원가입",
                   whiteColor,
-                  (isFormValidation.contains(false) == false && _smsCode.contains("") == false) ? (){
-                    signUp(context, _smsCode.join(), _mailTextCon.text, _passwordTextCon.text, _newUser);
-                  }: null
+                  (isFormValidation.contains(false) == false && _smsCode.contains("") == false) ? () => _loginRepository.signUpWithFirebaseAuth(context, _smsCode.join(), _mailTextCon.text, _passwordTextCon.text, _nameTextCon.text, _newUser) : null
               ),
               Spacer(),
             ],

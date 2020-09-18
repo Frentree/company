@@ -12,11 +12,11 @@ import 'package:companyplaylist/widgets/form/textFormField.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 
-//Screen
-import 'package:companyplaylist/screens/login/signUp.dart';
+//Repos
+import 'package:companyplaylist/repos/login/loginRepository.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,6 +27,8 @@ class LoginPageState extends State<LoginPage> {
   //TextEditingController
   TextEditingController _mailTextCon;
   TextEditingController _passwordTextCon;
+
+  LoginRepository _loginRepository = LoginRepository();
 
   @override
   void initState(){
@@ -46,10 +48,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
 
     //화면 이동을 위한 Provider
-    LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
-
-    //Firebase 로그인을 위한 Provider
-    FirebaseAuthProvider firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context);
+    LoginScreenChangeProvider _loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +89,7 @@ class LoginPageState extends State<LoginPage> {
               blueColor,
               "로그인",
               whiteColor,
-              () => firebaseAuthProvider.singInWithEmail(_mailTextCon.text, _passwordTextCon.text)
+              () => _loginRepository.signInWithFirebaseAuth(context, _mailTextCon.text, _passwordTextCon.text)
             ),
             Spacer(),
           ],
@@ -108,7 +107,7 @@ class LoginPageState extends State<LoginPage> {
               whiteColor,
               "회원가입",
               blueColor,
-              () => loginScreenChangeProvider.setPageName("signUp")
+              () => _loginScreenChangeProvider.setPageName("signUp")
             ),
             Spacer(),
           ],

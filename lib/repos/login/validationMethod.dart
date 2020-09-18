@@ -1,4 +1,4 @@
-class Validation {
+class ValidationMethod{
 
   //폼별 유효성 검사 결과 저장
   bool isFormValidation(bool validationFunction){
