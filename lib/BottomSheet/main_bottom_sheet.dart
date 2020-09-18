@@ -47,15 +47,12 @@ mainBottomSheet(BuildContext context){
                       return workBottomSheet(context, "외근");
                     },
                   ),
-                  ActionChip(
+                  Chip(
                       backgroundColor: chip_color_blue,
                       label: Text(
                         "회의 일정",
                         style: customStyle(14, 'Regular', top_color),
-                      ),
-                      onPressed: () {
-                        return workBottomSheet(context, "회의");
-                      },
+                      )
                   ),
                   Chip(
                       backgroundColor: chip_color_blue,
