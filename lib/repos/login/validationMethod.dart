@@ -1,26 +1,15 @@
-import 'package:companyplaylist/repos/firebaseMethod.dart';
+class ValidationMethod{
 
-class Validate {
-
-  List<bool> isBtnActiveList = [];
-
-  Validate(int formCount){
-    for(int i = 0; i < formCount; i++){
-      isBtnActiveList.add(false);
-    }
-    print(isBtnActiveList);
-  }
-
-  isBtnActive(int formOrder, bool validateFunction){
-    if(validateFunction){
-      isBtnActiveList[formOrder] = true;
+  //폼별 유효성 검사 결과 저장
+  bool isFormValidation(bool validationFunction){
+    if(validationFunction){
+      return true;
     }
 
     else {
-      isBtnActiveList[formOrder] = false;
+      return false;
     }
   }
-
 
   bool isRegExp(String field, String value){
     bool _isValidRegExp = false;
@@ -58,21 +47,6 @@ class Validate {
     return _isValidRegExp;
   }
 
-  Future<bool> duplicateCheckFromFirebase(String collectionName, String dataField, String value) async{
-    bool _isDuplicate = false;
-    FirestoreApi firestoreApi = FirestoreApi(collectionName);
-    await firestoreApi.getDataCollection().then((doc){
-      for(int i = 0; i < doc.documents.length; i++){
-        if(doc.documents.elementAt(i).data[dataField] == value){
-          _isDuplicate = true;
-          break;
-        }
-      }
-    });
-
-    return _isDuplicate;
-  }
-
   bool duplicateCheck(String originalValue, String checkValue){
     bool _isDuplicate = false;
     if(originalValue == checkValue){
@@ -82,7 +56,7 @@ class Validate {
     return _isDuplicate;
   }
 
-  String validRegExpCheckMessage(String field, String value){
+  String validationRegExpCheckMessage(String field, String value){
     if(value.isNotEmpty){
       if(isRegExp(field, value)){
         return null;

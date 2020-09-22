@@ -1,15 +1,15 @@
 
-import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
+import 'package:companyplaylist/screens/work/workContent.dart';
 import 'package:flutter/material.dart';
 //Theme
 import 'package:companyplaylist/Theme/theme.dart';
 
-workMain(BuildContext context) {
+WorkMainPage(BuildContext context) {
   // 사용자 권한
   int _userGrade = 0;
 
   void _workBottomMove(int type) {
-    workContent(context, type);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage()));
   }
 
   // 관리자 권한이 아닐 경우

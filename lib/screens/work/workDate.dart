@@ -8,11 +8,18 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:companyplaylist/Theme/theme.dart';
 
 
-workDate(BuildContext context) async {
+workDatePage(BuildContext context, int timeType) async {
   String startTime = '09:00';
   String endTime = '18:00';
 
   String date = "";
+  String timeTitle = "";
+
+  if(timeType == 0) {
+    timeTitle = "시작 일시";
+  } else {
+    timeTitle = "종료 일시";
+  }
 
   String settingDateTime(int day) {
     String time = Format().dateFormat(DateTime.now().add(Duration(days: day)));
@@ -52,7 +59,7 @@ workDate(BuildContext context) async {
                             },
                           ),
                           Text(
-                            "날짜 선택",
+                            "$timeTitle",
                             style: customStyle(14, 'Regular', top_color),
                           ),
                           InkWell(
@@ -141,10 +148,6 @@ workDate(BuildContext context) async {
                                     settingDateTime(7),
                                     style: customStyle(14, 'Regular', top_color),
                                   ),
-                                  Text(
-                                      "$startTime ~ $endTime"
-                                  ),
-
                                 ],
                               ),
                               onTap: () {
