@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebasecrud/CrudRepository.dart';
+import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/repos/login/loginRepository.dart';
 
 //Model
@@ -48,10 +48,10 @@ class SignUpPageState extends State<SignUpPage> {
 
   //UserDataCrudToFirebase
   CrudRepository _userCrud = CrudRepository();
-  
+
   //User Model
   User _newUser = User();
-  
+
   //인증ID
   String verificationId;
 
@@ -91,11 +91,9 @@ class SignUpPageState extends State<SignUpPage> {
 
     //User data model
     _newUser = User(
-        id: null,
         mail: _mailTextCon.text,
         name: _nameTextCon.text,
         phone: _phoneNumberTextCon.text,
-        companyCode: null,
     );
 
     return Container(
@@ -105,12 +103,19 @@ class SignUpPageState extends State<SignUpPage> {
           //상단 글자
           Text(
             "회원가입",
-            style: customStyle(18, "Medium", blueColor),
+            style: customStyle(
+              fontSize: 18,
+              fontWeightName: "Medium",
+              fontColor: blueColor,
+            ),
           ),
 
           //공백
           SizedBox(
-            height: customHeight(context, 0.01),
+            height: customHeight(
+              context: context,
+              heightSize: 0.01,
+            ),
           ),
 
           //ID/PW 입력 란
@@ -118,65 +123,65 @@ class SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: <Widget>[
                 validityCheckTextFormField(
-                  _formKeyName,
-                  _nameTextCon,
-                  "이름",
-                  (value) => _loginRepository.validationRegExpCheckMessage("이름", value),
-                  (text) {
-                    bool _result = _loginRepository.isFormValidation(_formKeyName.currentState.validate());
+                  key: _formKeyName,
+                  textEditingController: _nameTextCon,
+                  hintText: "이름",
+                  validityCheckAction: (value) => _loginRepository.validationRegExpCheckMessage(field: "이름", value: value),
+                  onChangeAction: (text) {
+                    bool _result = _loginRepository.isFormValidation(validationFunction: _formKeyName.currentState.validate());
                     setState(() {
                       isFormValidation[0] = _result;
                     });
                   }
                 ),
                 validityCheckTextFormField(
-                  _formKeyMail,
-                  _mailTextCon,
-                  "이메일",
-                  (value) => _loginRepository.validationRegExpCheckMessage("이메일", value),
-                  (text) {
-                    bool _result = _loginRepository.isFormValidation(_formKeyMail.currentState.validate());
+                  key: _formKeyMail,
+                  textEditingController: _mailTextCon,
+                  hintText: "이메일",
+                  validityCheckAction: (value) => _loginRepository.validationRegExpCheckMessage(field: "이메일", value: value),
+                  onChangeAction: (text) {
+                    bool _result = _loginRepository.isFormValidation(validationFunction: _formKeyMail.currentState.validate());
                     setState(() {
                       isFormValidation[1] = _result;
                     });
                   }
                 ),
                 validityCheckTextFormField(
-                  _formKeyPassword,
-                  _passwordTextCon,
-                  "비밀번호",
-                  (value) => _loginRepository.validationRegExpCheckMessage("비밀번호", value),
-                  (text) {
-                    bool _result = _loginRepository.isFormValidation(_formKeyPassword.currentState.validate());
+                  key: _formKeyPassword,
+                  textEditingController: _passwordTextCon,
+                  hintText: "비밀번호",
+                  validityCheckAction: (value) => _loginRepository.validationRegExpCheckMessage(field: "비밀번호", value: value),
+                  onChangeAction: (text) {
+                    bool _result = _loginRepository.isFormValidation(validationFunction: _formKeyPassword.currentState.validate());
                     setState(() {
                       isFormValidation[2] = _result;
                     });
                   }
                 ),
                 validityCheckTextFormField(
-                  _formKeyPasswordConfirm,
-                  _passwordConfirmTextCon,
-                  "비밀번호 확인",
-                  (value) => _loginRepository.duplicateCheckMessage(_passwordTextCon.text, value),
-                  (text) {
-                    bool _result = _loginRepository.isFormValidation(_formKeyPasswordConfirm.currentState.validate());
+                  key: _formKeyPasswordConfirm,
+                  textEditingController: _passwordConfirmTextCon,
+                  hintText: "비밀번호 확인",
+                  validityCheckAction: (value) => _loginRepository.duplicateCheckMessage(originalValue: _passwordTextCon.text, checkValue: value),
+                  onChangeAction: (text) {
+                    bool _result = _loginRepository.isFormValidation(validationFunction: _formKeyPasswordConfirm.currentState.validate());
                     setState(() {
                       isFormValidation[3] = _result;
                     });
                   }
                 ),
                 validityCheckTextFormField(
-                   _formKeyPhone,
-                   _phoneNumberTextCon,
-                   "핸드폰번호(01012341234)",
-                   (value) => _loginRepository.validationRegExpCheckMessage("전화번호", value),
-                   (text) {
-                     bool _result = _loginRepository.isFormValidation(_formKeyPhone.currentState.validate());
-                     _firebaseAuthProvider.setPhonVerifyResultFalse();
-                     setState(() {
-                       isFormValidation[4] = _result;
-                     });
-                   }
+                  key: _formKeyPhone,
+                  textEditingController: _phoneNumberTextCon,
+                  hintText: "핸드폰번호(01012341234)",
+                  validityCheckAction: (value) => _loginRepository.validationRegExpCheckMessage(field: "전화번호", value: value),
+                  onChangeAction: (text) {
+                    bool _result = _loginRepository.isFormValidation(validationFunction: _formKeyPhone.currentState.validate());
+                    _firebaseAuthProvider.setPhonVerifyResultFalse();
+                    setState(() {
+                      isFormValidation[4] = _result;
+                    });
+                  }
                 ),
               ]
             ),
@@ -184,19 +189,22 @@ class SignUpPageState extends State<SignUpPage> {
 
           //공백
           SizedBox(
-            height: customHeight(context, 0.02),
+            height: customHeight(
+              context: context,
+              heightSize: 0.02,
+            ),
           ),
-          
+
           //인증번호 요청 버튼
           Row(
             children: <Widget>[
               Spacer(),
               loginScreenRaisedBtn(
-                context,
-                blueColor,
-                "인증번호 요청",
-                whiteColor,
-                isFormValidation[4] ? () => _firebaseAuthProvider.verifyPhone(_phoneNumberTextCon.text) : null
+                context:  context,
+                btnColor:  blueColor,
+                btnText: "인증번호 요청",
+                btnTextColor: whiteColor,
+                btnAction: isFormValidation[4] ? () => _firebaseAuthProvider.verifyPhone(phoneNumber: _phoneNumberTextCon.text) : null
               ),
               Spacer(),
             ],
@@ -204,7 +212,10 @@ class SignUpPageState extends State<SignUpPage> {
 
           //공백
           SizedBox(
-            height: customHeight(context, 0.01),
+            height: customHeight(
+              context: context,
+              heightSize: 0.01,
+            ),
           ),
 
           //인증번호 입력 칸
@@ -214,22 +225,50 @@ class SignUpPageState extends State<SignUpPage> {
               children: <Widget>[
                 Text(
                   "인증번호",
-                  style: customStyle(15, "Regular", mainColor),
+                  style: customStyle(
+                    fontSize: 15,
+                    fontWeightName: "Regular",
+                    fontColor: mainColor
+                  ),
                 ),
                 SizedBox(
-                  height: customHeight(context, 0.01),
+                  height: customHeight(
+                    context: context,
+                    heightSize: 0.01,
+                  ),
                 ),
                 Row(
                   children: <Widget>[
-                    certificationNumberTextFormField(_smsCode, 0),
-                    certificationNumberTextFormField(_smsCode, 1),
-                    certificationNumberTextFormField(_smsCode, 2),
-                    certificationNumberTextFormField(_smsCode, 3),
-                    certificationNumberTextFormField(_smsCode, 4),
-                    certificationNumberTextFormField(_smsCode, 5)
+                    certificationNumberTextFormField(
+                      codeList: _smsCode,
+                      codeListOrder: 0
+                    ),
+                    certificationNumberTextFormField(
+                        codeList: _smsCode,
+                        codeListOrder: 1
+                    ),
+                    certificationNumberTextFormField(
+                        codeList: _smsCode,
+                        codeListOrder: 2
+                    ),
+                    certificationNumberTextFormField(
+                        codeList: _smsCode,
+                        codeListOrder: 3
+                    ),
+                    certificationNumberTextFormField(
+                        codeList: _smsCode,
+                        codeListOrder: 4
+                    ),
+                    certificationNumberTextFormField(
+                        codeList: _smsCode,
+                        codeListOrder: 5
+                    ),
                   ].map((c){
                     return Padding(
-                      padding: EdgeInsets.only(right: customWidth(context, 0.05)),
+                      padding: EdgeInsets.only(right: customWidth(
+                        context: context,
+                        widthSize: 0.05
+                      )),
                       child: c,
                     );
                   }).toList()
@@ -240,19 +279,31 @@ class SignUpPageState extends State<SignUpPage> {
 
           //공백
           SizedBox(
-            height: customHeight(context, 0.07),
+            height: customHeight(
+              context: context,
+              heightSize: 0.07,
+            ),
           ),
-          
+
           //회원가입 버튼
           Row(
             children: <Widget>[
               Spacer(),
               loginScreenRaisedBtn(
-                  context,
-                  blueColor,
-                  "회원가입",
-                  whiteColor,
-                  (isFormValidation.contains(false) == false && _smsCode.contains("") == false) ? () => _loginRepository.signUpWithFirebaseAuth(context, _smsCode.join(), _mailTextCon.text, _passwordTextCon.text, _nameTextCon.text, _newUser) : null
+                context:  context,
+                btnColor: blueColor,
+                btnText:  "회원가입",
+                btnTextColor: whiteColor,
+                btnAction: (isFormValidation.contains(false) == false && _smsCode.contains("") == false) ? () => {
+                  _loginRepository.signUpWithFirebaseAuth(
+                    context: context,
+                    smsCode: _smsCode.join(),
+                    mail: _mailTextCon.text,
+                    password: _passwordTextCon.text,
+                    name: _nameTextCon.text,
+                    user: _newUser
+                  )
+                } : null
               ),
               Spacer(),
             ],

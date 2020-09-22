@@ -5,10 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/repos/firebaseMethod.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/models/companyModel.dart';
-
-
+import 'package:companyplaylist/models/companyUserModel.dart';
 
 class CompanyUserCrud {
   String companyCode;
@@ -18,11 +15,11 @@ class CompanyUserCrud {
     _firestoreApi = FirestoreApi.twoPath("company", "user", companyCode);
   }
 
-  List<User> user;
+  List<CompanyUser> user;
 
-  Future<List<User>> fetchCompanyUser() async{
+  Future<List<CompanyUser>> fetchCompanyUser() async{
     var result = await _firestoreApi.getDataCollection();
-    user = result.documents.map((doc) => User.fromMap(doc.data, doc.documentID)).toList();
+    user = result.documents.map((doc) => CompanyUser.fromMap(doc.data, doc.documentID)).toList();
 
     return user;
   }
@@ -31,23 +28,23 @@ class CompanyUserCrud {
     return _firestoreApi.streamDataCollection();
   }
 
-  Future<User> getCompanyUserDataToFirebaseById(String id) async {
-    var doc = await _firestoreApi.getDocumentById(id);
-    return User.fromMap(doc.data, doc.documentID);
+  Future<CompanyUser> getCompanyUserDataToFirebaseById({String documentId}) async {
+    var doc = await _firestoreApi.getDocumentById(documentId);
+    return CompanyUser.fromMap(doc.data, doc.documentID);
   }
 
-  Future removeCompanyUserDataToFirebase(String id) async {
-    await _firestoreApi.removeDocument(id);
+  Future<void> removeCompanyUserDataToFirebase({String documentId}) async {
+    await _firestoreApi.removeDocument(documentId);
     return null;
   }
 
-  Future updateCompanyUserDataToFirebase(User data, String id) async {
-    await _firestoreApi.updateDocument(data.toJson(), id);
+  Future<void> updateCompanyUserDataToFirebase({CompanyUser dataModel, String documentId}) async {
+    await _firestoreApi.updateDocument(dataModel.toJson(), documentId);
     return null;
   }
 
-  Future addCompanyUserDataToFirebase(User data) async {
-    await _firestoreApi.addDocument(data.toJson());
+  Future<void> setCompanyUserDataToFirebase({CompanyUser dataModel, String documentId}) async{
+    await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;
   }
 }

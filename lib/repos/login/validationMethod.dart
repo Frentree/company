@@ -1,7 +1,7 @@
 class ValidationMethod{
 
   //폼별 유효성 검사 결과 저장
-  bool isFormValidation(bool validationFunction){
+  bool isFormValidation({bool validationFunction}){
     if(validationFunction){
       return true;
     }
@@ -47,7 +47,7 @@ class ValidationMethod{
     return _isValidRegExp;
   }
 
-  bool duplicateCheck(String originalValue, String checkValue){
+  bool duplicateCheck({String originalValue, String checkValue}){
     bool _isDuplicate = false;
     if(originalValue == checkValue){
       _isDuplicate = true;
@@ -56,7 +56,7 @@ class ValidationMethod{
     return _isDuplicate;
   }
 
-  String validationRegExpCheckMessage(String field, String value){
+  String validationRegExpCheckMessage({String field, String value}){
     if(value.isNotEmpty){
       if(isRegExp(field, value)){
         return null;
@@ -76,9 +76,9 @@ class ValidationMethod{
     }
   }
 
-  String duplicateCheckMessage(String originalValue, String checkValue){
+  String duplicateCheckMessage({String originalValue, String checkValue}){
     if(checkValue.isNotEmpty){
-      if(duplicateCheck(originalValue, checkValue)){
+      if(duplicateCheck(originalValue: originalValue, checkValue: checkValue)){
         return null;
       }
       else {

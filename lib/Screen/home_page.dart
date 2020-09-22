@@ -1,3 +1,4 @@
+/*
 //하단바 입니다.
 
 import 'package:flutter/material.dart';
@@ -116,4 +117,4 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-}
+}*/

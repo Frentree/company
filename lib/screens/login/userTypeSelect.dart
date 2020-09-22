@@ -25,12 +25,19 @@ class UserTypeSelectPage extends StatelessWidget{
       children: <Widget>[
         Text(
           "사용자 유형 선택",
-          style: customStyle(18, "Medium", blueColor),
+          style: customStyle(
+            fontSize: 18,
+            fontWeightName: "Medium",
+            fontColor: blueColor
+          ),
         ),
 
         //공백
         SizedBox(
-          height: customHeight(context, 0.05),
+          height: customHeight(
+            context: context,
+            heightSize: 0.05,
+          ),
         ),
 
         Row(
@@ -41,19 +48,26 @@ class UserTypeSelectPage extends StatelessWidget{
                 children: <Widget>[
                   Text(
                     "회사를 생성 할 경우",
-                    style: customStyle(14, "Regular", greyColor),
+                    style: customStyle(
+                      fontSize: 14,
+                      fontWeightName: "Regular",
+                      fontColor: greyColor,
+                    ),
                   ),
 
                   SizedBox(
-                    height: customHeight(context, 0.01),
+                    height: customHeight(
+                      context: context,
+                      heightSize: 0.01
+                    ),
                   ),
 
                   userTypeSelectScreenRaisedBtn(
-                    context,
-                    blueColor,
-                    "관리자",
-                    whiteColor,
-                    () => _companyScreenChangeProvider.setPageName("companyCreate")
+                    context: context,
+                    btnColor: blueColor,
+                    btnText:  "관리자",
+                    btnTextColor: whiteColor,
+                    btnAction: () => _companyScreenChangeProvider.setPageName("companyCreate"),
                   )
                 ],
               ),
@@ -61,7 +75,10 @@ class UserTypeSelectPage extends StatelessWidget{
 
             //공백
             SizedBox(
-              width: customWidth(context, 0.08),
+              width: customWidth(
+                context: context,
+                widthSize: 0.08
+              ),
             ),
 
             Container(
@@ -69,19 +86,26 @@ class UserTypeSelectPage extends StatelessWidget{
                 children: <Widget>[
                   Text(
                     "생성된 회사에 합류",
-                    style: customStyle(14, "Regular", greyColor),
+                    style: customStyle(
+                      fontSize: 14,
+                      fontWeightName: "Regular",
+                      fontColor: greyColor,
+                    ),
                   ),
 
                   SizedBox(
-                    height: customHeight(context, 0.01),
+                    height: customHeight(
+                      context: context,
+                      heightSize: 0.01,
+                    ),
                   ),
 
                   userTypeSelectScreenRaisedBtn(
-                    context,
-                    whiteColor,
-                    "직원",
-                    blueColor,
-                    null
+                    context: context,
+                    btnColor: whiteColor,
+                    btnText: "직원",
+                    btnTextColor: blueColor,
+                    btnAction: () => _companyScreenChangeProvider.setPageName("companyJoin")
                   )
                 ],
               ),

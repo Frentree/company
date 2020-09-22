@@ -6,6 +6,7 @@ import 'package:companyplaylist/screens/login/signUpMain.dart';
 import 'package:flutter/material.dart';
 import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -57,9 +58,14 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: AuthPage()
-        //home: CompanySetMain(),
-        //home: SignUpMainPage(),
+        home: AuthPage(),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [
+          const Locale('ko', 'KR'),
+        ],
       ),
     );
   }

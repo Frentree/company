@@ -16,14 +16,13 @@ import 'package:companyplaylist/repos/login/loginRepository.dart';
 //Model
 import 'package:companyplaylist/models/companyModel.dart';
 
-class CompanyCreatePage extends StatefulWidget{
+class CompanyJoinPage extends StatefulWidget{
   @override
-  CompanyCreatePageState createState() => CompanyCreatePageState();
+  CompanyJoinPageState createState() => CompanyJoinPageState();
 }
 
-class CompanyCreatePageState extends State<CompanyCreatePage> {
+class CompanyJoinPageState extends State<CompanyJoinPage> {
   //TextEditingController
-  TextEditingController _companyNameCon;
   TextEditingController _companyCodeCon;
 
   LoginRepository _loginRepository = LoginRepository();
@@ -33,34 +32,26 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
   @override
   void initState(){
     super.initState();
-    _companyNameCon = TextEditingController();
     _companyCodeCon = TextEditingController();
   }
 
   @override
   void dispose(){
-    _companyNameCon.dispose();
     _companyCodeCon.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _newCompany = Company(
-      id: null,
-      companyName: _companyNameCon.text,
-      companyCode: _companyCodeCon.text
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          "회사 생성",
+          "초대 코드",
           style: customStyle(
             fontSize: 18,
             fontWeightName: "Medium",
-            fontColor: blueColor
+            fontColor: blueColor,
           ),
         ),
 
@@ -68,52 +59,47 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
         SizedBox(
           height: customHeight(
             context: context,
-            heightSize: 0.05
+            heightSize: 0.05,
           ),
         ),
 
         textFormField(
-          textEditingController: _companyNameCon,
-          hintText: "회사명",
-        ),
-
-        textFormField(
           textEditingController: _companyCodeCon,
-          hintText: "회사 코드",
-          showCursor: false,
-          readOnly: true,
-          suffixWidget: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RaisedButton(
-              child: Text(
-                "코드 생성"
-              ),
-              onPressed: _companyNameCon.text != "" ? () async {
-                String _result = await _loginRepository.createCompanyCode();
-                setState(() {
-                  _companyCodeCon.text = _result;
-                });
-              } : null
-            )
-          )
+          hintText: "초대코드를 입력해주세요",
         ),
 
         SizedBox(
           height: customHeight(
             context: context,
-            heightSize: 0.3
+            heightSize: 0.1,
+          ),
+        ),
+
+        Text(
+          "초대코드는 관리자에게 받을 수 있습니다.",
+          style: customStyle(
+            fontSize: 14,
+            fontWeightName: "Regular",
+            fontColor: greyColor
+          ),
+        ),
+
+        SizedBox(
+          height: customHeight(
+            context: context,
+            heightSize: 0.3,
           ),
         ),
 
         loginScreenRaisedBtn(
           context: context,
           btnColor: blueColor,
-          btnText:  "생성하기",
+          btnText:  "합류하기",
           btnTextColor: whiteColor,
-          btnAction: (_companyNameCon.text != "" && _companyCodeCon.text != "") ? () => {
-            _loginRepository.createCompanyCollectionToFirebase(
+          btnAction: (_companyCodeCon.text != "") ? () => {
+            _loginRepository.joinCompanyUser(
               context: context,
-              company: _newCompany
+              companyCode: _companyCodeCon.text
             )
           } : null
         )

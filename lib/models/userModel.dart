@@ -3,7 +3,7 @@
 이메일 <mail>
 핸드폰번호 <phone>
 회사코드 <companyCode>
-<추가예정>
+회사이름 <companyName>
 */
 
 class User {
@@ -11,6 +11,7 @@ class User {
   String name;
   String mail;
   String phone;
+  String companyName;
   String companyCode;
 
   User({
@@ -18,6 +19,7 @@ class User {
     this.name,
     this.mail,
     this.phone,
+    this.companyName,
     this.companyCode,
   });
 
@@ -26,6 +28,7 @@ class User {
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
         phone = snapshot["phone"] ?? "",
+        companyName = snapshot["companyName"] ?? "",
         companyCode = snapshot["companyCode"] ?? "";
 
   toJson(){
@@ -33,6 +36,7 @@ class User {
       "name": name,
       "mail": mail,
       "phone": phone,
+      "companyName": companyName,
       "companyCode": companyCode,
     };
   }

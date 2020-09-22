@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 
 
-void showLastFirebaseMessage(BuildContext context, String lastFirebaseMessage){
+void showLastFirebaseMessage({BuildContext context, String lastFirebaseMessage}){
   Scaffold.of(context).showSnackBar(
     SnackBar(
       backgroundColor: redColor,
@@ -17,7 +17,7 @@ void showLastFirebaseMessage(BuildContext context, String lastFirebaseMessage){
   );
 }
 
-void showFunctionSuccessMessage(BuildContext context, String successMessage){
+void showFunctionSuccessMessage({BuildContext context, String successMessage}){
   Scaffold.of(context).showSnackBar(
       SnackBar(
           backgroundColor: blueColor,
@@ -29,7 +29,7 @@ void showFunctionSuccessMessage(BuildContext context, String successMessage){
   );
 }
 
-void showFunctionErrorMessage(BuildContext context, String errorMessage){
+void showFunctionErrorMessage({BuildContext context, String errorMessage}){
   Scaffold.of(context).showSnackBar(
       SnackBar(
           backgroundColor: redColor,

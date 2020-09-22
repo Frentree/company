@@ -1,3 +1,4 @@
+/*
 //나의 일정 화면 입니다.
 
 import 'package:flutter/material.dart';
@@ -163,4 +164,4 @@ class MySchedulePageState extends State<MySchedulePage>{
       ),
     );
   }
-}
+}*/
