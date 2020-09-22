@@ -19,7 +19,7 @@ Map<String, FontWeight> fontWeight = {
 };
 
 //커스텀 폰트 스타일
-TextStyle customStyle(double fontSize, String fontWeightName, Color fontColor){
+TextStyle customStyle({double fontSize, String fontWeightName, Color fontColor}){
   return TextStyle(
     fontFamily: fontStyle,
     fontSize: fontSize,

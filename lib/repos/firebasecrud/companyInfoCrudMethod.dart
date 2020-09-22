@@ -25,28 +25,23 @@ class CompanyInfoCrud {
     return _firestoreApi.streamDataCollection();
   }
 
-  Future<Company> getCompanyInfoDataToFirebaseById(String id) async {
-    var doc = await _firestoreApi.getDocumentById(id);
+  Future<Company> getCompanyInfoDataToFirebaseById({String documentId}) async {
+    var doc = await _firestoreApi.getDocumentById(documentId);
     return Company.fromMap(doc.data, doc.documentID);
   }
 
-  Future removeCompanyInfoDataToFirebase(String id) async {
-    await _firestoreApi.removeDocument(id);
+  Future<void> removeCompanyInfoDataToFirebase({String documentId}) async {
+    await _firestoreApi.removeDocument(documentId);
     return null;
   }
 
-  Future updateCompanyInfoDataToFirebase(Company data, String id) async {
-    await _firestoreApi.updateDocument(data.toJson(), id);
+  Future<void> updateCompanyInfoDataToFirebase({Company dataModel, String documentId}) async {
+    await _firestoreApi.updateDocument(dataModel.toJson(), documentId);
     return null;
   }
 
-  Future addCompanyInfoDataToFirebase(Company data) async {
-    await _firestoreApi.addDocument(data.toJson());
-    return null;
-  }
-
-  Future setCompanyInfoDataToFirebase(Company data, String id) async{
-    await _firestoreApi.setDocument(data.toJson(), id);
+  Future<void> setCompanyInfoDataToFirebase({Company dataModel, String documentId}) async{
+    await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;
   }
 }

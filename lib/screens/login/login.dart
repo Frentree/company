@@ -57,27 +57,43 @@ class LoginPageState extends State<LoginPage> {
         //상단 글자
         Text(
           "로그인",
-          style: customStyle(18, "Medium", blueColor),
+          style: customStyle(
+            fontSize: 18,
+            fontWeightName: "Medium",
+            fontColor: blueColor,
+          ),
         ),
 
         //공백
         SizedBox(
-          height: customHeight(context, 0.01),
+          height: customHeight(
+            context: context,
+            heightSize: 0.01,
+          ),
         ),
 
         //ID/PW 입력 란
         Container(
           child: Column(
             children: <Widget>[
-              textFormField(_mailTextCon, "이메일"),
-              textFormField(_passwordTextCon, "비밀번호")
+              textFormField(
+                textEditingController: _mailTextCon,
+                hintText: "이메일",
+              ),
+              textFormField(
+                textEditingController: _passwordTextCon,
+                hintText: "비밀번호",
+              ),
             ],
           ),
         ),
 
         //공백
         SizedBox(
-          height: customHeight(context, 0.05),
+          height: customHeight(
+            context: context,
+            heightSize: 0.05,
+          ),
         ),
 
         //로그인 버튼
@@ -85,29 +101,36 @@ class LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Spacer(),
             loginScreenRaisedBtn(
-              context,
-              blueColor,
-              "로그인",
-              whiteColor,
-              () => _loginRepository.signInWithFirebaseAuth(context, _mailTextCon.text, _passwordTextCon.text)
+              context: context,
+              btnColor: blueColor,
+              btnText: "로그인",
+              btnTextColor: whiteColor,
+              btnAction: () => _loginRepository.signInWithFirebaseAuth(
+                context: context,
+                mail: _mailTextCon.text,
+                password: _passwordTextCon.text,
+              )
             ),
             Spacer(),
           ],
         ),
 
         SizedBox(
-          height: customHeight(context, 0.01),
+          height: customHeight(
+            context: context,
+            heightSize: 0.01,
+          ),
         ),
 
         Row(
           children: <Widget>[
             Spacer(),
             loginScreenRaisedBtn(
-              context,
-              whiteColor,
-              "회원가입",
-              blueColor,
-              () => _loginScreenChangeProvider.setPageName("signUp")
+              context: context,
+              btnColor: whiteColor,
+              btnText: "회원가입",
+              btnTextColor: blueColor,
+              btnAction: () => _loginScreenChangeProvider.setPageName(pageName: "signUp"),
             ),
             Spacer(),
           ],

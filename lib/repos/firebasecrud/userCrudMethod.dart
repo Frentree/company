@@ -25,28 +25,23 @@ class UserCrud {
     return _firestoreApi.streamDataCollection();
   }
 
-  Future<User> getUserDataToFirebaseById(String id) async {
-    var doc = await _firestoreApi.getDocumentById(id);
+  Future<User> getUserDataToFirebaseById({String documentId}) async {
+    var doc = await _firestoreApi.getDocumentById(documentId);
     return User.fromMap(doc.data, doc.documentID);
   }
 
-  Future removeUserDataToFirebase(String id) async {
-    await _firestoreApi.removeDocument(id);
+  Future<void> removeUserDataToFirebase({String documentId}) async {
+    await _firestoreApi.removeDocument(documentId);
     return null;
   }
 
-  Future updateUserDataToFirebase(User data, String id) async {
-    await _firestoreApi.updateDocument(data.toJson(), id);
+  Future<void> updateUserDataToFirebase({User dataModel, String documentId}) async {
+    await _firestoreApi.updateDocument(dataModel.toJson(), documentId);
     return null;
   }
 
-  Future addUserDataToFirebase(User data) async {
-    await _firestoreApi.addDocument(data.toJson());
-    return null;
-  }
-
-  Future setUserDataToFirebase(User data, String id) async{
-    await _firestoreApi.setDocument(data.toJson(), id);
+  Future<void> setUserDataToFirebase({User dataModel, String documentId}) async{
+    await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;
   }
 }

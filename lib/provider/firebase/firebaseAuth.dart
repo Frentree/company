@@ -35,20 +35,20 @@ class FirebaseAuthProvider with ChangeNotifier {
   }
 
   //로그인한 사용자 저장
-  void setUer(FirebaseUser value){
-    _user = value;
+  void setUer({FirebaseUser user}){
+    _user = user;
     notifyListeners();
   }
 
   //최근 로그인한 사용자 저장
   void _prepareUser() {
     _firebaseAuth.currentUser().then((FirebaseUser currentUser){
-      setUer(currentUser);
+      setUer(user: currentUser);
     });
   }
 
   //마지막 응답 저장
-  void setLastFirebaseMessage(String message){
+  void setLastFirebaseMessage({String message}){
     _lastFirebaseResponse = message;
   }
 
@@ -84,7 +84,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   }
 
   //이메일로 회원 가입
-  Future<bool> signUpWithEmail(String mail, String password, String name) async {
+  Future<bool> signUpWithEmail({String mail, String password, String name}) async {
     try {
       AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: mail,
@@ -100,36 +100,34 @@ class FirebaseAuthProvider with ChangeNotifier {
       return false;
 
     } on PlatformException catch (e) {
-      print(e.code);
-      setLastFirebaseMessage(e.code);
+      setLastFirebaseMessage(message: e.code);
       return false;
     }
   }
 
   //이메일로 로그인
-  Future<bool> singInWithEmail(String mail, String password) async {
+  Future<bool> singInWithEmail({String mail, String password}) async {
     try{
       var result = await _firebaseAuth.signInWithEmailAndPassword(
           email: mail,
           password: password
       );
       if(result != null) {
-        setUer(result.user);
+        setUer(user: result.user);
         return true;
       }
       return false;
     } on PlatformException catch (e) {
-      print(e.code);
-      setLastFirebaseMessage(e.code);
+      setLastFirebaseMessage(message: e.code);
       return false;
     }
   }
 
   //핸드폰 번호 인증
-  Future<void> verifyPhone(String phoneNumber) async {
+  Future<void> verifyPhone({String phoneNumber}) async {
     //핸드폰 번호 인증이 실패했을 때
     final PhoneVerificationFailed verificationFailed = (AuthException authException){
-      setLastFirebaseMessage(authException.message);
+      setLastFirebaseMessage(message: authException.message);
       return false;
     };
 
@@ -160,7 +158,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   }
 
   //인증번호 인증
-  Future<bool> isVerifySuccess(String smsCode) async {
+  Future<bool> isVerifySuccess({String smsCode}) async {
     AuthCredential authCredential = await PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: smsCode);
     try {
       AuthResult result = await _firebaseAuth.signInWithCredential(authCredential);
@@ -169,8 +167,7 @@ class FirebaseAuthProvider with ChangeNotifier {
       }
       return false;
     } on PlatformException catch (e){
-      print(e.code);
-      setLastFirebaseMessage(e.code);
+      setLastFirebaseMessage(message: e.code);
       return false;
     }
   }

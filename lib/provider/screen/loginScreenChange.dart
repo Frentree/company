@@ -21,14 +21,14 @@ class LoginScreenChangeProvider extends ChangeNotifier{
   }
 
   //페이지 이름 저장
-  void setPageName(String name){
-    _pageName = name;
+  void setPageName({String pageName}){
+    _pageName = pageName;
     notifyListeners();
   }
 
   //페이지 이름 및 전달할 값 저장
-  void setPageIndexAndString(String name, String sendValue){
-    _pageName = name;
+  void setPageIndexAndString({String pageName, String sendValue}){
+    _pageName = pageName;
     _sendValue = sendValue;
     notifyListeners();
   }
