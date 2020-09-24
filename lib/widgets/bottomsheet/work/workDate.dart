@@ -141,10 +141,6 @@ workDate(BuildContext context) async {
                                     settingDateTime(7),
                                     style: customStyle(14, 'Regular', top_color),
                                   ),
-                                  Text(
-                                      "$startTime ~ $endTime"
-                                  ),
-
                                 ],
                               ),
                               onTap: () {
