@@ -54,7 +54,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.04)),
+                    padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.03)),
                     child: Text(
                       "슬기로운 회사 생활",
                       style: customStyle(

@@ -19,7 +19,7 @@ InkWell tabBtn({BuildContext context, String btnText, int tabIndexVariable, int 
     child: Container(
       height: customHeight(
         context: context,
-        heightSize: 0.07
+        heightSize: 0.05
       ),
       width: customWidth(
         context: context,

@@ -3,6 +3,7 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/auth.dart';
 import 'package:companyplaylist/screens/login/companySetMain.dart';
 import 'package:companyplaylist/screens/login/signUpMain.dart';
+import 'package:companyplaylist/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
@@ -12,25 +13,6 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(MyApp());
 }
-
-//
-//class MyApp extends StatelessWidget{test
-//  @override
-//  Widget build(BuildContext context) {
-//    return MultiProvider(
-//      providers: [
-//        ChangeNotifierProvider(create: (_) => locator<CRUDModel>())
-//      ],
-//      child: MaterialApp(
-//        debugShowCheckedModeBanner: false,
-//        initialRoute: '/',
-//        title: 'TEST',
-//        onGenerateRoute: Router.generateRoute,
-//      ),
-//    );
-//  }
-//}
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -58,7 +40,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: AuthPage(),
+        home: SplashPage(),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate

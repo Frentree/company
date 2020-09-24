@@ -1,5 +1,6 @@
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/screens/home/homeSchedule.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -86,26 +87,31 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
               context: context,
               widthSize: 0.2
             ),
-            child: Container(
-              height: customHeight(
-                context: context,
-                heightSize: 0.05
-              ),
-              width: customWidth(
-                context: context,
-                widthSize: 0.1
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: whiteColor,
-                border: Border.all(color: whiteColor, width: 2)
-              ),
-              child: Text(
-                "사진",
-                style: TextStyle(
-                  color: Colors.black
+            child: GestureDetector(
+              child: Container(
+                height: customHeight(
+                  context: context,
+                  heightSize: 0.05
+                ),
+                width: customWidth(
+                  context: context,
+                  widthSize: 0.1
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: whiteColor,
+                  border: Border.all(color: whiteColor, width: 2)
+                ),
+                child: Text(
+                  "사진",
+                  style: TextStyle(
+                    color: Colors.black
+                  ),
                 ),
               ),
+              onTap: (){
+                _loginUserInfoProvider.logoutUesr();
+              },
             ),
           ),
         ],
@@ -169,7 +175,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
             Container(
               height: customHeight(
                 context: context,
-                heightSize: 0.08
+                heightSize: 0.06
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -213,6 +219,12 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                   ),
                 ],
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+            ),
+            Expanded(
+              child: HomeSchedulePage(),
             )
           ],
         ),
