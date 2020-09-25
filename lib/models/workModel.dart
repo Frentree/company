@@ -1,57 +1,95 @@
 /*
-이메일 <mail>
-생성날짜<createDate>
-시작날짜<startDate>
-종료날짜<endDate>
-큰카테고리<bigCategory>
-작은카테고리<normalCategory>
-번호<workNo>
-제목<workTitle>
-마지막수정wk<lastModifier>
-출근시간 <attendTime>
-퇴근시간 <endTime>
-인증기기 <certificationDevice>
-네트워크 정보 <networkInfo>
+* work 내근, 외근 일정 관련 Model
+* 이윤혁, 2020-09-23 최초작정
+*
+* @author 이윤혁
+* @version 1.0
+* 이윤혁, 마지막 수정일 2020-09-23
+*
 */
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Attendance {
-  String id; //Document ID
-  String mail;
-  String date;
-  Timestamp attendTime;
-  Timestamp endTime;
-  int certificationDevice;
-  String networkInfo;
+class CompanyWork {
+  String createUid;       // Firebase ID 상속
+  String createDate;
+  String startDate;
+  String endDate;
+  String bigCategory;     // 상위 프로젝트
+  String normalCategory;  // 하위 프로젝트
+  int workNo;             // 글넘버
+  String workTitle;       // 글제목
+  String lastModifier;    // 마지막 수정자
+  String workContents;    // 글내용
+  int level;              // 권한
+  List<String> share;     // 공유할 사람
+  List<String> exception; // 공유안 할 사람
+  String type;            // 내외근 일정 입력
+  String progress;        // 진행 상태( 1. 진행전, 2. 진행중, 3.완료, 4.보류, 5. 지연 )
+  String workReq;
+  String workRequester;
+  String ReqStatus;
+  List<Map<String,String>> coWorker;     // 일정을 같이 하는 사람
 
-  Attendance({
-    this.id,
-    this.mail,
-    this.date,
-    this.attendTime,
-    this.endTime,
-    this.certificationDevice,
-    this.networkInfo,
+  CompanyWork({
+    this.createUid,
+    this.createDate,
+    this.startDate,
+    this.endDate,
+    this.bigCategory,
+    this.normalCategory,
+    this.workNo,
+    this.workTitle,
+    this.lastModifier,
+    this.workContents,
+    this.level,
+    this.share,
+    this.exception,
+    this.type,
+    this.progress,
+    this.workReq,
+    this.workRequester,
+    this.coWorker,
   });
 
-  Attendance.fromMap(Map snapshot, String id) :
-        id = id ?? "",
-        mail = snapshot["mail"] ?? "",
-        date = snapshot["date"] ?? "",
-        attendTime = snapshot["attendTime"] ?? "",
-        endTime = snapshot["endTime"] ?? "",
-        certificationDevice = snapshot["certificationDevice"] ?? "",
-        networkInfo = snapshot["networkInfo"] ?? "";
-
+  CompanyWork.fromMap(Map snapshot, String id) :
+        createUid = id ?? "",
+        createDate = snapshot["createDate"] ?? "",
+        startDate = snapshot["startDate"] ?? "",
+        endDate = snapshot["endDate"] ?? "",
+        bigCategory = snapshot["bigCategory"] ?? "",
+        normalCategory = snapshot["normalCategory"] ?? "",
+        workNo = snapshot["workNo"] ?? "",
+        workTitle = snapshot["workTitle"] ?? "",
+        lastModifier = snapshot["lastModifier"] ?? "",
+        workContents = snapshot["workContents"] ?? "",
+        level = snapshot["level"] ?? "",
+        share = snapshot["share"] ?? "",
+        exception = snapshot["exception"] ?? "",
+        type = snapshot["type"] ?? "",
+        progress = snapshot["progress"] ?? "",
+        workReq = snapshot["workReq"] ?? "",
+        workRequester = snapshot["workRequester"] ?? "",
+        coWorker = snapshot["coWorker"] ?? "";
   toJson(){
     return {
-      "mail": mail,
-      "date": date,
-      "attendTime": attendTime,
-      "endTime": endTime,
-      "certificationDevice": certificationDevice,
-      "networkInfo": networkInfo,
+      "createDate": createDate,
+      "startDate": startDate,
+      "endDate": endDate,
+      "bigCategory": bigCategory,
+      "normalCategory": normalCategory,
+      "workNo": workNo,
+      "workTitle": workTitle,
+      "lastModifier": lastModifier,
+      "workContents": workContents,
+      "level": level,
+      "share": share,
+      "exception": exception,
+      "type": type,
+      "progress": progress,
+      "workReq": workReq,
+      "workRequester": workRequester,
+      "coWorker": coWorker,
     };
   }
 }
+

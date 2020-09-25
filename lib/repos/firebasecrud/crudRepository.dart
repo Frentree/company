@@ -1,5 +1,7 @@
 //Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/models/workModel.dart';
+import 'package:companyplaylist/repos/firebasecrud/companyWorkCrudMethod.dart';
 
 //Repos
 import 'package:companyplaylist/repos/firebasecrud/userCrudMethod.dart';
@@ -24,6 +26,9 @@ class CrudRepository {
 
   CompanyUserCrud _companyUserCrud;
 
+  // Work Crud 2020-09-23, 이윤혁
+  CompanyWorkCrud _companyWorkCrud = CompanyWorkCrud("HYOIE13");
+
   //
   UserAttendanceCrud _userAttendanceCrud;
 
@@ -31,6 +36,11 @@ class CrudRepository {
 
   CrudRepository.companyUser({this.companyCode}){
     _companyUserCrud = CompanyUserCrud(companyCode);
+  }
+
+  // Work Repository 2020-09-23, 이윤혁
+  CrudRepository.companyWork({this.companyCode}){
+    _companyWorkCrud = CompanyWorkCrud(companyCode);
   }
 
   //
@@ -65,4 +75,14 @@ class CrudRepository {
   Future<void> removeUserAttendanceDataToFirebase({String documentId}) => _userAttendanceCrud.removeUserAttendanceDataToFirebase(documentId: documentId);
   Future<void> updateUserAttendanceDataToFirebase({Attendance dataModel, String documentId}) => _userAttendanceCrud.updateUserAttendanceDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> addUserAttendanceDataToFirebase({Attendance dataModel}) => _userAttendanceCrud.addUserAttendanceDataToFirebase(dataModel: dataModel);
+
+  // companyWork Repository 2020-09-23, 이윤혁
+  Future<List<CompanyWork>> fetchCompanyWork() => _companyWorkCrud.fetchCompanyWork();
+  Stream<QuerySnapshot> fetchCompanyWorkAsStream() => _companyWorkCrud.fetchCompanyWorkAsStream();
+  // Future<CompanyUser> getCompanyWorkDataToFirebaseById({String documentId}) => _companyWorkCrud.getCompanyUserDataToFirebaseById(documentId: documentId);
+  // Future<void> removeCompanyWorkDataToFirebase({String documentId}) => _companyWorkCrud.removeCompanyUserDataToFirebase(documentId: documentId);
+  // Future<void> updateCompanyWorkDataToFirebase({CompanyUser dataModel, String documentId}) => _companyWorkCrud.updateCompanyUserDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> setCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) => _companyWorkCrud.setCompanyWorkDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> addCompanyWorkDataToFirebase({CompanyWork dataModel}) => _companyWorkCrud.addCompanyWorkDataToFirebase(dataModel: dataModel);
+
 }

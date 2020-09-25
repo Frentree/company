@@ -1,5 +1,6 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/repos/login/workRepository.dart';
 import 'package:companyplaylist/screens/work/workDate.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workDate.dart';
 import 'package:companyplaylist/widgets/button/raisedButton.dart';
@@ -21,12 +22,14 @@ class WorkContentPageState extends State<WorkContentPage> {
   TextEditingController _startDateTextEdit;
   TextEditingController _endDateTextEdit;
   TextEditingController _projectTextEdit;
-  TextEditingController _conTextEdit;
+  TextEditingController _contentEdit;
   TextEditingController _targetTextEdit;
 
   String date = "";
   String _project = "project";
   List<bool> _isTarget = [false, false, false];
+
+  WorkRepository _workRepository = WorkRepository();
 
   @override
   void initState() {
@@ -35,7 +38,7 @@ class WorkContentPageState extends State<WorkContentPage> {
     _startDateTextEdit = TextEditingController();
     _endDateTextEdit = TextEditingController();
     _projectTextEdit = TextEditingController();
-    _conTextEdit = TextEditingController();
+    _contentEdit = TextEditingController();
     _targetTextEdit = TextEditingController();
   }
 
@@ -51,15 +54,23 @@ class WorkContentPageState extends State<WorkContentPage> {
           children: <Widget>[
             //상단 로고
             Container(
-              width: customWidth(context, 1),
-              height: customHeight(context, 0.13),
+              width: customWidth(
+                context : context,
+                widthSize: 0.96),
+              height: customHeight(
+                context: context,
+                heightSize: 0.13,
+              ),
               decoration: BoxDecoration(color: mainColor),
 
               //앱 이름 및 버전 표시
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: customHeight(context, 0.04),
+                    height: customHeight(
+                        context : context,
+                        heightSize : 0.04
+                    ),
                   ),
                   Container(
                     child: Row(
@@ -76,7 +87,10 @@ class WorkContentPageState extends State<WorkContentPage> {
                     ),
                   ),
                   SizedBox(
-                    height: customHeight(context, 0.05),
+                    height: customHeight(
+                      context: context,
+                      heightSize: 0.05,
+                    ),
                   ),
                 ],
               ),
@@ -86,19 +100,54 @@ class WorkContentPageState extends State<WorkContentPage> {
             Expanded(
               child: Container(
                 padding: EdgeInsets.only(
-                    top: customHeight(context, 0.03),
-                    left: customWidth(context, 0.05),
-                    right: customWidth(context, 0.05)),
-                width: customWidth(context, 1),
+                    top: customHeight(
+                      context: context,
+                      heightSize: 0.03,
+                    ),
+                    left: customHeight(
+                      context: context,
+                      heightSize: 0.05,
+                    ),
+                    right: customHeight(
+                      context: context,
+                      heightSize: 0.05,
+                    ),
+                ),
+                width: customWidth(
+                  context : context,
+                  widthSize : 1,
+                ),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25)),
                     color: whiteColor),
                 child: SingleChildScrollView(
                   child: Container(
                     child: Column(
                       children: <Widget>[
+
+                        Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: textFieldUnderLine
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              width: customWidth(context: context, widthSize: 0.1),
+                              height: customHeight(context: context, heightSize: 0.06),
+                              child: Text(
+                                "내근",
+                                style: customStyle(
+                                    14, "Regular", mainColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         Container(
                           height: 50,
                           child: TextFormField(
@@ -111,12 +160,15 @@ class WorkContentPageState extends State<WorkContentPage> {
                           ),
                         ),
                         SizedBox(
-                          height: customHeight(context, 0.03),
+                          height:  customHeight(
+                            context: context,
+                            heightSize: 0.03,
+                          ),
                         ),
                         Row(
                           children: [
                             Container(
-                              width: 170,
+                              width: 155,
                               height: 50,
                               child: Stack(
                                 children: <Widget>[
@@ -131,7 +183,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                   ),
                                   IconButton(
                                     padding:
-                                        EdgeInsets.only(left: 130, top: 0),
+                                        EdgeInsets.only(left: 120, top: 0),
                                     icon: Icon(
                                       Icons.date_range,
                                       size: 30,
@@ -155,8 +207,9 @@ class WorkContentPageState extends State<WorkContentPage> {
                             Padding(
                               padding: EdgeInsets.only(right: 10),
                             ),
+                            Spacer(),
                             Container(
-                              width: 170,
+                              width: 155,
                               height: 50,
                               child: Stack(
                                 children: <Widget>[
@@ -171,7 +224,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                   ),
                                   IconButton(
                                     padding:
-                                        EdgeInsets.only(left: 130, top: 0),
+                                        EdgeInsets.only(left: 120, top: 0),
                                     icon: Icon(
                                       Icons.date_range,
                                       size: 30,
@@ -188,10 +241,14 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 ],
                               ),
                             ),
+                            Spacer(),
                           ],
                         ),
                         SizedBox(
-                          height: customHeight(context, 0.03),
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.03,
+                          ),
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -230,10 +287,13 @@ class WorkContentPageState extends State<WorkContentPage> {
                           ),
                         ),
                         SizedBox(
-                          height: customHeight(context, 0.03),
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.03,
+                          ),
                         ),
                         TextFormField(
-                          controller: _conTextEdit,
+                          controller: _contentEdit,
                           keyboardType: TextInputType.multiline,
                           maxLines: 3,
                           decoration: InputDecoration(
@@ -243,7 +303,10 @@ class WorkContentPageState extends State<WorkContentPage> {
                           ),
                         ),
                         SizedBox(
-                          height: customHeight(context, 0.03),
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.03,
+                          ),
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -320,17 +383,29 @@ class WorkContentPageState extends State<WorkContentPage> {
                           ),
                         ),
                         SizedBox(
-                          height: customHeight(context, 0.03),
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.03,
+                          ),
                         ),
                         Row(
                           children: <Widget>[
                             Spacer(),
                             loginScreenRaisedBtn(
-                                context,
-                                blueColor,
-                                "내근 일정 생성",
-                                whiteColor,
-                                    () => {}
+                                context :context,
+                                btnColor : blueColor,
+                                btnText : "내근 일정 생성",
+                                btnTextColor : whiteColor,
+                                btnAction : () => {
+                                  _workRepository.workScheduleFirebaseAuth(
+                                    context: context,
+                                    workTitle: _titileTextEdit.text,
+                                    startDate: _startDateTextEdit.text,
+                                    endDate: _endDateTextEdit.text,
+                                    workContent: _contentEdit.text,
+                                    share: null,
+                                  ) : null
+                                }
                             ),
                             Spacer(),
                           ],
