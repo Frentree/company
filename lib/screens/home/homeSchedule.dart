@@ -14,6 +14,9 @@ class HomeSchedulePage extends StatefulWidget {
 class HomeSchedulePageState extends State<HomeSchedulePage> {
   int i = 0;
 
+  List<String> _valuList = ["수정하기", "삭제하기", "이력보기"];
+  String _selectedValue = "";
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -84,29 +87,34 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   ],
                 ),
                 SizedBox(
-                  width: customWidth(context: context, widthSize: 0.23),
+                  width: customWidth(context: context, widthSize: 0.2),
                 ),
                 Column(
                   children: <Widget>[
                     Container(
-                      width: customWidth(context: context, widthSize: 0.15),
-                      child: IconButton(
+                      height: customHeight(context: context, heightSize: 0.03),
+                      child: PopupMenuButton(
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
+
                         icon: Icon(
                           Icons.more_horiz,
-                          size: customHeight(context: context, heightSize: 0.05),
+                          size: customHeight(context: context, heightSize: 0.045),
                         ),
+
+                        tooltip: "this is tooltip",
+                        itemBuilder: (BuildContext context){
+                          return _valuList.map((value){
+                            return PopupMenuItem(
+                              value: value,
+                            );
+                          }).toList();
+                        },
                       ),
                     ),
-                    Container(
-                      //color: Colors.yellow,
-                      width: customWidth(context: context, widthSize: 0.15),
-                      child: Chip(
-                        padding: EdgeInsets.zero,
-                        label: Text(
-                          "진행중"
-                        ),
+                    Chip(
+                      padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.02)),
+                      label: Text(
+                        "진행중"
                       ),
                     )
                   ],
