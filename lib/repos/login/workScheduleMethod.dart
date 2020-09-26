@@ -25,7 +25,7 @@ import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 class WorkScheduleMethod{
 
   /* 일정 저장 메소드 */
-  Future<void> workScheduleFirebaseAuth({BuildContext context, String workTitle, String startDate, String endDate, String workContent, String share}) async {
+  Future<void> workScheduleFirebaseAuth({BuildContext context, String workTitle, String startDate, String endDate, String workContent, String share, String bigCategory, String type}) async {
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
 
     CompanyWork work = CompanyWork(
@@ -33,8 +33,9 @@ class WorkScheduleMethod{
       startDate: startDate,
       endDate: endDate,
       workContents: workContent,
-      type: "내근",
+      type: type,
       share: ["이윤혁", "최민지", "전준현"],
+      bigCategory: bigCategory,
     );
 
     CrudRepository _crudRepository = CrudRepository();

@@ -5,6 +5,7 @@ import 'package:companyplaylist/screens/work/workDate.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workDate.dart';
 import 'package:companyplaylist/widgets/button/raisedButton.dart';
 import 'package:companyplaylist/widgets/form/textFormField.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +25,7 @@ class WorkContentPageState extends State<WorkContentPage> {
   TextEditingController _projectTextEdit;
   TextEditingController _contentEdit;
   TextEditingController _targetTextEdit;
-
+  String type = "내근";
   String date = "";
   String _project = "project";
   List<bool> _isTarget = [false, false, false];
@@ -54,9 +55,7 @@ class WorkContentPageState extends State<WorkContentPage> {
           children: <Widget>[
             //상단 로고
             Container(
-              width: customWidth(
-                context : context,
-                widthSize: 0.96),
+              width: customWidth(context: context, widthSize: 0.96),
               height: customHeight(
                 context: context,
                 heightSize: 0.13,
@@ -67,10 +66,7 @@ class WorkContentPageState extends State<WorkContentPage> {
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: customHeight(
-                        context : context,
-                        heightSize : 0.04
-                    ),
+                    height: customHeight(context: context, heightSize: 0.04),
                   ),
                   Container(
                     child: Row(
@@ -100,22 +96,22 @@ class WorkContentPageState extends State<WorkContentPage> {
             Expanded(
               child: Container(
                 padding: EdgeInsets.only(
-                    top: customHeight(
-                      context: context,
-                      heightSize: 0.03,
-                    ),
-                    left: customHeight(
-                      context: context,
-                      heightSize: 0.05,
-                    ),
-                    right: customHeight(
-                      context: context,
-                      heightSize: 0.05,
-                    ),
+                  top: customHeight(
+                    context: context,
+                    heightSize: 0.03,
+                  ),
+                  left: customHeight(
+                    context: context,
+                    heightSize: 0.05,
+                  ),
+                  right: customHeight(
+                    context: context,
+                    heightSize: 0.05,
+                  ),
                 ),
                 width: customWidth(
-                  context : context,
-                  widthSize : 1,
+                  context: context,
+                  widthSize: 1,
                 ),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -126,27 +122,64 @@ class WorkContentPageState extends State<WorkContentPage> {
                   child: Container(
                     child: Column(
                       children: <Widget>[
+                        Container(
+                          width: customWidth(
+                              context: context,
+                              widthSize: 1
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: IconButton(
+                                  icon: Icon(Icons.close),
+                                  color: Colors.black,
+                                ),
+                              ),
 
-                        Row(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: textFieldUnderLine
-                                ),
-                                borderRadius: BorderRadius.circular(12),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: textFieldUnderLine),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    width: customWidth(
+                                        context: context, widthSize: 0.1),
+                                    height: customHeight(
+                                        context: context, heightSize: 0.06),
+                                    child: Text(
+                                      "$type",
+                                      style: customStyle(
+                                        14,
+                                        "Regular",
+                                        mainColor,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 10),
+                                  ),
+                                  Text(
+                                    "일정 생성",
+                                    style: customStyle(
+                                      16,
+                                      "Regular",
+                                      mainColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              width: customWidth(context: context, widthSize: 0.1),
-                              height: customHeight(context: context, heightSize: 0.06),
-                              child: Text(
-                                "내근",
-                                style: customStyle(
-                                    14, "Regular", mainColor,
-                                ),
-                              ),
-                            ),
-                          ],
+
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.03,
+                          ),
                         ),
                         Container(
                           height: 50,
@@ -160,7 +193,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                           ),
                         ),
                         SizedBox(
-                          height:  customHeight(
+                          height: customHeight(
                             context: context,
                             heightSize: 0.03,
                           ),
@@ -182,15 +215,15 @@ class WorkContentPageState extends State<WorkContentPage> {
                                     ),
                                   ),
                                   IconButton(
-                                    padding:
-                                        EdgeInsets.only(left: 120, top: 0),
+                                    padding: EdgeInsets.only(left: 120, top: 0),
                                     icon: Icon(
                                       Icons.date_range,
                                       size: 30,
                                     ),
                                     onPressed: () async {
-                                      String setDate = await workDatePage(context, 0);
-                                      if(setDate != '') {
+                                      String setDate =
+                                          await workDatePage(context, 0);
+                                      if (setDate != '') {
                                         setState(() {
                                           _startDateTextEdit.text = setDate;
                                         });
@@ -223,15 +256,15 @@ class WorkContentPageState extends State<WorkContentPage> {
                                     ),
                                   ),
                                   IconButton(
-                                    padding:
-                                        EdgeInsets.only(left: 120, top: 0),
+                                    padding: EdgeInsets.only(left: 120, top: 0),
                                     icon: Icon(
                                       Icons.date_range,
                                       size: 30,
                                     ),
                                     onPressed: () async {
-                                      String setDate = await workDatePage(context, 1);
-                                      if(setDate != '') {
+                                      String setDate =
+                                          await workDatePage(context, 1);
+                                      if (setDate != '') {
                                         setState(() {
                                           _endDateTextEdit.text = setDate;
                                         });
@@ -252,13 +285,10 @@ class WorkContentPageState extends State<WorkContentPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            border:Border.all(
-                              width: 1,
-                              color: Colors.black26
-                            ),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(5.0) // POINT
-                            ),
+                            border: Border.all(width: 1, color: Colors.black26),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0) // POINT
+                                    ),
                           ),
                           child: ExpansionTile(
                             title: Text("관련 프로젝트를 선택하세요"),
@@ -310,13 +340,10 @@ class WorkContentPageState extends State<WorkContentPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            border:Border.all(
-                                width: 1,
-                                color: Colors.black26
-                            ),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(5.0) // POINT
-                            ),
+                            border: Border.all(width: 1, color: Colors.black26),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0) // POINT
+                                    ),
                           ),
                           child: ExpansionTile(
                             title: Text("공개 대상을 선택하세요"),
@@ -334,9 +361,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                         });
                                       },
                                     ),
-                                    Text(
-                                        "팀원"
-                                    ),
+                                    Text("팀원"),
                                   ],
                                 ),
                               ),
@@ -353,13 +378,10 @@ class WorkContentPageState extends State<WorkContentPage> {
                                         });
                                       },
                                     ),
-                                    Text(
-                                        "전체 직원"
-                                    ),
+                                    Text("전체 직원"),
                                   ],
                                 ),
                               ),
-
                               Container(
                                 child: Row(
                                   children: [
@@ -373,9 +395,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                         });
                                       },
                                     ),
-                                    Text(
-                                        "직접 선택"
-                                    ),
+                                    Text("직접 선택"),
                                   ],
                                 ),
                               ),
@@ -392,21 +412,22 @@ class WorkContentPageState extends State<WorkContentPage> {
                           children: <Widget>[
                             Spacer(),
                             loginScreenRaisedBtn(
-                                context :context,
-                                btnColor : blueColor,
-                                btnText : "내근 일정 생성",
-                                btnTextColor : whiteColor,
-                                btnAction : () => {
-                                  _workRepository.workScheduleFirebaseAuth(
-                                    context: context,
-                                    workTitle: _titileTextEdit.text,
-                                    startDate: _startDateTextEdit.text,
-                                    endDate: _endDateTextEdit.text,
-                                    workContent: _contentEdit.text,
-                                    share: null,
-                                  ) : null
-                                }
-                            ),
+                                context: context,
+                                btnColor: blueColor,
+                                btnText: "$type 일정 생성",
+                                btnTextColor: whiteColor,
+                                btnAction: () => {
+                                      _workRepository.workScheduleFirebaseAuth(
+                                        context: context,
+                                        workTitle: _titileTextEdit.text,
+                                        startDate: _startDateTextEdit.text,
+                                        endDate: _endDateTextEdit.text,
+                                        workContent: _contentEdit.text,
+                                        bigCategory: _project,
+                                        type: type,
+                                        share: null,
+                                      ): null
+                                    }),
                             Spacer(),
                           ],
                         ),
