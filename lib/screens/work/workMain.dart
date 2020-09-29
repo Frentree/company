@@ -1,7 +1,21 @@
 import 'package:companyplaylist/screens/work/workContent.dart';
 import 'package:flutter/material.dart';
-//Theme
-import 'package:companyplaylist/Theme/theme.dart';
+
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/colorCode.dart';
+import '../../consts/font.dart';
+
+
 
 WorkMainPage(BuildContext context) {
   // 사용자 권한
@@ -26,7 +40,11 @@ WorkMainPage(BuildContext context) {
                 ),
                 Text(
                   "추가할 일정을 선택하세요",
-                  style: customStyle(16, 'Regular', grey_color),
+                  style: customStyle(
+                      fontSize: 16,
+                      fontWeightName:'Regular',
+                      fontColor: greyColor
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 10),
@@ -38,10 +56,14 @@ WorkMainPage(BuildContext context) {
                       padding: EdgeInsets.only(left: 13),
                     ),
                     ActionChip(
-                      backgroundColor: chip_color_blue,
+                      backgroundColor: chipColorBlue,
                       label: Text(
                         "최근 일정에서 생성",
-                        style: customStyle(14, 'Regular', top_color),
+                        style: customStyle(
+                          fontSize: 14,
+                          fontWeightName:'Regular',
+                          fontColor: mainColor
+                        ),
                       ),
                       onPressed: () {
                         _workBottomMove(0);
@@ -53,37 +75,53 @@ WorkMainPage(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     ActionChip(
-                      backgroundColor: chip_color_blue,
+                      backgroundColor: chipColorBlue,
                       label: Text(
                         "내근 일정",
-                        style: customStyle(14, 'Regular', top_color),
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
                       ),
                       onPressed: () {
                         _workBottomMove(1);
                       },
                     ),
                     ActionChip(
-                      backgroundColor: chip_color_blue,
+                      backgroundColor: chipColorBlue,
                       label: Text(
                         "외근 일정",
-                        style: customStyle(14, 'Regular', top_color),
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
                       ),
                       onPressed: () {
                         _workBottomMove(2);
                       },
                     ),
                     Chip(
-                        backgroundColor: chip_color_blue,
+                        backgroundColor: chipColorBlue,
                         label: Text(
                           "회의 일정",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                     Chip(
-                        backgroundColor: chip_color_blue,
+                        backgroundColor: chipColorBlue,
                         label: Text(
                           "개인 일정",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                   ],
@@ -93,31 +131,47 @@ WorkMainPage(BuildContext context) {
                   children: <Widget>[
                     Chip(
 
-                        backgroundColor: chip_color_purple,
+                        backgroundColor: chipColorPurple,
                         label: Text(
                           "업무 요청",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                     Chip(
-                        backgroundColor: chip_color_red,
+                        backgroundColor: chipColorRed,
                         label: Text(
                           "구매 품의",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                     Chip(
-                        backgroundColor: chip_color_red,
+                        backgroundColor: chipColorRed,
                         label: Text(
                           "경비 품의",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                     Chip(
-                        backgroundColor: chip_color_red,
+                        backgroundColor: chipColorRed,
                         label: Text(
                           "연차 신청",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                   ],
@@ -141,7 +195,11 @@ WorkMainPage(BuildContext context) {
                 ),
                 Text(
                   "추가할 일정을 선택하세요",
-                  style: customStyle(16, 'Regular', grey_color),
+                  style: customStyle(
+                      fontSize: 14,
+                      fontWeightName:'Regular',
+                      fontColor: greyColor
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 10),
@@ -150,37 +208,53 @@ WorkMainPage(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     ActionChip(
-                      backgroundColor: chip_color_blue,
+                      backgroundColor: chipColorBlue,
                       label: Text(
                         "내근 일정",
-                        style: customStyle(14, 'Regular', top_color),
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
                       ),
                       onPressed: () {
                         _workBottomMove(1);
                       },
                     ),
                     ActionChip(
-                      backgroundColor: chip_color_blue,
+                      backgroundColor: chipColorBlue,
                       label: Text(
                         "외근 일정",
-                        style: customStyle(14, 'Regular', top_color),
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
                       ),
                       onPressed: () {
                         _workBottomMove(2);
                       },
                     ),
                     Chip(
-                        backgroundColor: chip_color_blue,
+                        backgroundColor: chipColorBlue,
                         label: Text(
                           "회의 일정",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                     Chip(
-                        backgroundColor: chip_color_blue,
+                        backgroundColor: chipColorBlue,
                         label: Text(
                           "개인 일정",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                   ],
@@ -192,10 +266,14 @@ WorkMainPage(BuildContext context) {
                       padding: EdgeInsets.only(left: 13),
                     ),
                     Chip(
-                        backgroundColor: chip_color_purple,
+                        backgroundColor: chipColorPurple,
                         label: Text(
                           "업무 요청",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
 
@@ -208,10 +286,14 @@ WorkMainPage(BuildContext context) {
                       padding: EdgeInsets.only(left: 13),
                     ),
                     ActionChip(
-                      backgroundColor: chip_color_green,
+                      backgroundColor: chipColorGreen,
                       label: Text(
                         "프로젝트",
-                        style: customStyle(14, 'Regular', top_color),
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
                       ),
                       onPressed: () {
                         _workBottomMove(1);
@@ -221,10 +303,14 @@ WorkMainPage(BuildContext context) {
                       padding: EdgeInsets.only(left: 15),
                     ),
                     ActionChip(
-                      backgroundColor: chip_color_green,
+                      backgroundColor: chipColorGreen,
                       label: Text(
                         "급여명세",
-                        style: customStyle(14, 'Regular', top_color),
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
                       ),
                       onPressed: () {
                         _workBottomMove(2);
@@ -234,10 +320,14 @@ WorkMainPage(BuildContext context) {
                       padding: EdgeInsets.only(left: 15),
                     ),
                     Chip(
-                        backgroundColor: chip_color_green,
+                        backgroundColor: chipColorGreen,
                         label: Text(
                           "공지사항",
-                          style: customStyle(14, 'Regular', top_color),
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         )
                     ),
                   ],
