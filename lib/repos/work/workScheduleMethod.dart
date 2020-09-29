@@ -9,14 +9,13 @@
 * */
 
 //Flutter
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/models/bigCategoryModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:flutter/material.dart';
 
 //Provider
 import 'package:provider/provider.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 
 //Repos
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
@@ -25,7 +24,7 @@ import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 class WorkScheduleMethod{
 
   /* 일정 저장 메소드 */
-  Future<void> workScheduleFirebaseAuth({BuildContext context, String workTitle, String startDate, String endDate, String workContent, String share}) async {
+  Future<void> workScheduleFirebaseAuth({BuildContext context, String workTitle, String startDate, String endDate, String workContent, String share, String bigCategory, String type}) async {
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
 
     CompanyWork work = CompanyWork(
@@ -33,8 +32,9 @@ class WorkScheduleMethod{
       startDate: startDate,
       endDate: endDate,
       workContents: workContent,
-      type: "내근",
+      type: type,
       share: ["이윤혁", "최민지", "전준현"],
+      bigCategory: bigCategory,
     );
 
     CrudRepository _crudRepository = CrudRepository();
@@ -42,6 +42,21 @@ class WorkScheduleMethod{
     _crudRepository.addCompanyWorkDataToFirebase(
       dataModel: work
     );
+  }
 
+  /* 프로젝트 정보 */
+  Future<List<WorkCategory>> workCategoryFirebaseAuth({BuildContext context}) async {
+    CrudRepository _crudRepository = CrudRepository();
+    Future<List<WorkCategory>> categoryList = _crudRepository.fetchWorkCategory();
+
+    WorkCategory w = WorkCategory();
+
+    String s;
+
+    categoryList.then((value) =>
+    value.forEach((element) { print(element.bigCategoryTitle);}));
+
+
+    return _crudRepository.fetchWorkCategory();
   }
 }
