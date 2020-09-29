@@ -1,5 +1,6 @@
 //Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/models/bigCategoryModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/repos/firebasecrud/companyWorkCrudMethod.dart';
 
@@ -14,6 +15,7 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
 import 'package:companyplaylist/models/companyModel.dart';
 import 'package:companyplaylist/models/attendanceModel.dart';
+import 'package:companyplaylist/repos/firebasecrud/workCategoryCrudMethod.dart';
 
 
 
@@ -29,6 +31,9 @@ class CrudRepository {
   // Work Crud 2020-09-23, 이윤혁
   CompanyWorkCrud _companyWorkCrud = CompanyWorkCrud("HYOIE13");
 
+  // WorkCategory Crud 2020-09-28, 이윤혁
+  WorkCategoryCrud _workCategoryCrud = WorkCategoryCrud("HYOIE13");
+
   //
   UserAttendanceCrud _userAttendanceCrud;
 
@@ -41,6 +46,11 @@ class CrudRepository {
   // Work Repository 2020-09-23, 이윤혁
   CrudRepository.companyWork({this.companyCode}){
     _companyWorkCrud = CompanyWorkCrud(companyCode);
+  }
+
+  // Work Repository 2020-09-28, 이윤혁
+  CrudRepository.workCategory({this.companyCode}){
+    _workCategoryCrud = WorkCategoryCrud(companyCode);
   }
 
   //
@@ -84,5 +94,15 @@ class CrudRepository {
   // Future<void> updateCompanyWorkDataToFirebase({CompanyUser dataModel, String documentId}) => _companyWorkCrud.updateCompanyUserDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> setCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) => _companyWorkCrud.setCompanyWorkDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> addCompanyWorkDataToFirebase({CompanyWork dataModel}) => _companyWorkCrud.addCompanyWorkDataToFirebase(dataModel: dataModel);
+
+
+  // WorkCategory Repository 2020-09-28, 이윤혁
+  Future<List<WorkCategory>> fetchWorkCategory() => _workCategoryCrud.fetchWorkCategory();
+  Stream<QuerySnapshot> fetchWorkCategoryAsStream() => _workCategoryCrud.fetchWorkCategoryAsStream();
+  // Future<CompanyUser> getCompanyWorkDataToFirebaseById({String documentId}) => _workCategoryCrud.getWorkCategoryToFirebaseById(documentId: documentId);
+  // Future<void> removeCompanyWorkDataToFirebase({String documentId}) => _workCategoryCrud.removeWorkCategoryDataToFirebase(documentId: documentId);
+  // Future<void> updateCompanyWorkDataToFirebase({WorkCategory dataModel, String documentId}) => _workCategoryCrud.updateWorkCategoryDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> setWorkCategoryDataToFirebase({WorkCategory dataModel, String documentId}) => _workCategoryCrud.setWorkCategoryDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> addWorkCategoryDataToFirebase({WorkCategory dataModel}) => _workCategoryCrud.addWorkCategoryDataToFirebase(dataModel: dataModel);
 
 }

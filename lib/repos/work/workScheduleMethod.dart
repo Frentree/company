@@ -9,14 +9,13 @@
 * */
 
 //Flutter
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/models/bigCategoryModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:flutter/material.dart';
 
 //Provider
 import 'package:provider/provider.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 
 //Repos
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
@@ -43,6 +42,21 @@ class WorkScheduleMethod{
     _crudRepository.addCompanyWorkDataToFirebase(
       dataModel: work
     );
+  }
 
+  /* 프로젝트 정보 */
+  Future<List<WorkCategory>> workCategoryFirebaseAuth({BuildContext context}) async {
+    CrudRepository _crudRepository = CrudRepository();
+    Future<List<WorkCategory>> categoryList = _crudRepository.fetchWorkCategory();
+
+    WorkCategory w = WorkCategory();
+
+    String s;
+
+    categoryList.then((value) =>
+    value.forEach((element) { print(element.bigCategoryTitle);}));
+
+
+    return _crudRepository.fetchWorkCategory();
   }
 }

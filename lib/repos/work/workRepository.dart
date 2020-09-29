@@ -3,9 +3,10 @@
 *
 * */
 //Flutter
+import 'package:companyplaylist/models/bigCategoryModel.dart';
 import 'package:flutter/material.dart';
 
-import 'package:companyplaylist/repos/login/workScheduleMethod.dart';
+import 'package:companyplaylist/repos/work/workScheduleMethod.dart';
 
 class WorkRepository{
    WorkScheduleMethod _workScheduleMethod = WorkScheduleMethod();
@@ -22,4 +23,6 @@ class WorkRepository{
         type: type,
         bigCategory: bigCategory
     );
+
+   Future<List<WorkCategory>> workCategoryFirebaseAuth({BuildContext context}) => _workScheduleMethod.workCategoryFirebaseAuth();
  }
