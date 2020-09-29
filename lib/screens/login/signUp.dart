@@ -194,7 +194,7 @@ class SignUpPageState extends State<SignUpPage> {
                 validityCheckTextFormField(
                   key: _formKeyPhone,
                   textEditingController: _phoneNumberTextCon,
-                  hintText: "핸드폰번호(01012341234)",
+                  hintText: "핸드폰번호(01022269930/123456)",
                   validityCheckAction: (value) => _loginRepository.validationRegExpCheckMessage(field: "전화번호", value: value),
                   onChangeAction: (text) {
                     bool _result = _loginRepository.isFormValidation(validationFunction: _formKeyPhone.currentState.validate());

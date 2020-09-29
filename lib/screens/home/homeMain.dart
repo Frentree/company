@@ -25,7 +25,7 @@ class HomeMainPageState extends State<HomeMainPage> {
   //페이지 이동
   void _pageChange(int pageIndex){
     if(pageIndex == 2){
-      WorkMainPage(context);
+      //WorkMainPage(context);
     }
     else{
       setState(() {

@@ -5,6 +5,7 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:companyplaylist/widgets/card/workScheduleCard.dart';
 
 class HomeSchedulePage extends StatefulWidget {
   @override
@@ -15,13 +16,13 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
   int i = 0;
 
   List<String> _valuList = ["수정하기", "삭제하기", "이력보기"];
-  String _selectedValue = "";
+  String _selectedValue = "수정하기";
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Card(
+        /*Card(
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -98,9 +99,10 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
                         icon: Icon(
                           Icons.more_horiz,
-                          size: customHeight(context: context, heightSize: 0.045),
+                          size: customHeight(context: context, heightSize: 0.044),
                         ),
 
+                        initialValue: _selectedValue,
                         tooltip: "this is tooltip",
                         itemBuilder: (BuildContext context){
                           return _valuList.map((value){
@@ -122,7 +124,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               ],
             ),
           ),
-        )
+        )*/
+        workScheduleCard(context)
       ],
     );
   }
