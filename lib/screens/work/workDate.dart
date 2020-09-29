@@ -1,18 +1,16 @@
 //내근 및 외근 스케줄을 입력하는 bottom sheet 입니다.
 
 import 'package:companyplaylist/utils/date/dateFormat.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/consts/font.dart';
 
-workDatePage(BuildContext context, int timeType) async {
-  String startTime = '09:00';
-  String endTime = '18:00';
+import '../../consts/widgetSize.dart';
+import '../../consts/widgetSize.dart';
 
-  final String initDateStr="";
+workDatePage(BuildContext context, int timeType) async {
+
 
   String date = "";
   String timeTitle = "";
@@ -49,10 +47,10 @@ workDatePage(BuildContext context, int timeType) async {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Row(
+                      /*Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          InkWell(
+                          /*InkWell(
                             child: Text(
                               "취소",
                               style: customStyle(
@@ -82,27 +80,30 @@ workDatePage(BuildContext context, int timeType) async {
                                   fontColor: redColor
                               ),
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 15),
-                      ),
-                      Container(
-                        child:CupertinoDatePicker(
-                          minimumDate: DateTime.now(),
-                          maximumYear: DateTime.now().year,
-                          maximumDate: DateTime.now(),
-                          minuteInterval: 1,
-                          mode: CupertinoDatePickerMode.dateAndTime,
-                          onDateTimeChanged: (DateTime dateTime) {
-                            print("dateTime: ${dateTime}");
-                          },
-                        ),
-                      ),
-                      Padding(
+                      ),*/
+                       SizedBox(
+                         width: customWidth(
+                           context: context,
+                           widthSize: 1
+                         ),
+                         height: customHeight(
+                           context: context,
+                           heightSize: 0.6
+                         ),
+                         child: DateTimePickerWidget(
+                           locale: DateTimePickerLocale.ko,
+                           dateFormat: "yyyy년 MM월 dd일 HH시:mm분",
+                         ),
+                       ),
+
+                     /* Padding(
                         padding: EdgeInsets.only(bottom: 15),
-                      ),
+                      ),*/
                     ]
                 ),
               ),
