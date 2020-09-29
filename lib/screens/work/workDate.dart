@@ -1,14 +1,12 @@
-/*
 //내근 및 외근 스케줄을 입력하는 bottom sheet 입니다.
 
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
-
-//Theme
-import 'package:companyplaylist/Theme/theme.dart';
-
+import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/consts/font.dart';
 
 workDatePage(BuildContext context, int timeType) async {
   String startTime = '09:00';
@@ -57,7 +55,11 @@ workDatePage(BuildContext context, int timeType) async {
                           InkWell(
                             child: Text(
                               "취소",
-                              style: customStyle(14, 'Regular', red_color),
+                              style: customStyle(
+                                fontSize: 14,
+                                fontWeightName: "Regular",
+                                fontColor: redColor
+                              ),
                             ),
                             onTap: ()  {
                               Navigator.pop(context);
@@ -65,12 +67,20 @@ workDatePage(BuildContext context, int timeType) async {
                           ),
                           Text(
                             "$timeTitle",
-                            style: customStyle(14, 'Regular', top_color),
+                            style: customStyle(
+                                fontSize: 14,
+                                fontWeightName: "Regular",
+                                fontColor: mainColor
+                            ),
                           ),
                           InkWell(
                             child: Text(
                               "완료",
-                              style: customStyle(14, 'Regular', red_color),
+                              style: customStyle(
+                                  fontSize: 14,
+                                  fontWeightName: "Regular",
+                                  fontColor: redColor
+                              ),
                             ),
                           ),
                         ],
@@ -79,14 +89,15 @@ workDatePage(BuildContext context, int timeType) async {
                         padding: EdgeInsets.only(bottom: 15),
                       ),
                       Container(
-                        child: SizedBox(
-                            height: 300,
-                            child: CupertinoDatePicker(
-                              minimumYear: 1900,
-                              maximumYear: DateTime.now().year,
-                              maximumDate: DateTime.now(),
-                              mode: CupertinoDatePickerMode.date,
-                            ),
+                        child:CupertinoDatePicker(
+                          minimumDate: DateTime.now(),
+                          maximumYear: DateTime.now().year,
+                          maximumDate: DateTime.now(),
+                          minuteInterval: 1,
+                          mode: CupertinoDatePickerMode.dateAndTime,
+                          onDateTimeChanged: (DateTime dateTime) {
+                            print("dateTime: ${dateTime}");
+                          },
                         ),
                       ),
                       Padding(
@@ -102,4 +113,3 @@ workDatePage(BuildContext context, int timeType) async {
   );
   return date;
 }
-*/

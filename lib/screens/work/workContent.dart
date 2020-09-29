@@ -1,16 +1,17 @@
 import 'package:async/async.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/models/bigCategoryModel.dart';
-import 'file:///D:/Android/dev_company/lib/repos/work/workRepository.dart';
+import 'package:companyplaylist/repos/work/workRepository.dart';
 import 'package:companyplaylist/screens/work/workDate.dart';
 import 'package:companyplaylist/widgets/button/raisedButton.dart';
 import 'package:companyplaylist/widgets/form/RadioList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 //Theme
-import 'package:companyplaylist/Theme/theme.dart';
 
 class WorkContentPage extends StatefulWidget {
   @override
@@ -128,7 +129,11 @@ class WorkContentPageState extends State<WorkContentPage> {
                         ),
                         Text(
                           "근무중",
-                          style: customStyle(15, '', whiteColor),
+                          style: customStyle(
+                            fontSize: 15,
+                            fontWeightName: "Regular",
+                            fontColor: whiteColor
+                          ),
                         ),
                       ],
                     ),
@@ -203,9 +208,9 @@ class WorkContentPageState extends State<WorkContentPage> {
                                     child: Text(
                                       "$type",
                                       style: customStyle(
-                                        14,
-                                        "Regular",
-                                        mainColor,
+                                        fontSize: 14,
+                                        fontWeightName: "Regular",
+                                        fontColor: mainColor
                                       ),
                                     ),
                                   ),
@@ -215,9 +220,9 @@ class WorkContentPageState extends State<WorkContentPage> {
                                   Text(
                                     "일정 생성",
                                     style: customStyle(
-                                      16,
-                                      "Regular",
-                                      mainColor,
+                                      fontSize: 16,
+                                      fontWeightName: "Regular",
+                                      fontColor: mainColor
                                     ),
                                   ),
                                 ],
