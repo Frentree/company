@@ -2,17 +2,6 @@ import 'package:companyplaylist/screens/work/workContent.dart';
 import 'package:flutter/material.dart';
 
 import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
-import '../../consts/colorCode.dart';
 import '../../consts/font.dart';
 
 
