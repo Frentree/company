@@ -1,5 +1,6 @@
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/widgets/album/widgetMain.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -76,7 +77,22 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
               child: Text(
                 "출퇴근 정보"
               ),
-            )
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.album,
+                size: customHeight(
+                    context: context,
+                    heightSize: 0.04
+                ),
+              ),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WidgetMain()),
+                );
+              },
+            ),
           ],
         ),
         actions: <Widget>[

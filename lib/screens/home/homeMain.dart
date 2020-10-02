@@ -1,5 +1,6 @@
 //Flutter
 import 'package:companyplaylist/screens/work/workMain.dart';
+import 'package:companyplaylist/widgets/album/widgetMain.dart';
 import 'package:flutter/material.dart';
 
 //Const

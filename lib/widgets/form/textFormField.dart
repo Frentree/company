@@ -6,34 +6,42 @@ import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:flutter/services.dart';
 
-
-
-TextFormField textFormField({TextEditingController textEditingController, String hintText, bool showCursor = true, bool readOnly = false, Function onTap, Widget suffixWidget}){
+TextFormField textFormField(
+    {TextEditingController textEditingController,
+    String hintText,
+    bool showCursor = true,
+    bool readOnly = false,
+    Function onTap,
+    Widget suffixWidget}) {
   return TextFormField(
     textAlignVertical: TextAlignVertical.center,
     showCursor: showCursor,
     readOnly: readOnly,
     controller: textEditingController,
     decoration: InputDecoration(
-      hintText: hintText,
-      hintStyle: customStyle(
-        fontSize: 15,
-        fontWeightName: "Regular",
-        fontColor: mainColor,
-      ),
-      enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(
+        hintText: hintText,
+        hintStyle: customStyle(
+          fontSize: 15,
+          fontWeightName: "Regular",
+          fontColor: mainColor,
+        ),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
           color: textFieldUnderLine,
-        )
-      ),
-      suffixIcon: suffixWidget
-    ),
+        )),
+        suffixIcon: suffixWidget),
     onTap: onTap,
   );
 }
 
 //유효성 검사 및 뒤에 아이콘이 추가된 TextFormField
-Form validityCheckTextFormField({GlobalKey<FormState> key, TextEditingController textEditingController, String hintText, Function validityCheckAction, Function onChangeAction, Widget suffixWidget}) {
+Form validityCheckTextFormField(
+    {GlobalKey<FormState> key,
+    TextEditingController textEditingController,
+    String hintText,
+    Function validityCheckAction,
+    Function onChangeAction,
+    Widget suffixWidget}) {
   return Form(
     key: key,
     child: TextFormField(
@@ -48,14 +56,10 @@ Form validityCheckTextFormField({GlobalKey<FormState> key, TextEditingController
           ),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: textFieldUnderLine,
-              )
-          ),
-          suffixIcon: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: suffixWidget
-          )
-      ),
+            color: textFieldUnderLine,
+          )),
+          suffixIcon:
+              Padding(padding: const EdgeInsets.all(5.0), child: suffixWidget)),
       validator: validityCheckAction,
       onChanged: onChangeAction,
     ),
@@ -63,7 +67,8 @@ Form validityCheckTextFormField({GlobalKey<FormState> key, TextEditingController
 }
 
 //회원가입 페이지 인증번호 입력 폼
-Container certificationNumberTextFormField({List<String> codeList, int codeListOrder}){
+Container certificationNumberTextFormField(
+    {List<String> codeList, int codeListOrder}) {
   return Container(
     height: 40,
     width: 40,
@@ -75,19 +80,14 @@ Container certificationNumberTextFormField({List<String> codeList, int codeListO
           fontWeightName: "Regular",
           fontColor: mainColor,
         ),
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(1)
-        ],
+        inputFormatters: [LengthLimitingTextInputFormatter(1)],
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: greyColor,
-              width: 10
-            ),
+            borderSide: BorderSide(color: greyColor, width: 10),
           ),
         ),
-        onChanged: (value){
+        onChanged: (value) {
           codeList[codeListOrder] = value;
         },
       ),
