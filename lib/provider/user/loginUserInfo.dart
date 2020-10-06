@@ -17,7 +17,6 @@ class LoginUserInfoProvider with ChangeNotifier{
     return _loginUser;
   }
 
-
   void setLoginUser(User value){
     _loginUser = value;
     notifyListeners();

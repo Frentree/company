@@ -63,7 +63,8 @@ class FirebaseAuthProvider with ChangeNotifier {
   String manageErrorMessage() {
     String test = getLastFirebaseMessage();
 
-    switch(test) {
+    print ('error code = ' + test);
+    /*switch(test) {
       case 'ERROR_INVALID_VERIFICATION_CODE' :
         return '인증 코드를 다시 확인해 주세요.';
         break;
@@ -80,7 +81,7 @@ class FirebaseAuthProvider with ChangeNotifier {
       default :
         return '오류가 발생했습니다.';
         break;
-    }
+    }*/
   }
 
   //이메일로 회원 가입
@@ -127,7 +128,11 @@ class FirebaseAuthProvider with ChangeNotifier {
   Future<void> verifyPhone({String phoneNumber}) async {
     //핸드폰 번호 인증이 실패했을 때
     final PhoneVerificationFailed verificationFailed = (AuthException authException){
+      debugPrint("phone verification executed");
+      debugPrint("before _lastFirebaseResponse is " + _lastFirebaseResponse);
+
       setLastFirebaseMessage(message: authException.message);
+      debugPrint("after _lastFirebaseResponse is " + _lastFirebaseResponse);
       return false;
     };
 
