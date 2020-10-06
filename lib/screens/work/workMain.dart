@@ -1,4 +1,5 @@
 
+import 'package:companyplaylist/screens/buy/createBuyRequest.dart';
 import 'package:companyplaylist/screens/work/workContent.dart';
 import 'package:flutter/material.dart';
 //Theme
@@ -100,12 +101,15 @@ WorkMainPage(BuildContext context) {
                           style: customStyle(14, 'Regular', top_color),
                         )
                     ),
-                    Chip(
+                    ActionChip(
                         backgroundColor: chip_color_red,
                         label: Text(
                           "구매 품의",
                           style: customStyle(14, 'Regular', top_color),
-                        )
+                        ),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBuyRequest()));
+                      },
                     ),
                     Chip(
                         backgroundColor: chip_color_red,
