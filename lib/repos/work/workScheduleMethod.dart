@@ -24,24 +24,59 @@ import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 class WorkScheduleMethod{
 
   /* 일정 저장 메소드 */
-  Future<void> workScheduleFirebaseAuth({BuildContext context, String workTitle, String startDate, String endDate, String workContent, String share, String bigCategory, String type}) async {
-    FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
+  Future<void> workScheduleFirebaseAuth(
+      {BuildContext context,
+      String createUid,
+      String workTitle,
+      String startDate,
+      String endDate,
+      String workContent,
+      List<Map<String, String>> share,
+      String bigCategory,
+      String type}) async {
+    FirebaseAuthProvider _firebaseAuthProvider =
+        Provider.of<FirebaseAuthProvider>(context, listen: false);
+/*
+    // 타이틀 미입력
+    if(workTitle.trim() == "") {
+      return;
+    }
+    
+    // 시작및 종료시간 미선택
+    if(startDate == "" && endDate == "") {
+      return;
+    }
+    
+    // 빅 카테고리 미선택
+    if(bigCategory == "project"){
+      return;
+    }
+    
+    // 내용 미입력
+    if(workContent.trim() == ""){
+      return;
+    }
+    */
 
     CompanyWork work = CompanyWork(
+      createUid: createUid,
       workTitle: workTitle,
       startDate: startDate,
       endDate: endDate,
       workContents: workContent,
       type: type,
-      share: ["이윤혁", "최민지", "전준현"],
+      share: share,
       bigCategory: bigCategory,
     );
 
     CrudRepository _crudRepository = CrudRepository();
-
+    
+    // 데이터 베이스 추가
     _crudRepository.addCompanyWorkDataToFirebase(
       dataModel: work
     );
+
+    Navigator.pop(context);
   }
 
   /* 프로젝트 정보 */
@@ -49,7 +84,7 @@ class WorkScheduleMethod{
     CrudRepository _crudRepository = CrudRepository();
     Future<List<WorkCategory>> categoryList = _crudRepository.fetchWorkCategory();
 
-    WorkCategory w = WorkCategory();
+    WorkCategory _workCategory = WorkCategory();
 
     String s;
 

@@ -17,7 +17,7 @@ import 'package:companyplaylist/repos/firebaseMethod.dart';
 
 class WorkCategoryCrud {
   FirestoreApi _firestoreApi;
-  String companyCode = "HYOIE13";
+  String companyCode;
 
   List<WorkCategory> work;
 

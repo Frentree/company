@@ -32,7 +32,7 @@ class CrudRepository {
   CompanyWorkCrud _companyWorkCrud = CompanyWorkCrud("HYOIE13");
 
   // WorkCategory Crud 2020-09-28, 이윤혁
-  WorkCategoryCrud _workCategoryCrud = WorkCategoryCrud("HYOIE13");
+  WorkCategoryCrud _workCategoryCrud;
 
   //
   UserAttendanceCrud _userAttendanceCrud;
