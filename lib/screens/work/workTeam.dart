@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
- workTeamPage(BuildContext context) async {
+ WorkTeamPage(BuildContext context) async {
   //LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
   List<Map<String,String>> _teamList = List();
 

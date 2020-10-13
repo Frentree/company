@@ -1,4 +1,5 @@
 import 'package:companyplaylist/screens/work/workContent.dart';
+import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
 import 'package:flutter/material.dart';
 
 import '../../consts/colorCode.dart';
@@ -8,12 +9,25 @@ import '../../consts/font.dart';
 
 WorkMainPage(BuildContext context) {
   // 사용자 권한
-  int _userGrade = 0;
+  int _userGrade = 9;
 
   void _workBottomMove(int type) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage()));
-  }
+    if(type == 0) {   // 내근 또는 외근 일때
+    } else if(type == 1 || type == 2) {   // 내근 또는 외근 일때
+      Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));
+    } else if (type == 3) {
 
+    } else if (type == 4) {
+
+    } else if (type == 5) {
+
+    } else if (type == 6) {
+
+    } else if (type == 7) { //공지사항
+      WorkNoticeBottomSheet(context);
+    }
+  }
+  
   // 관리자 권한이 아닐 경우
   if (_userGrade != 9) {
     showModalBottomSheet(
@@ -170,7 +184,7 @@ WorkMainPage(BuildContext context) {
           );
         }
     );
-  }else {  // 관리자 권한일 경우
+  } else {  // 관리자 권한일 경우
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -308,7 +322,7 @@ WorkMainPage(BuildContext context) {
                     Padding(
                       padding: EdgeInsets.only(left: 15),
                     ),
-                    Chip(
+                    ActionChip(
                         backgroundColor: chipColorGreen,
                         label: Text(
                           "공지사항",
@@ -317,7 +331,10 @@ WorkMainPage(BuildContext context) {
                               fontWeightName:'Regular',
                               fontColor: mainColor
                           ),
-                        )
+                        ),
+                        onPressed: (){
+                          _workBottomMove(7);
+                        },
                     ),
                   ],
                 ),

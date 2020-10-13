@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/consts/font.dart';
@@ -20,20 +21,25 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 //Theme
-
 class WorkContentPage extends StatefulWidget {
+  WorkContentPage(this.workType);
+
+  final int workType;
+
   @override
-  WorkContentPageState createState() => WorkContentPageState();
+  WorkContentPageState createState() => WorkContentPageState(workType);
 }
 
 class WorkContentPageState extends State<WorkContentPage> {
-  LoginUserInfoProvider _loginUserInfoProvider;
-  
-  List<Map<String,String>> _teamList;
-  List<Map<String,String>> _allTeamList;
+  WorkContentPageState(this.workType);
 
+  final int workType;
+  String type;
+  LoginUserInfoProvider _loginUserInfoProvider;
+
+  List<Map<String, String>> _teamList;
+  List<Map<String, String>> _allTeamList;
 
   WorkRepository _workRepository;
 
@@ -43,29 +49,26 @@ class WorkContentPageState extends State<WorkContentPage> {
   TextEditingController _projectTextEdit;
   TextEditingController _contentEdit;
   TextEditingController _targetTextEdit;
+  TextEditingController _outWorkTextEdit; // 외근지
 
+  CrudRepository _crudRepository;
 
   bool isSelected = false;
 
-  String type = "내근";
-
   String date = "";
-  List<String> aaa = ["aaa","bbb"];
+  List<String> aaa = ["aaa", "bbb"];
   String _project = "project";
 
   String _openTitle = "공개 대상을 선택하세요";
 
   List<bool> _isTarget = [false, false, false];
+  Stream<QuerySnapshot> currentStream;
 
   // 전체 사용자 갖고 오기
   Future<List<CompanyUser>> _companyUserList;
 
-  List<WorkCategory> workCategory;
-  List<WorkCategory> testminji;
-  // 워크 카테고리 갖고 오기
-  WorkCategoryCrud _workCategoryCrud;
-
-
+  List<bigCategoryModel> workCategory;
+  List<bigCategoryModel> testminji;
 
   @override
   void initState() {
@@ -79,51 +82,19 @@ class WorkContentPageState extends State<WorkContentPage> {
     _projectTextEdit = TextEditingController();
     _contentEdit = TextEditingController();
     _targetTextEdit = TextEditingController();
+    _outWorkTextEdit = TextEditingController();
 
     _workRepository = WorkRepository();
 
-    //workCategory =  _workRepository.workCategoryFirebaseAuth(context: context);
+    if (workType == 1) {
+      type = "내근";
+    } else if (workType == 2) {
+      type = "외근";
+    }
   }
 
-  /*// 빅카테고리 리스트
-  List<Widget> workCategoryList (BuildContext context, String project) {
-    _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-    //CompanyUserCrud _companyUser = CompanyUserCrud("HYOIE13");
-
-    CrudRepository _crudRepository = CrudRepository.workCategory(companyCode: _loginUserInfoProvider.getLoginUser().companyCode);
-    workCategory = _crudRepository.fetchWorkCategory();
-
-    List<Widget> children = [];
-
-    workCategory.then((value) => value.forEach((element) {
-      children.add(
-        RadioListTile(
-          title: Text(element.bigCategoryTitle),
-          value: element.bigCategoryTitle,
-          groupValue: _project,
-          onChanged: (value) {
-            setState(() {
-              _project = value;
-              isSelected = true;
-            });
-          },
-        ),
-      );
-
-    })
-    );
-
-    return children;
-  }*/
-
-  workCategoryList (BuildContext context) async {
-    workCategory = await WorkCategoryListItem();
-
-    return workCategory;
-  }
-
-  String isCategoryName(){
-    if(isSelected == false){
+  String isCategoryName() {
+    if (isSelected == false) {
       return "관련 프로젝트를 선택하세요";
     } else {
       return _project;
@@ -134,7 +105,9 @@ class WorkContentPageState extends State<WorkContentPage> {
   Widget build(BuildContext context) {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     User user = _loginUserInfoProvider.getLoginUser();
-    workCategoryList(context);
+    _crudRepository =
+        CrudRepository.workCategory(companyCode: user.companyCode);
+    currentStream = _crudRepository.fetchWorkCategoryAsStream();
     return Scaffold(
       backgroundColor: mainColor,
       body: GestureDetector(
@@ -168,10 +141,9 @@ class WorkContentPageState extends State<WorkContentPage> {
                         Text(
                           "근무중",
                           style: customStyle(
-                            fontSize: 15,
-                            fontWeightName: "Regular",
-                            fontColor: whiteColor
-                          ),
+                              fontSize: 15,
+                              fontWeightName: "Regular",
+                              fontColor: whiteColor),
                         ),
                       ],
                     ),
@@ -217,26 +189,26 @@ class WorkContentPageState extends State<WorkContentPage> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          width: customWidth(
-                              context: context,
-                              widthSize: 1
-                          ),
+                          width: customWidth(context: context, widthSize: 1),
                           child: Row(
                             children: [
                               Container(
                                 child: IconButton(
                                   icon: Icon(Icons.close),
                                   color: Colors.black,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
                               ),
-
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: textFieldUnderLine),
+                                      border:
+                                          Border.all(color: textFieldUnderLine),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     width: customWidth(
@@ -246,10 +218,9 @@ class WorkContentPageState extends State<WorkContentPage> {
                                     child: Text(
                                       "$type",
                                       style: customStyle(
-                                        fontSize: 14,
-                                        fontWeightName: "Regular",
-                                        fontColor: mainColor
-                                      ),
+                                          fontSize: 14,
+                                          fontWeightName: "Regular",
+                                          fontColor: mainColor),
                                     ),
                                   ),
                                   Padding(
@@ -258,14 +229,12 @@ class WorkContentPageState extends State<WorkContentPage> {
                                   Text(
                                     "일정 생성",
                                     style: customStyle(
-                                      fontSize: 16,
-                                      fontWeightName: "Regular",
-                                      fontColor: mainColor
-                                    ),
+                                        fontSize: 16,
+                                        fontWeightName: "Regular",
+                                        fontColor: mainColor),
                                   ),
                                 ],
                               ),
-
                             ],
                           ),
                         ),
@@ -293,10 +262,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                           ),
                         ),
                         Container(
-                          width: customWidth(
-                              widthSize: 1,
-                              context: context
-                          ),
+                          width: customWidth(widthSize: 1, context: context),
                           height: customHeight(
                             context: context,
                             heightSize: 0.06,
@@ -320,7 +286,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 ),
                                 onPressed: () async {
                                   String setDate =
-                                  await workDatePage(context, 0);
+                                      await workDatePage(context, 0);
                                   if (setDate != '') {
                                     setState(() {
                                       _startDateTextEdit.text = setDate;
@@ -338,41 +304,36 @@ class WorkContentPageState extends State<WorkContentPage> {
                           ),
                         ),
                         Container(
-                          width: customWidth(
-                              widthSize: 1,
-                              context: context
-                          ),
+                          width: customWidth(widthSize: 1, context: context),
                           height: customHeight(
                             context: context,
                             heightSize: 0.06,
                           ),
-                          child: Stack(
-                            children: <Widget>[
-                              TextFormField(
-                                controller: _endDateTextEdit,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: "종료 일시",
-                                  //labelText: "제목"
-                                ),
+                          child: Stack(children: <Widget>[
+                            TextFormField(
+                              controller: _endDateTextEdit,
+                              enabled: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: "종료 일시",
+                                //labelText: "제목"
                               ),
-                              IconButton(
-                                padding: EdgeInsets.only(left: 280, top: 0),
-                                icon: Icon(
-                                  Icons.date_range,
-                                  size: 30,
-                                ),
-                                onPressed: () async {
-                                  String setDate =
-                                  await workDatePage(context, 1);
-                                  if (setDate != '') {
-                                    setState(() {
-                                      _endDateTextEdit.text = setDate;
-                                    });
-                                  }
-                                },
+                            ),
+                            IconButton(
+                              padding: EdgeInsets.only(left: 280, top: 0),
+                              icon: Icon(
+                                Icons.date_range,
+                                size: 30,
                               ),
+                              onPressed: () async {
+                                String setDate = await workDatePage(context, 1);
+                                if (setDate != '') {
+                                  setState(() {
+                                    _endDateTextEdit.text = setDate;
+                                  });
+                                }
+                              },
+                            ),
                           ]),
                         ),
                         SizedBox(
@@ -385,18 +346,58 @@ class WorkContentPageState extends State<WorkContentPage> {
                           decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.black26),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(5.0) // POINT
-                            ),
+                                BorderRadius.all(Radius.circular(5.0) // POINT
+                                    ),
                           ),
-                          child:ExpansionTile(
-                            title: Text("${isCategoryName()}"),
-                            children: <Widget>[
-                              RadioButtonGroup(
-                              labels: workCategory.map((e) => e.bigCategoryTitle).toList(),
-                              onSelected: (String selected) => print(selected)
-                                )
+                          child: StreamBuilder(
+                            stream: currentStream,
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
+                              List<DocumentSnapshot> documents =
+                                  snapshot.data.documents;
+                              print("snapshot =====> " +
+                                  documents
+                                      .map((e) => e.data.values.elementAt(1))
+                                      .toList()
+                                      .toString());
+                              return ExpansionTile(
+                                title: Text("${isCategoryName()}"),
+                                children: <Widget>[
+                                  RadioButtonGroup(
+                                      labels: documents
+                                          .map((e) => e.data.values
+                                              .elementAt(1)
+                                              .toString())
+                                          .toList(),
+                                      onSelected: (String selected) =>
+                                          print(_project = selected))
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: customHeight(
+                                  context: context,
+                                  heightSize: 0.03,
+                                ),
+                              ),
+                              TextField(
+                                controller: _outWorkTextEdit,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: "외근지를 입력하세요.",
+                                  //labelText: "제목"
+                                ),
+                              ),
                             ],
                           ),
+                          visible: (type == "외근"),
                         ),
                         SizedBox(
                           height: customHeight(
@@ -424,8 +425,8 @@ class WorkContentPageState extends State<WorkContentPage> {
                           decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.black26),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(5.0) // POINT
-                            ),
+                                BorderRadius.all(Radius.circular(5.0) // POINT
+                                    ),
                           ),
                           child: ExpansionTile(
                             title: Text("공개 대상을 선택하세요"),
@@ -459,7 +460,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                           _isTarget[2] = false;
                                         });
 
-                                        if(_isTarget[1]) {
+                                        if (_isTarget[1]) {
                                           _teamList = _allTeamList;
                                         }
                                       },
@@ -481,13 +482,53 @@ class WorkContentPageState extends State<WorkContentPage> {
                                           _isTarget[2] = value;
                                         });
 
-                                        if(_isTarget[2] == true) {
-                                          List<Map<String, String>> _teamNameList = await workTeamPage(context);
-                                          _teamList =_teamNameList;
+                                        if (_isTarget[2] == true) {
+                                          List<Map<String, String>>
+                                              _teamNameList =
+                                              await WorkTeamPage(context);
+                                          _teamList = _teamNameList;
                                         }
                                       },
                                     ),
                                     Text("직접 선택"),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: customHeight(
+                                              heightSize: 0.2,
+                                              context: context)),
+                                    ),
+                                    Visibility(
+                                      child: Container(
+                                        width: customWidth(
+                                            context: context, widthSize: 0.2),
+                                        height: customHeight(
+                                            context: context, heightSize: 0.04),
+                                        child: RaisedButton(
+                                          color: blueColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(10),
+                                              side:
+                                              BorderSide(color: whiteColor)),
+                                          child: Text(
+                                            "수정",
+                                            style: customStyle(
+                                              fontSize: 12,
+                                              fontWeightName: "Medium",
+                                              fontColor: whiteColor,
+                                            ),
+                                          ),
+                                          elevation: 0.0,
+                                          onPressed: () async {
+                                            List<Map<String, String>>
+                                            _teamNameList =
+                                            await WorkTeamPage(context);
+                                            _teamList = _teamNameList;
+                                          },
+                                        ),
+                                      ),
+                                      visible: (_isTarget[2] == true),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -509,18 +550,20 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 btnText: "$type 일정 생성",
                                 btnTextColor: whiteColor,
                                 btnAction: () => {
-                                  _workRepository.workScheduleFirebaseAuth(
-                                    createUid : _loginUserInfoProvider.getLoginUser().mail,
-                                    context: context,
-                                    workTitle: _titileTextEdit.text,
-                                    startDate: _startDateTextEdit.text,
-                                    endDate: _endDateTextEdit.text,
-                                    workContent: _contentEdit.text,
-                                    bigCategory: _project,
-                                    type: type,
-                                    share: _teamList,
-                                  ): null
-                                }),
+                                      _workRepository.workScheduleFirebaseAuth(
+                                        createUid: _loginUserInfoProvider
+                                            .getLoginUser()
+                                            .mail,
+                                        context: context,
+                                        workTitle: _titileTextEdit.text,
+                                        startDate: _startDateTextEdit.text,
+                                        endDate: _endDateTextEdit.text,
+                                        workContent: _contentEdit.text,
+                                        bigCategory: _project,
+                                        type: type,
+                                        share: _teamList,
+                                      ): null
+                                    }),
                             Spacer(),
                           ],
                         ),
@@ -536,15 +579,3 @@ class WorkContentPageState extends State<WorkContentPage> {
     );
   }
 }
-
-WorkCategoryListItem() async {
-  SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
-  User _loginUser = User.fromMap(await json.decode(_sharedPreferences.getString("loginUser")), null);
-
-  CrudRepository _crudRepository = CrudRepository.workCategory(companyCode: _loginUser.companyCode);
-
-  List<WorkCategory> dataList = await _crudRepository.fetchWorkCategory();
-  print("dataList    ===> " + dataList.map((e) => e.bigCategoryTitle).toList().toString());
-  return dataList;
-}
-

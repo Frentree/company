@@ -36,7 +36,7 @@ class WorkScheduleMethod{
       String type}) async {
     FirebaseAuthProvider _firebaseAuthProvider =
         Provider.of<FirebaseAuthProvider>(context, listen: false);
-/*
+
     // 타이틀 미입력
     if(workTitle.trim() == "") {
       return;
@@ -56,7 +56,6 @@ class WorkScheduleMethod{
     if(workContent.trim() == ""){
       return;
     }
-    */
 
     CompanyWork work = CompanyWork(
       createUid: createUid,
@@ -80,11 +79,11 @@ class WorkScheduleMethod{
   }
 
   /* 프로젝트 정보 */
-  Future<List<WorkCategory>> workCategoryFirebaseAuth({BuildContext context}) async {
+  Future<List<bigCategoryModel>> workCategoryFirebaseAuth({BuildContext context}) async {
     CrudRepository _crudRepository = CrudRepository();
-    Future<List<WorkCategory>> categoryList = _crudRepository.fetchWorkCategory();
+    Future<List<bigCategoryModel>> categoryList = _crudRepository.fetchWorkCategory();
 
-    WorkCategory _workCategory = WorkCategory();
+    bigCategoryModel _workCategory = bigCategoryModel();
 
     String s;
 
