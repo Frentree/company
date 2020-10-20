@@ -1,8 +1,10 @@
 //Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/bigCategoryModel.dart';
+import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/repos/firebasecrud/companyWorkCrudMethod.dart';
+import 'package:companyplaylist/repos/firebasecrud/noticeCrudMethod.dart';
 
 //Repos
 import 'package:companyplaylist/repos/firebasecrud/userCrudMethod.dart';
@@ -32,7 +34,10 @@ class CrudRepository {
   CompanyWorkCrud _companyWorkCrud = CompanyWorkCrud("HYOIE13");
 
   // WorkCategory Crud 2020-09-28, 이윤혁
-  WorkCategoryCrud _workCategoryCrud = WorkCategoryCrud("HYOIE13");
+  WorkCategoryCrud _workCategoryCrud;
+
+  // Work Crud 2020-09-23, 이윤혁
+  NoticeCrud _noticeCrud;
 
   //
   UserAttendanceCrud _userAttendanceCrud;
@@ -56,6 +61,10 @@ class CrudRepository {
   //
   CrudRepository.userAttendance({this.companyCode}){
     _userAttendanceCrud = UserAttendanceCrud(companyCode);
+  }
+
+  CrudRepository.noticeAttendance({this.companyCode}){
+    _noticeCrud = NoticeCrud(companyCode);
   }
 
   Future<List<User>> fetchUser() => _userCrud.fetchUser();
@@ -97,12 +106,22 @@ class CrudRepository {
 
 
   // WorkCategory Repository 2020-09-28, 이윤혁
-  Future<List<WorkCategory>> fetchWorkCategory() => _workCategoryCrud.fetchWorkCategory();
+  Future<List<bigCategoryModel>> fetchWorkCategory() => _workCategoryCrud.fetchWorkCategory();
   Stream<QuerySnapshot> fetchWorkCategoryAsStream() => _workCategoryCrud.fetchWorkCategoryAsStream();
   // Future<CompanyUser> getCompanyWorkDataToFirebaseById({String documentId}) => _workCategoryCrud.getWorkCategoryToFirebaseById(documentId: documentId);
   // Future<void> removeCompanyWorkDataToFirebase({String documentId}) => _workCategoryCrud.removeWorkCategoryDataToFirebase(documentId: documentId);
   // Future<void> updateCompanyWorkDataToFirebase({WorkCategory dataModel, String documentId}) => _workCategoryCrud.updateWorkCategoryDataToFirebase(dataModel: dataModel, documentId: documentId);
-  Future<void> setWorkCategoryDataToFirebase({WorkCategory dataModel, String documentId}) => _workCategoryCrud.setWorkCategoryDataToFirebase(dataModel: dataModel, documentId: documentId);
-  Future<void> addWorkCategoryDataToFirebase({WorkCategory dataModel}) => _workCategoryCrud.addWorkCategoryDataToFirebase(dataModel: dataModel);
+  Future<void> setWorkCategoryDataToFirebase({bigCategoryModel dataModel, String documentId}) => _workCategoryCrud.setWorkCategoryDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> addWorkCategoryDataToFirebase({bigCategoryModel dataModel}) => _workCategoryCrud.addWorkCategoryDataToFirebase(dataModel: dataModel);
+
+
+  // Notice Repository 2020-10-13, 이윤혁
+  Future<List<NoticeModel>> fetchNotice() => _noticeCrud.fetchNotice();
+  Stream<QuerySnapshot> fetchNoticeAsStream() => _noticeCrud.fetchNoticeAsStream();
+  Future<NoticeModel> getNoticeDataToFirebaseById({String documentId}) => _noticeCrud.getNoticeDataToFirebaseById(documentId: documentId);
+  Future<void> removeNoticeDataToFirebase({String documentId}) => _noticeCrud.removeNoticeDataToFirebase(documentId: documentId);
+  Future<void> updateNoticeDataToFirebase({NoticeModel dataModel, String documentId}) => _noticeCrud.updateNoticeDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> setNoticeDataToFirebase({NoticeModel dataModel, String documentId}) => _noticeCrud.setNoticeDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> addNoticeDataToFirebase({NoticeModel dataModel}) => _noticeCrud.addNoticeDataToFirebase(dataModel: dataModel);
 
 }

@@ -9,20 +9,20 @@
 */
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class WorkCategory {
+class bigCategoryModel {
   String createUid;
   Timestamp createDate; // 작성 시간
   String bigCategoryTitle; // 카테고리명
   String bigCategoryContent; // 카테고리 내용
 
-  WorkCategory({
+  bigCategoryModel({
     this.createUid,
     this.createDate,
     this.bigCategoryTitle,
     this.bigCategoryContent
    });
 
-  WorkCategory.fromMap(Map snapshot, String id):
+  bigCategoryModel.fromMap(Map snapshot, String id):
         createUid = id ?? "",
         createDate = snapshot["createDate"] ?? "",
         bigCategoryTitle = snapshot["bigCategoryTitle"] ?? "",

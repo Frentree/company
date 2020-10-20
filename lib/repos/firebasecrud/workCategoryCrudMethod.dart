@@ -17,18 +17,18 @@ import 'package:companyplaylist/repos/firebaseMethod.dart';
 
 class WorkCategoryCrud {
   FirestoreApi _firestoreApi;
-  String companyCode = "HYOIE13";
+  String companyCode;
 
-  List<WorkCategory> work;
+  List<bigCategoryModel> work;
 
   // firebase connection
   WorkCategoryCrud(this.companyCode){
     _firestoreApi = FirestoreApi.twoPath("company", "bigCategory", companyCode);
   }
 
-  Future<List<WorkCategory>> fetchWorkCategory () async{
+  Future<List<bigCategoryModel>> fetchWorkCategory () async{
     var result = await _firestoreApi.getDataCollection();
-    work = result.documents.map((doc) => WorkCategory.fromMap(doc.data, doc.documentID)).toList();
+    work = result.documents.map((doc) => bigCategoryModel.fromMap(doc.data, doc.documentID)).toList();
 
     return work;
   }
@@ -37,12 +37,12 @@ class WorkCategoryCrud {
     return _firestoreApi.streamDataCollection();
   }
 
-  Future<void> addWorkCategoryDataToFirebase({WorkCategory dataModel}) async{
+  Future<void> addWorkCategoryDataToFirebase({bigCategoryModel dataModel}) async{
     await _firestoreApi.addDocument(dataModel.toJson());
     return null;
   }
 
-  Future<void> setWorkCategoryDataToFirebase({WorkCategory dataModel, String documentId}) async{
+  Future<void> setWorkCategoryDataToFirebase({bigCategoryModel dataModel, String documentId}) async{
     await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;
   }

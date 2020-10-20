@@ -21,7 +21,7 @@ class CompanyWork {
   String lastModifier;    // 마지막 수정자
   String workContents;    // 글내용
   int level;              // 권한
-  List<String> share;     // 공유할 사람
+  List<Map<String,String>> share;     // 공유할 사람
   List<String> exception; // 공유안 할 사람
   String type;            // 내외근 일정 입력
   String progress;        // 진행 상태( 1. 진행전, 2. 진행중, 3.완료, 4.보류, 5. 지연 )
@@ -52,7 +52,7 @@ class CompanyWork {
   });
 
   CompanyWork.fromMap(Map snapshot, String id) :
-        createUid = id ?? "",
+        createUid = snapshot["createUid"] ?? "",
         createDate = snapshot["createDate"] ?? "",
         startDate = snapshot["startDate"] ?? "",
         endDate = snapshot["endDate"] ?? "",
@@ -72,6 +72,7 @@ class CompanyWork {
         coWorker = snapshot["coWorker"] ?? "";
   toJson(){
     return {
+      "createUid": createUid,
       "createDate": createDate,
       "startDate": startDate,
       "endDate": endDate,
