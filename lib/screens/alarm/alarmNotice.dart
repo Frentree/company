@@ -9,7 +9,7 @@ import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
-import 'package:companyplaylist/screens/%20alarm/alarmNoticeComment.dart';
+import 'package:companyplaylist/screens/alarm/alarmNoticeComment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

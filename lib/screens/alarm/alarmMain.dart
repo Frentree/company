@@ -5,7 +5,7 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/screens/%20alarm/alarmNotice.dart';
+import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/home/homeSchedule.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:flutter/material.dart';

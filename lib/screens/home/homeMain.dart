@@ -1,5 +1,5 @@
 //Flutter
-import 'package:companyplaylist/screens/%20alarm/alarmMain.dart';
+import 'package:companyplaylist/screens/alarm/alarmMain.dart';
 import 'package:companyplaylist/screens/work/workMain.dart';
 import 'package:flutter/material.dart';
 
