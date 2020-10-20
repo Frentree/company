@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
@@ -7,27 +8,25 @@ import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 WorkNoticeBottomSheet(BuildContext context) async {
   TextEditingController _noticeTitle = TextEditingController();
   TextEditingController _noticeContent = TextEditingController();
 
+  FocusNode noticeNode = FocusNode();
+
   SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
-  User _loginUser = User.fromMap(await json.decode(_sharedPreferences.getString("loginUser")), null);
+  User _loginUser = User.fromMap(
+      await json.decode(_sharedPreferences.getString("loginUser")), null);
 
-  Map<String,String> _noticeUser = Map();
+  Map<String, String> _noticeUser = Map();
 
-  _noticeUser.addAll({
-    "mail" : _loginUser.mail,
-    "name" : _loginUser.name
-  });
+  _noticeUser.addAll({"mail": _loginUser.mail, "name": _loginUser.name});
 
-  CrudRepository _crudRepository = CrudRepository.noticeAttendance(companyCode: _loginUser.companyCode);
+  CrudRepository _crudRepository =
+      CrudRepository.noticeAttendance(companyCode: _loginUser.companyCode);
   NoticeModel _notice;
-
-  bool _isContent = false;
 
   await showModalBottomSheet(
       isScrollControlled: false,
@@ -40,10 +39,12 @@ WorkNoticeBottomSheet(BuildContext context) async {
           builder: (BuildContext context, StateSetter setState) {
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
-              child: Container(
-                padding:
-                    EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 10),
-                height: 300,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                    top: 30,
+                    left: 20,
+                    right: 20,
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Column(children: <Widget>[
                   IntrinsicHeight(
                     child: Row(
@@ -67,8 +68,9 @@ WorkNoticeBottomSheet(BuildContext context) async {
                           child: TextFormField(
                             autofocus: true,
                             controller: _noticeTitle,
-                            decoration:
-                                InputDecoration(hintText: '제목을 입력하세요'),
+                            onFieldSubmitted: (value) =>
+                                noticeNode.requestFocus(),
+                            decoration: InputDecoration(hintText: '제목을 입력하세요'),
                           ),
                         ),
                         Padding(
@@ -76,31 +78,44 @@ WorkNoticeBottomSheet(BuildContext context) async {
                         ),
                         CircleAvatar(
                             radius: 20,
-                            backgroundColor: _noticeTitle.text == '' ? Colors.black12 : _noticeContent.text == ''
+                            backgroundColor: _noticeTitle.text == ''
                                 ? Colors.black12
-                                : Colors.blue,
+                                : _noticeContent.text == ''
+                                    ? Colors.black12
+                                    : Colors.blue,
                             child: IconButton(
                               icon: Icon(Icons.arrow_upward),
-                              onPressed: (){
-                                _notice = NoticeModel(
-                                  noticeTitle: _noticeTitle.text,
-                                  noticeCon: _noticeContent.text,
-                                  noticeCreateUser: _noticeUser,
-                                  noticeCreateDate: DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(DateTime.now()),
-                                  noticeUpdateDate: DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(DateTime.now()),
-                                );
-                                _crudRepository.addNoticeDataToFirebase(
-                                  dataModel: _notice
-                                );
+                              onPressed: () {
+                                if (_noticeTitle.text != '' &&
+                                    _noticeContent.text != '') {
+                                  _notice = NoticeModel(
+                                    noticeTitle: _noticeTitle.text,
+                                    noticeContent: _noticeContent.text,
+                                    noticeCreateUser: _noticeUser,
+                                    noticeCreateDate:
+                                        Timestamp.fromDate(DateTime.now()),
+                                    //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
+                                  );
+                                  _crudRepository.addNoticeDataToFirebase(
+                                      dataModel: _notice);
+                                  Navigator.pop(context);
+                                } else if (_noticeTitle.text == '') {
+                                  // 제목 미입력
+
+                                } else {
+                                  // 내용 미입력
+
+                                }
                               },
-                            )),
+                            )
+                        ),
                       ],
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 25),
                   ),
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
@@ -128,38 +143,31 @@ WorkNoticeBottomSheet(BuildContext context) async {
                           ),
                         ),
                         onTap: () {
-                          print("aa");
-                          setState(() {
-                            _isContent = true;
-                          });
                         },
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                      ),
-                      Visibility(
-                        visible: _isContent == true,
-                        child: Container(
-                          width: customWidth(
+                      SizedBox(
+                        height: customHeight(
                             context: context,
-                            widthSize: 0.7
-                          ),
-                          height: customHeight(
-                            context: context,
-                            heightSize: 0.06,
-                          ),
-                          child: TextFormField(
-                            autofocus: true,
-                            controller: _noticeContent,
-                            style: customStyle(
-                              fontSize: 13,
-                            ),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: "제목을 입력하세요",
-                            ),
-                          ),
+                            heightSize: 0.01
                         ),
+                      ),
+                      TextFormField(
+                        focusNode: noticeNode,
+                        controller: _noticeContent,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 5,
+                        maxLengthEnforced: true,
+                        style: customStyle(
+                          fontSize: 13,
+                        ),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "내용을 입력하세요",
+                        ),
+                      ),
+                      SizedBox(
+                        height:
+                            customHeight(context: context, heightSize: 0.02),
                       ),
                     ],
                   )

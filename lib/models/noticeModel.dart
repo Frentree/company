@@ -12,16 +12,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class NoticeModel {
   String noticeUid;
   String noticeTitle;
-  String noticeCon;
-  String noticeCreateDate;
-  String noticeUpdateDate;
+  String noticeContent;
+  Timestamp noticeCreateDate;
+  Timestamp noticeUpdateDate;
   Map<String,String> noticeCreateUser;
 
 
   NoticeModel({
     this.noticeUid,
     this.noticeTitle,
-    this.noticeCon,
+    this.noticeContent,
     this.noticeCreateDate,
     this.noticeUpdateDate,
     this.noticeCreateUser,
@@ -30,18 +30,18 @@ class NoticeModel {
   NoticeModel.fromMap(Map snapshot, String id):
         noticeUid = id ?? "",
         noticeTitle = snapshot["noticeTitle"] ?? "",
-        noticeCon = snapshot["noticeCon"] ?? "",
+        noticeContent = snapshot["noticeContent"] ?? "",
         noticeCreateDate = snapshot["noticeCon"] ?? "",
-        noticeUpdateDate = snapshot["noticeUpdateDate"] ?? "",
+        noticeUpdateDate = snapshot["noticeUpdateDate"] ?? "null",
         noticeCreateUser = snapshot["noticeCreateUser"] ?? "";
 
   toJson() {
     return {
       "noticeUid": noticeUid,
       "noticeTitle": noticeTitle,
-      "noticeCon": noticeCon,
+      "noticeContent": noticeContent,
       "noticeCreateDate": noticeCreateDate,
-      "noticeUpdateDate": noticeUpdateDate,
+      /*"noticeUpdateDate": noticeUpdateDate,*/
       "noticeCreateUser": noticeCreateUser
     };
   }

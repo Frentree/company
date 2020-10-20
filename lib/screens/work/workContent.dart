@@ -8,9 +8,7 @@ import 'package:companyplaylist/models/bigCategoryModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/repos/firebasecrud/companyUserCrudMethod.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
-import 'package:companyplaylist/repos/firebasecrud/workCategoryCrudMethod.dart';
 import 'package:companyplaylist/repos/work/workRepository.dart';
 import 'package:companyplaylist/screens/work/workDate.dart';
 import 'package:companyplaylist/screens/work/workTeam.dart';
@@ -19,7 +17,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 //Theme
 class WorkContentPage extends StatefulWidget {
