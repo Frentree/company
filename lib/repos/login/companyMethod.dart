@@ -35,7 +35,7 @@ class CompanyMethod{
     List<int> _companyCode = []; //회사 코드
 
     //6자리 까지 반복
-    while (_companyCode.length <= 6) {
+    while (_companyCode.length <= 5) {
       //랜덤값 생성
       int tempValue = minRandomValue + _random.nextInt(maxRandomValue - minRandomValue);
 
@@ -125,13 +125,14 @@ class CompanyMethod{
   //회사 가입
   Future<void> joinCompanyUser({BuildContext context, String companyCode}) async {
     CrudRepository _crudRepository = CrudRepository();
+    Company _company = Company();
     CrudRepository _companyUserRepository = CrudRepository.companyUser(companyCode: companyCode);
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
 
-    Company _company = await _crudRepository.getCompanyInfoDataToFirebaseById(
-      documentId: companyCode
-    );
+    _company = await _crudRepository.getCompanyInfoDataToFirebaseById(documentId: companyCode);
+
     User _user = _loginUserInfoProvider.getLoginUser();
+
     CompanyUser _companyUser = CompanyUser(user: _user);
 
     bool _isCompanyCodeExist = false; //회사코드 존재 여부(존재: false, 존재안함: true)

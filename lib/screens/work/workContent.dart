@@ -1,50 +1,110 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/repos/login/workRepository.dart';
+import 'package:companyplaylist/consts/font.dart';
+import 'package:companyplaylist/models/bigCategoryModel.dart';
+import 'package:companyplaylist/models/companyUserModel.dart';
+import 'package:companyplaylist/models/userModel.dart';
+import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
+import 'package:companyplaylist/repos/work/workRepository.dart';
 import 'package:companyplaylist/screens/work/workDate.dart';
-import 'package:companyplaylist/widgets/bottomsheet/work/workDate.dart';
+import 'package:companyplaylist/screens/work/workTeam.dart';
 import 'package:companyplaylist/widgets/button/raisedButton.dart';
-import 'package:companyplaylist/widgets/form/textFormField.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Theme
-import 'package:companyplaylist/Theme/theme.dart';
-
 class WorkContentPage extends StatefulWidget {
+  WorkContentPage(this.workType);
+
+  final int workType;
+
   @override
-  WorkContentPageState createState() => WorkContentPageState();
+  WorkContentPageState createState() => WorkContentPageState(workType);
 }
 
 class WorkContentPageState extends State<WorkContentPage> {
+  WorkContentPageState(this.workType);
+
+  final int workType;
+  String type;
+  LoginUserInfoProvider _loginUserInfoProvider;
+
+  List<Map<String, String>> _teamList;
+  List<Map<String, String>> _allTeamList;
+
+  WorkRepository _workRepository;
+
   TextEditingController _titileTextEdit;
   TextEditingController _startDateTextEdit;
   TextEditingController _endDateTextEdit;
   TextEditingController _projectTextEdit;
   TextEditingController _contentEdit;
   TextEditingController _targetTextEdit;
-  String type = "내근";
-  String date = "";
-  String _project = "project";
-  List<bool> _isTarget = [false, false, false];
+  TextEditingController _outWorkTextEdit; // 외근지
 
-  WorkRepository _workRepository = WorkRepository();
+  CrudRepository _crudRepository;
+
+  bool isSelected = false;
+
+  String date = "";
+  List<String> aaa = ["aaa", "bbb"];
+  String _project = "project";
+
+  String _openTitle = "공개 대상을 선택하세요";
+
+  List<bool> _isTarget = [false, false, false];
+  Stream<QuerySnapshot> currentStream;
+
+  // 전체 사용자 갖고 오기
+  Future<List<CompanyUser>> _companyUserList;
+
+  List<bigCategoryModel> workCategory;
+  List<bigCategoryModel> testminji;
 
   @override
   void initState() {
     super.initState();
+
+    // 사용자 정보를 불러오는 객체
+
     _titileTextEdit = TextEditingController();
     _startDateTextEdit = TextEditingController();
     _endDateTextEdit = TextEditingController();
     _projectTextEdit = TextEditingController();
     _contentEdit = TextEditingController();
     _targetTextEdit = TextEditingController();
+    _outWorkTextEdit = TextEditingController();
+
+    _workRepository = WorkRepository();
+
+    if (workType == 1) {
+      type = "내근";
+    } else if (workType == 2) {
+      type = "외근";
+    }
+  }
+
+  String isCategoryName() {
+    if (isSelected == false) {
+      return "관련 프로젝트를 선택하세요";
+    } else {
+      return _project;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+    User user = _loginUserInfoProvider.getLoginUser();
+    _crudRepository =
+        CrudRepository.workCategory(companyCode: user.companyCode);
+    currentStream = _crudRepository.fetchWorkCategoryAsStream();
     return Scaffold(
       backgroundColor: mainColor,
       body: GestureDetector(
@@ -77,7 +137,10 @@ class WorkContentPageState extends State<WorkContentPage> {
                         ),
                         Text(
                           "근무중",
-                          style: customStyle(15, '', whiteColor),
+                          style: customStyle(
+                              fontSize: 15,
+                              fontWeightName: "Regular",
+                              fontColor: whiteColor),
                         ),
                       ],
                     ),
@@ -123,26 +186,26 @@ class WorkContentPageState extends State<WorkContentPage> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          width: customWidth(
-                              context: context,
-                              widthSize: 1
-                          ),
+                          width: customWidth(context: context, widthSize: 1),
                           child: Row(
                             children: [
                               Container(
                                 child: IconButton(
                                   icon: Icon(Icons.close),
                                   color: Colors.black,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
                               ),
-
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: textFieldUnderLine),
+                                      border:
+                                          Border.all(color: textFieldUnderLine),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     width: customWidth(
@@ -152,10 +215,9 @@ class WorkContentPageState extends State<WorkContentPage> {
                                     child: Text(
                                       "$type",
                                       style: customStyle(
-                                        14,
-                                        "Regular",
-                                        mainColor,
-                                      ),
+                                          fontSize: 14,
+                                          fontWeightName: "Regular",
+                                          fontColor: mainColor),
                                     ),
                                   ),
                                   Padding(
@@ -164,14 +226,12 @@ class WorkContentPageState extends State<WorkContentPage> {
                                   Text(
                                     "일정 생성",
                                     style: customStyle(
-                                      16,
-                                      "Regular",
-                                      mainColor,
-                                    ),
+                                        fontSize: 16,
+                                        fontWeightName: "Regular",
+                                        fontColor: mainColor),
                                   ),
                                 ],
                               ),
-
                             ],
                           ),
                         ),
@@ -198,84 +258,80 @@ class WorkContentPageState extends State<WorkContentPage> {
                             heightSize: 0.03,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 155,
-                              height: 50,
-                              child: Stack(
-                                children: <Widget>[
-                                  TextFormField(
-                                    controller: _startDateTextEdit,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: "시작 일시",
-                                      //labelText: "제목"
-                                    ),
-                                  ),
-                                  IconButton(
-                                    padding: EdgeInsets.only(left: 120, top: 0),
-                                    icon: Icon(
-                                      Icons.date_range,
-                                      size: 30,
-                                    ),
-                                    onPressed: () async {
-                                      String setDate =
-                                          await workDatePage(context, 0);
-                                      if (setDate != '') {
-                                        setState(() {
-                                          _startDateTextEdit.text = setDate;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ],
+                        Container(
+                          width: customWidth(widthSize: 1, context: context),
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.06,
+                          ),
+                          child: Stack(
+                            children: <Widget>[
+                              TextFormField(
+                                controller: _startDateTextEdit,
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: "시작 일시",
+                                  //labelText: "제목"
+                                ),
+                              ),
+                              IconButton(
+                                padding: EdgeInsets.only(left: 280, top: 0),
+                                icon: Icon(
+                                  Icons.date_range,
+                                  size: 30,
+                                ),
+                                onPressed: () async {
+                                  String setDate =
+                                      await workDatePage(context, 0);
+                                  if (setDate != '') {
+                                    setState(() {
+                                      _startDateTextEdit.text = setDate;
+                                    });
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.03,
+                          ),
+                        ),
+                        Container(
+                          width: customWidth(widthSize: 1, context: context),
+                          height: customHeight(
+                            context: context,
+                            heightSize: 0.06,
+                          ),
+                          child: Stack(children: <Widget>[
+                            TextFormField(
+                              controller: _endDateTextEdit,
+                              enabled: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: "종료 일시",
+                                //labelText: "제목"
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 10),
-                            ),
-                            Text("~"),
-                            Padding(
-                              padding: EdgeInsets.only(right: 10),
-                            ),
-                            Spacer(),
-                            Container(
-                              width: 155,
-                              height: 50,
-                              child: Stack(
-                                children: <Widget>[
-                                  TextFormField(
-                                    controller: _endDateTextEdit,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: "종료 일시",
-                                      //labelText: "제목"
-                                    ),
-                                  ),
-                                  IconButton(
-                                    padding: EdgeInsets.only(left: 120, top: 0),
-                                    icon: Icon(
-                                      Icons.date_range,
-                                      size: 30,
-                                    ),
-                                    onPressed: () async {
-                                      String setDate =
-                                          await workDatePage(context, 1);
-                                      if (setDate != '') {
-                                        setState(() {
-                                          _endDateTextEdit.text = setDate;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ],
+                            IconButton(
+                              padding: EdgeInsets.only(left: 280, top: 0),
+                              icon: Icon(
+                                Icons.date_range,
+                                size: 30,
                               ),
+                              onPressed: () async {
+                                String setDate = await workDatePage(context, 1);
+                                if (setDate != '') {
+                                  setState(() {
+                                    _endDateTextEdit.text = setDate;
+                                  });
+                                }
+                              },
                             ),
-                            Spacer(),
-                          ],
+                          ]),
                         ),
                         SizedBox(
                           height: customHeight(
@@ -290,31 +346,55 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 BorderRadius.all(Radius.circular(5.0) // POINT
                                     ),
                           ),
-                          child: ExpansionTile(
-                            title: Text("관련 프로젝트를 선택하세요"),
+                          child: StreamBuilder(
+                            stream: currentStream,
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
+                              List<DocumentSnapshot> documents =
+                                  snapshot.data.documents;
+                              print("snapshot =====> " +
+                                  documents
+                                      .map((e) => e.data.values.elementAt(1))
+                                      .toList()
+                                      .toString());
+                              return ExpansionTile(
+                                title: Text("${isCategoryName()}"),
+                                children: <Widget>[
+                                  RadioButtonGroup(
+                                      labels: documents
+                                          .map((e) => e.data.values
+                                              .elementAt(1)
+                                              .toString())
+                                          .toList(),
+                                      onSelected: (String selected) =>
+                                          print(_project = selected))
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          child: Column(
                             children: [
-                              RadioListTile(
-                                title: Text('AIA'),
-                                value: "AIA",
-                                groupValue: _project,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _project = value;
-                                  });
-                                },
+                              SizedBox(
+                                height: customHeight(
+                                  context: context,
+                                  heightSize: 0.03,
+                                ),
                               ),
-                              RadioListTile(
-                                title: Text('KB'),
-                                value: "KB",
-                                groupValue: _project,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _project = value;
-                                  });
-                                },
+                              TextField(
+                                controller: _outWorkTextEdit,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: "외근지를 입력하세요.",
+                                  //labelText: "제목"
+                                ),
                               ),
                             ],
                           ),
+                          visible: (type == "외근"),
                         ),
                         SizedBox(
                           height: customHeight(
@@ -357,7 +437,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                         setState(() {
                                           _isTarget[0] = value;
                                           _isTarget[1] = false;
-                                          _isTarget[2] = false;
+                                          //_isTarget[2] = false;
                                         });
                                       },
                                     ),
@@ -376,6 +456,10 @@ class WorkContentPageState extends State<WorkContentPage> {
                                           _isTarget[1] = value;
                                           _isTarget[2] = false;
                                         });
+
+                                        if (_isTarget[1]) {
+                                          _teamList = _allTeamList;
+                                        }
                                       },
                                     ),
                                     Text("전체 직원"),
@@ -387,15 +471,61 @@ class WorkContentPageState extends State<WorkContentPage> {
                                   children: [
                                     Checkbox(
                                       value: _isTarget[2],
-                                      onChanged: (value) {
+                                      onChanged: (value) async {
+                                        List<Map<String, String>> _teamNameList;
                                         setState(() {
-                                          _isTarget[0] = false;
+                                          //_isTarget[0] = false;
                                           _isTarget[1] = false;
                                           _isTarget[2] = value;
                                         });
+
+                                        if (_isTarget[2] == true) {
+                                          List<Map<String, String>>
+                                              _teamNameList =
+                                              await WorkTeamPage(context);
+                                          _teamList = _teamNameList;
+                                        }
                                       },
                                     ),
                                     Text("직접 선택"),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: customHeight(
+                                              heightSize: 0.2,
+                                              context: context)),
+                                    ),
+                                    Visibility(
+                                      child: Container(
+                                        width: customWidth(
+                                            context: context, widthSize: 0.2),
+                                        height: customHeight(
+                                            context: context, heightSize: 0.04),
+                                        child: RaisedButton(
+                                          color: blueColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(10),
+                                              side:
+                                              BorderSide(color: whiteColor)),
+                                          child: Text(
+                                            "수정",
+                                            style: customStyle(
+                                              fontSize: 12,
+                                              fontWeightName: "Medium",
+                                              fontColor: whiteColor,
+                                            ),
+                                          ),
+                                          elevation: 0.0,
+                                          onPressed: () async {
+                                            List<Map<String, String>>
+                                            _teamNameList =
+                                            await WorkTeamPage(context);
+                                            _teamList = _teamNameList;
+                                          },
+                                        ),
+                                      ),
+                                      visible: (_isTarget[2] == true),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -418,6 +548,9 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 btnTextColor: whiteColor,
                                 btnAction: () => {
                                       _workRepository.workScheduleFirebaseAuth(
+                                        createUid: _loginUserInfoProvider
+                                            .getLoginUser()
+                                            .mail,
                                         context: context,
                                         workTitle: _titileTextEdit.text,
                                         startDate: _startDateTextEdit.text,
@@ -425,7 +558,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                         workContent: _contentEdit.text,
                                         bigCategory: _project,
                                         type: type,
-                                        share: null,
+                                        share: _teamList,
                                       ): null
                                     }),
                             Spacer(),
@@ -443,199 +576,3 @@ class WorkContentPageState extends State<WorkContentPage> {
     );
   }
 }
-
-/*
-
-  // bottomSheet 상단 Title Name
-  List<String> _titleList = ["내근일정", "외근일정", "회의일정", "개인일정", "업무요청", "구매품의", "경비품의", "연차신청"];
-
-  String date = "날짜";
-
-  String fnType = "type";
-  String fnDetail = "detail";
-  String fnEndTime = "end_time";
-  String fnProgree = "progress";
-  String fnStartDate = "start_date";
-  String fnStartTime = "start_time";
-  String fnTitle = "title";
-  String fnWriteTime = "write_time";
-  String fnWriter = "writer";
-  String fnEndDate = "end_date";
-
-  // 내근 or 외근 일 경우 실행
-  if (type == 1 || type == 2) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                topLeft: Radius.circular(20)
-            )
-        ),
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Padding(
-                padding: MediaQuery
-                    .of(context)
-                    .viewInsets,
-                child: Container(
-                  padding: EdgeInsets.only(
-                      top: 30, left: 20, right: 20, bottom: 10),
-                  height: 140,
-                  child: Column(
-                      children: <Widget>[
-                        IntrinsicHeight(
-                          child: Row(
-                            children: <Widget>[
-                              Chip(
-                                label: Text(
-                                  "${_titleList[type]}",
-                                  style: customStyle(14, 'Regular', top_color),
-                                ),
-                                backgroundColor: chip_color_blue,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 15),
-                              ),
-                              tabDivider(2, top_color, 15, 15),
-                              Container(
-                                width: 200,
-                                child: TextFormField(
-                                  autofocus: true,
-                                  controller: _titleCon,
-                                  decoration: InputDecoration(
-                                      hintText: '제목을 입력해 주세요'
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 15),
-                              ),
-                              CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: _titleCon.text == '' ? Colors
-                                      .black12 : Colors.blue,
-                                  child: IconButton(
-                                      icon: Icon(
-                                          Icons.arrow_upward
-                                      ),
-                                      onPressed: _titleCon.text == ''
-                                          ? null
-                                          : () {
-                                        Firestore.instance.collection(
-                                            "my_schedule").add({
-                                          fnType: "내근",
-                                          fnDetail: "Flutter 개발",
-                                          fnEndTime: "18:00",
-                                          fnProgree: "진행전",
-                                          fnStartDate: date,
-                                          fnStartTime: "09:00",
-                                          fnTitle: _titleCon.text,
-                                          fnWriteTime: DateTime.now()
-                                              .toString(),
-                                          fnEndDate: date,
-                                        });
-                                      }
-                                  )
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 25),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            InkWell(
-                              child: Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.calendar_today,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 5),
-                                    ),
-                                    Text(
-                                      date,
-                                      style: customStyle(
-                                          14, 'Regular', top_color),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              onTap: () async {
-                                String setDate = await workDate(
-                                    context);
-                                if (setDate != '') {
-                                  setState(() {
-                                    date = setDate;
-                                  });
-                                }
-                              },
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                            ),
-                            InkWell(
-                              child: Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.scatter_plot,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 5),
-                                    ),
-                                    Text(
-                                      "관련 프로젝트",
-                                      style: customStyle(
-                                          14, 'Regular', top_color),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                print("클릭");
-                              },
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                            ),
-                            InkWell(
-                              child: Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.chat_bubble_outline,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 5),
-                                    ),
-                                    Text(
-                                      "내용",
-                                      style: customStyle(
-                                          14, 'Regular', top_color),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                print("클릭");
-                              },
-                            )
-                          ],
-                        )
-                      ]
-                  ),
-                ),
-              );
-            },
-          );
-        }
-    );
-  }
-}*/

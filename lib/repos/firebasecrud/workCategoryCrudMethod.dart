@@ -9,39 +9,40 @@
 * */
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/models/bigCategoryModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 
 //Repos
 import 'package:companyplaylist/repos/firebaseMethod.dart';
 
-class CompanyWorkCrud {
+class WorkCategoryCrud {
   FirestoreApi _firestoreApi;
   String companyCode;
 
-  List<CompanyWork> work;
+  List<bigCategoryModel> work;
 
   // firebase connection
-  CompanyWorkCrud(this.companyCode){
-    _firestoreApi = FirestoreApi.twoPath("company", "work", companyCode);
+  WorkCategoryCrud(this.companyCode){
+    _firestoreApi = FirestoreApi.twoPath("company", "bigCategory", companyCode);
   }
 
-  Future<List<CompanyWork>> fetchCompanyWork() async{
+  Future<List<bigCategoryModel>> fetchWorkCategory () async{
     var result = await _firestoreApi.getDataCollection();
-    work = result.documents.map((doc) => CompanyWork.fromMap(doc.data, doc.documentID)).toList();
+    work = result.documents.map((doc) => bigCategoryModel.fromMap(doc.data, doc.documentID)).toList();
 
     return work;
   }
 
-  Stream<QuerySnapshot> fetchCompanyWorkAsStream(){
+  Stream<QuerySnapshot> fetchWorkCategoryAsStream(){
     return _firestoreApi.streamDataCollection();
   }
 
-  Future<void> addCompanyWorkDataToFirebase({CompanyWork dataModel}) async{
+  Future<void> addWorkCategoryDataToFirebase({bigCategoryModel dataModel}) async{
     await _firestoreApi.addDocument(dataModel.toJson());
     return null;
   }
 
-  Future<void> setCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) async{
+  Future<void> setWorkCategoryDataToFirebase({bigCategoryModel dataModel, String documentId}) async{
     await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;
   }

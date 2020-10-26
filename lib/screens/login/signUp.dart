@@ -15,6 +15,7 @@ import 'package:flutter/rendering.dart';
 //Provider
 import 'package:provider/provider.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
+import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 
 //Repos
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
@@ -89,6 +90,9 @@ class SignUpPageState extends State<SignUpPage> {
     //Firebase 인증 Provider
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context);
 
+    //화면 이동을 위한 Provider
+    LoginScreenChangeProvider _loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
+
     //User data model
     _newUser = User(
         mail: _mailTextCon.text,
@@ -101,13 +105,30 @@ class SignUpPageState extends State<SignUpPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           //상단 글자
-          Text(
-            "회원가입",
-            style: customStyle(
-              fontSize: 18,
-              fontWeightName: "Medium",
-              fontColor: blueColor,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "회원가입",
+                style: customStyle(
+                  fontSize: 18,
+                  fontWeightName: "Medium",
+                  fontColor: blueColor,
+                ),
+              ),
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                icon: Icon(
+                  Icons.arrow_back
+                ),
+                onPressed: (){
+                  _loginScreenChangeProvider.setPageName(
+                    pageName: "login"
+                  );
+                },
+              )
+            ],
           ),
 
           //공백
@@ -173,7 +194,7 @@ class SignUpPageState extends State<SignUpPage> {
                 validityCheckTextFormField(
                   key: _formKeyPhone,
                   textEditingController: _phoneNumberTextCon,
-                  hintText: "핸드폰번호(01012341234)",
+                  hintText: "핸드폰번호(01022269930/123456)",
                   validityCheckAction: (value) => _loginRepository.validationRegExpCheckMessage(field: "전화번호", value: value),
                   onChangeAction: (text) {
                     bool _result = _loginRepository.isFormValidation(validationFunction: _formKeyPhone.currentState.validate());

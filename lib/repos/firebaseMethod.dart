@@ -5,7 +5,9 @@ class FirestoreApi{
   final Firestore _db = Firestore.instance;
   String path;
   String secondPath;
+  String thirdPath;
   String documentId;
+  String secondDocumentId;
   CollectionReference ref;
 
   FirestoreApi.onePath(this.path){
@@ -14,6 +16,10 @@ class FirestoreApi{
 
   FirestoreApi.twoPath(this.path, this.secondPath, this.documentId){
     ref = _db.collection(path).document(documentId).collection(secondPath);
+  }
+
+  FirestoreApi.threePath(this.path, this.documentId, this.secondPath, this.secondDocumentId, this.thirdPath){
+    ref = _db.collection(path).document(documentId).collection(secondPath).document(secondDocumentId).collection(thirdPath);
   }
 
   Future<QuerySnapshot> getDataCollection(){
