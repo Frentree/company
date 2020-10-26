@@ -1,7 +1,7 @@
-
 import 'package:companyplaylist/screens/buy/createBuyRequest.dart';
 import 'package:companyplaylist/screens/work/workContent.dart';
 import 'package:flutter/material.dart';
+
 //Theme
 import 'package:companyplaylist/Theme/theme.dart';
 
@@ -10,7 +10,8 @@ WorkMainPage(BuildContext context) {
   int _userGrade = 0;
 
   void _workBottomMove(int type) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => WorkContentPage()));
   }
 
   // 관리자 권한이 아닐 경우
@@ -79,36 +80,35 @@ WorkMainPage(BuildContext context) {
                         label: Text(
                           "회의 일정",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                     Chip(
                         backgroundColor: chip_color_blue,
                         label: Text(
                           "개인 일정",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Chip(
-
                         backgroundColor: chip_color_purple,
                         label: Text(
                           "업무 요청",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                     ActionChip(
-                        backgroundColor: chip_color_red,
-                        label: Text(
-                          "구매 품의",
-                          style: customStyle(14, 'Regular', top_color),
-                        ),
+                      backgroundColor: chip_color_red,
+                      label: Text(
+                        "구매 품의",
+                        style: customStyle(14, 'Regular', top_color),
+                      ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBuyRequest()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateBuyRequest()));
                       },
                     ),
                     Chip(
@@ -116,23 +116,21 @@ WorkMainPage(BuildContext context) {
                         label: Text(
                           "경비 품의",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                     Chip(
                         backgroundColor: chip_color_red,
                         label: Text(
                           "연차 신청",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                   ],
                 ),
               ],
             ),
           );
-        }
-    );
-  }else {  // 관리자 권한일 경우
+        });
+  } else {
+    // 관리자 권한일 경우
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -179,15 +177,13 @@ WorkMainPage(BuildContext context) {
                         label: Text(
                           "회의 일정",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                     Chip(
                         backgroundColor: chip_color_blue,
                         label: Text(
                           "개인 일정",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                   ],
                 ),
                 Row(
@@ -201,9 +197,7 @@ WorkMainPage(BuildContext context) {
                         label: Text(
                           "업무 요청",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
-
+                        )),
                   ],
                 ),
                 Row(
@@ -243,14 +237,12 @@ WorkMainPage(BuildContext context) {
                         label: Text(
                           "공지사항",
                           style: customStyle(14, 'Regular', top_color),
-                        )
-                    ),
+                        )),
                   ],
                 ),
               ],
             ),
           );
-        }
-    );
+        });
   }
 }

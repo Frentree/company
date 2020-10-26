@@ -1,4 +1,5 @@
 //Flutter
+import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:flutter/material.dart';
 
 //Const
@@ -29,6 +30,38 @@ TextFormField textFormField(
             borderSide: BorderSide(
           color: textFieldUnderLine,
         )),
+        suffixIcon: suffixWidget),
+    onTap: onTap,
+  );
+}
+
+TextFormField textFormFieldWithOutlinedBorder(
+    {TextEditingController textEditingController,
+      String hintText,
+      bool showCursor = true,
+      bool readOnly = false,
+      Function onTap,
+      Widget suffixWidget}) {
+  return TextFormField(
+    textAlignVertical: TextAlignVertical.center,
+    showCursor: showCursor,
+    readOnly: readOnly,
+    controller: textEditingController,
+    decoration: InputDecoration(
+      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        hintText: hintText,
+        hintStyle: customStyle(
+          fontSize: 15,
+          fontWeightName: "Regular",
+          fontColor: mainColor,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(
+            color: inputBoarderColor,
+            width: 1.0,
+          ),
+        ),
         suffixIcon: suffixWidget),
     onTap: onTap,
   );

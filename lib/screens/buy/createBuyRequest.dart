@@ -1,6 +1,9 @@
 import 'package:companyplaylist/Theme/theme.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/junhyun/crossScrollTest.dart';
+import 'package:companyplaylist/repos/tableCalendar/table_calendar.dart';
+import 'package:companyplaylist/widgets/form/textFormField.dart';
 import 'package:flutter/material.dart';
 
 class CreateBuyRequest extends StatefulWidget {
@@ -17,10 +20,67 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
   final _userToApprove = TextEditingController();
   final _relevantLink = TextEditingController();
 
+  int _value = 1;
+
+  List<ListItem> _dropdownItems = [
+    ListItem(1, "First Value"),
+    ListItem(2, "Second Item"),
+    ListItem(3, "Third Item"),
+    ListItem(4, "Fourth Item")
+  ];
+
+  List<DropdownMenuItem<ListItem>> _dropdownMenuItems;
+  ListItem _selectedItem;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _dropdownMenuItems = buildDropDownMenuItems(_dropdownItems);
+    _selectedItem = _dropdownMenuItems[0].value;
+  }
+
+  List<DropdownMenuItem<ListItem>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<ListItem>> items = List();
+    for (ListItem listItem in listItems) {
+      items.add(
+        DropdownMenuItem(
+          child: Row(
+            children: [
+              SizedBox(
+                  width: 140.0,
+                  child: Text(listItem.name,
+                      style: customStyle(14, "Regular", mainColor))),
+              Container(
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<ListItem>(
+                      value: _selectedItem,
+                      items: _dropdownMenuItems,
+                      /*[
+                        DropdownMenuItem(
+                          child: Text("First Item"),
+                          value: 1,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Second Item"),
+                          value: 2,
+                        ),
+                        DropdownMenuItem(child: Text("Third Item"), value: 3),
+                        DropdownMenuItem(child: Text("Fourth Item"), value: 4)
+                      ],*/
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedItem = value;
+                        });
+                      }),
+                ),
+              )
+            ],
+          ),
+          value: listItem,
+        ),
+      );
+    }
+    return items;
   }
 
   @override
@@ -92,7 +152,17 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                 ),
                 Expanded(
                     child: Container(
-                        padding: EdgeInsets.only(top: 5),
+                        padding: EdgeInsets.only(
+                          top: 5,
+                          left: customHeight(
+                            context: context,
+                            heightSize: 0.02,
+                          ),
+                          right: customHeight(
+                            context: context,
+                            heightSize: 0.02,
+                          ),
+                        ),
                         width: customWidth(
                           context: context,
                           widthSize: 1,
@@ -142,23 +212,104 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                                               alignment: Alignment.center,
                                               child: Text(
                                                 "구매",
+                                                style: customStyle(
+                                                  16,
+                                                  "Regular",
+                                                  mainColor,
+                                                ),
                                               ),
                                             ),
                                           ),
                                           SizedBox(
                                             width: 5,
                                           ),
-                                          Text("품의 생성")
+                                          Text(
+                                            "품의 생성",
+                                            style: customStyle(
+                                              16,
+                                              "Regular",
+                                              mainColor,
+                                            ),
+                                          ),
                                         ],
                                       )),
-                                  SizedBox(
+                                  /*SizedBox(
                                     width: MediaQuery.of(context).size.width *
                                         0.25,
+                                  ),*/
+                                  SizedBox(
+                                    width: 70,
+                                    child: RaisedButton(
+                                        child: Text("Test"),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CrossScrollTest()),
+                                          );
+                                        }),
                                   ),
                                 ],
-                              ))
+                              )),
+                          SizedBox(
+                            height: customHeight(
+                              context: context,
+                              heightSize: 0.03,
+                            ),
+                          ),
+                          Column(children: <Widget>[
+                            textFormFieldWithOutlinedBorder(
+                              textEditingController: _itemToBuy,
+                              hintText: "구매 요청 품목",
+                            ),
+                          ]),
+                          SizedBox(
+                            height: customHeight(
+                              context: context,
+                              heightSize: 0.03,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                              left: customHeight(
+                                context: context,
+                                heightSize: 0.02,
+                              ),
+                              right: customHeight(
+                                context: context,
+                                heightSize: 0.03,
+                              ),
+                            ),
+                            width: customWidth(
+                              context: context,
+                              widthSize: 1,
+                            ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: inputBoarderColor,
+                                )),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<ListItem>(
+                                  value: _selectedItem,
+                                  items: _dropdownMenuItems,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedItem = value;
+                                    });
+                                  }),
+                            ),
+                          )
                         ]))))
               ],
             )));
   }
+}
+
+class ListItem {
+  int value;
+  String name;
+
+  ListItem(this.value, this.name);
 }
