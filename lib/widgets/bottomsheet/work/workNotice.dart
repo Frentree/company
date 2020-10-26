@@ -14,7 +14,7 @@ WorkNoticeBottomSheet(BuildContext context) async {
   TextEditingController _noticeTitle = TextEditingController();
   TextEditingController _noticeContent = TextEditingController();
 
-  FocusNode noticeNode = FocusNode();
+  FocusNode _noticeFocusNode = FocusNode();
 
   SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
   User _loginUser = User.fromMap(
@@ -44,7 +44,8 @@ WorkNoticeBottomSheet(BuildContext context) async {
                     top: 30,
                     left: 20,
                     right: 20,
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom
+                ),
                 child: Column(children: <Widget>[
                   IntrinsicHeight(
                     child: Row(
@@ -69,7 +70,7 @@ WorkNoticeBottomSheet(BuildContext context) async {
                             autofocus: true,
                             controller: _noticeTitle,
                             onFieldSubmitted: (value) =>
-                                noticeNode.requestFocus(),
+                                _noticeFocusNode.requestFocus(),
                             decoration: InputDecoration(hintText: '제목을 입력하세요'),
                           ),
                         ),
@@ -152,7 +153,7 @@ WorkNoticeBottomSheet(BuildContext context) async {
                         ),
                       ),
                       TextFormField(
-                        focusNode: noticeNode,
+                        focusNode: _noticeFocusNode,
                         controller: _noticeContent,
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,

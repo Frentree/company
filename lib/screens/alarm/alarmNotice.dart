@@ -26,13 +26,15 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
   CrudRepository _crudRepository;
   LoginUserInfoProvider _loginUserInfoProvider;
 
+  User _loginUser;
 
   @override
   Widget build(BuildContext context) {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-    User user = _loginUserInfoProvider.getLoginUser();
+   _loginUser = _loginUserInfoProvider.getLoginUser();
+
     _crudRepository =
-        CrudRepository.noticeAttendance(companyCode: user.companyCode);
+        CrudRepository.noticeAttendance(companyCode: _loginUser.companyCode);
     currentStream = _crudRepository.fetchNoticeAsStream();
     return StreamBuilder(
       stream: currentStream,
@@ -47,6 +49,11 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
         return ListView.builder(
           itemCount: documents.length,
           itemBuilder: (context, index) {
+            String _createDate = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
+                DateTime.parse(
+                    documents[index].data['noticeCreateDate'].toDate().toString()
+                ).add(Duration(hours: 9))
+            );
             return Card(
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -118,13 +125,9 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                 ),
                               ),
                               Text(
-                                DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                                    DateTime.parse(
-                                        documents[index].data['noticeCreateDate'].toDate().toString()
-                                    ).add(Duration(hours: 9))
-                                ),
+                                _createDate,
                                 style: customStyle(
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeightName: 'Regular',
                                     fontColor: greyColor
                                 ),
@@ -195,6 +198,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                     AlarmNoticeCommentPage(
                                       noticeUid: documents[index].data['noticeUid'].toString(),
                                       noticeTitle: documents[index].data['noticeTitle'].toString(),
+                                      noticeContent: documents[index].data['noticeContent'].toString(),
+                                      noticeCreateDate: _createDate,
                                     )
                                 )
                             ),
