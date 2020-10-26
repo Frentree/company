@@ -33,6 +33,87 @@ class AlarmNoticeCommentPage extends StatelessWidget {
   Stream<QuerySnapshot> currentStream;
   CrudRepository _crudRepository;
   final Firestore _db = Firestore.instance;
+  String _commentId = "";
+
+  _getCommentList(List<DocumentSnapshot> documents, BuildContext context){
+    List<Widget> widgets = [];
+    for (int i = 0; i < documents.length; i++) {
+      widgets.add(Column(
+        children: [
+          SizedBox(
+            height: customHeight(
+              context: context,
+              heightSize: 0.01
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                icon: Icon(Icons.subdirectory_arrow_right),
+              ),
+              GestureDetector(
+                child: Container(
+                  height: customHeight(context: context, heightSize: 0.06),
+                  width: customWidth(context: context, widthSize: 0.1),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: whiteColor,
+                      border: Border.all(color: blackColor, width: 2)),
+                  child: Text(
+                    "사진",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                onTap: () {},
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 5),
+              ),
+              Container(
+                width: customWidth(
+                    context: context,
+                    widthSize: 0.72
+                ),
+
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      documents[i].data['commentsUser']['name'].toString(),
+                      style: customStyle(
+                        fontColor: blackColor,
+                        fontWeightName: 'Bold',
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
+                          DateTime.parse(documents[i].data['createDate'].toDate().toString())
+                              .add(Duration(hours: 9))),
+                      style:
+                      customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
+                    ),
+                    Text(
+                      documents[i].data['comments'].toString(),
+                      style: customStyle(
+                        fontColor: blackColor,
+                        fontWeightName: 'Regular',
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      )
+      );
+    }
+    return widgets;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +123,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
     _crudRepository = CrudRepository.noticeCommentAttendance(companyCode: _loginUser.companyCode, documentID: noticeUid);
     currentStream = _crudRepository.fetchNoticeCommentAsStream();
 
-    String _commentId = "";
+
     FocusNode _commnetFocusNode = FocusNode();
 
     return Scaffold(
@@ -193,15 +274,19 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                           }
                           List<DocumentSnapshot> documents = snapshot.data.documents;
 
-                          print("" + documents.length.toString());
-
-                          return Container(
-                            width: customWidth(context: context, widthSize: 1),
-                            height:  customHeight(
-                              context: context,
-                              heightSize: documents.length * 0.2,
+                          return ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: customHeight(
+                                context: context,
+                                heightSize: documents.length * 0.11
+                              ),
+                              maxHeight: customHeight(
+                                  context: context,
+                                  heightSize: documents.length * 0.5
+                              ),
                             ),
                             child: ListView.builder(
+                              shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: documents.length,
                               itemBuilder: (context, index) {
@@ -312,23 +397,24 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                   color: const Color(0xFF707070),
                                                 ),
                                                 headerExpanded: Text(
-                                                  "답글이 " + documents.length.toString() + "개가 있습니다.",
+                                                  "댓글이 " + documents.length.toString() + "개가 있습니다.",
                                                   style: customStyle(fontSize: 12, fontWeightName: 'Regular'),
                                                 ),
                                                 header: Container(
                                                     color: Colors.transparent,
                                                     child: Text(
-                                                      "답글이 " + documents.length.toString() + "개가 있습니다.",
+                                                      "댓글이 " + documents.length.toString() + "개가 있습니다.",
                                                       style: customStyle(fontSize: 12, fontColor: blueColor, fontWeightName: 'Regular'),
                                                     )),
                                                 children: <Widget>[
                                                   Container(
                                                       width: customWidth(context: context, widthSize: 1),
-                                                      height: customHeight(
-                                                        context: context,
-                                                        heightSize: documents.length * 0.1,
+                                                      child: Column(
+                                                        children: _getCommentList(documents, context),
                                                       ),
-                                                      child: ListView.builder(
+                                                  )
+
+                                                    /*ListView.builder(
                                                           physics: const NeverScrollableScrollPhysics(),
                                                           itemCount: documents.length,
                                                           itemBuilder: (context, index) {
@@ -361,39 +447,47 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                                     Padding(
                                                                       padding: EdgeInsets.only(left: 5),
                                                                     ),
-                                                                    Column(
-                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                      children: [
-                                                                        Text(
-                                                                          documents[index].data['commentsUser']['name'].toString(),
-                                                                          style: customStyle(
-                                                                            fontColor: blackColor,
-                                                                            fontWeightName: 'Bold',
-                                                                            fontSize: 13,
+                                                                    Container(
+                                                                      width: customWidth(
+                                                                        context: context,
+                                                                        widthSize: 0.72
+                                                                      ),
+
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            documents[index].data['commentsUser']['name'].toString(),
+                                                                            style: customStyle(
+                                                                              fontColor: blackColor,
+                                                                              fontWeightName: 'Bold',
+                                                                              fontSize: 13,
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                        Text(
-                                                                          DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                                                                              DateTime.parse(documents[index].data['createDate'].toDate().toString())
-                                                                                  .add(Duration(hours: 9))),
-                                                                          style:
-                                                                          customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
-                                                                        ),
-                                                                        Text(
-                                                                          documents[index].data['comments'].toString(),
-                                                                          style: customStyle(
-                                                                            fontColor: blackColor,
-                                                                            fontWeightName: 'Regular',
-                                                                            fontSize: 13,
+                                                                          Text(
+                                                                            DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
+                                                                                DateTime.parse(documents[index].data['createDate'].toDate().toString())
+                                                                                    .add(Duration(hours: 9))),
+                                                                            style:
+                                                                            customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
                                                                           ),
-                                                                        ),
-                                                                      ],
+                                                                          Text(
+                                                                            documents[index].data['comments'].toString(),
+                                                                            style: customStyle(
+                                                                              fontColor: blackColor,
+                                                                              fontWeightName: 'Regular',
+                                                                              fontSize: 13,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   ],
                                                                 ),
                                                               ],
                                                             );
-                                                          })),
+                                                          }
+                                                      )*/
                                                 ],
                                               );
                                             } else {
@@ -464,35 +558,40 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                             "name": _loginUser.name,
                                             "mail": _loginUser.mail
                                           };
-                                          if(_commentId.trim() == "") {
-                                            print("답글 미선택 ====> " + _commentId);
-                                            CommentModel _commnetModel = CommentModel(
-                                              comment: _noticeComment.text,
-                                              createUser: _commentMap,
-                                              createDate: Timestamp.now(),
-                                            );
+                                          if(_noticeComment.text.trim() != "") {
+                                            if (_commentId.trim() == "") {
+                                              print("답글 미선택 ====> " + _commentId);
+                                              CommentModel _commnetModel = CommentModel(
+                                                comment: _noticeComment.text,
+                                                createUser: _commentMap,
+                                                createDate: Timestamp.now(),
+                                              );
 
-                                            _db.collection("company")
-                                                .document(_loginUser.companyCode)
-                                                .collection("notice")
-                                                .document(noticeUid)
-                                                .collection("comment").add(_commnetModel.toJson());
+                                              _db.collection("company")
+                                                  .document(_loginUser.companyCode)
+                                                  .collection("notice")
+                                                  .document(noticeUid)
+                                                  .collection("comment").add(_commnetModel.toJson());
 
-                                            _noticeComment.text = "";
-                                          } else {
-                                            print("답글 선택 ====> " + _commentId);
-                                            
-                                            CommentListModel _commentList = CommentListModel(
-                                              comments: _noticeComment.text,
-                                              createDate: Timestamp.now(),
-                                              commentsUser: _commentMap,
-                                            );
+                                              _noticeComment.text = "";
+                                            } else {
+                                              print("답글 선택 ====> " + _commentId);
 
-                                            _db.collection("company")
-                                                .document(_loginUser.companyCode)
-                                                .collection("notice")
-                                                .document(noticeUid)
-                                                .collection("comment").document(_commentId).collection("comments").add(_commentList.toJson());
+                                              CommentListModel _commentList = CommentListModel(
+                                                comments: _noticeComment.text,
+                                                createDate: Timestamp.now(),
+                                                commentsUser: _commentMap,
+                                              );
+
+                                              _db.collection("company")
+                                                  .document(_loginUser.companyCode)
+                                                  .collection("notice")
+                                                  .document(noticeUid)
+                                                  .collection("comment").document(_commentId).collection("comments").add(_commentList.toJson());
+
+                                              _commentId = "";
+                                              _noticeComment.text = "";
+                                            }
                                           }
                                         },
                                       )
