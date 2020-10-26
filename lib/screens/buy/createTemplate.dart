@@ -1,5 +1,6 @@
-import 'package:companyplaylist/Theme/theme.dart';
+
 import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 
@@ -64,7 +65,9 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                               ),
                               Text(
                                 "근무중",
-                                style: customStyle(15, '', whiteColor),
+                                style: customStyle(                        fontSize: 15,
+                                  fontWeightName: "Regular",
+                                  fontColor: whiteColor,),
                               ),
                             ],
                           ),
@@ -145,9 +148,9 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                                                   child: Text(
                                                     "구매",
                                                     style: customStyle(
-                                                      16,
-                                                      "Regular",
-                                                      mainColor,
+                                                      fontSize: 16,
+                                                      fontWeightName: "Regular",
+                                                      fontColor: mainColor,
                                                     ),
                                                   ),
                                                 ),
@@ -158,9 +161,9 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                                               Text(
                                                 "품의 생성",
                                                 style: customStyle(
-                                                  16,
-                                                  "Regular",
-                                                  mainColor,
+                                                  fontSize: 16,
+                                                  fontWeightName: "Regular",
+                                                  fontColor: mainColor,
                                                 ),
                                               ),
 

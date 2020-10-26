@@ -1,6 +1,6 @@
 //Flutter
-import 'package:companyplaylist/screens/work/workMain.dart';
 import 'package:companyplaylist/widgets/album/widgetMain.dart';
+import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:flutter/material.dart';
 
 //Const
@@ -26,7 +26,7 @@ class HomeMainPageState extends State<HomeMainPage> {
   //페이지 이동
   void _pageChange(int pageIndex){
     if(pageIndex == 2){
-      WorkMainPage(context);
+      MainBottomSheet(context);
     }
     else{
       setState(() {

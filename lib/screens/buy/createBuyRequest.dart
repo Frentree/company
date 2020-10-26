@@ -1,5 +1,5 @@
-import 'package:companyplaylist/Theme/theme.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/junhyun/crossScrollTest.dart';
 import 'package:companyplaylist/repos/tableCalendar/table_calendar.dart';
@@ -49,7 +49,9 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
               SizedBox(
                   width: 140.0,
                   child: Text(listItem.name,
-                      style: customStyle(14, "Regular", mainColor))),
+                      style: customStyle(                        fontSize: 14,
+                        fontWeightName: "Regular",
+                        fontColor: mainColor,))),
               Container(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<ListItem>(
@@ -124,7 +126,9 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                               ),
                               Text(
                                 "근무중",
-                                style: customStyle(15, '', whiteColor),
+                                style: customStyle(                        fontSize: 15,
+                                  fontWeightName: "Regular",
+                                  fontColor: whiteColor,),
                               ),
                             ],
                           ),
@@ -213,9 +217,9 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                                               child: Text(
                                                 "구매",
                                                 style: customStyle(
-                                                  16,
-                                                  "Regular",
-                                                  mainColor,
+                                                  fontSize: 16,
+                                                  fontWeightName: "Regular",
+                                                  fontColor: mainColor,
                                                 ),
                                               ),
                                             ),
@@ -226,12 +230,11 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                                           Text(
                                             "품의 생성",
                                             style: customStyle(
-                                              16,
-                                              "Regular",
-                                              mainColor,
-                                            ),
+                                              fontSize: 16,
+                                              fontWeightName: "Regular",
+                                              fontColor: mainColor,
                                           ),
-                                        ],
+                                          )],
                                       )),
                                   /*SizedBox(
                                     width: MediaQuery.of(context).size.width *
