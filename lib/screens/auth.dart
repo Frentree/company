@@ -21,8 +21,10 @@ class AuthPage extends StatelessWidget{
 
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     User _user = _loginUserInfoProvider.getLoginUser();
+
+
     if(_user != null){
-      if(_user.companyCode != null){
+      if(_user.companyCode != ""){
         return HomeMainPage();
       }
       else{
