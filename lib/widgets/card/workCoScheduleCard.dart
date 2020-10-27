@@ -13,7 +13,7 @@ import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 
 
-Card workScheduleCard({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
+Card workCoScheduleCard({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
   return Card(
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -24,20 +24,20 @@ Card workScheduleCard({BuildContext context, String documentId, String companyCo
       ),
     ),
     child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.02), vertical: customHeight(context: context, heightSize: 0.01)),
-      child: isDetail ? detailContents(
+        padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.02), vertical: customHeight(context: context, heightSize: 0.01)),
+        child: isDetail ? detailContents(
           context: context,
           documentId: documentId,
           companyCode: companyCode,
           companyWork: companyWork,
           isDetail: isDetail,
-      ) : titleContents(
-        context: context,
-        documentId: documentId,
-        companyCode: companyCode,
-        companyWork: companyWork,
-        isDetail: isDetail,
-      )
+        ) : titleContents(
+          context: context,
+          documentId: documentId,
+          companyCode: companyCode,
+          companyWork: companyWork,
+          isDetail: isDetail,
+        )
     ),
   );
 }
@@ -47,42 +47,60 @@ Column titleContents({BuildContext context, String documentId, String companyCod
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
       isDetail ? popupMenu(
-        context: context,
-        documentId: documentId,
-        companyCode: companyCode
+          context: context,
+          documentId: documentId,
+          companyCode: companyCode
       ) : Container(),
       Row(
         children: [
           Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: textFieldUnderLine
-                ),
-                borderRadius: BorderRadius.circular(12)
-            ),
             width: customWidth(context: context, widthSize: 0.1),
-            height: customHeight(context: context, heightSize: 0.05),
-            alignment: Alignment.center,
-            child: Text(
-              companyWork.type,
-              style: customStyle(
-                  fontSize: 12,
-                  fontWeightName: "Regular",
-                  fontColor: mainColor
+            child: Center(
+              child: Text(
+                companyWork.name,
+                style: customStyle(
+                  fontSize: 13,
+                  fontColor: mainColor,
+                  fontWeightName: "Regular"
+                ),
               ),
             ),
           ),
           SizedBox(
             width: customWidth(context: context, widthSize: 0.03),
           ),
-          Text(
-            companyWork.timeTest,
-            style: customStyle(
-                fontSize: 13,
-                fontWeightName: "Regular",
-                fontColor: mainColor
-            ),
+          Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: textFieldUnderLine
+                    ),
+                    borderRadius: BorderRadius.circular(12)
+                ),
+                width: customWidth(context: context, widthSize: 0.08),
+                height: customHeight(context: context, heightSize: 0.04),
+                alignment: Alignment.center,
+                child: Text(
+                  companyWork.type,
+                  style: customStyle(
+                      fontSize: 12,
+                      fontWeightName: "Regular",
+                      fontColor: mainColor
+                  ),
+                ),
+              ),
+              Text(
+                companyWork.timeTest,
+                style: customStyle(
+                    fontSize: 13,
+                    fontWeightName: "Regular",
+                    fontColor: mainColor
+                ),
+              ),
+            ],
           ),
+
           SizedBox(
             width: customWidth(context: context, widthSize: 0.03),
           ),
@@ -98,13 +116,13 @@ Column titleContents({BuildContext context, String documentId, String companyCod
             ),
           ),
           SizedBox(
-            width: customWidth(context: context, widthSize: 0.03),
+            width: customWidth(context: context, widthSize: 0.01),
           ),
           progressPopupMenu(
-            context: context,
-            documentId: documentId,
-            companyCode: companyCode,
-            companyWork: companyWork
+              context: context,
+              documentId: documentId,
+              companyCode: companyCode,
+              companyWork: companyWork
           )
         ],
       ),
@@ -120,7 +138,7 @@ Container popupMenu({BuildContext context, String documentId, String companyCode
     child: PopupMenuButton(
       padding: EdgeInsets.only(right: customWidth(context: context, widthSize: 0.04)),
       icon: Icon(
-        Icons.more_horiz
+          Icons.more_horiz
       ),
       onSelected: (value) async {
         if(value == 1) {
@@ -137,10 +155,10 @@ Container popupMenu({BuildContext context, String documentId, String companyCode
           child: Row(
             children: [
               Icon(
-                Icons.edit
+                  Icons.edit
               ),
               Text(
-                "수정하기"
+                  "수정하기"
               )
             ],
           ),
@@ -167,7 +185,6 @@ PopupMenuButton progressPopupMenu({BuildContext context, String documentId, Stri
   CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: companyCode);
 
   return PopupMenuButton(
-
     padding: EdgeInsets.only(right: customWidth(context: context, widthSize: 0.04)),
     child: Container(
       width: customWidth(context: context, widthSize: 0.15),
@@ -203,7 +220,7 @@ PopupMenuButton progressPopupMenu({BuildContext context, String documentId, Stri
           child: Text(
             "진행상태 수정",
             style: customStyle(
-              fontColor: blackColor
+                fontColor: blackColor
             ),
           ),
         ),
@@ -305,10 +322,6 @@ PopupMenuButton progressPopupMenu({BuildContext context, String documentId, Stri
   );
 }
 
-
-
-
-
 Column detailContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
   Format _format = Format();
 
@@ -316,20 +329,20 @@ Column detailContents({BuildContext context, String documentId, String companyCo
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       titleContents(
-        context: context,
-        documentId: documentId,
-        companyCode: companyCode,
-        companyWork: companyWork,
-        isDetail: isDetail
+          context: context,
+          documentId: documentId,
+          companyCode: companyCode,
+          companyWork: companyWork,
+          isDetail: isDetail
       ),
 
       SizedBox(
         height: customHeight(context: context, heightSize: 0.01),
       ),
       Padding(
-        padding: EdgeInsets.only(left: customWidth(context: context, widthSize: 0.13)),
+        padding: EdgeInsets.only(left: customWidth(context: context, widthSize: 0.15)),
         child: Text(
-          companyWork.workContents
+            companyWork.workContents
         ),
       ),
       SizedBox(
@@ -373,17 +386,17 @@ Column detailContents({BuildContext context, String documentId, String companyCo
           Text(
             "작성시간 : ",
             style: customStyle(
-              fontSize: 14,
-              fontWeightName: "Regular",
-              fontColor: greyColor
+                fontSize: 14,
+                fontWeightName: "Regular",
+                fontColor: greyColor
             ),
           ),
           Text(
             _format.timeStampToDateTime(companyWork.createDate).toString(),
             style: customStyle(
-              fontSize: 14,
-              fontWeightName: "Regular",
-              fontColor: greyColor
+                fontSize: 14,
+                fontWeightName: "Regular",
+                fontColor: greyColor
             ),
           )
         ],

@@ -19,7 +19,7 @@ class FirestoreApi{
   Future<QuerySnapshot> getDataCollection(){
     return ref.getDocuments();
   }
-
+  
   Stream<QuerySnapshot> streamDataCollection(){
     return ref.snapshots();
   }

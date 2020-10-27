@@ -104,7 +104,7 @@ class CompanyMethod{
     _user.companyCode = company.companyCode;
     _user.companyName = company.companyName;
 
-    _loginUserInfoProvider.saveLoginUserToPhone(value: _user);
+    _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _user);
 
     _companyUserRepository.setCompanyUserDataToFirebase(
       dataModel: _companyUser,
@@ -143,7 +143,7 @@ class CompanyMethod{
       _user.companyCode = _company.companyCode;
       _user.companyName = _company.companyName;
 
-      _loginUserInfoProvider.saveLoginUserToPhone(value: _user);
+      _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _user);
 
       _companyUserRepository.setCompanyUserDataToFirebase(
         dataModel: _companyUser,

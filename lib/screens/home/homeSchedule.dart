@@ -1,10 +1,25 @@
-//Flutter
+//Const
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/main.dart';
-import 'package:flutter/cupertino.dart';
+
+//Flutter
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+//Model
+import 'package:companyplaylist/models/workModel.dart';
+import 'package:companyplaylist/models/userModel.dart';
+
+//Provider
+import 'package:provider/provider.dart';
+import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+
+//Util
+import 'package:companyplaylist/utils/date/dateFormat.dart';
+
+//Widget
 import 'package:companyplaylist/widgets/card/workScheduleCard.dart';
 
 class HomeSchedulePage extends StatefulWidget {
@@ -13,120 +28,149 @@ class HomeSchedulePage extends StatefulWidget {
 }
 
 class HomeSchedulePageState extends State<HomeSchedulePage> {
-  int i = 0;
+  DateTime selectTime = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 00);
+  Firestore _db = Firestore.instance;
+  User _companyUser;
+  CalendarController _calendarController;
 
-  List<String> _valuList = ["수정하기", "삭제하기", "이력보기"];
-  String _selectedValue = "수정하기";
+  Format _format = Format();
+
+  List<bool> isDetail = List<bool>();
+
+  @override
+  void initState(){
+    super.initState();
+    _calendarController = CalendarController();
+  }
+
+  @override
+  void dispose(){
+    _calendarController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        /*Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(
-              width: 1,
-              color: boarderColor,
-            )
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.02)),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: textFieldUnderLine
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  width: customWidth(context: context, widthSize: 0.1),
-                  height: customHeight(context: context, heightSize: 0.05),
-                  child: Text(
-                    "내근",
-                    style: customStyle(
-                      fontSize: 14,
-                      fontWeightName: "Regular",
-                      fontColor: mainColor,
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                ),
-                SizedBox(
-                  width: customWidth(context: context, widthSize: 0.03),
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "09:00"
-                    ),
-                    Text(
-                        "~"
-                    ),
-                    Text(
-                        "12:00"
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: customWidth(context: context, widthSize: 0.04),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                        "KB PIC 작업"
-                    ),
-                    Text(
-                        ""
-                    ),
-                    Text(
-                        "KB PIC 프로젝트"
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: customWidth(context: context, widthSize: 0.2),
-                ),
-                Column(
-                  children: <Widget>[
-                    Container(
-                      height: customHeight(context: context, heightSize: 0.03),
-                      child: PopupMenuButton(
-                        padding: EdgeInsets.zero,
+    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+    _companyUser = _loginUserInfoProvider.getLoginUser();
 
-                        icon: Icon(
-                          Icons.more_horiz,
-                          size: customHeight(context: context, heightSize: 0.044),
-                        ),
-
-                        initialValue: _selectedValue,
-                        tooltip: "this is tooltip",
-                        itemBuilder: (BuildContext context){
-                          return _valuList.map((value){
-                            return PopupMenuItem(
-                              value: value,
-                            );
-                          }).toList();
-                        },
-                      ),
-                    ),
-                    Chip(
-                      padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.02)),
-                      label: Text(
-                        "진행중"
-                      ),
-                    )
-                  ],
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(
+            color: Colors.white,
+            child: TableCalendar(
+              calendarController: _calendarController,
+              initialCalendarFormat: CalendarFormat.week,
+              availableCalendarFormats: {
+                CalendarFormat.week: "Week",
+                CalendarFormat.month: "Month"
+              },
+        onDaySelected: (day, events, holidays) {
+            setState(() {
+              selectTime = day;
+            });
+        },
+              locale: 'ko_KR',
+              headerStyle: HeaderStyle(
+                formatButtonDecoration: BoxDecoration(
+                  color: mainColor,
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              ],
+                formatButtonTextStyle: customStyle(
+                    fontSize: 13,
+                    fontWeightName: "Bold",
+                    fontColor: whiteColor
+                ),
+              ),
+              calendarStyle:  CalendarStyle(
+                  selectedColor: mainColor,
+                  selectedStyle: customStyle(
+                      fontSize: 18,
+                      fontWeightName: "Bold",
+                      fontColor: whiteColor
+                  )
+              ),
             ),
           ),
-        )*/
-       // workScheduleCard(context)
-      ],
+          StreamBuilder(
+            stream: _db.collection("company").document(_companyUser.companyCode).collection("work").where("createUid", isEqualTo: _companyUser.mail).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              if(snapshot.data == null){
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              var _companyWork = snapshot.data.documents ?? [];
+
+              if(_companyWork.length == 0) {
+                return Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      width: 1,
+                      color: boarderColor,
+                    ),
+                  ),
+                  child: Center(
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.02)),
+                        child: Text(
+                          "일정이 없습니다.",
+                          style: customStyle(
+                            fontColor: blackColor,
+                            fontSize: 16,
+                            fontWeightName: "Medium"
+                          ),
+                        )
+                    ),
+                  ),
+                );
+              }
+
+              else{
+                while(isDetail.length < _companyWork.length){
+                  isDetail.add(false);
+                }
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: _companyWork.length,
+                    itemBuilder: (context, index) {
+                      CompanyWork _companyData = CompanyWork.fromMap(_companyWork[index].data, _companyWork[index].documentID);
+                      switch(_companyData.type) {
+                        case '내근':
+                          return GestureDetector(
+                            child: workScheduleCard(
+                              context: context,
+                              companyCode: _companyUser.companyCode,
+                              documentId: _companyWork[index].documentID,
+                              companyWork: _companyData,
+                              isDetail: isDetail[index],
+                            ),
+                            onTap: () {
+                              setState(() {
+                                isDetail[index] = !isDetail[index];
+                                for(int i = 0; i < isDetail.length; i++){
+                                  if(i != index) {
+                                    isDetail[i] = false;
+                                  }
+                                }
+                              });
+                            },
+                          );
+                          break;
+                        default:
+                          return Container();
+                      }
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

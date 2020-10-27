@@ -3,7 +3,10 @@ import 'dart:async';
 
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/auth.dart';
+
 import 'package:flutter/material.dart';
+
+import 'package:companyplaylist/provider/attendance/attendanceMethod.dart';
 
 //Const
 import 'package:companyplaylist/consts/font.dart';
@@ -17,11 +20,11 @@ class SplashPage extends StatefulWidget {
 
 class SplashPageState extends State<SplashPage>{
   startTime() async{
-    var _duration = Duration(seconds: 2);
+    var _duration = Duration(seconds: 3);
     return Timer(_duration, navigationPage);
   }
 
-  void navigationPage(){
+  void navigationPage() async {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => AuthPage()));
   }
 
@@ -33,8 +36,11 @@ class SplashPageState extends State<SplashPage>{
 
   @override
   Widget build(BuildContext context) {
-    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
+    AttendanceMethod _attendanceProvider = Provider.of<AttendanceMethod>(context, listen: false);
+
     _loginUserInfoProvider.loadLoginUserToPhone();
+
     return Scaffold(
       backgroundColor: mainColor,
       body: Center(

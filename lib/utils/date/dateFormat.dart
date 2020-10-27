@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Format{
   String weekFormat(DateTime date){
     String week;
@@ -40,5 +42,28 @@ class Format{
 
     dateText = date.month.toString() + "월 " + date.day.toString() + "일 " + weekFormat(date) + "요일";
     return dateText;
+  }
+
+  DateTime timeFormat(DateTime date){
+    DateTime time;
+    DateTime now = DateTime.now();
+
+    time = DateTime(now.year, now.month, now.day, date.hour, date.minute);
+
+    return time;
+  }
+
+  DateTime timeStampToDateTime(Timestamp time){
+    DateTime dateTime;
+    dateTime = DateTime.parse(time.toDate().toString());
+    
+    return dateTime;
+  }
+
+  Timestamp dateTimeToTimeStamp(DateTime time){
+    Timestamp dateTime;
+    dateTime = Timestamp.fromDate(time);
+
+    return dateTime;
   }
 }

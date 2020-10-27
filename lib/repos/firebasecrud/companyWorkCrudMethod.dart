@@ -41,6 +41,16 @@ class CompanyWorkCrud {
     return null;
   }
 
+  Future<void> updateCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) async {
+    await _firestoreApi.updateDocument(dataModel.toJson(), documentId);
+    return null;
+  }
+
+  Future<void> removeCompanyWorkDataToFirebase({String documentId}) async {
+    await _firestoreApi.removeDocument(documentId);
+    return null;
+  }
+
   Future<void> setCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) async{
     await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;

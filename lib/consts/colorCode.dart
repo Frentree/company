@@ -24,3 +24,6 @@ const Color chipColorPurple = Color(0xffD3DBFF);
 const Color chipColorRed = Color(0xffFFD1CF);
 const Color chipColorGreen = Color(0xffD3FFD9);
 const Color textFieldUnderLine = Color(0xff707070);
+const Color progressBefore = Color(0xff778CA2);
+const Color progressComplete = Color(0xff59D525);
+const Color progressHold = Color(0xffff6092);

@@ -19,13 +19,14 @@ class SignInMethod{
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
     CrudRepository _crudRepository = CrudRepository.userAttendance();
 
+
     User _loginUser;
 
     if(mail != "" && password != ""){
       bool _signInEmailResult = await _firebaseAuthProvider.singInWithEmail(mail: mail, password: password);
       if(_signInEmailResult == true){
         _loginUser = await _crudRepository.getUserDataToFirebaseById(documentId: mail);
-        _loginUserInfoProvider.saveLoginUserToPhone(value: _loginUser);
+        _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
       }
 
       else{

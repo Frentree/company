@@ -3,10 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//Provider
+import 'package:provider/provider.dart';
+import 'package:companyplaylist/provider/attendance/attendanceMethod.dart';
+
 //Model
 import 'package:companyplaylist/models/userModel.dart';
 
 class LoginUserInfoProvider with ChangeNotifier{
+
+
   User _loginUser;
 
   User getLoginUser() {
@@ -18,20 +24,21 @@ class LoginUserInfoProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> saveLoginUserToPhone({User value}) async {
+  Future<void> saveLoginUserToPhone({BuildContext context, User value}) async {
+    AttendanceMethod _attendanceProvider = Provider.of<AttendanceMethod>(context, listen: false);
     SharedPreferences _sharedPreferences;
     _sharedPreferences = await SharedPreferences.getInstance();
     _sharedPreferences.setString("loginUser", json.encode(value));
+    await _attendanceProvider.attendanceCheck();
     setLoginUser(value);
   }
 
   Future<void> loadLoginUserToPhone() async {
-    print("실행");
+    print("로그인 유저 정보를 가져옵니다");
     SharedPreferences _sharedPreferences;
     _sharedPreferences = await SharedPreferences.getInstance();
     if(_sharedPreferences.getString("loginUser") != null){
       _loginUser = User.fromMap(await json.decode(_sharedPreferences.getString("loginUser")), null);
-      notifyListeners();
     }
     else{
       return null;

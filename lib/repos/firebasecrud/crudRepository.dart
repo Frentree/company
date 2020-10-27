@@ -99,8 +99,8 @@ class CrudRepository {
   Future<List<CompanyWork>> fetchCompanyWork() => _companyWorkCrud.fetchCompanyWork();
   Stream<QuerySnapshot> fetchCompanyWorkAsStream() => _companyWorkCrud.fetchCompanyWorkAsStream();
   // Future<CompanyUser> getCompanyWorkDataToFirebaseById({String documentId}) => _companyWorkCrud.getCompanyUserDataToFirebaseById(documentId: documentId);
-  // Future<void> removeCompanyWorkDataToFirebase({String documentId}) => _companyWorkCrud.removeCompanyUserDataToFirebase(documentId: documentId);
-  // Future<void> updateCompanyWorkDataToFirebase({CompanyUser dataModel, String documentId}) => _companyWorkCrud.updateCompanyUserDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> removeCompanyWorkDataToFirebase({String documentId}) => _companyWorkCrud.removeCompanyWorkDataToFirebase(documentId: documentId);
+  Future<void> updateCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) => _companyWorkCrud.updateCompanyWorkDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> setCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) => _companyWorkCrud.setCompanyWorkDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> addCompanyWorkDataToFirebase({CompanyWork dataModel}) => _companyWorkCrud.addCompanyWorkDataToFirebase(dataModel: dataModel);
 
