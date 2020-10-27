@@ -18,10 +18,13 @@ workContent(BuildContext context, int type) {
   if (type == 1 || type == 2) {
     showModalBottomSheet(
         isScrollControlled: false,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20), topLeft: Radius.circular(20))),
         context: context,
         builder: (BuildContext context) {
-          LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+          LoginUserInfoProvider _loginUserInfoProvider =
+              Provider.of<LoginUserInfoProvider>(context);
           _loginUser = _loginUserInfoProvider.getLoginUser();
 
           return StatefulBuilder(
@@ -29,7 +32,11 @@ workContent(BuildContext context, int type) {
               return Padding(
                 padding: MediaQuery.of(context).viewInsets,
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 30, left: 20, right: 20, bottom: MediaQuery.of(context).viewInsets.bottom),
+                  padding: EdgeInsets.only(
+                      top: 30,
+                      left: 20,
+                      right: 20,
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -58,7 +65,8 @@ workContent(BuildContext context, int type) {
                             child: TextField(
                               controller: _titleController,
                               autofocus: true,
-                              decoration: InputDecoration(hintText: '제목을 입력하세요'),
+                              decoration:
+                                  InputDecoration(hintText: '제목을 입력하세요'),
                             ),
                           ),
                           Padding(
@@ -76,7 +84,8 @@ workContent(BuildContext context, int type) {
                                 child: IconButton(
                                   icon: Icon(Icons.arrow_upward),
                                   onPressed: () {
-                                    if (_titleController.text != '' && _titleController.text != '') {
+                                    if (_titleController.text != '' &&
+                                        _titleController.text != '') {
                                     } else if (_titleController.text == '') {
                                       // 제목 미입력
 

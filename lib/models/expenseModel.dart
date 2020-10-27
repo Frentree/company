@@ -7,7 +7,7 @@
 지출일시 <buyDate>
 지출금액 <cost>
 세부내역 메모 <memo>
-영수증 첨부 이미지 유알엘 <receiptUrl>
+영수증 첨부 이미지 유알엘 <imageUrl>
 기안상태 <status>
 */
 
@@ -22,7 +22,7 @@ class ExpenseModel {
   Timestamp buyDate;
   int cost;
   String memo;
-  String receiptUrl;
+  String imageUrl;
   int status;
 
   ExpenseModel({
@@ -34,7 +34,7 @@ class ExpenseModel {
     this.buyDate,
     this.cost,
     this.memo,
-    this.receiptUrl,
+    this.imageUrl,
     this.status = 0
   });
 
@@ -47,10 +47,10 @@ class ExpenseModel {
         buyDate = snapshot["buyDate"],
         cost = snapshot["cost"],
         memo = snapshot["memo"],
-        receiptUrl = snapshot["receiptUrl"],
+        imageUrl = snapshot["imageUrl"],
         status = snapshot["status"];
 
-  toJson2() => {
+  toJson() => {
       "name": name,
       "mail": mail,
       "companyCode": companyCode,
@@ -59,7 +59,7 @@ class ExpenseModel {
       "buyDate": buyDate,
       "cost": cost,
       "memo": memo,
-      "receiptUrl": receiptUrl,
+      "imageUrl": imageUrl,
       "status": status,
     };
 }
