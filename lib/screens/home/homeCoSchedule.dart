@@ -196,6 +196,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 if(element.documentID != _companyUser.mail){
                   _coUserUid.add(element.documentID);
                 }
+                print(_coUserUid);
               });
               return StreamBuilder(
                 stream: tabIndex == 0 ? _db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots() :
@@ -242,6 +243,13 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     while(isDetail.length < _companyWork.length){
                       isDetail.add(false);
                     }
+                    _companyWork.forEach((value){
+                      var b = [];
+                      b.add(CompanyWork.fromMap(value.data, value.documentID));
+                      print("값 $b");
+                    });
+
+                    print(_companyWork);
                     return Expanded(
                       child: ListView.builder(
                         itemCount: _companyWork.length,
