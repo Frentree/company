@@ -158,7 +158,7 @@ dateSetBottomSheet(BuildContext context) async {
                             InkWell(
                               child: Text(
                                 "날짜 선택",
-                                style: _customStyleMain,
+                                style: customStyle(fontSize: 14, fontWeightName: 'Regular', fontColor: mainColor),
                               ),
                               onTap: () {
                                 print("텍스트");
