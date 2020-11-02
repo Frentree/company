@@ -1,10 +1,11 @@
 /*
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/screens/work/workContent.dart';
-import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
 import 'package:flutter/material.dart';
+
+import '../../consts/colorCode.dart';
+import '../../consts/font.dart';
+
 
 
 WorkMainPage(BuildContext context) {
@@ -14,10 +15,7 @@ WorkMainPage(BuildContext context) {
   void _workBottomMove(int type) {
     if(type == 0) {   // 내근 또는 외근 일때
     } else if(type == 1 || type == 2) {   // 내근 또는 외근 일때
-      */
-/*Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));*//*
-
-      workContent(context, type);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));
     } else if (type == 3) {
 
     } else if (type == 4) {
@@ -30,7 +28,7 @@ WorkMainPage(BuildContext context) {
       WorkNoticeBottomSheet(context);
     }
   }
-
+  
   // 관리자 권한이 아닐 경우
   if (_userGrade != 9) {
     showModalBottomSheet(
@@ -66,9 +64,9 @@ WorkMainPage(BuildContext context) {
                       label: Text(
                         "최근 일정에서 생성",
                         style: customStyle(
-                            fontSize: 14,
-                            fontWeightName:'Regular',
-                            fontColor: mainColor
+                          fontSize: 14,
+                          fontWeightName:'Regular',
+                          fontColor: mainColor
                         ),
                       ),
                       onPressed: () {
@@ -326,18 +324,18 @@ WorkMainPage(BuildContext context) {
                       padding: EdgeInsets.only(left: 15),
                     ),
                     ActionChip(
-                      backgroundColor: chipColorGreen,
-                      label: Text(
-                        "공지사항",
-                        style: customStyle(
-                            fontSize: 14,
-                            fontWeightName:'Regular',
-                            fontColor: mainColor
+                        backgroundColor: chipColorGreen,
+                        label: Text(
+                          "공지사항",
+                          style: customStyle(
+                              fontSize: 14,
+                              fontWeightName:'Regular',
+                              fontColor: mainColor
+                          ),
                         ),
-                      ),
-                      onPressed: (){
-                        _workBottomMove(7);
-                      },
+                        onPressed: (){
+                          _workBottomMove(7);
+                        },
                     ),
                   ],
                 ),

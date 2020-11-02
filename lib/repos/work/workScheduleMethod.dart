@@ -31,12 +31,15 @@ class WorkScheduleMethod{
   Future<void> workScheduleFirebaseAuth(
       {BuildContext context,
       String createUid,
+      String name,
       String workTitle,
-      String startDate,
-      String endDate,
-      String workContent,
+      String workContents,
+      Timestamp startDate,
+      Timestamp createDate,
       List<Map<String, String>> share,
-      String bigCategory,
+      int progress,
+      String location,
+      String timeTest,
       String type}) async {
     FirebaseAuthProvider _firebaseAuthProvider =
         Provider.of<FirebaseAuthProvider>(context, listen: false);
@@ -47,29 +50,34 @@ class WorkScheduleMethod{
     }
     
     // 시작및 종료시간 미선택
-    if(startDate == "" && endDate == "") {
+    if(startDate == "") {
       return;
     }
-    
-    // 빅 카테고리 미선택
-    if(bigCategory == "project"){
-      return;
-    }
-    
+    /*
     // 내용 미입력
-    if(workContent.trim() == ""){
+    if(workContents.trim() == ""){
       return;
     }
-
+*/
     CompanyWork work = CompanyWork(
       createUid: createUid,
+      name: name,
       workTitle: workTitle,
+<<<<<<< HEAD
       startDate: Timestamp.fromDate(DateTime.parse(startDate)),
       endDate: endDate,
       workContents: workContent,
+=======
+      createDate: createDate,
+      startDate: startDate,
+      workContents: workContents,
+>>>>>>> b07a3ebb79276a358359e89870f66e1207a4a341
       type: type,
       share: share,
-      bigCategory: bigCategory,
+      level: 0,
+      progress: progress,
+      location: location,
+      timeTest: timeTest,
     );
 
     CrudRepository _crudRepository = CrudRepository();

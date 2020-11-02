@@ -284,7 +284,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 ),
                                 onPressed: () async {
                                   String setDate =
-                                      await workDatePage(context, 0);
+                                      await workDatePage(context);
                                   if (setDate != '') {
                                     setState(() {
                                       _startDateTextEdit.text = setDate;
@@ -324,7 +324,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 size: 30,
                               ),
                               onPressed: () async {
-                                String setDate = await workDatePage(context, 1);
+                                String setDate = await workDatePage(context);
                                 if (setDate != '') {
                                   setState(() {
                                     _endDateTextEdit.text = setDate;
@@ -548,19 +548,7 @@ class WorkContentPageState extends State<WorkContentPage> {
                                 btnText: "$type 일정 생성",
                                 btnTextColor: whiteColor,
                                 btnAction: () => {
-                                      _workRepository.workScheduleFirebaseAuth(
-                                        createUid: _loginUserInfoProvider
-                                            .getLoginUser()
-                                            .mail,
-                                        context: context,
-                                        workTitle: _titileTextEdit.text,
-                                        startDate: _startDateTextEdit.text,
-                                        endDate: _endDateTextEdit.text,
-                                        workContent: _contentEdit.text,
-                                        bigCategory: _project,
-                                        type: type,
-                                        share: _teamList,
-                                      ): null
+                                      
                                     }),
                             Spacer(),
                           ],

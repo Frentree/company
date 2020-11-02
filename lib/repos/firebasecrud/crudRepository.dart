@@ -1,9 +1,11 @@
 //Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/bigCategoryModel.dart';
+import 'package:companyplaylist/models/noticeCommentModel.dart';
 import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/repos/firebasecrud/companyWorkCrudMethod.dart';
+import 'package:companyplaylist/repos/firebasecrud/noticeCommentCrudMethod.dart';
 import 'package:companyplaylist/repos/firebasecrud/noticeCrudMethod.dart';
 
 //Repos
@@ -23,6 +25,7 @@ import 'package:companyplaylist/repos/firebasecrud/workCategoryCrudMethod.dart';
 
 class CrudRepository {
   String companyCode;
+  String documentID;
 
   UserCrud _userCrud = UserCrud();
 
@@ -36,8 +39,11 @@ class CrudRepository {
   // WorkCategory Crud 2020-09-28, 이윤혁
   WorkCategoryCrud _workCategoryCrud;
 
-  // Work Crud 2020-09-23, 이윤혁
+  // Notice Crud 2020-09-23, 이윤혁
   NoticeCrud _noticeCrud;
+
+  // Notice Comment 2020-10-21 이윤혁
+  NoticeCommentCrud _noticeCommentCrud;
 
   //
   UserAttendanceCrud _userAttendanceCrud;
@@ -65,6 +71,10 @@ class CrudRepository {
 
   CrudRepository.noticeAttendance({this.companyCode}){
     _noticeCrud = NoticeCrud(companyCode);
+  }
+
+  CrudRepository.noticeCommentAttendance({this.companyCode, this.documentID}){
+    _noticeCommentCrud = NoticeCommentCrud(companyCode, documentID);
   }
 
   Future<List<User>> fetchUser() => _userCrud.fetchUser();
@@ -123,5 +133,14 @@ class CrudRepository {
   Future<void> updateNoticeDataToFirebase({NoticeModel dataModel, String documentId}) => _noticeCrud.updateNoticeDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> setNoticeDataToFirebase({NoticeModel dataModel, String documentId}) => _noticeCrud.setNoticeDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> addNoticeDataToFirebase({NoticeModel dataModel}) => _noticeCrud.addNoticeDataToFirebase(dataModel: dataModel);
+
+  // NoticeComment Repository 2020-10-21, 이윤혁
+  Future<List<NoticeCommentModel>> fetchNoticeComment() => _noticeCommentCrud.fetchNoticeComment();
+  Stream<QuerySnapshot> fetchNoticeCommentAsStream() => _noticeCommentCrud.fetchNoticeCommentAsStream();
+  Future<NoticeCommentModel> getNoticeCommentDataToFirebaseById({String documentId}) => _noticeCommentCrud.getNoticeCommentDataToFirebaseById(documentId: documentId);
+  Future<void> removeNoticeCommentDataToFirebase({String documentId}) => _noticeCommentCrud.removeNoticeCommentDataToFirebase(documentId: documentId);
+  Future<void> updateNoticeCommentDataToFirebase({NoticeCommentModel dataModel, String documentId}) => _noticeCommentCrud.updateNoticeCommentDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> setNoticeCommentDataToFirebase({NoticeCommentModel dataModel, String documentId}) => _noticeCommentCrud.setNoticeCommentDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> addNoticeCommentDataToFirebase({NoticeCommentModel dataModel}) => _noticeCommentCrud.addNoticeCommentDataToFirebase(dataModel: dataModel);
 
 }

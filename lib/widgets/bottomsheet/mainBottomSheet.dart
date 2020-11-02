@@ -1,4 +1,3 @@
-/*
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/screens/work/workContent.dart';
@@ -7,16 +6,14 @@ import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
 import 'package:flutter/material.dart';
 
 
-WorkMainPage(BuildContext context) {
+MainBottomSheet(BuildContext context) {
   // 사용자 권한
   int _userGrade = 9;
 
   void _workBottomMove(int type) {
     if(type == 0) {   // 내근 또는 외근 일때
     } else if(type == 1 || type == 2) {   // 내근 또는 외근 일때
-      */
-/*Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));*//*
-
+      /*Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));*/
       workContent(context, type);
     } else if (type == 3) {
 
@@ -348,4 +345,3 @@ WorkMainPage(BuildContext context) {
     );
   }
 }
-*/

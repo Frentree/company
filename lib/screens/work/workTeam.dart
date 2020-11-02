@@ -33,16 +33,6 @@ import 'package:shared_preferences/shared_preferences.dart';
     _isValue.add(false);
   }
 
-  /*_companyUserCategory.then((value) =>
-      value.forEach((element) {
-        CompanyUser _cuMethod = CompanyUser();
-        _cuMethod.name = element.name;
-        _cuMethod.mail = element.mail;
-        _companyUserList.add(_cuMethod);
-
-      })
-  );*/
-
   await showModalBottomSheet(
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
