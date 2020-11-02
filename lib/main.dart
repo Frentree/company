@@ -11,7 +11,7 @@ import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:companyplaylist/screens/test.dart';
 void main() {
   runApp(MyApp());
 }
@@ -44,7 +44,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SplashPage(),
+        home: test(),
+        //home: SplashPage(),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate

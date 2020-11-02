@@ -6,7 +6,7 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 //Flutter
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:companyplaylist/repos/tableCalendar/table_calendar.dart';
 
 //Model
 import 'package:companyplaylist/models/workModel.dart';
@@ -62,15 +62,17 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
             child: TableCalendar(
               calendarController: _calendarController,
               initialCalendarFormat: CalendarFormat.week,
+              startingDayOfWeek: StartingDayOfWeek.monday,
               availableCalendarFormats: {
-                CalendarFormat.week: "Week",
-                CalendarFormat.month: "Month"
+                CalendarFormat.week: "주간",
+                CalendarFormat.month: "월간"
               },
-        onDaySelected: (day, events, holidays) {
-            setState(() {
-              selectTime = day;
-            });
-        },
+              onDaySelected: (day, events, holidays) {
+                  setState(() {
+                    selectTime = day;
+                    _calendarController.setCalendarFormat(CalendarFormat.week);
+                  });
+              },
               locale: 'ko_KR',
               headerStyle: HeaderStyle(
                 formatButtonDecoration: BoxDecoration(
@@ -84,12 +86,12 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                 ),
               ),
               calendarStyle:  CalendarStyle(
-                  selectedColor: mainColor,
-                  selectedStyle: customStyle(
-                      fontSize: 18,
-                      fontWeightName: "Bold",
-                      fontColor: whiteColor
-                  )
+                selectedColor: mainColor,
+                selectedStyle: customStyle(
+                  fontSize: 18,
+                  fontWeightName: "Bold",
+                  fontColor: whiteColor
+                )
               ),
             ),
           ),
@@ -103,28 +105,36 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               }
               var _companyWork = snapshot.data.documents ?? [];
 
+
+
               if(_companyWork.length == 0) {
-                return Card(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(
-                      width: 1,
-                      color: boarderColor,
-                    ),
-                  ),
-                  child: Center(
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.02)),
-                        child: Text(
-                          "일정이 없습니다.",
-                          style: customStyle(
-                            fontColor: blackColor,
-                            fontSize: 16,
-                            fontWeightName: "Medium"
+                return Expanded(
+                  child: ListView(
+                    children: [
+                      Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            width: 1,
+                            color: boarderColor,
                           ),
-                        )
-                    ),
+                        ),
+                        child: Center(
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.02)),
+                              child: Text(
+                                "일정이 없습니다.",
+                                style: customStyle(
+                                    fontColor: blackColor,
+                                    fontSize: 16,
+                                    fontWeightName: "Medium"
+                                ),
+                              )
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }

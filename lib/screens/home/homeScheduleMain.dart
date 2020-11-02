@@ -177,7 +177,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                   tabBtn(
                       context: context,
                       heightSize: 0.05,
-                      widthSize: 0.31,
+                      widthSize: 0.46,
                       btnText: "나의 일정",
                       tabIndexVariable: tabIndex,
                       tabOrder: 0,
@@ -190,26 +190,13 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                   tabBtn(
                       context: context,
                       heightSize: 0.05,
-                      widthSize: 0.31,
+                      widthSize: 0.46,
                       btnText: "동료 일정",
                       tabIndexVariable: tabIndex,
                       tabOrder: 1,
                       tabAction: (){
                         setState(() {
                           tabIndex = 1;
-                        });
-                      }
-                  ),
-                  tabBtn(
-                      context: context,
-                      heightSize: 0.05,
-                      widthSize: 0.31,
-                      btnText: "내 결재함",
-                      tabIndexVariable: tabIndex,
-                      tabOrder: 2,
-                      tabAction: (){
-                        setState(() {
-                          tabIndex = 2;
                         });
                       }
                   ),
