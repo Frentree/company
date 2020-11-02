@@ -1,5 +1,10 @@
 //Flutter
+<<<<<<< HEAD
 import 'package:companyplaylist/widgets/album/widgetMain.dart';
+=======
+import 'package:companyplaylist/screens/alarm/alarmMain.dart';
+import 'package:companyplaylist/screens/setting/settingMain.dart';
+>>>>>>> 8fcdebe5f026297d9a1e9438e3fbb410912d0ae5
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:companyplaylist/widgets/bottomsheet/setting/settingMain.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +24,11 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
+<<<<<<< HEAD
   List<Widget> _page = [HomeScheduleMainPage()];
+=======
+  List<Widget> _page = [HomeScheduleMainPage(),AlarmMainPage(),null,AlarmMainPage(), SettingMainPage()];
+>>>>>>> 8fcdebe5f026297d9a1e9438e3fbb410912d0ae5
 
   //현재 페이지 인덱스
   int _currentPateIndex = 0;

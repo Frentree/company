@@ -352,22 +352,129 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                         fontColor: greyColor),
                                                   ),
                                                   Container(
-                                                    width: 100,
+                                                    padding: EdgeInsets.only(left: 10),
                                                     alignment: Alignment.topRight,
-                                                    child: InkWell(
-                                                      child: Text("댓글 달기",
-                                                        style: customStyle(
-                                                            fontColor: mainColor,
-                                                            fontSize: 12,
-                                                            fontWeightName: 'Medium'
+                                                    width: 150,
+                                                    child: Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 3,
+                                                          child: InkWell(
+                                                            child: Text("댓글 달기",
+                                                              style: customStyle(
+                                                                  fontColor: mainColor,
+                                                                  fontSize: 12,
+                                                                  fontWeightName: 'Medium'
+                                                              ),
+                                                            ),
+                                                            onTap: (){
+                                                              _commentId = documents[index].documentID;
+                                                              print("_commentId >>> " + _commentId);
+                                                              _noticeComment.text = documents[index].data['createUser']['name'].toString() + " ";
+                                                              _commnetFocusNode.requestFocus();
+                                                            },
+                                                          ),
                                                         ),
-                                                      ),
-                                                      onTap: (){
-                                                        _commentId = documents[index].documentID;
-                                                        print("_commentId >>> " + _commentId);
-                                                        _noticeComment.text = documents[index].data['createUser']['name'].toString() + " ";
-                                                        _commnetFocusNode.requestFocus();
-                                                      },
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: Visibility(
+                                                            visible: documents[index].data['createUser']['mail'].toString() == _loginUser.mail,
+                                                            child: Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 1,
+                                                                  child: InkWell(
+                                                                    child: Text("수정",
+                                                                      style: customStyle(
+                                                                          fontColor: mainColor,
+                                                                          fontSize: 12,
+                                                                          fontWeightName: 'Medium'
+                                                                      ),
+                                                                    ),
+                                                                    onTap: (){
+                                                                      _commentId = documents[index].documentID;
+                                                                      print("_commentId >>> " + _commentId);
+                                                                      _noticeComment.text = documents[index].data['createUser']['name'].toString() + " ";
+                                                                      _commnetFocusNode.requestFocus();
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 1,
+                                                                  child: InkWell(
+                                                                    child: Text("삭제",
+                                                                      style: customStyle(
+                                                                          fontColor: mainColor,
+                                                                          fontSize: 12,
+                                                                          fontWeightName: 'Medium'
+                                                                      ),
+                                                                    ),
+                                                                    onTap: (){
+                                                                      showDialog(
+                                                                        context: context,
+                                                                        builder: (BuildContext context) {
+                                                                          // return object of type Dialog
+                                                                          return AlertDialog(
+                                                                            title: Text(
+                                                                              "댓글 삭제",
+                                                                              style: customStyle(
+                                                                                  fontColor: mainColor,
+                                                                                  fontSize: 15,
+                                                                                  fontWeightName: 'Bold'
+                                                                              ),
+                                                                            ),
+                                                                            content: Text(
+                                                                              "댓글을 정말로 지우시겠습니까? \n지우실 경우 하위 댓글도 전부 지워집니다.",
+                                                                              style: customStyle(
+                                                                                  fontColor: mainColor,
+                                                                                  fontSize: 13,
+                                                                                  fontWeightName: 'Regular'
+                                                                              ),
+                                                                            ),
+                                                                            actions: <Widget>[
+                                                                              FlatButton(
+                                                                                child: Text("네",
+                                                                                  style: customStyle(
+                                                                                      fontColor: blueColor,
+                                                                                      fontSize: 15,
+                                                                                      fontWeightName: 'Bold'
+                                                                                  ),
+                                                                                ),
+                                                                                onPressed: () {
+                                                                                  _commentId = documents[index].documentID;
+                                                                                  _db.collection("company")
+                                                                                      .document(_loginUser.companyCode)
+                                                                                      .collection("notice")
+                                                                                      .document(noticeUid)
+                                                                                      .collection("comment").document(_commentId).delete();
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                              ),
+                                                                              FlatButton(
+                                                                                child: Text("아니오",
+                                                                                  style: customStyle(
+                                                                                      fontColor: blueColor,
+                                                                                      fontSize: 15,
+                                                                                      fontWeightName: 'Bold'
+                                                                                  ),
+                                                                                ),
+                                                                                onPressed: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          );
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],

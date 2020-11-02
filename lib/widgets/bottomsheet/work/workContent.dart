@@ -109,6 +109,7 @@ workContent(BuildContext context, int type) {
                                         : Colors.blue,
                                 child: IconButton(
                                   icon: Icon(Icons.arrow_upward),
+<<<<<<< HEAD
                                   onPressed: () {
                                     if (_titleController.text != '' &&
                                         _titleController.text != '') {
@@ -140,6 +141,25 @@ workContent(BuildContext context, int type) {
                                       ): null
                                     },
                                   ))
+=======
+                                  onPressed: () => {
+                                    _workRepository.workScheduleFirebaseAuth(
+                                      context: context,
+                                      createUid: _loginUser.mail,
+                                      name: _loginUser.name,
+                                      startDate: Timestamp.fromDate(DateTime.parse(date)),
+                                      type: type == 1 ? "내근" : "외근",
+                                      workTitle: _titleController.text,
+                                      workContents: isChk == true ? _contentController.text : "",
+                                      createDate: Timestamp.now(),
+                                      progress: 3,
+                                      location: _locationController.text,
+                                      timeTest: timeTest == "" ? "종일" : timeTest,
+                                      share: isChk == true ? _teamList : null,
+                                    ): null
+                                  },
+                                )),
+>>>>>>> 8fcdebe5f026297d9a1e9438e3fbb410912d0ae5
                           ),
                         ],
                       ),
@@ -181,7 +201,9 @@ workContent(BuildContext context, int type) {
                                   ),
                                 ),
                                 onTap: () async {
-                                  date = await workDatePage(context);
+                                  String time = await workDatePage(context);
+                                  print(time);
+                                  date = DateFormat('yyyy-MM-dd 12:00:00.00').format(DateTime.parse(time)).toString();
                                   setState((){
                                   });
                                 },

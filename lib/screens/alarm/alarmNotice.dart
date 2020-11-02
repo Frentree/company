@@ -188,7 +188,15 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   fontWeightName: 'Regular',
                                   fontSize: 13
                                 ),
-                              )
+                              ),
+                              Text(
+                                "1",
+                                style: customStyle(
+                                    fontColor: mainColor,
+                                    fontWeightName: 'Regular',
+                                    fontSize: 13
+                                ),
+                              ),
                             ],
                           ),
                           onPressed: () => {
