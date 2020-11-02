@@ -1,5 +1,7 @@
 //자동 로그인 여부를 판단하는 페이지 입니다.
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
@@ -25,6 +27,7 @@ class AuthPage extends StatelessWidget{
 
     if(_user != null){
       if(_user.companyCode != ""){
+
         return HomeMainPage();
       }
       else{

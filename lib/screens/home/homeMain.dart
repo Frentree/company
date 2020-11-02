@@ -1,6 +1,7 @@
 //Flutter
 import 'package:companyplaylist/widgets/album/widgetMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
+import 'package:companyplaylist/widgets/bottomsheet/setting/settingMain.dart';
 import 'package:flutter/material.dart';
 
 //Const
@@ -27,6 +28,9 @@ class HomeMainPageState extends State<HomeMainPage> {
   void _pageChange(int pageIndex){
     if(pageIndex == 2){
       MainBottomSheet(context);
+    }
+    else if(pageIndex == 4){
+      //SettingMain(context);
     }
     else{
       setState(() {
@@ -147,6 +151,27 @@ class HomeMainPageState extends State<HomeMainPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Alert Dialog title"),
+          content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

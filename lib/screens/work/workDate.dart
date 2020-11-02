@@ -8,16 +8,10 @@ import 'package:intl/intl.dart';
 
 import '../../consts/widgetSize.dart';
 
-workDatePage(BuildContext context, int timeType) async {
+workDatePage(BuildContext context) async {
 
   String date = "";
   String timeTitle = "";
-
-  if(timeType == 0) {
-    timeTitle = "시작 일시";
-  } else {
-    timeTitle = "종료 일시";
-  }
 
   await showModalBottomSheet(
       isScrollControlled: true,
@@ -46,9 +40,9 @@ workDatePage(BuildContext context, int timeType) async {
                          ),
                          child: DateTimePickerWidget(
                            locale: DateTimePickerLocale.ko,
-                           dateFormat: "yyyy년 MM월 dd일 HH시:mm분",
+                           dateFormat: "yyyy년 MM월 dd일",
                            onConfirm: (dateTime, selectedIndex) {
-                             date= DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(DateTime.parse(dateTime.toString()));
+                             date= DateTime.parse(dateTime.toString()).toString();
                            },
                          ),
                        ),

@@ -3,6 +3,7 @@
 *
 * */
 //Flutter
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/bigCategoryModel.dart';
 import 'package:flutter/material.dart';
 
@@ -13,24 +14,31 @@ class WorkRepository{
 
    // 내근, 외근 등록
    Future<void> workScheduleFirebaseAuth({
-     BuildContext context, String createUid,
+     BuildContext context,
+     String createUid,
+     String name,
      String workTitle,
-     String startDate,
-     String endDate,
-     String workContent,
+     Timestamp startDate,
+     Timestamp createDate,
+     String workContents,
      List<Map<String,String>> share,
-     String bigCategory,
+     int progress,
+     String location,
+     String timeTest,
      String type})
     => _workScheduleMethod.workScheduleFirebaseAuth(
-        createUid : createUid,
-        context: context,
-        workTitle: workTitle,
-        startDate: startDate,
-        endDate: endDate,
-        workContent: workContent,
-        share: share,
-        type: type,
-        bigCategory: bigCategory
+      context: context,
+      createUid : createUid,
+      name: name,
+      workTitle: workTitle,
+      workContents: workContents,
+      startDate: startDate,
+      createDate: createDate,
+      share: share,
+      progress: progress,
+      location: location,
+      type: type,
+      timeTest: timeTest,
     );
 
    Future<List<bigCategoryModel>> workCategoryFirebaseAuth({BuildContext context}) => _workScheduleMethod.workCategoryFirebaseAuth();
