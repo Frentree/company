@@ -1,5 +1,6 @@
 //Flutter
 import 'package:companyplaylist/screens/alarm/alarmMain.dart';
+import 'package:companyplaylist/screens/setting/settingMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workMain.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
-  List<Widget> _page = [HomeScheduleMainPage(),AlarmMainPage(),null,AlarmMainPage(),AlarmMainPage()];
+  List<Widget> _page = [HomeScheduleMainPage(),AlarmMainPage(),null,AlarmMainPage(), SettingMainPage()];
 
   //현재 페이지 인덱스
   int _currentPateIndex = 0;

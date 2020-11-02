@@ -108,7 +108,7 @@ workContent(BuildContext context, int type) {
                                       createDate: Timestamp.now(),
                                       progress: 3,
                                       location: _locationController.text,
-                                      timeTest: timeTest,
+                                      timeTest: timeTest == "" ? "종일" : timeTest,
                                       share: isChk == true ? _teamList : null,
                                     ): null
                                   },
@@ -154,7 +154,9 @@ workContent(BuildContext context, int type) {
                                   ),
                                 ),
                                 onTap: () async {
-                                  date = await workDatePage(context);
+                                  String time = await workDatePage(context);
+                                  print(time);
+                                  date = DateFormat('yyyy-MM-dd 12:00:00.00').format(DateTime.parse(time)).toString();
                                   setState((){
                                   });
                                 },
