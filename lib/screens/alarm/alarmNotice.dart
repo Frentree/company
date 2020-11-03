@@ -10,6 +10,7 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeComment.dart';
+import 'package:companyplaylist/screens/alarm/alarmNoticeDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -203,12 +204,18 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
-                                    AlarmNoticeCommentPage(
+                                    /*AlarmNoticeCommentPage(
                                       noticeUid: documents[index].data['noticeUid'].toString(),
                                       noticeTitle: documents[index].data['noticeTitle'].toString(),
                                       noticeContent: documents[index].data['noticeContent'].toString(),
                                       noticeCreateDate: _createDate,
-                                    )
+                                    )*/
+                                  AlarmNoticeDetailPage(
+                                    noticeUid: documents[index].data['noticeUid'].toString(),
+                                    noticeTitle: documents[index].data['noticeTitle'].toString(),
+                                    noticeContent: documents[index].data['noticeContent'].toString(),
+                                    noticeCreateDate: _createDate,
+                                  )
                                 )
                             ),
                           },
