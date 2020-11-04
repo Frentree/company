@@ -46,11 +46,6 @@ Column titleContents({BuildContext context, String documentId, String companyCod
   return Column(
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      isDetail ? popupMenu(
-          context: context,
-          documentId: documentId,
-          companyCode: companyCode
-      ) : Container(),
       Row(
         children: [
           Container(
@@ -118,12 +113,24 @@ Column titleContents({BuildContext context, String documentId, String companyCod
           SizedBox(
             width: customWidth(context: context, widthSize: 0.01),
           ),
-          progressPopupMenu(
-              context: context,
-              documentId: documentId,
-              companyCode: companyCode,
-              companyWork: companyWork
-          )
+          Container(
+            width: customWidth(context: context, widthSize: 0.15),
+            height: customHeight(context: context, heightSize: 0.03),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: companyWork.progress == 1 ? progressComplete : companyWork.progress == 2 ? blueColor : companyWork.progress == 3 ? progressBefore : progressHold
+            ),
+            child: Center(
+              child: Text(
+                companyWork.progress == 1 ? "완료" : companyWork.progress == 2 ? "진행중" : companyWork.progress == 3 ? "진행전" : "보류",
+                style: customStyle(
+                    fontSize: 13,
+                    fontWeightName: "Regular",
+                    fontColor: whiteColor
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     ],

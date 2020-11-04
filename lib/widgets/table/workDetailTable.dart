@@ -5,35 +5,64 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/repos/tableCalendar/table_calendar.dart';
 
 //Model
 import 'package:companyplaylist/models/workModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-
-//Provider
-import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 
 //Util
 import 'package:companyplaylist/utils/date/dateFormat.dart';
-
-//Widget
-import 'package:companyplaylist/widgets/button/textButton.dart';
-import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
 
 const double heightSize = 0.1;
 const double sizedBoxHeight = 0.01;
 const double workChipHeightSize = 0.03;
 
+List<Map<String, List<CompanyWork>>> dataFetch(List<CompanyWork> companyWork){
+  Format _format = Format();
 
-TableRow workDetailTableRow({BuildContext context, List<CompanyWork> companyWorkList}){
+  List<Map<String, List<CompanyWork>>> companyWorkList = List(5);
+  List<String> key = ["오전", "종일", "오후"];
+  for(int i = 0; i < 5; i++){
+    Map<String, List<CompanyWork>> timeMap = Map();
+
+    key.forEach((element) {
+      timeMap[element] = [];
+    });
+
+    companyWork.forEach((element) {
+      int week = _format.timeStampToDateTime(element.startDate).weekday;
+      if((week -1) == i){
+        timeMap[element.timeTest].add(element);
+      }
+    });
+    companyWorkList[i] = timeMap;
+  }
+  return companyWorkList;
+}
+
+TableRow workDetailTableRow({BuildContext context, List<CompanyWork> companyWork}){
+  List<Map<String, List<CompanyWork>>> companyWorkList = dataFetch(companyWork);
+  List<Container> tableRow = List();
+
   companyWorkList.forEach((element) {
-
+    List<int> workCount = List();
+    element.forEach((key, value) {
+      workCount.add(element[key].length);
+    });
+    if(workCount.every((element) => element==0)){
+      tableRow.add(emptyCell());
+    }
+    else{
+      tableRow.add(Cell(
+        context: context,
+        companyWorkMap: element,
+        workCount: workCount
+      ));
+    }
   });
 
-
+  return TableRow(
+    children: tableRow
+  );
 }
 
 //빈 cell
@@ -52,19 +81,28 @@ Container emptyCell({BuildContext context}){
 }
 
 //오전 일정만 있는 cell
-Container onlyMorningCell({BuildContext context, List<CompanyWork> companyWorkList}){
+Container Cell({BuildContext context, Map<String ,List<CompanyWork>> companyWorkMap, List<int> workCount}){
   return Container(
     height: customHeight(context: context, heightSize: heightSize),
     child: Padding(
       padding: EdgeInsets.all(5),
       child: Column(
         children: [
-          workChip(
+          workCount[0] != 0 ? workChip(
             context: context,
-            //companyWork: companyWork
-          ),
-          SizedBox(height: customHeight(context: context, heightSize: sizedBoxHeight)),
-          emptyChip(context: context)
+            companyWork: companyWorkMap["오전"][0],
+            count: workCount[0]
+          ) : emptyChip(context: context),
+          workCount[1] != 0 ? workChip(
+              context: context,
+              companyWork: companyWorkMap["종일"][0],
+              count: workCount[1]
+          ) : emptyChip(context: context),
+          workCount[2] != 0 ? workChip(
+              context: context,
+              companyWork: companyWorkMap["오후"][0],
+              count: workCount[2]
+          ) : emptyChip(context: context),
         ],
       )
     ),
@@ -131,24 +169,33 @@ Container allDayCell({BuildContext context, CompanyWork companyWork}){
 }
 
 //일정 칩
-Container workChip({BuildContext context, CompanyWork companyWork}){
+Container workChip({BuildContext context, CompanyWork companyWork, int count}){
   return Container(
-    height: customHeight(context: context, heightSize: workChipHeightSize),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8),
-      color: companyWork.type == "미팅" ? blueColor : companyWork.type == "외근" ? workTypeOut : companyWork.type == "생일" ? workTypeBirthDay : workTypeRest
-    ),
-    child: GestureDetector(
-      child: Center(
-        child: Text(
-          companyWork.type,
-          style: customStyle(
-            fontColor: whiteColor,
-            fontWeightName: "Regular",
-            fontSize: 12
+    child: Row(
+      children: [
+        Container(
+          height: customHeight(context: context, heightSize: workChipHeightSize),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: companyWork.type == "미팅" ? blueColor : companyWork.type == "외근" ? workTypeOut : companyWork.type == "생일" ? workTypeBirthDay : workTypeRest
+          ),
+          child: GestureDetector(
+            child: Center(
+              child: Text(
+                companyWork.type,
+                style: customStyle(
+                  fontColor: whiteColor,
+                  fontWeightName: "Regular",
+                  fontSize: 12
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+        count != 0 ? Text(
+          "+$count"
+        ) : Text("")
+      ],
     ),
   );
 }

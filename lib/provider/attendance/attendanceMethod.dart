@@ -4,7 +4,6 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 import 'package:wifi/wifi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -51,6 +50,7 @@ class AttendanceMethod extends ChangeNotifier{
     SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
     if(_sharedPreferences.getString("loginUser") != null){
       _loginUser = User.fromMap(await json.decode(_sharedPreferences.getString("loginUser")), null);
+      print("테스트1 ${_loginUser.companyCode} 입니다.");
     }
 
     else{

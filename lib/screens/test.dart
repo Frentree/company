@@ -23,6 +23,8 @@ import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
 
+import 'package:companyplaylist/widgets/table/workDetailTable.dart';
+
 
 class test extends StatefulWidget {
   @override
@@ -36,6 +38,7 @@ class testPageState extends State<test> {
   CalendarController _calendarController;
 
   List<bool> isDetail = List<bool>();
+  bool isTable = false;
 
   Format _format = Format();
 
@@ -59,7 +62,6 @@ class testPageState extends State<test> {
     _companyUser = _loginUserInfoProvider.getLoginUser();
 
     return Scaffold(
-      backgroundColor: whiteColor,
       body: Column(
         children: [
           Container(
@@ -100,16 +102,25 @@ class testPageState extends State<test> {
             ),
           ),
           Container(
-            width: customWidth(context: context, widthSize: 1),
-            color: Colors.white,
-            child: Column(
-              children: [
-                Text("상세"),
-                Icon(
-                    Icons.keyboard_arrow_down
+              width: customWidth(context: context, widthSize: 1),
+              color: Colors.white,
+              child: GestureDetector(
+                onTap: (){
+                  setState(() {
+                    isTable = !isTable;
+                  });
+                },
+                child: Column(
+                  children: [
+                    Text(
+                        isTable ? "일간" : "상세"
+                    ),
+                    Icon(
+                        isTable ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              )
           ),
 
           StreamBuilder(
@@ -121,477 +132,40 @@ class testPageState extends State<test> {
                 );
               }
               List<DocumentSnapshot> _coUser = snapshot.data.documents ?? [];
-              List<String> _coUserUid = [];
-              List<String> _coUserName = [];
+              List<String> _coUserUid = ["chlalswl@naver.com"];
+              List<String> _coUserName = ["나"];
               _coUser.forEach((element) {
                 if(element.documentID != "chlalswl@naver.com"){
                   _coUserUid.add(element.documentID);
                   _coUserName.add(element.data["name"]);
                 }
+                print(_coUserUid);
                 print(_coUserName);
               });
-              return Column(
-                children: [
-                  StreamBuilder(
-                    stream: _db.collection("company").document("HYOIE13").collection("work").orderBy("name").snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.data == null){
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      var _companyWork = snapshot.data.documents ?? [];
-                      List<CompanyWork> a = [];
-                      var b = Map<String, List<CompanyWork>>();
-                      _companyWork.forEach((doc) => a.add(CompanyWork.fromMap(doc.data, doc.documentID)));
-
-                      _companyWork.forEach((doc){
-                        for(int i = 0; i < _coUserName.length; i++)
-                        if(doc.data["name"] == _coUserName[2]){
-                          List<CompanyWork> c = [];
-                          c.add(CompanyWork.fromMap(doc.data, doc.documentID));
-                          b[_coUserName[2]] = c;
-                          print("C값 ${b[_coUserName[2]][0].name}");
-                          b[_coUserName[2]].add(CompanyWork.fromMap(doc.data, doc.documentID));
-                        }
-                      });
-
-                      for(int i = 0; i < _coUserName.length; i++){
-
-                      }
-
-                      print(b);
-
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08)),
-                        child: Table(
-                          border: TableBorder(
-                            left: BorderSide(
-                              width: 0.2,
-                            ),
-                            right: BorderSide(
-                              width: 0.2,
-                            ),
-                            bottom: BorderSide(
-                              width: 0.2
-                            ),
-                            horizontalInside: BorderSide(
-                              width: 0.2
-                            ),
-                            verticalInside: BorderSide(
-                              width: 0.2
-                            ),
-                            top: BorderSide(
-                              width: 0.2
-                            )
-                          ),
-                          columnWidths: {
-                            5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
-                          },
-                          children: [
-                            TableRow(
-                              children:[
-                                Container(
-                                  height: customHeight(context: context, heightSize: 0.1),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.01), horizontal: customWidth(context: context, widthSize: 0.01)),
-
-                                    child: Container(
-                                      color: Colors.yellow,
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          print("테스트입니다");
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Column(
-                                      children: [
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "미팅",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                        SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "외근",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Column(
-                                      children: [
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "미팅",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                        SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "외근",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Column(
-                                      children: [
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "미팅",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                        SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "외근",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Column(
-                                      children: [
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "미팅",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                        SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                        /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "외근",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: customHeight(context: context, heightSize: 0.08),
-                                  child: Center(
-                                    child: Text("나"),
-                                  ),
-                                ),
-                              ]
-                            ),
-                            TableRow(
-                                children:[
-                                  Container(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            height: customHeight(context: context, heightSize: 0.03),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(8),
-                                                color: blueColor
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: (){
-                                                print("hihi");
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  "미팅",
-                                                  style: customStyle(
-                                                      fontColor: whiteColor
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                          /*Container(
-                                            height: customHeight(context: context, heightSize: 0.03),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(8),
-                                                color: blueColor
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "외근",
-                                                style: customStyle(
-                                                    fontColor: whiteColor
-                                                ),
-                                              ),
-                                            ),
-                                          ),*/
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: [
-                                          /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "미팅",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                          SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                          /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "외근",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: [
-                                          /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "미팅",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                          SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                          /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "외근",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height:customHeight(context: context,heightSize: 0.08),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Center(
-                                        child: Container(
-                                            height: customHeight(context: context, heightSize: 0.03),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(8),
-                                                color: Colors.purple
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "연차",
-                                                style: customStyle(
-                                                    fontColor: whiteColor
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        children: [
-                                          /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "미팅",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                          SizedBox(height: customHeight(context: context, heightSize: 0.01),),
-                                          /*Container(
-                                          height: customHeight(context: context, heightSize: 0.03),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              color: blueColor
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "외근",
-                                              style: customStyle(
-                                                  fontColor: whiteColor
-                                              ),
-                                            ),
-                                          ),
-                                        ),*/
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: customHeight(context: context, heightSize: 0.08),
-                                    child: Center(
-                                      child: Text("김대성"),
-                                    ),
-                                  ),
-                                ]
-                            ),
-                          ],
-                        ),
-                      );
-
-                    },
-                  ),
-                  /*StreamBuilder(
-                    stream: _db.collection("company").document("HYOIE13").collection("work").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.data == null){
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      var _companyWork = snapshot.data.documents ?? [];
-
-
-                    },
-                  ),*/
-                ],
+              return StreamBuilder(
+                stream: _db.collection("company").document("HYOIE13").collection("work").orderBy("name").where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).where("type", isEqualTo: "외근").snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot){
+                  if(snapshot.data == null){
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  var _companyWork = snapshot.data.documents ?? [];
+                  List<CompanyWork> a = [];
+                  _companyWork.forEach((doc) => a.add(CompanyWork.fromMap(doc.data, doc.documentID)));
+                  Map<String, List<CompanyWork>> mapB = Map();
+                  _coUserUid.forEach((element) {
+                    mapB[element] = [];
+                  });
+                  a.forEach((element) {
+                    if(mapB.containsKey(element.createUid)){
+                      mapB[element.createUid].add(element);
+                    }
+                  });
+                  return Table(
+                    w
+                  );
+                },
               );
             },
           )

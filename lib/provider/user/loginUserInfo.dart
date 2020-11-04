@@ -25,12 +25,16 @@ class LoginUserInfoProvider with ChangeNotifier{
   }
 
   Future<void> saveLoginUserToPhone({BuildContext context, User value}) async {
-    AttendanceMethod _attendanceProvider = Provider.of<AttendanceMethod>(context, listen: false);
     SharedPreferences _sharedPreferences;
     _sharedPreferences = await SharedPreferences.getInstance();
     _sharedPreferences.setString("loginUser", json.encode(value));
-    await _attendanceProvider.attendanceCheck();
     setLoginUser(value);
+
+    if(value.companyCode != null){
+      print("회사코드");
+      AttendanceMethod _attendanceProvider = Provider.of<AttendanceMethod>(context, listen: false);
+      await _attendanceProvider.attendanceCheck();
+    }
   }
 
   Future<void> loadLoginUserToPhone() async {
