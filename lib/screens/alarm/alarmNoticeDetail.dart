@@ -40,8 +40,6 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
 
   TextEditingController _noticeComment = TextEditingController();
 
-  Stream<QuerySnapshot> currentStream;
-  CrudRepository _crudRepository;
   final Firestore _db = Firestore.instance;
   String _commentId = "";
 
@@ -297,9 +295,6 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-
-    _crudRepository = CrudRepository.noticeCommentAttendance(companyCode: _loginUser.companyCode, documentID: noticeUid);
-    currentStream = _crudRepository.fetchNoticeCommentAsStream();
 
     return Scaffold(
       backgroundColor: mainColor,
