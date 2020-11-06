@@ -87,7 +87,6 @@ class AttendanceMethod extends ChangeNotifier{
       if(connectWifiName == "AndroidWifi"){
         _tempAttendance.state = "근무중";
         _tempAttendance.attendTime = _format.dateTimeToTimeStamp(nowTime);
-        _tempAttendance.id = newAttendance.documentID;
         _db.collection("company").document(_loginUser.companyCode).collection("attendance").document(newAttendance.documentID).updateData(_tempAttendance.toJson());
         setAttendanceData(_tempAttendance);
       }

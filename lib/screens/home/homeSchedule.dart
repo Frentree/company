@@ -6,7 +6,7 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 //Flutter
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/repos/tableCalendar/table_calendar.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 //Model
 import 'package:companyplaylist/models/workModel.dart';
@@ -88,17 +88,15 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               holidays: _holidays,
               calendarController: _calendarController,
               initialCalendarFormat: CalendarFormat.week,
-              startingDayOfWeek: StartingDayOfWeek.monday,
               availableCalendarFormats: {
-                CalendarFormat.week: "주간",
-                CalendarFormat.month: "월간"
+                CalendarFormat.week: "Week",
+                CalendarFormat.month: "Month"
               },
-              onDaySelected: (day, events, holidays) {
-                  setState(() {
-                    selectTime = day;
-                    _calendarController.setCalendarFormat(CalendarFormat.week);
-                  });
-              },
+        onDaySelected: (day, events, holidays) {
+            setState(() {
+              selectTime = day;
+            });
+        },
               locale: 'ko_KR',
               headerStyle: HeaderStyle(
                 formatButtonDecoration: BoxDecoration(
@@ -112,6 +110,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                 ),
               ),
               calendarStyle:  CalendarStyle(
+<<<<<<< HEAD
                 markersColor: redColor,
                 selectedColor: mainColor,
                 selectedStyle: customStyle(
@@ -119,6 +118,14 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   fontWeightName: "Bold",
                   fontColor: whiteColor
                 )
+=======
+                  selectedColor: mainColor,
+                  selectedStyle: customStyle(
+                      fontSize: 18,
+                      fontWeightName: "Bold",
+                      fontColor: whiteColor
+                  )
+>>>>>>> 8c171e65f8e2d5f78d8473052766fd3a2b2f1380
               ),
 
             ),
@@ -134,6 +141,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               var _companyWork = snapshot.data.documents ?? [];
 
               if(_companyWork.length == 0) {
+<<<<<<< HEAD
                 isDetail = [];
                 return Expanded(
                   child: ListView(
@@ -158,10 +166,29 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                     fontWeightName: "Medium"
                                 ),
                               )
+=======
+                return Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      width: 1,
+                      color: boarderColor,
+                    ),
+                  ),
+                  child: Center(
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.02)),
+                        child: Text(
+                          "일정이 없습니다.",
+                          style: customStyle(
+                            fontColor: blackColor,
+                            fontSize: 16,
+                            fontWeightName: "Medium"
+>>>>>>> 8c171e65f8e2d5f78d8473052766fd3a2b2f1380
                           ),
-                        ),
-                      ),
-                    ],
+                        )
+                    ),
                   ),
                 );
               }
