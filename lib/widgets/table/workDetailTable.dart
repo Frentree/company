@@ -39,6 +39,7 @@ List<Map<String, List<CompanyWork>>> dataFetch(List<CompanyWork> companyWork){
 }
 
 TableRow workDetailTableRow({BuildContext context, List<CompanyWork> companyWork, String name}){
+
   List<Map<String, List<CompanyWork>>> companyWorkList = dataFetch(companyWork);
   List<Container> tableRow = List();
 

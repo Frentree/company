@@ -130,24 +130,28 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                   );
                 }
                 DateTime weekMonday = selectTime.subtract(Duration(days: selectTime.weekday-1));
-                List<DateTime> term = [weekMonday, weekMonday.add(Duration(days: 1)), weekMonday.add(Duration(days: 2)), weekMonday.add(Duration(days: 3)), weekMonday.add(Duration(days: 4))];
+                DateTime testTime = DateTime.utc(weekMonday.year, weekMonday.month, weekMonday.day, 12, 00);
+                print("testTime ======> $testTime");
+                print("selectTime ====> $selectTime");
+                List<DateTime> term = [testTime, testTime.add(Duration(days: 1)), testTime.add(Duration(days: 2)), testTime.add(Duration(days: 3)), testTime.add(Duration(days: 4))];
                 List<Timestamp> testTerm = [];
                 term.forEach((element) {
                   testTerm.add(_format.dateTimeToTimeStamp(element));
                 });
                 List<DocumentSnapshot> _coUser = snapshot.data.documents ?? [];
                 List<String> _coUserUid = [_companyUser.mail];
-                Map<String, String> name = {"_companyUser.mail" : _companyUser.name};
+                Map<String, String> name = {_companyUser.mail : _companyUser.name};
                 _coUser.forEach((element) {
                   if(element.documentID != _companyUser.mail){
                     _coUserUid.add(element.documentID);
                     name[element.documentID] = element.data["name"];
                   }
-                  print(_coUserUid);
+                  /*print(_coUserUid);
+                  print("term ====> $term");*/
                 });
 
                 return StreamBuilder(
-                  stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("startDate", whereIn: testTerm).orderBy("startDate").snapshots(),
+                  stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("startDate", whereIn: testTerm).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot snapshot){
                     if(snapshot.data == null){
                       return Center(
@@ -166,6 +170,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     });
 
                     convertCompanyWork.forEach((element) {
+                      print(element.createUid);
                       mapB[element.createUid].add(element);
                       name[element.createUid] = element.name;
                     });
@@ -175,6 +180,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     List<TableRow> childRow = [];
 
                     mapB.forEach((key, value) {
+                      print("Key ====> $key");
                       childRow.add(
                           workDetailTableRow(
                               context: context,
@@ -215,7 +221,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 print(_coUserUid);
               });
               return StreamBuilder(
-                stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid.sublist(1)).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
+                stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
                   if(snapshot.data == null){
                     return Center(
