@@ -148,7 +148,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                   child: Text("댓글 달기",
                                     style: customStyle(
                                         fontColor: blueColor,
-                                        fontSize: 11,
+                                        fontSize: 13,
                                         fontWeightName: 'Bold'
                                     ),
                                   ),
@@ -176,7 +176,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                           child: Text("수정",
                                             style: customStyle(
                                                 fontColor: blueColor,
-                                                fontSize: 11,
+                                                fontSize: 13,
                                                 fontWeightName: 'Bold'
                                             ),
                                           ),
@@ -197,7 +197,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                           child: Text("삭제",
                                             style: customStyle(
                                                 fontColor: redColor,
-                                                fontSize: 11,
+                                                fontSize: 13,
                                                 fontWeightName: 'Bold'
                                             ),
                                           ),
@@ -453,7 +453,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
 
                               return ConstrainedBox(
                                 constraints: BoxConstraints(
-                                  minHeight: customHeight(context: context, heightSize: documents.length * 0.11),
+                                  minHeight: customHeight(context: context, heightSize: documents.length * 0.13),
                                   maxHeight: customHeight(context: context, heightSize: documents.length * 0.5),
                                 ),
                                 child: ListView.builder(
@@ -469,7 +469,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsets.only(left: 11),
+                                                padding: EdgeInsets.only(left: 13),
                                               ),
                                               GestureDetector(
                                                 child: Container(
@@ -530,7 +530,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                   "댓글 달기",
                                                                   style: customStyle(
                                                                       fontColor: blueColor,
-                                                                      fontSize: 11,
+                                                                      fontSize: 13,
                                                                       fontWeightName: 'Bold'
                                                                   ),
                                                                 ),
@@ -560,7 +560,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                           style:
                                                                               customStyle(
                                                                                   fontColor: blueColor,
-                                                                                  fontSize: 11,
+                                                                                  fontSize: 13,
                                                                                   fontWeightName: 'Bold'
                                                                               ),
                                                                         ),
@@ -583,7 +583,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                           style:
                                                                               customStyle(
                                                                                   fontColor: redColor,
-                                                                                  fontSize: 11,
+                                                                                  fontSize: 13,
                                                                                   fontWeightName: 'Bold'
                                                                               ),
                                                                         ),
@@ -597,7 +597,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                                   "댓글 삭제",
                                                                                   style: customStyle(
                                                                                       fontColor: redColor,
-                                                                                      fontSize: 11,
+                                                                                      fontSize: 13,
                                                                                       fontWeightName: 'Bold'
                                                                                   ),
                                                                                 ),

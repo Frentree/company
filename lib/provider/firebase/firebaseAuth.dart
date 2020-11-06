@@ -171,4 +171,26 @@ class FirebaseAuthProvider with ChangeNotifier {
       return false;
     }
   }
+
+  //패스워드 변경
+  Future<bool> updatePassword({String mail, String password, String name}) async {
+    try {
+      AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: mail,
+          password: password
+      );
+
+      /*if(result.user != null) {
+        updateInfo.displayName = name;
+        result.user.updateProfile(updateInfo);
+        return true;
+      }*/
+
+      return false;
+
+    } on PlatformException catch (e) {
+      setLastFirebaseMessage(message: e.code);
+      return false;
+    }
+  }
 }
