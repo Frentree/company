@@ -28,7 +28,7 @@ class HomeSchedulePage extends StatefulWidget {
 }
 
 class HomeSchedulePageState extends State<HomeSchedulePage> {
-  DateTime selectTime = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 00);
+  DateTime selectTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 00);
   Firestore _db = Firestore.instance;
   User _companyUser;
   CalendarController _calendarController;
@@ -36,6 +36,30 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
   Format _format = Format();
 
   List<bool> isDetail = List<bool>();
+
+  Map<DateTime, List<dynamic>> _events ={
+    DateTime(2020, 11, 5) : ["ㅁㅁㅁ"]
+  };
+
+  Map<DateTime, List<dynamic>> _holidays ={
+    DateTime(2020, 11, 6) : ["ㅁㅁㅁ"]
+  };
+
+  Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
+    Map<String, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[key.toString()] = map[key];
+    });
+    return newMap;
+  }
+
+  Map<DateTime, dynamic> decodeMap(Map<String, dynamic> map) {
+    Map<DateTime, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[DateTime.parse(key)] = map[key];
+    });
+    return newMap;
+  }
 
   @override
   void initState(){
@@ -60,6 +84,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
           Container(
             color: Colors.white,
             child: TableCalendar(
+              events: _events,
+              holidays: _holidays,
               calendarController: _calendarController,
               initialCalendarFormat: CalendarFormat.week,
               startingDayOfWeek: StartingDayOfWeek.monday,
@@ -86,6 +112,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                 ),
               ),
               calendarStyle:  CalendarStyle(
+                markersColor: redColor,
                 selectedColor: mainColor,
                 selectedStyle: customStyle(
                   fontSize: 18,
@@ -93,6 +120,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   fontColor: whiteColor
                 )
               ),
+
             ),
           ),
           StreamBuilder(
@@ -105,9 +133,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               }
               var _companyWork = snapshot.data.documents ?? [];
 
-
-
               if(_companyWork.length == 0) {
+                isDetail = [];
                 return Expanded(
                   child: ListView(
                     children: [
@@ -143,6 +170,10 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                 while(isDetail.length < _companyWork.length){
                   isDetail.add(false);
                 }
+                if(isDetail.length > _companyWork.length){
+                  isDetail.remove(true);
+                }
+                print(isDetail);
                 return Expanded(
                   child: ListView.builder(
                     itemCount: _companyWork.length,
@@ -166,6 +197,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                     isDetail[i] = false;
                                   }
                                 }
+                                _events[DateTime(_format.timeStampToDateTime(_companyData.startDate).year, _format.timeStampToDateTime(_companyData.startDate).month, _format.timeStampToDateTime(_companyData.startDate).day)] = ["mmm"];
                               });
                             },
                           );

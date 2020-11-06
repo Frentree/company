@@ -1,17 +1,14 @@
 import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/provider/attendance/attendanceMethod.dart';
-import 'package:companyplaylist/screens/auth.dart';
-import 'package:companyplaylist/screens/login/companySetMain.dart';
-import 'package:companyplaylist/screens/login/signUpMain.dart';
 import 'package:companyplaylist/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:companyplaylist/screens/test.dart';
+
+
 void main() {
   runApp(MyApp());
 }
@@ -44,8 +41,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: test(),
-        //home: SplashPage(),
+        home: SplashPage(),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate

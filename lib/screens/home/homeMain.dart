@@ -51,7 +51,7 @@ class HomeMainPageState extends State<HomeMainPage> {
           ),
 
           //배너
-          Expanded(
+          /*Expanded(
             flex: 2,
             child: Container(
               color: bottomColor,
@@ -74,7 +74,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                 ],
               ),
             ),
-          )
+          )*/
         ],
       ),
 

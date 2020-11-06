@@ -2,6 +2,7 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/widgets/table/workDetailTable.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -39,8 +40,6 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
   bool isTable = false;
 
   Format _format = Format();
-
-  int tabIndex = 0;
 
   @override
   void initState(){
@@ -120,91 +119,86 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               ),
             )
           ),
-          Container(
-            width: customWidth(
-              context: context,
-              widthSize: 1
-            ),
-            padding: EdgeInsets.only(
-              left: customWidth(
-                context: context,
-                widthSize: 0.01
-              ),
-              right: customWidth(
-                context: context,
-                widthSize: 0.01
-              )
-            ),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)
-                ),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                ),
-                Container(
-                  height: customHeight(
-                      context: context,
-                      heightSize: 0.04
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: tabColor
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      tabBtn(
-                        context: context,
-                        heightSize: 0.03,
-                        widthSize: 0.3,
-                        btnText: "이름순",
-                        tabIndexVariable: tabIndex,
-                        tabOrder: 0,
-                        tabAction: (){
-                          setState(() {
-                            tabIndex = 0;
-                          });
-                        }
-                      ),
-                      tabBtn(
-                          context: context,
-                          heightSize: 0.03,
-                          widthSize: 0.32,
-                          btnText: "상태순",
-                          tabIndexVariable: tabIndex,
-                          tabOrder: 1,
-                          tabAction: (){
-                            setState(() {
-                              tabIndex = 1;
-                            });
-                          }
-                      ),
-                      tabBtn(
-                          context: context,
-                          heightSize: 0.03,
-                          widthSize: 0.3,
-                          btnText: "출퇴근 현황",
-                          tabIndexVariable: tabIndex,
-                          tabOrder: 2,
-                          tabAction: (){
-                            setState(() {
-                              tabIndex = 2;
-                            });
-                          }
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
 
-          StreamBuilder(
+          isTable ? Container(
+            child: StreamBuilder(
+              stream:_db.collection("company").document(_companyUser.companyCode).collection("user").snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.data == null){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                DateTime weekMonday = selectTime.subtract(Duration(days: selectTime.weekday-1));
+                List<DateTime> term = [weekMonday, weekMonday.add(Duration(days: 1)), weekMonday.add(Duration(days: 2)), weekMonday.add(Duration(days: 3)), weekMonday.add(Duration(days: 4))];
+                List<Timestamp> testTerm = [];
+                term.forEach((element) {
+                  testTerm.add(_format.dateTimeToTimeStamp(element));
+                });
+                List<DocumentSnapshot> _coUser = snapshot.data.documents ?? [];
+                List<String> _coUserUid = [_companyUser.mail];
+                Map<String, String> name = {"_companyUser.mail" : _companyUser.name};
+                _coUser.forEach((element) {
+                  if(element.documentID != _companyUser.mail){
+                    _coUserUid.add(element.documentID);
+                    name[element.documentID] = element.data["name"];
+                  }
+                  print(_coUserUid);
+                });
+
+                return StreamBuilder(
+                  stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("startDate", whereIn: testTerm).orderBy("startDate").snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot){
+                    if(snapshot.data == null){
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    var _companyWork = snapshot.data.documents ?? [];
+
+                    List<CompanyWork> convertCompanyWork = [];
+
+                    _companyWork.forEach((doc) => convertCompanyWork.add(CompanyWork.fromMap(doc.data, doc.documentID)));
+
+                    Map<String, List<CompanyWork>> mapB = Map();
+                    _coUserUid.forEach((element) {
+                      mapB[element] = [];
+                    });
+
+                    convertCompanyWork.forEach((element) {
+                      mapB[element.createUid].add(element);
+                      name[element.createUid] = element.name;
+                    });
+                    print("mapB =====> $mapB");
+                    print("name =====> $name");
+
+                    List<TableRow> childRow = [];
+
+                    mapB.forEach((key, value) {
+                      childRow.add(
+                        workDetailTableRow(
+                          context: context,
+                          companyWork: mapB[key],
+                          name: name[key]
+                        )
+                      );
+                    });
+
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08)),
+                      child: Table(
+                        border: TableBorder.all(width: 0.1),
+                        columnWidths: {
+                          5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
+                        },
+                        children: childRow
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ) : StreamBuilder(
             stream:_db.collection("company").document(_companyUser.companyCode).collection("user").snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.data == null){
@@ -221,8 +215,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 print(_coUserUid);
               });
               return StreamBuilder(
-                stream: tabIndex == 0 ? _db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots() :
-                    _db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("progress").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
+                stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid.sublist(1)).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
                   if(snapshot.data == null){
                     return Center(
@@ -267,13 +260,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     while(isDetail.length < _companyWork.length){
                       isDetail.add(false);
                     }
-                    _companyWork.forEach((value){
-                      var b = [];
-                      b.add(CompanyWork.fromMap(value.data, value.documentID));
-                      print("값 $b");
-                    });
 
-                    print(_companyWork);
                     return Expanded(
                       child: ListView.builder(
                         itemCount: _companyWork.length,
@@ -283,11 +270,11 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                             case '내근':
                               return GestureDetector(
                                 child: workCoScheduleCard(
-                                    context: context,
-                                    companyCode: _companyUser.companyCode,
-                                    documentId: _companyWork[index].documentID,
-                                    companyWork: _companyData,
-                                    isDetail: isDetail[index],
+                                  context: context,
+                                  companyCode: _companyUser.companyCode,
+                                  documentId: _companyWork[index].documentID,
+                                  companyWork: _companyData,
+                                  isDetail: isDetail[index],
                                 ),
                                 onTap: () {
                                   setState(() {

@@ -12,6 +12,12 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 
+const widthDistance = 0.02; // 항목별 간격
+const timeFontSize = 13.0;
+const typeFontSize = 12.0;
+const titleFontSize = 20.0;
+const writeTimeFontSize = 14.0;
+const fontColor = mainColor;
 
 Card workScheduleCard({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
   return Card(
@@ -42,276 +48,76 @@ Card workScheduleCard({BuildContext context, String documentId, String companyCo
   );
 }
 
-Column titleContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.end,
+Row titleContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
+  return Row(
     children: [
+      //시간대
+      Text(
+        companyWork.timeTest,
+        style: customStyle(
+            fontSize: timeFontSize,
+            fontWeightName: "Regular",
+            fontColor: fontColor
+        ),
+      ),
+      SizedBox(
+        width: customWidth(context: context, widthSize: widthDistance),
+      ),
+
+      //업무 타입입
+      Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: textFieldUnderLine
+            ),
+            borderRadius: BorderRadius.circular(8)
+        ),
+        width: customWidth(context: context, widthSize: 0.1),
+        height: customHeight(context: context, heightSize: 0.03),
+        alignment: Alignment.center,
+        child: Text(
+          companyWork.type,
+          style: customStyle(
+              fontSize: typeFontSize,
+              fontWeightName: "Regular",
+              fontColor: fontColor
+          ),
+        ),
+      ),
+      SizedBox(
+        width: customWidth(context: context, widthSize: 0.02),
+      ),
+
+      //제목
+      Container(
+        width: customWidth(context: context, widthSize: 0.6),
+        child: Text(
+          companyWork.workTitle,
+          //textAlign: ,
+          style: customStyle(
+            fontSize: titleFontSize,
+            fontWeightName: "Medium",
+            fontColor: mainColor,
+            height: 1
+          ),
+        ),
+      ),
+      SizedBox(
+        width: customWidth(context: context, widthSize: 0.02),
+      ),
+      
+      //popup 버튼
       isDetail ? popupMenu(
         context: context,
         documentId: documentId,
-        companyCode: companyCode
+        companyCode: companyCode,
       ) : Container(),
-      Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: textFieldUnderLine
-                ),
-                borderRadius: BorderRadius.circular(12)
-            ),
-            width: customWidth(context: context, widthSize: 0.1),
-            height: customHeight(context: context, heightSize: 0.05),
-            alignment: Alignment.center,
-            child: Text(
-              companyWork.type,
-              style: customStyle(
-                  fontSize: 12,
-                  fontWeightName: "Regular",
-                  fontColor: mainColor
-              ),
-            ),
-          ),
-          SizedBox(
-            width: customWidth(context: context, widthSize: 0.03),
-          ),
-          Text(
-            companyWork.timeTest,
-            style: customStyle(
-                fontSize: 13,
-                fontWeightName: "Regular",
-                fontColor: mainColor
-            ),
-          ),
-          SizedBox(
-            width: customWidth(context: context, widthSize: 0.03),
-          ),
-          Container(
-            width: customWidth(context: context, widthSize: 0.5),
-            child: Text(
-              companyWork.workTitle,
-              style: customStyle(
-                  fontSize: 16,
-                  fontWeightName: "Medium",
-                  fontColor: mainColor
-              ),
-            ),
-          ),
-          SizedBox(
-            width: customWidth(context: context, widthSize: 0.03),
-          ),
-          progressPopupMenu(
-            context: context,
-            documentId: documentId,
-            companyCode: companyCode,
-            companyWork: companyWork
-          )
-        ],
-      ),
     ],
   );
 }
-
-Container popupMenu({BuildContext context, String documentId, String companyCode}){
-  CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: companyCode);
-
-  return Container(
-    height: 15,
-    child: PopupMenuButton(
-      padding: EdgeInsets.only(right: customWidth(context: context, widthSize: 0.04)),
-      icon: Icon(
-        Icons.more_horiz
-      ),
-      onSelected: (value) async {
-        if(value == 1) {
-          print("수정하기");
-        }
-
-        else{
-          await _crudRepository.removeCompanyWorkDataToFirebase(documentId: documentId);
-        }
-      },
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem(
-          value: 1,
-          child: Row(
-            children: [
-              Icon(
-                Icons.edit
-              ),
-              Text(
-                "수정하기"
-              )
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 2,
-          child: Row(
-            children: [
-              Icon(
-                  Icons.delete
-              ),
-              Text(
-                  "삭제하기"
-              )
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-PopupMenuButton progressPopupMenu({BuildContext context, String documentId, String companyCode, CompanyWork companyWork}){
-  CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: companyCode);
-
-  return PopupMenuButton(
-
-    padding: EdgeInsets.only(right: customWidth(context: context, widthSize: 0.04)),
-    child: Container(
-      width: customWidth(context: context, widthSize: 0.15),
-      height: customHeight(context: context, heightSize: 0.03),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: companyWork.progress == 1 ? progressComplete : companyWork.progress == 2 ? blueColor : companyWork.progress == 3 ? progressBefore : progressHold
-      ),
-      child: Center(
-        child: Text(
-          companyWork.progress == 1 ? "완료" : companyWork.progress == 2 ? "진행중" : companyWork.progress == 3 ? "진행전" : "보류",
-          style: customStyle(
-              fontSize: 13,
-              fontWeightName: "Regular",
-              fontColor: whiteColor
-          ),
-        ),
-      ),
-    ),
-    onSelected: (value) async {
-      companyWork.progress = value;
-      await _crudRepository.updateCompanyWorkDataToFirebase(documentId: documentId, dataModel: companyWork);
-      Fluttertoast.showToast(
-          msg: "진행상태가 변경되었습니다.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity:  ToastGravity.BOTTOM,
-          backgroundColor: blackColor
-      );
-    },
-    itemBuilder: (BuildContext context) => [
-      PopupMenuItem(
-        child: Center(
-          child: Text(
-            "진행상태 수정",
-            style: customStyle(
-              fontColor: blackColor
-            ),
-          ),
-        ),
-        enabled: false,
-      ),
-      PopupMenuItem(
-        value: 1,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: progressComplete
-            ),
-            child: Center(
-              child: Text(
-                "완료",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: 2,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: blueColor
-            ),
-            child: Center(
-              child: Text(
-                "진행중",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: 3,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: progressBefore
-            ),
-            child: Center(
-              child: Text(
-                "진행전",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: 4,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: progressHold
-            ),
-            child: Center(
-              child: Text(
-                "보류",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-
-
-
 
 Column detailContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
   Format _format = Format();
-
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -373,15 +179,15 @@ Column detailContents({BuildContext context, String documentId, String companyCo
           Text(
             "작성시간 : ",
             style: customStyle(
-              fontSize: 14,
+              fontSize: writeTimeFontSize,
               fontWeightName: "Regular",
               fontColor: greyColor
             ),
           ),
           Text(
-            _format.timeStampToDateTime(companyWork.createDate).toString(),
+            _format.timeStampToDateTime(companyWork.createDate).toString().substring(0, 16),
             style: customStyle(
-              fontSize: 14,
+              fontSize: writeTimeFontSize,
               fontWeightName: "Regular",
               fontColor: greyColor
             ),
@@ -391,3 +197,52 @@ Column detailContents({BuildContext context, String documentId, String companyCo
     ],
   );
 }
+
+Container popupMenu({BuildContext context, String documentId, String companyCode}){
+  CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: companyCode);
+  return Container(
+    width: customWidth(context: context, widthSize: 0.05),
+    child: PopupMenuButton(
+      icon: Icon(
+        Icons.more_horiz,
+      ),
+      onSelected: (value) async {
+        if(value == 1) {
+          print("수정하기");
+        }
+        else{
+          await _crudRepository.removeCompanyWorkDataToFirebase(documentId: documentId);
+        }
+      },
+      itemBuilder: (BuildContext context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Row(
+            children: [
+              Icon(
+                  Icons.edit
+              ),
+              Text(
+                  "수정하기"
+              )
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: 2,
+          child: Row(
+            children: [
+              Icon(
+                  Icons.delete
+              ),
+              Text(
+                  "삭제하기"
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
