@@ -7,11 +7,7 @@ import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-<<<<<<< HEAD
 
-=======
-import 'package:shared_preferences/shared_preferences.dart';
->>>>>>> 8c171e65f8e2d5f78d8473052766fd3a2b2f1380
 
 void main() {
   runApp(MyApp());

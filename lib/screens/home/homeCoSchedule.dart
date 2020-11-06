@@ -2,17 +2,12 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
-<<<<<<< HEAD
 import 'package:companyplaylist/widgets/table/workDetailTable.dart';
-=======
-import 'package:companyplaylist/widgets/button/textButton.dart';
-import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
->>>>>>> 8c171e65f8e2d5f78d8473052766fd3a2b2f1380
 
 //Flutter
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:companyplaylist/repos/tableCalendar/table_calendar.dart';
 
 //Model
 import 'package:companyplaylist/models/workModel.dart';
@@ -26,7 +21,9 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 
 //Widget
-import 'package:companyplaylist/widgets/card/workScheduleCard.dart';
+import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
+
 
 class HomeScheduleCoPage extends StatefulWidget {
   @override
@@ -40,6 +37,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
   CalendarController _calendarController;
 
   List<bool> isDetail = List<bool>();
+  bool isTable = false;
 
   Format _format = Format();
 
@@ -68,9 +66,9 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
             child: TableCalendar(
               calendarController: _calendarController,
               initialCalendarFormat: CalendarFormat.week,
+              startingDayOfWeek: StartingDayOfWeek.monday,
               availableCalendarFormats: {
                 CalendarFormat.week: "Week",
-                CalendarFormat.month: "Month"
               },
               onDaySelected: (day, events, holidays) {
                 setState(() {
@@ -79,6 +77,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               },
               locale: 'ko_KR',
               headerStyle: HeaderStyle(
+                formatButtonVisible: false,
                 formatButtonDecoration: BoxDecoration(
                   color: mainColor,
                   borderRadius: BorderRadius.circular(20),
@@ -90,36 +89,35 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 ),
               ),
               calendarStyle:  CalendarStyle(
-                  selectedColor: mainColor,
-                  selectedStyle: customStyle(
-                      fontSize: 18,
-                      fontWeightName: "Bold",
-                      fontColor: whiteColor
-                  )
+                selectedColor: mainColor,
+                selectedStyle: customStyle(
+                    fontSize: 18,
+                    fontWeightName: "Bold",
+                    fontColor: whiteColor
+                ),
               ),
             ),
           ),
-<<<<<<< HEAD
           Container(
-            width: customWidth(context: context, widthSize: 1),
-            color: Colors.white,
-            child: GestureDetector(
-              onTap: (){
-                setState(() {
-                  isTable = !isTable;
-                });
-              },
-              child: Column(
-                children: [
-                  Text(
-                    isTable ? "일간" : "상세"
-                  ),
-                  Icon(
-                    isTable ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down
-                  ),
-                ],
-              ),
-            )
+              width: customWidth(context: context, widthSize: 1),
+              color: Colors.white,
+              child: GestureDetector(
+                onTap: (){
+                  setState(() {
+                    isTable = !isTable;
+                  });
+                },
+                child: Column(
+                  children: [
+                    Text(
+                        isTable ? "일간" : "상세"
+                    ),
+                    Icon(
+                        isTable ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down
+                    ),
+                  ],
+                ),
+              )
           ),
 
           isTable ? Container(
@@ -178,90 +176,22 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
 
                     mapB.forEach((key, value) {
                       childRow.add(
-                        workDetailTableRow(
-=======
-
-          Container(
-            width: customWidth(
-              context: context,
-              widthSize: 1
-            ),
-            padding: EdgeInsets.only(
-              left: customWidth(
-                context: context,
-                widthSize: 0.01
-              ),
-              right: customWidth(
-                context: context,
-                widthSize: 0.01
-              )
-            ),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)
-                ),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                ),
-                Container(
-                  height: customHeight(
-                      context: context,
-                      heightSize: 0.04
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: tabColor
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      tabBtn(
-                        context: context,
-                        heightSize: 0.03,
-                        widthSize: 0.3,
-                        btnText: "이름순",
-                        tabIndexVariable: tabIndex,
-                        tabOrder: 0,
-                        tabAction: (){
-                          setState(() {
-                            tabIndex = 0;
-                          });
-                        }
-                      ),
-                      tabBtn(
-                          context: context,
-                          heightSize: 0.03,
-                          widthSize: 0.32,
-                          btnText: "상태순",
-                          tabIndexVariable: tabIndex,
-                          tabOrder: 1,
-                          tabAction: (){
-                            setState(() {
-                              tabIndex = 1;
-                            });
-                          }
-                      ),
-                      tabBtn(
->>>>>>> 8c171e65f8e2d5f78d8473052766fd3a2b2f1380
-                          context: context,
-                          companyWork: mapB[key],
-                          name: name[key]
-                        )
+                          workDetailTableRow(
+                              context: context,
+                              companyWork: mapB[key],
+                              name: name[key]
+                          )
                       );
                     });
 
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08)),
                       child: Table(
-                        border: TableBorder.all(width: 0.1),
-                        columnWidths: {
-                          5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
-                        },
-                        children: childRow
+                          border: TableBorder.all(width: 0.1),
+                          columnWidths: {
+                            5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
+                          },
+                          children: childRow
                       ),
                     );
                   },
@@ -294,32 +224,34 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                   }
                   var _companyWork = snapshot.data.documents ?? [];
 
-                  _companyWork.forEach((value){
-                    
-                  });
-
                   if(_companyWork.length == 0) {
-                    return Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          width: 1,
-                          color: boarderColor,
-                        ),
-                      ),
-                      child: Center(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.02)),
-                            child: Text(
-                              "일정이 없습니다.",
-                              style: customStyle(
-                                  fontColor: blackColor,
-                                  fontSize: 16,
-                                  fontWeightName: "Medium"
+                    return Expanded(
+                      child: ListView(
+                        children: [
+                          Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(
+                                width: 1,
+                                color: boarderColor,
                               ),
-                            )
-                        ),
+                            ),
+                            child: Center(
+                              child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.02)),
+                                  child: Text(
+                                    "일정이 없습니다.",
+                                    style: customStyle(
+                                        fontColor: blackColor,
+                                        fontSize: 16,
+                                        fontWeightName: "Medium"
+                                    ),
+                                  )
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }

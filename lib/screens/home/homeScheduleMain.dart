@@ -54,46 +54,46 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
         title: Row(
           children: <Widget>[
             IconButton(
-              icon: Icon(
-                Icons.power_settings_new,
-                size: customHeight(
-                    context: context,
-                    heightSize: 0.04
+                icon: Icon(
+                  Icons.power_settings_new,
+                  size: customHeight(
+                      context: context,
+                      heightSize: 0.04
+                  ),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-              onPressed: _attendance.state == "근무중" ? () async {
-                String result = await _attendanceProvider.manualOffWork(
-                  context: context,
-                );
-
-                if(result == "OK"){
-                  Fluttertoast.showToast(
-                      msg: "퇴근이 정상적으로 처리되었습니다.",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity:  ToastGravity.BOTTOM,
-                      backgroundColor: blackColor
+                onPressed: _attendance.state == "근무중" ? () async {
+                  String result = await _attendanceProvider.manualOffWork(
+                    context: context,
                   );
-                }
-              } : () async {
-                String result = await _attendanceProvider.manualOnWork(
-                  context: context
-                );
 
-                if(result == "OK"){
-                  Fluttertoast.showToast(
-                      msg: "출근이 정상적으로 처리되었습니다.",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity:  ToastGravity.BOTTOM,
-                      backgroundColor: blackColor
+                  if(result == "OK"){
+                    Fluttertoast.showToast(
+                        msg: "퇴근이 정상적으로 처리되었습니다.",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity:  ToastGravity.BOTTOM,
+                        backgroundColor: blackColor
+                    );
+                  }
+                } : () async {
+                  String result = await _attendanceProvider.manualOnWork(
+                      context: context
                   );
+
+                  if(result == "OK"){
+                    Fluttertoast.showToast(
+                        msg: "출근이 정상적으로 처리되었습니다.",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity:  ToastGravity.BOTTOM,
+                        backgroundColor: blackColor
+                    );
+                  }
                 }
-              }
             ),
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                _attendance.state
+                  _attendance.state
               ),
             )
           ],
@@ -102,28 +102,28 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
           Container(
             alignment: Alignment.center,
             width: customWidth(
-              context: context,
-              widthSize: 0.2
+                context: context,
+                widthSize: 0.2
             ),
             child: GestureDetector(
               child: Container(
                 height: customHeight(
-                  context: context,
-                  heightSize: 0.05
+                    context: context,
+                    heightSize: 0.05
                 ),
                 width: customWidth(
-                  context: context,
-                  widthSize: 0.1
+                    context: context,
+                    widthSize: 0.1
                 ),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: whiteColor,
-                  border: Border.all(color: whiteColor, width: 2)
+                    borderRadius: BorderRadius.circular(5),
+                    color: whiteColor,
+                    border: Border.all(color: whiteColor, width: 2)
                 ),
                 child: Text(
                   "사진",
                   style: TextStyle(
-                    color: Colors.black
+                      color: Colors.black
                   ),
                 ),
               ),
@@ -177,7 +177,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                   tabBtn(
                       context: context,
                       heightSize: 0.05,
-                      widthSize: 0.31,
+                      widthSize: 0.46,
                       btnText: "나의 일정",
                       tabIndexVariable: tabIndex,
                       tabOrder: 0,
@@ -190,26 +190,13 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                   tabBtn(
                       context: context,
                       heightSize: 0.05,
-                      widthSize: 0.31,
+                      widthSize: 0.46,
                       btnText: "동료 일정",
                       tabIndexVariable: tabIndex,
                       tabOrder: 1,
                       tabAction: (){
                         setState(() {
                           tabIndex = 1;
-                        });
-                      }
-                  ),
-                  tabBtn(
-                      context: context,
-                      heightSize: 0.05,
-                      widthSize: 0.31,
-                      btnText: "내 결재함",
-                      tabIndexVariable: tabIndex,
-                      tabOrder: 2,
-                      tabAction: (){
-                        setState(() {
-                          tabIndex = 2;
                         });
                       }
                   ),
