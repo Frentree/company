@@ -4,10 +4,11 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/widgets/bottomsheet/dateSetBottomSheet.dart';
-import 'package:companyplaylist/widgets/popupMenu/expensePopupMenu.dart';
+import 'package:companyplaylist/widgets/form/customInputFormatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 ExpenseMain(BuildContext context) {
@@ -41,12 +42,11 @@ ExpenseMain(BuildContext context) {
           ),
           controller: _expenseController,
           keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
-          inputFormatters: /*<TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-          ],*/
-          [FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          inputFormatters: <TextInputFormatter>
+            [FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
             CustomTextInputFormatter(),
             ],
+
           decoration: InputDecoration(
             suffixText: '원',
             suffixStyle: TextStyle(color: Colors.black),
@@ -393,9 +393,6 @@ ExpenseMain(BuildContext context) {
           },
         );
       });
-
-
-
 }
 
 String _buildChosenItem(int chosenItem) {
@@ -411,36 +408,5 @@ String _buildChosenItem(int chosenItem) {
       return "교통비";
     case '4':
       return "기타";
-  }
-}
-
-//FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
-
-class CustomTextInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.text.length == 0) {
-      return newValue.copyWith(text: '');
-    } else if (newValue.text.compareTo(oldValue.text) != 0) {
-      int selectionIndexFromTheRight =
-          newValue.text.length - newValue.selection.extentOffset;
-      List<String> chars = newValue.text.replaceAll(' ', '').split('');
-      chars = newValue.text.replaceAll(',', '').split('');
-      String newString = '';
-      for (int i = 0; i < chars.length; i++) {
-        if (i % 3 == 0 && i != 0) newString += ',';
-        newString += chars[i];
-      }
-
-      return TextEditingValue(
-        text: newString,
-        selection: TextSelection.collapsed(
-          offset: newString.length - selectionIndexFromTheRight,
-        ),
-      );
-    } else {
-      return newValue;
-    }
   }
 }
