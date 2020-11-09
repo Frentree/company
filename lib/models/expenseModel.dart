@@ -62,4 +62,19 @@ class ExpenseModel {
       "imageUrl": imageUrl,
       "status": status,
     };
+
+  Map toMap() {
+    var map = Map<String, dynamic>();
+    map['name'] = this.name;
+    map['mail'] = this.mail;
+    map['companyCode'] = this.companyCode;
+    map['createDate'] = this.createDate;
+    map['contentType'] = this.contentType;
+    map['buyDate'] = this.buyDate;
+    map['cost'] = this.cost;
+    map['memo'] = this.memo;
+    map['imageUrl'] = this.imageUrl;
+    map['status'] = this.status;
+    return map;
+  }
 }

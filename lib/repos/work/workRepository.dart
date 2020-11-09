@@ -33,5 +33,6 @@ class WorkRepository{
         bigCategory: bigCategory
     );
 
-   Future<List<bigCategoryModel>> workCategoryFirebaseAuth({BuildContext context}) => _workScheduleMethod.workCategoryFirebaseAuth();
+   Future<List<bigCategoryModel>> workCategoryFirebaseAuth({BuildContext context})
+   => _workScheduleMethod.workCategoryFirebaseAuth();
  }

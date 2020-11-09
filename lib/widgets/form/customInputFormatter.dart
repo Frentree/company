@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
@@ -32,4 +33,14 @@ class CustomTextInputFormatter extends TextInputFormatter {
       return newValue;
     }
   }
+}
+
+CustomTextInputFormatterReverse(String _inputCost) {
+  int _returnCost;
+
+  var temp = _inputCost.replaceAll(",","");
+  debugPrint("a value of temp is " + temp);
+  _returnCost = int.parse(temp);
+
+  return _returnCost;
 }
