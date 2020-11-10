@@ -2,6 +2,7 @@ import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/screens/work/workContent.dart';
 import 'package:companyplaylist/widgets/bottomsheet/expense/expenseMain.dart';
+import 'package:companyplaylist/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ MainBottomSheet(BuildContext context) {
     } else if (type == 5) {
 
     } else if (type == 6) { //구매 품의
+      PurchaseMain(context);
 
     } else if (type == 7) { //경비 품의
       if (_userGrade == 9) { //공지사항
