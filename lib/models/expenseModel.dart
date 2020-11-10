@@ -19,7 +19,7 @@ class ExpenseModel {
   String companyCode;
   Timestamp createDate;
   String contentType;
-  String buyDate;
+  DateTime buyDate;
   int cost;
   String memo;
   String imageUrl;

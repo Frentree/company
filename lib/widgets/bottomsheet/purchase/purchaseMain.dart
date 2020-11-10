@@ -83,7 +83,7 @@ PurchaseMain(BuildContext context) {
       companyCode: user.companyCode,
       createDate: Timestamp.now(),
       contentType: _buildChosenItem(_chosenItem),
-      buyDate: date,
+      //buyDate: selected,
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       memo: "",
       imageUrl: "",

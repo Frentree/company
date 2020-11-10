@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 //abc@frentree / fren1212
 
 ExpenseMain(BuildContext context) {
-    FirebaseRepository _reposistory = FirebaseRepository();
+  FirebaseRepository _reposistory = FirebaseRepository();
 
   LoginUserInfoProvider _loginUserInfoProvider;
 
@@ -37,6 +37,7 @@ ExpenseMain(BuildContext context) {
   int _itemCount = 0;
   _itemCount = entries.length;
   int _expenses = 8000;
+
   /// Which holds the selected date
   /// Defaults to today's date.
   DateTime selectedDate = DateTime.now();
@@ -50,6 +51,7 @@ ExpenseMain(BuildContext context) {
     }
     return false;
   }
+
   String date = "일자를 선택하세요";
 
   Widget _buildExpenseSizedBox() {
@@ -96,7 +98,7 @@ ExpenseMain(BuildContext context) {
       companyCode: user.companyCode,
       createDate: Timestamp.now(),
       contentType: _buildChosenItem(_chosenItem),
-      buyDate: selectedDate.toString(),
+      buyDate: selectedDate,
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       memo: "",
       imageUrl: "",
@@ -123,24 +125,101 @@ ExpenseMain(BuildContext context) {
           builder: (BuildContext context, StateSetter setState) {
             buildCupertinoDatePicker(BuildContext context) {
               showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20))),
                   context: context,
                   builder: (BuildContext builder) {
                     return Container(
-                      height: MediaQuery.of(context).copyWith().size.height / 3.2,
-                      color: Colors.white,
-                      child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
-                        onDateTimeChanged: (picked) {
-                          if (picked != null && picked != selectedDate)
-                            setState(() {
-                              selectedDate = picked;
-                            });
-                        },
-                        initialDateTime: selectedDate,
-                        minimumYear: 2000,
-                        maximumYear: 2025,
-                      ),
-                    );
+                        padding: EdgeInsets.only(left : 20, right: 20, top: 10),
+                        height:
+                            MediaQuery.of(context).copyWith().size.height / 2.5,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Chip(
+                                        backgroundColor: chipColorBlue,
+                                        label: Text(
+                                          "경비 정산",
+                                          style: customStyle(
+                                            fontSize: 14,
+                                            fontColor: mainColor,
+                                            fontWeightName: 'Regular',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 5),
+                                    ),
+                                    Expanded(
+                                      flex: 5,
+                                      child: RaisedButton(
+                                        disabledColor: Colors.white,
+                                        child: Text(
+                                          _buildChosenItem(_chosenItem),
+                                          style: customStyle(
+                                              fontSize: 14,
+                                              fontWeightName: "regular",
+                                              fontColor: mainColor),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: CircleAvatar(
+                                          radius: 20,
+                                          backgroundColor:
+                                              _titleController.text == ''
+                                                  ? Colors.black12
+                                                  : _titleController.text == ''
+                                                      ? Colors.black12
+                                                      : Colors.blue,
+                                          child: IconButton(
+                                            icon: Icon(Icons.arrow_upward),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              if (_titleController.text != '') {
+                                              } else if (_titleController
+                                                      .text ==
+                                                  '') {
+                                                // 제목 미입력
+
+                                              } else {
+                                                // 내용 미입력
+
+                                              }
+                                            },
+                                          )),
+                                    ),
+                                  ]),
+                              Container(
+                                height: MediaQuery.of(context)
+                                        .copyWith()
+                                        .size
+                                        .height /
+                                    3.2,
+                                child: CupertinoDatePicker(
+                                  mode: CupertinoDatePickerMode.date,
+                                  onDateTimeChanged: (picked) {
+                                    if (picked != null &&
+                                        picked != selectedDate)
+                                      setState(() {
+                                        selectedDate = picked;
+                                      });
+                                  },
+                                  initialDateTime: selectedDate,
+                                  minimumYear: 2000,
+                                  maximumYear: 2025,
+                                ),
+                              )
+                            ]));
                   });
             }
 
@@ -182,11 +261,11 @@ ExpenseMain(BuildContext context) {
                 case TargetPlatform.linux:
                 case TargetPlatform.windows:
                   return //debugPrint("android");
-                    buildMaterialDatePicker(context);
+                      buildMaterialDatePicker(context);
                 case TargetPlatform.iOS:
                 case TargetPlatform.macOS:
                   return //debugPrint("iOS");
-                    buildCupertinoDatePicker(context);
+                      buildCupertinoDatePicker(context);
               }
             }
 
@@ -194,7 +273,7 @@ ExpenseMain(BuildContext context) {
               padding: MediaQuery.of(context).viewInsets,
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
-                    top: 30,
+                    top: 10,
                     left: 20,
                     right: 20,
                     bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -223,8 +302,7 @@ ExpenseMain(BuildContext context) {
                           ),
                           Expanded(
                               flex: 5,
-                              child:
-                                  PopupMenuButton(
+                              child: PopupMenuButton(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   side: BorderSide(
@@ -354,7 +432,8 @@ ExpenseMain(BuildContext context) {
                               Row(
                                 children: [
                                   Text(
-                                    DateFormat('yyyy-MM-dd').format(selectedDate),
+                                    DateFormat('yyyy-MM-dd')
+                                        .format(selectedDate),
                                     style: customStyle(
                                         fontSize: 14,
                                         fontWeightName: "regular",
@@ -451,7 +530,7 @@ ExpenseMain(BuildContext context) {
                               ],
                             ),
                             Padding(
-                              padding: EdgeInsets.only(bottom: 15),
+                              padding: EdgeInsets.only(bottom: 20),
                             ),
                           ],
                         ),
@@ -499,7 +578,7 @@ ExpenseMain(BuildContext context) {
                                   ]))
                                 ]),
                             Padding(
-                              padding: EdgeInsets.only(bottom: 15),
+                              padding: EdgeInsets.only(bottom: 20),
                             ),
                           ]),
                           onTap: () {
