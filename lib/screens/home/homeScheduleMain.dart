@@ -93,7 +93,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                  _attendance.state
+                  "근무중"
               ),
             )
           ],

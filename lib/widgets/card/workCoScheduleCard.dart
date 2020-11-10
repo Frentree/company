@@ -12,402 +12,112 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 
+const widthDistance = 0.02; // 항목별 간격
+const timeFontSize = 13.0;
+const typeFontSize = 12.0;
+const titleFontSize = 15.0;
+const writeTimeFontSize = 14.0;
+const fontColor = mainColor;
 
-Card workCoScheduleCard({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
-  return Card(
-    elevation: 0,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-      side: BorderSide(
-        width: 1,
-        color: boarderColor,
-      ),
-    ),
-    child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.02), vertical: customHeight(context: context, heightSize: 0.01)),
-        child: isDetail ? detailContents(
-          context: context,
-          documentId: documentId,
-          companyCode: companyCode,
-          companyWork: companyWork,
-          isDetail: isDetail,
-        ) : titleContents(
-          context: context,
-          documentId: documentId,
-          companyCode: companyCode,
-          companyWork: companyWork,
-          isDetail: isDetail,
-        )
-    ),
-  );
-}
+List<Column> columnChild(
+    {BuildContext context, List<CompanyWork> companyWorkList}) {
+  List<Column> columnChild = [];
 
-Column titleContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: [
-      Row(
-        children: [
-          Container(
-            width: customWidth(context: context, widthSize: 0.1),
-            child: Center(
-              child: Text(
-                companyWork.name,
-                style: customStyle(
-                  fontSize: 13,
-                  fontColor: mainColor,
-                  fontWeightName: "Regular"
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: customWidth(context: context, widthSize: 0.03),
-          ),
-          Column(
+  companyWorkList.forEach((element) {
+    columnChild.add(Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
             children: [
+              Text(
+                element.timeTest,
+                style: customStyle(
+                    fontSize: timeFontSize,
+                    fontWeightName: "Regular",
+                    fontColor: blueColor),
+              ),
+              SizedBox(
+                width: customWidth(context: context, widthSize: widthDistance),
+              ),
+
+              //업무 타입입
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(
-                        color: textFieldUnderLine
-                    ),
-                    borderRadius: BorderRadius.circular(12)
-                ),
-                width: customWidth(context: context, widthSize: 0.08),
-                height: customHeight(context: context, heightSize: 0.04),
+                    border: Border.all(color: textFieldUnderLine),
+                    borderRadius: BorderRadius.circular(8)),
+                width: customWidth(context: context, widthSize: 0.1),
+                height: customHeight(context: context, heightSize: 0.03),
                 alignment: Alignment.center,
                 child: Text(
-                  companyWork.type,
+                  element.type,
                   style: customStyle(
-                      fontSize: 12,
+                      fontSize: typeFontSize,
                       fontWeightName: "Regular",
-                      fontColor: mainColor
-                  ),
+                      fontColor: fontColor),
                 ),
               ),
-              Text(
-                companyWork.timeTest,
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: mainColor
+              SizedBox(
+                width: customWidth(context: context, widthSize: 0.02),
+              ),
+
+              //제목
+              Container(
+                width: element.type == "외근" ? customWidth(context: context, widthSize: 0.4) : customWidth(context: context, widthSize: 0.55),
+                child: Text(
+                  element.workTitle,
+                  //textAlign: ,
+                  style: customStyle(
+                      fontSize: titleFontSize,
+                      fontWeightName: "Medium",
+                      fontColor: mainColor,
+                      height: 1),
                 ),
               ),
-            ],
-          ),
-
-          SizedBox(
-            width: customWidth(context: context, widthSize: 0.03),
-          ),
-          Container(
-            width: customWidth(context: context, widthSize: 0.5),
-            child: Text(
-              companyWork.workTitle,
-              style: customStyle(
-                  fontSize: 16,
-                  fontWeightName: "Medium",
-                  fontColor: mainColor
-              ),
-            ),
-          ),
-          SizedBox(
-            width: customWidth(context: context, widthSize: 0.01),
-          ),
-          Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: companyWork.progress == 1 ? progressComplete : companyWork.progress == 2 ? blueColor : companyWork.progress == 3 ? progressBefore : progressHold
-            ),
-            child: Center(
-              child: Text(
-                companyWork.progress == 1 ? "완료" : companyWork.progress == 2 ? "진행중" : companyWork.progress == 3 ? "진행전" : "보류",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
+              element.type == "외근" ? Container(
+                width: customWidth(context: context, widthSize: 0.15),
+                child: Text(
+                  element.location == null ? "" : "[${element.location}]",
+                  style: customStyle(
+                      fontSize: titleFontSize,
+                      fontWeightName: "Medium",
+                      fontColor: mainColor,
+                      height: 1),
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ],
-  );
-}
-
-Container popupMenu({BuildContext context, String documentId, String companyCode}){
-  CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: companyCode);
-
-  return Container(
-    height: 15,
-    child: PopupMenuButton(
-      padding: EdgeInsets.only(right: customWidth(context: context, widthSize: 0.04)),
-      icon: Icon(
-          Icons.more_horiz
-      ),
-      onSelected: (value) async {
-        if(value == 1) {
-          print("수정하기");
-        }
-
-        else{
-          await _crudRepository.removeCompanyWorkDataToFirebase(documentId: documentId);
-        }
-      },
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem(
-          value: 1,
-          child: Row(
-            children: [
-              Icon(
-                  Icons.edit
-              ),
-              Text(
-                  "수정하기"
-              )
+              ) : Container()
             ],
           ),
-        ),
-        PopupMenuItem(
-          value: 2,
-          child: Row(
-            children: [
-              Icon(
-                  Icons.delete
-              ),
-              Text(
-                  "삭제하기"
-              )
-            ],
-          ),
-        ),
+        )
       ],
-    ),
-  );
+    ));
+  });
+
+  return columnChild;
 }
 
-PopupMenuButton progressPopupMenu({BuildContext context, String documentId, String companyCode, CompanyWork companyWork}){
-  CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: companyCode);
-
-  return PopupMenuButton(
-    padding: EdgeInsets.only(right: customWidth(context: context, widthSize: 0.04)),
-    child: Container(
-      width: customWidth(context: context, widthSize: 0.15),
-      height: customHeight(context: context, heightSize: 0.03),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: companyWork.progress == 1 ? progressComplete : companyWork.progress == 2 ? blueColor : companyWork.progress == 3 ? progressBefore : progressHold
-      ),
-      child: Center(
-        child: Text(
-          companyWork.progress == 1 ? "완료" : companyWork.progress == 2 ? "진행중" : companyWork.progress == 3 ? "진행전" : "보류",
-          style: customStyle(
-              fontSize: 13,
-              fontWeightName: "Regular",
-              fontColor: whiteColor
-          ),
+Widget workCoScheduleCard(
+    {BuildContext context,
+    String key,
+    String name,
+    Map<String, List<CompanyWork>> companyWork}) {
+  return companyWork[key].length == 0 ? Container() : Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          width: 1,
+          color: boarderColor,
         ),
       ),
-    ),
-    onSelected: (value) async {
-      companyWork.progress = value;
-      await _crudRepository.updateCompanyWorkDataToFirebase(documentId: documentId, dataModel: companyWork);
-      Fluttertoast.showToast(
-          msg: "진행상태가 변경되었습니다.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity:  ToastGravity.BOTTOM,
-          backgroundColor: blackColor
-      );
-    },
-    itemBuilder: (BuildContext context) => [
-      PopupMenuItem(
-        child: Center(
-          child: Text(
-            "진행상태 수정",
-            style: customStyle(
-                fontColor: blackColor
-            ),
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Text(name),
+            Column(
+              children: columnChild(context: context, companyWorkList: companyWork[key])
+            )
+          ],
         ),
-        enabled: false,
-      ),
-      PopupMenuItem(
-        value: 1,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: progressComplete
-            ),
-            child: Center(
-              child: Text(
-                "완료",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: 2,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: blueColor
-            ),
-            child: Center(
-              child: Text(
-                "진행중",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: 3,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: progressBefore
-            ),
-            child: Center(
-              child: Text(
-                "진행전",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: 4,
-        child: Center(
-          child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
-            height: customHeight(context: context, heightSize: 0.03),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: progressHold
-            ),
-            child: Center(
-              child: Text(
-                "보류",
-                style: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Regular",
-                    fontColor: whiteColor
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-Column detailContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
-  Format _format = Format();
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      titleContents(
-          context: context,
-          documentId: documentId,
-          companyCode: companyCode,
-          companyWork: companyWork,
-          isDetail: isDetail
-      ),
-
-      SizedBox(
-        height: customHeight(context: context, heightSize: 0.01),
-      ),
-      Padding(
-        padding: EdgeInsets.only(left: customWidth(context: context, widthSize: 0.15)),
-        child: Text(
-            companyWork.workContents
-        ),
-      ),
-      SizedBox(
-        height: customHeight(context: context, heightSize: 0.01),
-      ),
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          /*Container(
-            //color: Colors.yellow,
-            height: customHeight(context: context, heightSize: 0.05),
-            width: customWidth(context: context, widthSize: 0.8),
-            child: ListView.builder(
-              reverse: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: share.length,
-              itemBuilder: (BuildContext context, int index){
-                return Chip(
-                  label: Text(
-                    share[index],
-                    style: customStyle(
-                      fontSize: 14,
-                      fontWeightName: "Regular"
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),*/
-        ],
-      ),
-
-      SizedBox(
-        height: customHeight(context: context, heightSize: 0.01),
-      ),
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Text(
-            "작성시간 : ",
-            style: customStyle(
-                fontSize: 14,
-                fontWeightName: "Regular",
-                fontColor: greyColor
-            ),
-          ),
-          Text(
-            _format.timeStampToDateTime(companyWork.createDate).toString(),
-            style: customStyle(
-                fontSize: 14,
-                fontWeightName: "Regular",
-                fontColor: greyColor
-            ),
-          )
-        ],
-      )
-    ],
-  );
+      ));
 }

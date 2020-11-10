@@ -140,7 +140,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 });
                 List<DocumentSnapshot> _coUser = snapshot.data.documents ?? [];
                 List<String> _coUserUid = [_companyUser.mail];
-                Map<String, String> name = {_companyUser.mail : _companyUser.name};
+                Map<String, String> name = {_companyUser.mail : "나"};
                 _coUser.forEach((element) {
                   if(element.documentID != _companyUser.mail){
                     _coUserUid.add(element.documentID);
@@ -174,6 +174,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                       mapB[element.createUid].add(element);
                       name[element.createUid] = element.name;
                     });
+                    print("nowUser ===> ${_companyUser.mail}");
                     print("mapB =====> $mapB");
                     print("name =====> $name");
 
@@ -205,7 +206,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               },
             ),
           ) : StreamBuilder(
-            stream:_db.collection("company").document(_companyUser.companyCode).collection("user").snapshots(),
+            stream:_db.collection("company").document(_companyUser.companyCode).collection("user").orderBy("name").snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.data == null){
                 return Center(
@@ -214,9 +215,11 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               }
               List<DocumentSnapshot> _coUser = snapshot.data.documents ?? [];
               List<String> _coUserUid = [];
+              List<String> _name =[];
               _coUser.forEach((element) {
                 if(element.documentID != _companyUser.mail){
                   _coUserUid.add(element.documentID);
+                  _name.add(element.data["name"]);
                 }
                 print(_coUserUid);
               });
@@ -229,6 +232,27 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     );
                   }
                   var _companyWork = snapshot.data.documents ?? [];
+
+                  List<CompanyWork> convertCompanyWork = [];
+
+                  _companyWork.forEach((doc) => convertCompanyWork.add(CompanyWork.fromMap(doc.data, doc.documentID)));
+
+                  Map<String, List<CompanyWork>> mapB = Map();
+                  _coUserUid.forEach((element) {
+                    mapB[element] = [];
+                  });
+
+                  convertCompanyWork.forEach((element) {
+                    mapB[element.createUid].add(element);
+                  });
+
+                  List<String> k = [];
+                  print(mapB);
+                  List<Map<String, List<CompanyWork>>> a = List();
+                  mapB.forEach((key, value) {
+                    a.add({key: value});
+                    k.add(key);
+                  });
 
                   if(_companyWork.length == 0) {
                     return Expanded(
@@ -269,34 +293,16 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
 
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: _companyWork.length,
+                        itemCount: a.length,
                         itemBuilder: (context, index) {
-                          CompanyWork _companyData = CompanyWork.fromMap(_companyWork[index].data, _companyWork[index].documentID);
-                          switch(_companyData.type) {
-                            case '내근':
-                              return GestureDetector(
-                                child: workCoScheduleCard(
-                                  context: context,
-                                  companyCode: _companyUser.companyCode,
-                                  documentId: _companyWork[index].documentID,
-                                  companyWork: _companyData,
-                                  isDetail: isDetail[index],
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    isDetail[index] = !isDetail[index];
-                                    for(int i = 0; i < isDetail.length; i++){
-                                      if(i != index) {
-                                        isDetail[i] = false;
-                                      }
-                                    }
-                                  });
-                                },
-                              );
-                              break;
-                            default:
-                              return Container();
-                          }
+                          return GestureDetector(
+                            child: workCoScheduleCard(
+                              context: context,
+                              companyWork: a[index],
+                              key: k[index],
+                              name: _name[index]
+                            ),
+                          );
                         },
                       ),
                     );
