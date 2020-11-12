@@ -6,11 +6,11 @@ ChoiceImage(BuildContext context) {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-            title: Text("Pop Up message"),
+            title: Text("업데이트 예정"),
             content: SingleChildScrollView(
                 child: ListBody(children: <Widget>[
-              Text("Alter Dialog Test"),
-              Text("Click OK Button"),
+              Text("사진촬영 또는 갤러리에서 선택"),
+              Text("OK 또는 Cancel 버튼 클릭으로 종료"),
             ])),
             actions: <Widget>[
               FlatButton(
