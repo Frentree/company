@@ -6,8 +6,6 @@ import 'package:companyplaylist/screens/auth.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:companyplaylist/provider/attendance/attendanceMethod.dart';
-
 //Const
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
@@ -37,8 +35,6 @@ class SplashPageState extends State<SplashPage>{
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
-    AttendanceMethod _attendanceProvider = Provider.of<AttendanceMethod>(context, listen: false);
-
     _loginUserInfoProvider.loadLoginUserToPhone();
 
     return Scaffold(

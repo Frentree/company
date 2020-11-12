@@ -7,44 +7,44 @@ import 'package:companyplaylist/repos/firebaseMethod.dart';
 //Model
 import 'package:companyplaylist/models/attendanceModel.dart';
 
-class UserAttendanceCrud {
+class AttendanceCrud {
   String companyCode;
   FirestoreApi _firestoreApi;
 
-  UserAttendanceCrud(this.companyCode){
+  AttendanceCrud(this.companyCode){
     _firestoreApi = FirestoreApi.twoPath("company", "attendance", companyCode);
   }
 
   List<Attendance> attendance;
 
-  Future<List<Attendance>> fetchUserAttendance() async{
+  Future<List<Attendance>> fetchAttendance() async{
     var result = await _firestoreApi.getDataCollection();
     attendance = result.documents.map((doc) => Attendance.fromMap(doc.data, doc.documentID)).toList();
 
     return attendance;
   }
 
-  Stream<QuerySnapshot> fetchUserAttendanceAsStream(){
+  Stream<QuerySnapshot> fetchAttendanceAsStream(){
     return _firestoreApi.streamDataCollection();
   }
 
-  Future<Attendance> getUserAttendanceDataToFirebaseById({String documentId}) async {
+  Future<Attendance> getAttendanceDataToFirebaseById({String documentId}) async {
     var doc = await _firestoreApi.getDocumentById(documentId);
     return Attendance.fromMap(doc.data, doc.documentID);
   }
 
-  Future<void> removeUserAttendanceDataToFirebase({String documentId}) async {
+  Future<void> removeAttendanceDataToFirebase({String documentId}) async {
     await _firestoreApi.removeDocument(documentId);
     return null;
   }
 
-  Future<void> updateUserAttendanceDataToFirebase({Attendance dataModel, String documentId}) async {
+  Future<void> updateAttendanceDataToFirebase({Attendance dataModel, String documentId}) async {
     await _firestoreApi.updateDocument(dataModel.toJson(), documentId);
     return null;
   }
 
-  Future<void> addUserAttendanceDataToFirebase({Attendance dataModel}) async{
-    await _firestoreApi.addDocument(dataModel.toJson());
+  Future<void> setAttendanceDataToFirebase({Attendance dataModel, String documentId}) async{
+    await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;
   }
 }

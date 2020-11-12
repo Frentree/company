@@ -1,6 +1,6 @@
 import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/provider/attendance/attendanceMethod.dart';
+import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 import 'package:companyplaylist/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<LoginUserInfoProvider>(
           create: (_) => LoginUserInfoProvider(),
         ),
-        ChangeNotifierProvider<AttendanceMethod>(
-          create: (_) => AttendanceMethod(),
+        ChangeNotifierProvider<AttendanceCheck>(
+          create: (_) => AttendanceCheck(),
         )
       ],
       child: MaterialApp(

@@ -146,8 +146,6 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     _coUserUid.add(element.documentID);
                     name[element.documentID] = element.data["name"];
                   }
-                  /*print(_coUserUid);
-                  print("term ====> $term");*/
                 });
 
                 return StreamBuilder(
@@ -190,15 +188,21 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                           )
                       );
                     });
-
+                    
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08)),
-                      child: Table(
-                          border: TableBorder.all(width: 0.1),
-                          columnWidths: {
-                            5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
-                          },
-                          children: childRow
+                      child: Container(
+                        //color: Colors.purple,
+                        height: customHeight(context: context, heightSize: 0.48),
+                        child: SingleChildScrollView(
+                          child: Table(
+                              border: TableBorder.all(width: 0.1),
+                              columnWidths: {
+                                5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
+                              },
+                              children: childRow
+                          ),
+                        ),
                       ),
                     );
                   },

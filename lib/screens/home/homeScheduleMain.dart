@@ -1,5 +1,6 @@
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 import 'package:companyplaylist/screens/home/homeCoSchedule.dart';
 import 'package:companyplaylist/screens/home/homeSchedule.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
@@ -20,7 +21,7 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 //Repos
 import 'package:companyplaylist/repos/showSnackBarMethod.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
-import 'package:companyplaylist/provider/attendance/attendanceMethod.dart';
+import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 
 //Model
 import 'package:companyplaylist/models/userModel.dart';
@@ -41,7 +42,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-    AttendanceMethod _attendanceProvider = Provider.of<AttendanceMethod>(context);
+    AttendanceCheck _attendanceProvider = Provider.of<AttendanceCheck>(context);
     _attendance = _attendanceProvider.getAttendanceData();
 
     return Scaffold(
@@ -62,7 +63,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                   ),
                   color: Colors.white,
                 ),
-                onPressed: _attendance.state == "근무중" ? () async {
+                onPressed: _attendance.status == 1 ? () async {
                   String result = await _attendanceProvider.manualOffWork(
                     context: context,
                   );

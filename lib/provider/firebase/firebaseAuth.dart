@@ -25,10 +25,6 @@ class FirebaseAuthProvider with ChangeNotifier {
   //Firebase 에서 마지막 전달받은 응답
   String _lastFirebaseResponse = "";
 
-  FirebaseAuthProvider() {
-    _prepareUser();
-  }
-
   //로그인한 사용자 가져오기
   FirebaseUser getUser() {
     return _user;
@@ -38,13 +34,6 @@ class FirebaseAuthProvider with ChangeNotifier {
   void setUer({FirebaseUser user}){
     _user = user;
     notifyListeners();
-  }
-
-  //최근 로그인한 사용자 저장
-  void _prepareUser() {
-    _firebaseAuth.currentUser().then((FirebaseUser currentUser){
-      setUer(user: currentUser);
-    });
   }
 
   //마지막 응답 저장

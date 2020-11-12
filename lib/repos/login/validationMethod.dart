@@ -16,7 +16,8 @@ class ValidationMethod{
 
     RegExp emailRegExp = RegExp(r'^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$');
     RegExp passwordRegExp = RegExp(r'^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$');
-    RegExp phoneRegExp = RegExp(r'^[0-9]{11}$');
+    RegExp birthdayRegExp = RegExp(r'^(19|20)\d{2}[.](0[1-9]|1[012])[.](0[1-9]|[12][0-9]|3[0-1])$');
+    RegExp phoneRegExp = RegExp(r'^[0-9]{3}[-][0-9]{4}[-][0-9]{4}$');
 
     switch (field) {
       case "이메일":
@@ -28,6 +29,12 @@ class ValidationMethod{
       case "비밀번호":
         {
           _isValidRegExp = passwordRegExp.hasMatch(value);
+        }
+        break;
+
+      case "생일":
+        {
+          _isValidRegExp = birthdayRegExp.hasMatch(value);
         }
         break;
 

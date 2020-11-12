@@ -17,7 +17,7 @@ class SignInMethod{
   Future<void> signInWithFirebaseAuth({BuildContext context, String mail, String password}) async {
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
-    CrudRepository _crudRepository = CrudRepository.userAttendance();
+    CrudRepository _crudRepository = CrudRepository.attendance();
 
 
     User _loginUser;

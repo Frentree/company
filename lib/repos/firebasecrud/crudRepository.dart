@@ -12,7 +12,7 @@ import 'package:companyplaylist/repos/firebasecrud/noticeCrudMethod.dart';
 import 'package:companyplaylist/repos/firebasecrud/userCrudMethod.dart';
 import 'package:companyplaylist/repos/firebasecrud/companyInfoCrudMethod.dart';
 import 'package:companyplaylist/repos/firebasecrud/companyUserCrudMethod.dart';
-import 'package:companyplaylist/repos/firebasecrud/userAttendanceCrudMethod.dart';
+import 'package:companyplaylist/repos/firebasecrud/attendanceCrudMethod.dart';
 
 //Model
 import 'package:companyplaylist/models/userModel.dart';
@@ -46,7 +46,7 @@ class CrudRepository {
   NoticeCommentCrud _noticeCommentCrud;
 
   //
-  UserAttendanceCrud _userAttendanceCrud;
+  AttendanceCrud _attendanceCrud;
 
   CrudRepository(){}
 
@@ -65,8 +65,8 @@ class CrudRepository {
   }
 
   //
-  CrudRepository.userAttendance({this.companyCode}){
-    _userAttendanceCrud = UserAttendanceCrud(companyCode);
+  CrudRepository.attendance({this.companyCode}){
+    _attendanceCrud = AttendanceCrud(companyCode);
   }
 
   CrudRepository.noticeAttendance({this.companyCode}){
@@ -98,12 +98,12 @@ class CrudRepository {
   Future<void> updateCompanyUserDataToFirebase({CompanyUser dataModel, String documentId}) => _companyUserCrud.updateCompanyUserDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> setCompanyUserDataToFirebase({CompanyUser dataModel, String documentId}) => _companyUserCrud.setCompanyUserDataToFirebase(dataModel: dataModel, documentId: documentId);
 
-  Future<List<Attendance>> fetchUserAttendance() => _userAttendanceCrud.fetchUserAttendance();
-  Stream<QuerySnapshot> fetchUserAttendanceAsStream() => _userAttendanceCrud.fetchUserAttendanceAsStream();
-  Future<Attendance> getUserAttendanceDataToFirebaseById({String documentId}) => _userAttendanceCrud.getUserAttendanceDataToFirebaseById(documentId: documentId);
-  Future<void> removeUserAttendanceDataToFirebase({String documentId}) => _userAttendanceCrud.removeUserAttendanceDataToFirebase(documentId: documentId);
-  Future<void> updateUserAttendanceDataToFirebase({Attendance dataModel, String documentId}) => _userAttendanceCrud.updateUserAttendanceDataToFirebase(dataModel: dataModel, documentId: documentId);
-  Future<void> addUserAttendanceDataToFirebase({Attendance dataModel}) => _userAttendanceCrud.addUserAttendanceDataToFirebase(dataModel: dataModel);
+  Future<List<Attendance>> fetchAttendance() => _attendanceCrud.fetchAttendance();
+  Stream<QuerySnapshot> fetcAttendanceAsStream() => _attendanceCrud.fetchAttendanceAsStream();
+  Future<Attendance> getAttendanceDataToFirebaseById({String documentId}) => _attendanceCrud.getAttendanceDataToFirebaseById(documentId: documentId);
+  Future<void> removeAttendanceDataToFirebase({String documentId}) => _attendanceCrud.removeAttendanceDataToFirebase(documentId: documentId);
+  Future<void> updateAttendanceDataToFirebase({Attendance dataModel, String documentId}) => _attendanceCrud.updateAttendanceDataToFirebase(dataModel: dataModel, documentId: documentId);
+  Future<void> setAttendanceDataToFirebase({Attendance dataModel}) => _attendanceCrud.setAttendanceDataToFirebase(dataModel: dataModel);
 
   // companyWork Repository 2020-09-23, 이윤혁
   Future<List<CompanyWork>> fetchCompanyWork() => _companyWorkCrud.fetchCompanyWork();
