@@ -52,8 +52,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   String manageErrorMessage() {
     String test = getLastFirebaseMessage();
 
-    print ('error code = ' + test);
-    /*switch(test) {
+    switch(test) {
       case 'ERROR_INVALID_VERIFICATION_CODE' :
         return '인증 코드를 다시 확인해 주세요.';
         break;
@@ -70,7 +69,7 @@ class FirebaseAuthProvider with ChangeNotifier {
       default :
         return '오류가 발생했습니다.';
         break;
-    }*/
+    }
   }
 
   //이메일로 회원 가입
@@ -117,11 +116,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   Future<void> verifyPhone({String phoneNumber}) async {
     //핸드폰 번호 인증이 실패했을 때
     final PhoneVerificationFailed verificationFailed = (AuthException authException){
-      debugPrint("phone verification executed");
-      debugPrint("before _lastFirebaseResponse is " + _lastFirebaseResponse);
-
       setLastFirebaseMessage(message: authException.message);
-      debugPrint("after _lastFirebaseResponse is " + _lastFirebaseResponse);
       return false;
     };
 
@@ -161,6 +156,44 @@ class FirebaseAuthProvider with ChangeNotifier {
       }
       return false;
     } on PlatformException catch (e){
+      setLastFirebaseMessage(message: e.code);
+      return false;
+    }
+  }
+
+  //패스워드 확인
+  Future<bool> confirmPassword({String mail, String password, String name}) async {
+    try {
+      var result = await _firebaseAuth.signInWithEmailAndPassword(
+          email: mail,
+          password: password
+      );
+      if(result.user != null) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } on PlatformException catch (e) {
+      setLastFirebaseMessage(message: e.code);
+      return false;
+    }
+  }
+
+  //패스워드 변경
+  Future<bool> updatePassword({String mail, String password, String name}) async {
+    try {
+      _user.updatePassword(password);
+
+      /*if(result.user != null) {
+        updateInfo.displayName = name;
+        result.user.updateProfile(updateInfo);
+        return true;
+      }*/
+
+      return true;
+
+    } on PlatformException catch (e) {
       setLastFirebaseMessage(message: e.code);
       return false;
     }

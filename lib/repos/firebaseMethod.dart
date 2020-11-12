@@ -1,25 +1,5 @@
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/consts/universalString.dart';
-import 'package:companyplaylist/models/expenseModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:flutter/material.dart';
-
-class FirebaseMethods {
-  static final Firestore firestore = Firestore.instance;
-
-  Future<void> saveExpense(ExpenseModel expenseModel) async {
-    var map = expenseModel.toMap();
-
-    return await firestore
-        .collection(COMPANY)
-        .document(expenseModel.companyCode)
-        .collection(USER)
-        .document(expenseModel.mail)
-        .collection(EXPENSE)
-        .add(map);
-  }
-}
 
 class FirestoreApi{
   final Firestore _db = Firestore.instance;
