@@ -61,6 +61,20 @@ SettingMyPageUpdate(BuildContext context) {
               // 업로드한 사진의 URL 획득
               String downloadURL = await storageReference.getDownloadURL();
 
+              _db.collection("company")
+                  .document(_loginUser.companyCode)
+                  .collection("user")
+                  .document(_loginUser.mail)
+                  .updateData({
+                "profilePhoto" : downloadURL
+              });
+
+              _db.collection("user")
+                  .document(_loginUser.mail)
+                  .updateData({
+                "profilePhoto" : downloadURL
+              });
+
               // 업로드된 사진의 URL을 페이지에 반영
               setState(() {
                 _profileImageURL = downloadURL;
@@ -120,17 +134,8 @@ SettingMyPageUpdate(BuildContext context) {
                                                 color: whiteColor,
                                                 border: Border.all(color: whiteColor, width: 2)
                                             ),
-                                            child: FutureBuilder(
-                                              future: storageReference.getDownloadURL(),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.hasData == false) {
-                                                  return CircularProgressIndicator();
-                                                }
-
-                                                return Image.network(
-                                                    snapshot.data
-                                                );
-                                              },
+                                            child: Image.network(
+                                               _loginUser.profilePhoto
                                             ),
                                           ),
                                           onTap: () {},

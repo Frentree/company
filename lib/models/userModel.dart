@@ -13,6 +13,7 @@ class User {
   String phone;
   String companyName;
   String companyCode;
+  String profilePhoto;
 
   User({
     this.id,
@@ -21,6 +22,7 @@ class User {
     this.phone,
     this.companyName,
     this.companyCode,
+    this.profilePhoto,
   });
 
   User.fromMap(Map snapshot, String id) :
@@ -29,7 +31,8 @@ class User {
         mail = snapshot["mail"] ?? "",
         phone = snapshot["phone"] ?? "",
         companyName = snapshot["companyName"] ?? "",
-        companyCode = snapshot["companyCode"] ?? "";
+        companyCode = snapshot["companyCode"] ?? "",
+        profilePhoto = snapshot["profilePhoto"] ?? "";
 
   toJson(){
     return {
@@ -38,6 +41,7 @@ class User {
       "phone": phone,
       "companyName": companyName,
       "companyCode": companyCode,
+      "profilePhoto": profilePhoto,
     };
   }
 }
