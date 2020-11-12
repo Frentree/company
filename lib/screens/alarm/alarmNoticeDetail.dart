@@ -8,49 +8,77 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
-class AlarmNoticeCommentPage extends StatelessWidget {
+class AlarmNoticeDetailPage extends StatefulWidget {
   final noticeUid;
   final noticeTitle;
   final noticeContent;
   final noticeCreateDate;
 
-  AlarmNoticeCommentPage(
-      {Key key, @required this.noticeUid,
-        @required this.noticeTitle,
-        @required this.noticeContent,
-        @required this.noticeCreateDate});
+  AlarmNoticeDetailPage(
+      {Key key, @required this.noticeUid, @required this.noticeTitle, @required this.noticeContent, @required this.noticeCreateDate});
+
+  @override
+  AlarmNoticeDetailPageState createState() =>
+      AlarmNoticeDetailPageState(noticeUid: noticeUid, noticeTitle: noticeTitle, noticeCreateDate: noticeCreateDate, noticeContent: noticeContent);
+}
+
+class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
+  final noticeUid;
+  final noticeTitle;
+  final noticeContent;
+  final noticeCreateDate;
+
+
+  AlarmNoticeDetailPageState(
+      {Key key, @required this.noticeUid, @required this.noticeTitle, @required this.noticeContent, @required this.noticeCreateDate});
 
   User _loginUser;
 
   TextEditingController _noticeComment = TextEditingController();
 
-  Stream<QuerySnapshot> currentStream;
-  CrudRepository _crudRepository;
   final Firestore _db = Firestore.instance;
   String _commentId = "";
 
-  _getCommentList(List<DocumentSnapshot> documents, BuildContext context){
+  // 댓글 달릴 유저명
+  String commnetUser = "";
+
+  // 댓글 입력, 수정 타입
+  int crudType = 0;
+
+  CommentModel _commnetModel;
+  CommentListModel _commentList;
+
+  // 댓글 높이
+  double commentHeight = 0.76;
+
+  // 댓글 입력창 포커스
+  FocusNode _commnetFocusNode = FocusNode();
+
+  _getCommentList(List<DocumentSnapshot> documents, BuildContext context, String documentID){
     List<Widget> widgets = [];
     for (int i = 0; i < documents.length; i++) {
       widgets.add(Column(
         children: [
           SizedBox(
             height: customHeight(
-              context: context,
-              heightSize: 0.01
+                context: context,
+                heightSize: 0.01
             ),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                icon: Icon(Icons.subdirectory_arrow_right),
+              Container(
+                width: 30,
+                height: 30,
+                child: IconButton(
+                  iconSize: 20,
+                  icon: Icon(Icons.subdirectory_arrow_right),
+                ),
               ),
               GestureDetector(
                 child: Container(
@@ -107,7 +135,10 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.only(left: 10),
                           alignment: Alignment.topRight,
-                          width: 150,
+                          width: customWidth(
+                            context: context,
+                            widthSize: 0.34
+                          ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -116,49 +147,58 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                 child: InkWell(
                                   child: Text("댓글 달기",
                                     style: customStyle(
-                                        fontColor: mainColor,
-                                        fontSize: 12,
-                                        fontWeightName: 'Medium'
+                                        fontColor: blueColor,
+                                        fontSize: 13,
+                                        fontWeightName: 'Bold'
                                     ),
                                   ),
                                   onTap: (){
-                                    _commentId = documents[i].documentID;
-                                    print("_commentId >>> " + _commentId);
-                                    _noticeComment.text = documents[i].data['createUser']['name'].toString() + " ";
+                                    setState(() {
+                                      crudType = 1;
+                                      _commentId = documentID;
+                                      print("_commentId >>> " + _commentId);
+                                      commnetUser = documents[i].data['commentsUser']['name'];
+                                      _noticeComment.text = commnetUser + " ";
+                                      _commnetFocusNode.requestFocus();
+                                    });
                                   },
                                 ),
                               ),
                               Expanded(
                                 flex: 4,
                                 child: Visibility(
-                                  visible: documents[i].data['createUser']['mail'].toString() == _loginUser.mail,
+                                  visible: documents[i].data['commentsUser']['mail'].toString() == _loginUser.mail,
                                   child: Row(
                                     children: [
-                                      Expanded(
+                                      /*Expanded(
                                         flex: 1,
                                         child: InkWell(
                                           child: Text("수정",
                                             style: customStyle(
-                                                fontColor: mainColor,
-                                                fontSize: 12,
-                                                fontWeightName: 'Medium'
+                                                fontColor: blueColor,
+                                                fontSize: 13,
+                                                fontWeightName: 'Bold'
                                             ),
                                           ),
                                           onTap: (){
-                                            _commentId = documents[i].documentID;
-                                            print("_commentId >>> " + _commentId);
-                                            _noticeComment.text = documents[i].data['createUser']['name'].toString() + " ";
+                                            setState(() {
+                                              crudType = 3;
+                                              _commentId = documents[i].documentID;
+                                              print("_commentId >>> " + _commentId);
+                                              _noticeComment.text = documents[i].data['comments'].toString();
+                                              _commnetFocusNode.requestFocus();
+                                            });
                                           },
                                         ),
-                                      ),
+                                      ),*/
                                       Expanded(
                                         flex: 1,
                                         child: InkWell(
                                           child: Text("삭제",
                                             style: customStyle(
-                                                fontColor: mainColor,
-                                                fontSize: 12,
-                                                fontWeightName: 'Medium'
+                                                fontColor: redColor,
+                                                fontSize: 13,
+                                                fontWeightName: 'Bold'
                                             ),
                                           ),
                                           onTap: (){
@@ -171,12 +211,12 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                     "댓글 삭제",
                                                     style: customStyle(
                                                         fontColor: mainColor,
-                                                        fontSize: 15,
+                                                        fontSize: 14,
                                                         fontWeightName: 'Bold'
                                                     ),
                                                   ),
                                                   content: Text(
-                                                    "댓글을 정말로 지우시겠습니까? \n지우실 경우 하위 댓글도 전부 지워집니다.",
+                                                    "댓글을 정말로 지우시겠습니까?",
                                                     style: customStyle(
                                                         fontColor: mainColor,
                                                         fontSize: 13,
@@ -193,12 +233,15 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                         ),
                                                       ),
                                                       onPressed: () {
-                                                        _commentId = documents[i].documentID;
-                                                        _db.collection("company")
-                                                            .document(_loginUser.companyCode)
-                                                            .collection("notice")
-                                                            .document(noticeUid)
-                                                            .collection("comment").document(_commentId).delete();
+                                                        setState(() {
+                                                          _commentId = documents[i].documentID;
+                                                          _db.collection("company")
+                                                              .document(_loginUser.companyCode)
+                                                              .collection("notice")
+                                                              .document(noticeUid)
+                                                              .collection("comment").document(documentID)
+                                                              .collection("comments").document(_commentId).delete();
+                                                        });
                                                         Navigator.pop(context);
                                                       },
                                                     ),
@@ -230,11 +273,16 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
             ],
+          ),
+          SizedBox(
+            height: customHeight(
+                context: context,
+                heightSize: 0.01
+            ),
           ),
         ],
       )
@@ -243,17 +291,10 @@ class AlarmNoticeCommentPage extends StatelessWidget {
     return widgets;
   }
 
-
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-
-    _crudRepository = CrudRepository.noticeCommentAttendance(companyCode: _loginUser.companyCode, documentID: noticeUid);
-    currentStream = _crudRepository.fetchNoticeCommentAsStream();
-
-
-    FocusNode _commnetFocusNode = FocusNode();
 
     return Scaffold(
       backgroundColor: mainColor,
@@ -309,22 +350,22 @@ class AlarmNoticeCommentPage extends StatelessWidget {
             right: customWidth(
               context: context,
               widthSize: 0.02,
-            )
-        ),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-            color: whiteColor
-        ),
+            )),
+        decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)), color: whiteColor),
         child: Stack(
           children: [
             Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.02)),
-                  ),
-                  Container(
-                    height: customHeight(context: context, heightSize: 0.76),
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.02)),
+                ),
+                Container(
+                  height: customHeight(context: context, heightSize: commentHeight),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onPanDown: (_) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,9 +404,9 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                           style: customStyle(fontColor: mainColor, fontWeightName: 'Bold', fontSize: 15),
                                         ),
                                         /*Text(
-                                      _loginUser.name.toString(),
-                                      style: customStyle(fontColor: mainColor, fontWeightName: 'Medium', fontSize: 15),
-                                    ),*/
+                                        _loginUser.name.toString(),
+                                        style: customStyle(fontColor: mainColor, fontWeightName: 'Medium', fontSize: 15),
+                                      ),*/
                                       ],
                                     ),
                                     Text(
@@ -396,7 +437,8 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                             height: customHeight(context: context, heightSize: 0.02),
                           ),
                           StreamBuilder(
-                            stream: _db.collection("company")
+                            stream: _db
+                                .collection("company")
                                 .document(_loginUser.companyCode)
                                 .collection("notice")
                                 .document(noticeUid)
@@ -411,21 +453,14 @@ class AlarmNoticeCommentPage extends StatelessWidget {
 
                               return ConstrainedBox(
                                 constraints: BoxConstraints(
-                                  minHeight: customHeight(
-                                      context: context,
-                                      heightSize: documents.length * 0.11
-                                  ),
-                                  maxHeight: customHeight(
-                                      context: context,
-                                      heightSize: documents.length * 0.5
-                                  ),
+                                  minHeight: customHeight(context: context, heightSize: documents.length * 0.13),
+                                  maxHeight: customHeight(context: context, heightSize: documents.length * 0.5),
                                 ),
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: documents.length,
                                   itemBuilder: (context, index) {
-
                                     return Container(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,7 +469,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsets.only(left: 11),
+                                                padding: EdgeInsets.only(left: 13),
                                               ),
                                               GestureDetector(
                                                 child: Container(
@@ -477,14 +512,9 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                     children: [
                                                       Text(
                                                         DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                                                            DateTime.parse(
-                                                                documents[index].data['createDate'].toDate().toString()).add(Duration(hours: 9)
-                                                            )
-                                                        ),
-                                                        style: customStyle(
-                                                            fontSize: 12,
-                                                            fontWeightName: 'Regular',
-                                                            fontColor: greyColor),
+                                                            DateTime.parse(documents[index].data['createDate'].toDate().toString())
+                                                                .add(Duration(hours: 9))),
+                                                        style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
                                                       ),
                                                       Container(
                                                         padding: EdgeInsets.only(left: 10),
@@ -496,18 +526,23 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                             Expanded(
                                                               flex: 3,
                                                               child: InkWell(
-                                                                child: Text("댓글 달기",
+                                                                child: Text(
+                                                                  "댓글 달기",
                                                                   style: customStyle(
-                                                                      fontColor: mainColor,
-                                                                      fontSize: 12,
-                                                                      fontWeightName: 'Medium'
+                                                                      fontColor: blueColor,
+                                                                      fontSize: 13,
+                                                                      fontWeightName: 'Bold'
                                                                   ),
                                                                 ),
-                                                                onTap: (){
-                                                                  _commentId = documents[index].documentID;
-                                                                  print("_commentId >>> " + _commentId);
-                                                                  _noticeComment.text = documents[index].data['createUser']['name'].toString() + " ";
-                                                                  _commnetFocusNode.requestFocus();
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    crudType = 1;
+                                                                    _commentId = documents[index].documentID;
+                                                                    print("_commentId >>> " + _commentId);
+                                                                    commnetUser = documents[index].data['createUser']['name'];
+                                                                    _noticeComment.text = commnetUser + " ";
+                                                                    _commnetFocusNode.requestFocus();
+                                                                  });
                                                                 },
                                                               ),
                                                             ),
@@ -520,32 +555,39 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                                     Expanded(
                                                                       flex: 1,
                                                                       child: InkWell(
-                                                                        child: Text("수정",
-                                                                          style: customStyle(
-                                                                              fontColor: mainColor,
-                                                                              fontSize: 12,
-                                                                              fontWeightName: 'Medium'
-                                                                          ),
+                                                                        child: Text(
+                                                                          "수정",
+                                                                          style:
+                                                                              customStyle(
+                                                                                  fontColor: blueColor,
+                                                                                  fontSize: 13,
+                                                                                  fontWeightName: 'Bold'
+                                                                              ),
                                                                         ),
-                                                                        onTap: (){
-                                                                          _commentId = documents[index].documentID;
-                                                                          print("_commentId >>> " + _commentId);
-                                                                          _noticeComment.text = documents[index].data['createUser']['name'].toString() + " ";
-                                                                          _commnetFocusNode.requestFocus();
+                                                                        onTap: () {
+                                                                          setState(() {
+                                                                            crudType = 2;
+                                                                            _commentId = documents[index].documentID;
+                                                                            print("_commentId >>> " + _commentId);
+                                                                            _noticeComment.text = documents[index].data['comment'].toString();
+                                                                            _commnetFocusNode.requestFocus();
+                                                                          });
                                                                         },
                                                                       ),
                                                                     ),
                                                                     Expanded(
                                                                       flex: 1,
                                                                       child: InkWell(
-                                                                        child: Text("삭제",
-                                                                          style: customStyle(
-                                                                              fontColor: mainColor,
-                                                                              fontSize: 12,
-                                                                              fontWeightName: 'Medium'
-                                                                          ),
+                                                                        child: Text(
+                                                                          "삭제",
+                                                                          style:
+                                                                              customStyle(
+                                                                                  fontColor: redColor,
+                                                                                  fontSize: 13,
+                                                                                  fontWeightName: 'Bold'
+                                                                              ),
                                                                         ),
-                                                                        onTap: (){
+                                                                        onTap: () {
                                                                           showDialog(
                                                                             context: context,
                                                                             builder: (BuildContext context) {
@@ -554,45 +596,44 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                                                 title: Text(
                                                                                   "댓글 삭제",
                                                                                   style: customStyle(
-                                                                                      fontColor: mainColor,
-                                                                                      fontSize: 15,
+                                                                                      fontColor: redColor,
+                                                                                      fontSize: 13,
                                                                                       fontWeightName: 'Bold'
                                                                                   ),
                                                                                 ),
                                                                                 content: Text(
                                                                                   "댓글을 정말로 지우시겠습니까? \n지우실 경우 하위 댓글도 전부 지워집니다.",
                                                                                   style: customStyle(
-                                                                                      fontColor: mainColor,
-                                                                                      fontSize: 13,
-                                                                                      fontWeightName: 'Regular'
-                                                                                  ),
+                                                                                      fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                                                                 ),
                                                                                 actions: <Widget>[
                                                                                   FlatButton(
-                                                                                    child: Text("네",
+                                                                                    child: Text(
+                                                                                      "네",
                                                                                       style: customStyle(
-                                                                                          fontColor: blueColor,
-                                                                                          fontSize: 15,
-                                                                                          fontWeightName: 'Bold'
-                                                                                      ),
+                                                                                          fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                                                     ),
                                                                                     onPressed: () {
-                                                                                      _commentId = documents[index].documentID;
-                                                                                      _db.collection("company")
-                                                                                          .document(_loginUser.companyCode)
-                                                                                          .collection("notice")
-                                                                                          .document(noticeUid)
-                                                                                          .collection("comment").document(_commentId).delete();
-                                                                                      Navigator.pop(context);
+                                                                                      setState(() {
+                                                                                        _commentId = documents[index].documentID;
+                                                                                        _db
+                                                                                            .collection("company")
+                                                                                            .document(_loginUser.companyCode)
+                                                                                            .collection("notice")
+                                                                                            .document(noticeUid)
+                                                                                            .collection("comment")
+                                                                                            .document(_commentId)
+                                                                                            .delete();
+                                                                                        _commentId = "";
+                                                                                        Navigator.pop(context);
+                                                                                      });
                                                                                     },
                                                                                   ),
                                                                                   FlatButton(
-                                                                                    child: Text("아니오",
+                                                                                    child: Text(
+                                                                                      "아니오",
                                                                                       style: customStyle(
-                                                                                          fontColor: blueColor,
-                                                                                          fontSize: 15,
-                                                                                          fontWeightName: 'Bold'
-                                                                                      ),
+                                                                                          fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                                                     ),
                                                                                     onPressed: () {
                                                                                       Navigator.pop(context);
@@ -619,50 +660,51 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                             ],
                                           ),
                                           StreamBuilder(
-                                              stream: _db.collection("company")
+                                              stream: _db
+                                                  .collection("company")
                                                   .document(_loginUser.companyCode)
                                                   .collection("notice")
                                                   .document(noticeUid)
-                                                  .collection("comment").document(documents[index].documentID).collection("comments")
+                                                  .collection("comment")
+                                                  .document(documents[index].documentID)
+                                                  .collection("comments")
                                                   .orderBy("createDate", descending: false)
                                                   .snapshots(),
                                               builder: (context, snapshot) {
                                                 if (!snapshot.hasData) {
                                                   return CircularProgressIndicator();
                                                 }
-                                                List<DocumentSnapshot> documents = snapshot.data.documents;
+                                                List<DocumentSnapshot> subDocuments = snapshot.data.documents;
 
-                                                if (documents.length != 0) {
+                                                if (subDocuments.length != 0) {
                                                   return ConfigurableExpansionTile(
                                                     animatedWidgetFollowingHeader: const Icon(
                                                       Icons.expand_more,
                                                       color: const Color(0xFF707070),
                                                     ),
                                                     headerExpanded: Text(
-                                                      "댓글이 " + documents.length.toString() + "개가 있습니다.",
+                                                      "댓글이 " + subDocuments.length.toString() + "개가 있습니다.",
                                                       style: customStyle(fontSize: 12, fontWeightName: 'Regular'),
                                                     ),
                                                     header: Container(
                                                         color: Colors.transparent,
                                                         child: Text(
-                                                          "댓글이 " + documents.length.toString() + "개가 있습니다.",
+                                                          "댓글이 " + subDocuments.length.toString() + "개가 있습니다.",
                                                           style: customStyle(fontSize: 12, fontColor: blueColor, fontWeightName: 'Regular'),
                                                         )),
                                                     children: <Widget>[
                                                       Container(
                                                         width: customWidth(context: context, widthSize: 1),
                                                         child: Column(
-                                                          children: _getCommentList(documents, context),
+                                                          children: _getCommentList(subDocuments, context, documents[index].documentID),
                                                         ),
                                                       )
-
                                                     ],
                                                   );
                                                 } else {
                                                   return Text("");
                                                 }
-                                              }
-                                          ),
+                                              }),
                                         ],
                                       ),
                                     );
@@ -675,27 +717,55 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Visibility(
+                  visible: _commentId != "",
+                  child: Opacity(
+                    opacity: 0.75,
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: customHeight(context: context, heightSize: 0.04),
+                      decoration: BoxDecoration(
+                        color: blueColor,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            crudType == 1 ? commnetUser + " 님에게 댓글 입력중입니다." : "댓글을 수정중입니다.",
+                            style: customStyle(
+                                fontWeightName: 'Bold',
+                                fontColor: whiteColor,
+                                fontSize: 12
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          InkWell(
+                            child: Text(
+                              "취소",
+                              style: TextStyle(
+                                color: whiteColor,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                            onTap: (){
+                              setState(() {
+                                _commentId = "";
+                                commnetUser = "";
+                                _noticeComment.text = "";
+                              });
+                            },
+                          ),
 
-                Opacity(
-                  opacity: 0.75,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    height: customHeight(context: context, heightSize: 0.04),
-                    decoration: BoxDecoration(
-                      color: blueColor,
-                    ),
-                    child: Text(
-                      _noticeComment.text + "님에게 댓글 입력중입니다.",
-                      style: customStyle(
-                        fontWeightName: 'Bold',
-                        fontColor: whiteColor,
-                        fontSize: 12
+                        ],
                       ),
                     ),
                   ),
@@ -705,7 +775,6 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                   height: customHeight(context: context, heightSize: 0.1),
                   child: Column(
                     children: [
-
                       Container(
                         height: customHeight(context: context, heightSize: 0.001),
                         width: double.infinity,
@@ -749,45 +818,73 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                         child: IconButton(
                                           icon: Icon(Icons.arrow_upward),
                                           onPressed: () {
-                                            Map<String, String> _commentMap = {
-                                              "name": _loginUser.name,
-                                              "mail": _loginUser.mail
-                                            };
-                                            if(_noticeComment.text.trim() != "") {
-                                              if (_commentId.trim() == "") {
-                                                print("답글 미선택 ====> " + _commentId);
-                                                CommentModel _commnetModel = CommentModel(
-                                                  comment: _noticeComment.text,
-                                                  createUser: _commentMap,
-                                                  createDate: Timestamp.now(),
-                                                );
+                                            Map<String, String> _commentMap = {"name": _loginUser.name, "mail": _loginUser.mail};
 
-                                                _db.collection("company")
-                                                    .document(_loginUser.companyCode)
-                                                    .collection("notice")
-                                                    .document(noticeUid)
-                                                    .collection("comment").add(_commnetModel.toJson());
+                                            setState(() {
+                                              if (_noticeComment.text.trim() != "") {
+                                                if (_commentId.trim() == "") {
+                                                  print("답글 미선택 ====> " + _commentId);
+                                                    _commnetModel = CommentModel(
+                                                      comment: _noticeComment.text,
+                                                      createUser: _commentMap,
+                                                      createDate: Timestamp.now(),
+                                                    );
 
-                                                _noticeComment.text = "";
-                                              } else {
-                                                print("답글 선택 ====> " + _commentId);
+                                                    _db.collection("company")
+                                                        .document(_loginUser.companyCode)
+                                                        .collection("notice")
+                                                        .document(noticeUid)
+                                                        .collection("comment")
+                                                        .add(_commnetModel.toJson());
 
-                                                CommentListModel _commentList = CommentListModel(
-                                                  comments: _noticeComment.text,
-                                                  createDate: Timestamp.now(),
-                                                  commentsUser: _commentMap,
-                                                );
 
-                                                _db.collection("company")
-                                                    .document(_loginUser.companyCode)
-                                                    .collection("notice")
-                                                    .document(noticeUid)
-                                                    .collection("comment").document(_commentId).collection("comments").add(_commentList.toJson());
+                                                } else {
+                                                  print("답글 선택 ====> " + _commentId);
 
+                                                  if(crudType == 1){ // 답글 입력 클릭시
+                                                    _commentList = CommentListModel(
+                                                      comments: _noticeComment.text,
+                                                      createDate: Timestamp.now(),
+                                                      commentsUser: _commentMap,
+                                                    );
+
+                                                    _db
+                                                        .collection("company")
+                                                        .document(_loginUser.companyCode)
+                                                        .collection("notice")
+                                                        .document(noticeUid)
+                                                        .collection("comment")
+                                                        .document(_commentId)
+                                                        .collection("comments")
+                                                        .add(_commentList.toJson());
+                                                  } else if(crudType == 2) { // 수정 클릭시
+                                                    _commentList = CommentListModel(
+                                                      comments: _noticeComment.text,
+                                                      updateDate: Timestamp.now(),
+                                                      commentsUser: _commentMap,
+                                                    );
+
+                                                    _db
+                                                        .collection("company")
+                                                        .document(_loginUser.companyCode)
+                                                        .collection("notice")
+                                                        .document(noticeUid)
+                                                        .collection("comment")
+                                                        .document(_commentId).updateData(
+                                                      <String, dynamic>{
+                                                        'comment': _noticeComment.text,
+                                                        'updateDate': Timestamp.now(),
+                                                      },
+                                                    );
+                                                  } else if(crudType == 3) { // 대댓글 수정
+
+                                                  }
+                                                }
                                                 _commentId = "";
                                                 _noticeComment.text = "";
                                               }
                                             }
+                                            );
                                           },
                                         )
                                     ),

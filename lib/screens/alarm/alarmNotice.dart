@@ -10,6 +10,8 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeComment.dart';
+import 'package:companyplaylist/screens/alarm/alarmNoticeDetail.dart';
+import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,29 +24,50 @@ class AlarmNoticePage extends StatefulWidget {
 
 class AlarmNoticePageState extends State<AlarmNoticePage> {
   int i = 0;
-  Stream<QuerySnapshot> currentStream;
-  CrudRepository _crudRepository;
   LoginUserInfoProvider _loginUserInfoProvider;
 
+  final Firestore _db = Firestore.instance;
+
+  Stream stream;
+
   User _loginUser;
+
+  // 댓글 카운트
+  Future<String> countDocuments(String companyCode, String documentId) async {
+    QuerySnapshot commentCount = await Firestore.instance
+        .collection('company')
+        .document(_loginUser.companyCode)
+        .collection("notice")
+        .document(documentId)
+        .collection("comment")
+        .getDocuments();
+    List<DocumentSnapshot> _commentCount = commentCount.documents;
+
+    print(_commentCount.length);  // Count of Documents in Collection
+
+    return await _commentCount.length.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
    _loginUser = _loginUserInfoProvider.getLoginUser();
 
-    _crudRepository =
-        CrudRepository.noticeAttendance(companyCode: _loginUser.companyCode);
-    currentStream = _crudRepository.fetchNoticeAsStream();
+    stream =  _db
+        .collection("company")
+        .document(_loginUser.companyCode)
+        .collection("notice")
+        .orderBy("noticeCreateDate", descending: true)
+        .snapshots();
+
     return StreamBuilder(
-      stream: currentStream,
+      stream: stream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return CircularProgressIndicator();
         }
         List<DocumentSnapshot> documents =
             snapshot.data.documents;
-
 
         return ListView.builder(
           itemCount: documents.length,
@@ -54,6 +77,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                     documents[index].data['noticeCreateDate'].toDate().toString()
                 ).add(Duration(hours: 9))
             );
+
             return Card(
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -115,13 +139,136 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                documents[index].data['noticeTitle'].toString(),
-                                /*"6월 10일 월간회의 및 회식 공지",*/
-                                style: customStyle(
-                                    fontSize: 15,
-                                    fontWeightName: 'Regular',
-                                    fontColor: mainColor
+                              Container(
+                                width: customWidth(
+                                  context: context,
+                                  widthSize: 0.72
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 8,
+                                      child: Text(
+                                        documents[index].data['noticeTitle'].toString(),
+                                        /*"6월 10일 월간회의 및 회식 공지",*/
+                                        style: customStyle(
+                                            fontSize: 15,
+                                            fontWeightName: 'Bold',
+                                            fontColor: mainColor
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        alignment: Alignment.centerRight,
+                                        child: PopupMenuButton(
+                                          icon: Icon(
+                                              Icons.more_vert
+                                          ),
+                                          onSelected: (value) {
+                                            if(value == 1){  // 수정하기 버튼 클릭시
+                                              WorkNoticeBottomSheet(context);
+                                            } else if(value == 2) { // 삭제 버튼 클릭시
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  // return object of type Dialog
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      "공지사항 삭제",
+                                                      style: customStyle(
+                                                          fontColor: mainColor,
+                                                          fontSize: 14,
+                                                          fontWeightName: 'Bold'
+                                                      ),
+                                                    ),
+                                                    content: Text(
+                                                      "공지사항 내용을 지우시겠습니까?",
+                                                      style: customStyle(
+                                                          fontColor: mainColor,
+                                                          fontSize: 13,
+                                                          fontWeightName: 'Regular'
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                        child: Text("네",
+                                                          style: customStyle(
+                                                              fontColor: blueColor,
+                                                              fontSize: 15,
+                                                              fontWeightName: 'Bold'
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            _db.collection("company")
+                                                                .document(_loginUser.companyCode)
+                                                                .collection("notice").document(documents[index].documentID).delete();
+                                                          });
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                      FlatButton(
+                                                        child: Text("아니오",
+                                                          style: customStyle(
+                                                              fontColor: blueColor,
+                                                              fontSize: 15,
+                                                              fontWeightName: 'Bold'
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                          itemBuilder: (BuildContext context) => [
+                                            PopupMenuItem(
+                                              value: 1,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                      Icons.edit
+                                                  ),
+                                                  Text(
+                                                    "수정하기",
+                                                    style: customStyle(
+                                                        fontColor: mainColor,
+                                                        fontSize: 13,
+                                                        fontWeightName: 'Bold'
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 2,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                      Icons.delete
+                                                  ),
+                                                  Text(
+                                                    "삭제하기",
+                                                    style: customStyle(
+                                                      fontColor: mainColor,
+                                                      fontSize: 13,
+                                                      fontWeightName: 'Bold'
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               Text(
@@ -150,8 +297,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         documents[index].data['noticeContent'].toString(),
                                         maxLines: 3,
                                         style: customStyle(
-                                            fontSize: 14,
-                                            fontWeightName: 'Regular',
+                                            fontSize: 13,
+                                            fontWeightName: 'Medium',
                                             fontColor: mainColor
                                         ),
                                       ),
@@ -185,22 +332,50 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                 "댓글",
                                 style: customStyle(
                                   fontColor: mainColor,
-                                  fontWeightName: 'Regular',
+                                  fontWeightName: 'Bold',
                                   fontSize: 13
                                 ),
-                              )
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 5
+                                ),
+                              ),
+                              FutureBuilder(
+                                future: countDocuments(_loginUser.companyCode, documents[index].documentID),
+                                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                                  if(text.data != "0") {
+                                    return Text(
+                                      "${text.data}",
+                                      style: customStyle(
+                                          fontColor: blueColor,
+                                          fontWeightName: 'Bold',
+                                          fontSize: 13
+                                      ),
+                                    );
+                                  } else {
+                                    return Text("");
+                                  }
+                                },
+                              ),
                             ],
                           ),
                           onPressed: () => {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
-                                    AlarmNoticeCommentPage(
+                                    /*AlarmNoticeCommentPage(
                                       noticeUid: documents[index].data['noticeUid'].toString(),
                                       noticeTitle: documents[index].data['noticeTitle'].toString(),
                                       noticeContent: documents[index].data['noticeContent'].toString(),
                                       noticeCreateDate: _createDate,
-                                    )
+                                    )*/
+                                  AlarmNoticeDetailPage(
+                                    noticeUid: documents[index].data['noticeUid'].toString(),
+                                    noticeTitle: documents[index].data['noticeTitle'].toString(),
+                                    noticeContent: documents[index].data['noticeContent'].toString(),
+                                    noticeCreateDate: _createDate,
+                                  )
                                 )
                             ),
                           },

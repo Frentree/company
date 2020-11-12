@@ -1,14 +1,9 @@
 /*
-어플에 가입한 사용자 정보를 저장하는 DB 모델
-
 이름 <name>
 이메일 <mail>
-생일 <birthday>
 핸드폰번호 <phone>
-회사이름 <companyName>
 회사코드 <companyCode>
-프로필 이미지 <image>
-앱 테마 옵션 <screenTheme>
+회사이름 <companyName>
 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,6 +19,8 @@ class User {
   String image;
   int screenTheme;
 
+  String profilePhoto;
+
   User({
     this.id,
     this.name,
@@ -34,10 +31,12 @@ class User {
     this.companyCode,
     this.image,
     this.screenTheme,
+
+    this.profilePhoto,
   });
 
-  User.fromMap(Map snapshot, String id)
-      : id = id ?? "",
+  User.fromMap(Map snapshot, String id) :
+        id = id ?? "",
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
         birthday = snapshot["birthday"],
@@ -45,9 +44,10 @@ class User {
         companyName = snapshot["companyName"] ?? "",
         companyCode = snapshot["companyCode"] ?? "",
         image = snapshot["image"] ?? "",
-        screenTheme = snapshot["screenTheme"];
+        screenTheme = snapshot["screenTheme"],
+        profilePhoto = snapshot["profilePhoto"] ?? "";
 
-  toJson() {
+  toJson(){
     return {
       "name": name,
       "mail": mail,
@@ -57,6 +57,7 @@ class User {
       "companyCode": companyCode,
       "image": image,
       "screenTheme": screenTheme,
+      "profilePhoto": profilePhoto,
     };
   }
 }
