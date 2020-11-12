@@ -1,14 +1,13 @@
 import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/screens/auth.dart';
-import 'package:companyplaylist/screens/login/companySetMain.dart';
-import 'package:companyplaylist/screens/login/signUpMain.dart';
+import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 import 'package:companyplaylist/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -31,8 +30,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<LoginUserInfoProvider>(
           create: (_) => LoginUserInfoProvider(),
+        ),
+        ChangeNotifierProvider<AttendanceCheck>(
+          create: (_) => AttendanceCheck(),
         )
-
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

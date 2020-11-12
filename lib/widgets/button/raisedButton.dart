@@ -1,4 +1,5 @@
 //Flutter
+import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:flutter/material.dart';
 
 //Const
@@ -68,6 +69,41 @@ Container userTypeSelectScreenRaisedBtn({BuildContext context, Color btnColor, S
           fontSize: 18,
           fontWeightName: "Medium",
           fontColor: btnTextColor,
+        ),
+      ),
+      elevation: 0.0,
+      onPressed: btnAction,
+    ),
+  );
+}
+
+Container maunalOnWorkRaisedBtn({BuildContext context, String btnText, Function btnAction}){
+  return Container(
+    width: customWidth(
+        context: context,
+        widthSize: 0.21
+    ),
+    height: customHeight(
+        context: context,
+        heightSize: 0.04
+    ),
+
+    child: RaisedButton(
+      color: whiteColor,
+      focusColor: blueColor,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(
+              color: mainColor
+          )
+      ),
+
+      child: Text(
+        btnText,
+        style: customStyle(
+          fontSize: 14,
+          fontWeightName: "Medium",
+          fontColor: mainColor,
         ),
       ),
       elevation: 0.0,

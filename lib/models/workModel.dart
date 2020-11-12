@@ -17,7 +17,7 @@ class CompanyWork {
   String workTitle;       // 글제목
   String workContents;    // 글내용
   int level;              // 권한
-  List<Map<String,String>> share;     // 공유할 사람
+  List<dynamic> share;     // 공유할 사람
   String type;            // 내외근 일정 입력
   int progress;        // 진행 상태( 1. 완료, 2. 진행중, 3.진행전, 4.보류, 5. 지연 )
   String location;
@@ -56,9 +56,9 @@ class CompanyWork {
         name = snapshot["name"] ?? "",
         workContents = snapshot["workContents"] ?? "",
         level = snapshot["level"] ?? "",
-        share = snapshot["share"] ?? "",
+        //share = snapshot["share"] ?? "",
         type = snapshot["type"] ?? "",
-        progress = snapshot["progress"] ?? "",
+        progress = snapshot["progress"] ?? 3,
         location = snapshot["location"] ?? "",
         timeTest = snapshot["timeTest"] ?? "";
   toJson(){
@@ -70,7 +70,7 @@ class CompanyWork {
       "name": name,
       "workContents": workContents,
       "level": level,
-      "share": share,
+      //"share": share,
       "type": type,
       "progress": progress,
       "location": location,
@@ -78,4 +78,3 @@ class CompanyWork {
     };
   }
 }
-

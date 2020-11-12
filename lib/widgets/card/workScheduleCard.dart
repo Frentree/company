@@ -1,4 +1,5 @@
 //Flutter
+import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,17 @@ import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 
-Card workScheduleCard({BuildContext context, String type, String startTime, String endTime, String title, String bigCategory, String normalCategory, String workContents, List<String> share, String createDate, bool isDetail}){
+import 'package:companyplaylist/models/workModel.dart';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
+
+const widthDistance = 0.02; // 항목별 간격
+const timeFontSize = 13.0;
+const typeFontSize = 12.0;
+const titleFontSize = 20.0;
+const writeTimeFontSize = 14.0;
+const fontColor = mainColor;
+
+Card workScheduleCard({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
   return Card(
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -20,194 +31,110 @@ Card workScheduleCard({BuildContext context, String type, String startTime, Stri
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.02), vertical: customHeight(context: context, heightSize: 0.01)),
       child: isDetail ? detailContents(
+          context: context,
+          documentId: documentId,
+          companyCode: companyCode,
+          companyWork: companyWork,
+          isDetail: isDetail,
+      ) : titleContents(
         context: context,
-        type: type,
-        startTime: startTime,
-        endTime: endTime,
-        title: title,
-        bigCategory: bigCategory,
-        normalCategory: normalCategory,
-        workContents: workContents,
-        share: share,
-        createDate: "2020.06.01 오전 07:59",
-        isDetail: true
-      ) : titleContents()
+        documentId: documentId,
+        companyCode: companyCode,
+        companyWork: companyWork,
+        isDetail: isDetail,
+      )
     ),
   );
 }
 
-Row titleContents({BuildContext context, String type, String startTime, String endTime, String title, String bigCategory, bool isDetail}){
+Row titleContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
   return Row(
-    children: <Widget>[
-      //업무타입
+    children: [
+      //시간대
+      Text(
+        companyWork.timeTest,
+        style: customStyle(
+            fontSize: timeFontSize,
+            fontWeightName: "Regular",
+            fontColor: fontColor
+        ),
+      ),
+      SizedBox(
+        width: customWidth(context: context, widthSize: widthDistance),
+      ),
+
+      //업무 타입입
       Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: textFieldUnderLine,
-          ),
-          borderRadius: BorderRadius.circular(12)
+            border: Border.all(
+                color: textFieldUnderLine
+            ),
+            borderRadius: BorderRadius.circular(8)
         ),
         width: customWidth(context: context, widthSize: 0.1),
-        height: customHeight(context: context, heightSize: 0.05),
+        height: customHeight(context: context, heightSize: 0.03),
         alignment: Alignment.center,
         child: Text(
-          type,
+          companyWork.type,
           style: customStyle(
-            fontSize: 14,
-            fontWeightName: "Regular",
+              fontSize: typeFontSize,
+              fontWeightName: "Regular",
+              fontColor: fontColor
+          ),
+        ),
+      ),
+      SizedBox(
+        width: customWidth(context: context, widthSize: 0.02),
+      ),
+
+      //제목
+      Container(
+        width: customWidth(context: context, widthSize: 0.6),
+        child: Text(
+          companyWork.workTitle,
+          //textAlign: ,
+          style: customStyle(
+            fontSize: titleFontSize,
+            fontWeightName: "Medium",
             fontColor: mainColor,
+            height: 1
           ),
         ),
       ),
-
       SizedBox(
-        width: customWidth(context: context, widthSize: 0.03),
+        width: customWidth(context: context, widthSize: 0.02),
       ),
-
-      //시간
-      Column(
-        children: <Widget>[
-          Text(
-            startTime,
-            style: customStyle(
-              fontSize: 13,
-              fontWeightName: "Regular",
-              fontColor: mainColor,
-            ),
-          ),
-          Text(
-            "~",
-            style: customStyle(
-              fontSize: 13,
-              fontWeightName: "Regular",
-              fontColor: mainColor,
-            ),
-          ),
-          Text(
-            endTime,
-            style: customStyle(
-              fontSize: 13,
-              fontWeightName: "Regular",
-              fontColor: mainColor,
-            ),
-          ),
-        ],
-      ),
-
-      SizedBox(
-        width: customWidth(context: context, widthSize: 0.04),
-      ),
-
-      Expanded(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: customStyle(
-                      fontSize: 16,
-                      fontWeightName: "Medium",
-                      fontColor: mainColor
-                    ),
-                  ),
-                  isDetail ? Container(
-                    height: customHeight(context: context, heightSize: 0.03),
-                    width: customWidth(context: context, widthSize: 0.15),
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
-                    child: PopupMenuButton(
-                      padding: EdgeInsets.all(0),
-                      icon: Icon(
-                        Icons.more_horiz,
-                      ),
-                      itemBuilder: (BuildContext context){
-                        PopupMenuItem(
-                          child: Text(
-                            "수정하기",
-                          ),
-                        );
-                      },
-                    ),
-                  ) : Container(),
-                ],
-              ),
-
-              SizedBox(
-                height: customHeight(context: context, heightSize: 0.02),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    bigCategory,
-                    style: customStyle(
-                      fontSize: 14,
-                      fontWeightName: "Regular",
-                      fontColor: greyColor
-                    ),
-                  ),
-                  Container(
-                    width: customWidth(context: context, widthSize: 0.15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: blueColor
-                    ),
-                    child: Center(
-                      child: Text(
-                        "진행전",
-                        style: customStyle(
-                          fontSize: 14,
-                          fontWeightName: "Regular",
-                          fontColor: whiteColor
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      )
+      
+      //popup 버튼
+      isDetail ? popupMenu(
+        context: context,
+        documentId: documentId,
+        companyCode: companyCode,
+      ) : Container(),
     ],
   );
 }
 
-Column detailContents({BuildContext context, String type, String startTime, String endTime, String title, String bigCategory, String normalCategory, String workContents, List<String> share, String createDate, bool isDetail}){
+Column detailContents({BuildContext context, String documentId, String companyCode, CompanyWork companyWork, bool isDetail}){
+  Format _format = Format();
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       titleContents(
         context: context,
-        type: type,
-        startTime: startTime,
-        endTime: endTime,
-        title: title,
-        bigCategory: bigCategory,
+        documentId: documentId,
+        companyCode: companyCode,
+        companyWork: companyWork,
         isDetail: isDetail
       ),
-      Padding(
-        padding: EdgeInsets.only(left: customWidth(context: context, widthSize: 0.25)),
-        child: Text(
-          "└ $normalCategory",
-          style: customStyle(
-            fontSize: 14,
-            fontWeightName: "Regular",
-            fontColor: greyColor
-          ),
-        ),
-      ),
+
       SizedBox(
         height: customHeight(context: context, heightSize: 0.01),
       ),
       Padding(
         padding: EdgeInsets.only(left: customWidth(context: context, widthSize: 0.13)),
         child: Text(
-          workContents
+          companyWork.workContents
         ),
       ),
       SizedBox(
@@ -217,7 +144,7 @@ Column detailContents({BuildContext context, String type, String startTime, Stri
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Container(
+          /*Container(
             //color: Colors.yellow,
             height: customHeight(context: context, heightSize: 0.05),
             width: customWidth(context: context, widthSize: 0.8),
@@ -237,7 +164,7 @@ Column detailContents({BuildContext context, String type, String startTime, Stri
                 );
               },
             ),
-          ),
+          ),*/
         ],
       ),
 
@@ -251,15 +178,15 @@ Column detailContents({BuildContext context, String type, String startTime, Stri
           Text(
             "작성시간 : ",
             style: customStyle(
-              fontSize: 14,
+              fontSize: writeTimeFontSize,
               fontWeightName: "Regular",
               fontColor: greyColor
             ),
           ),
           Text(
-            createDate,
+            _format.timeStampToDateTime(companyWork.createDate).toString().substring(0, 16),
             style: customStyle(
-              fontSize: 14,
+              fontSize: writeTimeFontSize,
               fontWeightName: "Regular",
               fontColor: greyColor
             ),
@@ -269,3 +196,52 @@ Column detailContents({BuildContext context, String type, String startTime, Stri
     ],
   );
 }
+
+Container popupMenu({BuildContext context, String documentId, String companyCode}){
+  CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: companyCode);
+  return Container(
+    width: customWidth(context: context, widthSize: 0.05),
+    child: PopupMenuButton(
+      icon: Icon(
+        Icons.more_horiz,
+      ),
+      onSelected: (value) async {
+        if(value == 1) {
+          print("수정하기");
+        }
+        else{
+          await _crudRepository.removeCompanyWorkDataToFirebase(documentId: documentId);
+        }
+      },
+      itemBuilder: (BuildContext context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Row(
+            children: [
+              Icon(
+                  Icons.edit
+              ),
+              Text(
+                  "수정하기"
+              )
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: 2,
+          child: Row(
+            children: [
+              Icon(
+                  Icons.delete
+              ),
+              Text(
+                  "삭제하기"
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+

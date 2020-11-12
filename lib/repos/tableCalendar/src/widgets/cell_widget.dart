@@ -9,6 +9,7 @@ class _CellWidget extends StatelessWidget {
   final bool isSelected;
   final bool isToday;
   final bool isWeekend;
+  final bool isSaturday;
   final bool isOutsideMonth;
   final bool isHoliday;
   final bool isEventDay;
@@ -21,6 +22,7 @@ class _CellWidget extends StatelessWidget {
     this.isSelected = false,
     this.isToday = false,
     this.isWeekend = false,
+    this.isSaturday = false,
     this.isOutsideMonth = false,
     this.isHoliday = false,
     this.isEventDay = false,
@@ -45,13 +47,13 @@ class _CellWidget extends StatelessWidget {
 
   Decoration _buildCellDecoration() {
     if (isSelected && calendarStyle.renderSelectedFirst && calendarStyle.highlightSelected) {
-      return BoxDecoration(shape: BoxShape.circle, color: calendarStyle.selectedColor);
+      return BoxDecoration(borderRadius: BorderRadius.circular(12),color: calendarStyle.selectedColor);
     } else if (isToday && calendarStyle.highlightToday) {
-      return BoxDecoration(shape: BoxShape.circle, color: calendarStyle.todayColor);
+      return BoxDecoration(borderRadius: BorderRadius.circular(12), color: calendarStyle.todayColor);
     } else if (isSelected && calendarStyle.highlightSelected) {
-      return BoxDecoration(shape: BoxShape.circle, color: calendarStyle.selectedColor);
+      return BoxDecoration(borderRadius: BorderRadius.circular(12), color: calendarStyle.selectedColor);
     } else {
-      return BoxDecoration(shape: BoxShape.circle);
+      return BoxDecoration(borderRadius: BorderRadius.circular(12));
     }
   }
 
@@ -68,11 +70,15 @@ class _CellWidget extends StatelessWidget {
       return calendarStyle.outsideHolidayStyle;
     } else if (isHoliday) {
       return calendarStyle.holidayStyle;
+    } else if (isOutsideMonth && isWeekend && isSaturday) {
+      return calendarStyle.outsideSaturdayStyle;
     } else if (isOutsideMonth && isWeekend) {
       return calendarStyle.outsideWeekendStyle;
     } else if (isOutsideMonth) {
       return calendarStyle.outsideStyle;
-    } else if (isWeekend) {
+    } else if (isWeekend && isSaturday) {
+      return calendarStyle.saturdayStyle;
+    } else if(isWeekend){
       return calendarStyle.weekendStyle;
     } else if (isEventDay) {
       return calendarStyle.eventDayStyle;

@@ -40,11 +40,15 @@ dependencies:
   flutter_picker: ^1.1.5
   get_it: ^4.0.4
   characters: ^1.0.0
-
-  firebase_auth: ^0.14.0+5
+  fluttertoast: ^7.1.1
   configurable_expansion_tile: ^1.0.0
-  # 스크롤
-  direct_select: ^1.1.0
+  firebase_auth: ^0.14.0+5
+
+  flutter_local_notifications: ^3.0.1+2
+  flutter_masked_text: ^0.8.0
+
+  connectivity: ^0.4.9+3
+  wifi: ^0.1.5
 
   flutter_localizations:
     sdk: flutter

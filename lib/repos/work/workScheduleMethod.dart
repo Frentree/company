@@ -27,25 +27,25 @@ class WorkScheduleMethod{
   /* 일정 저장 메소드 */
   Future<void> workScheduleFirebaseAuth(
       {BuildContext context,
-      String createUid,
-      String name,
-      String workTitle,
-      String workContents,
-      Timestamp startDate,
-      Timestamp createDate,
-      List<Map<String, String>> share,
-      int progress,
-      String location,
-      String timeTest,
-      String type}) async {
+        String createUid,
+        String name,
+        String workTitle,
+        String workContents,
+        Timestamp startDate,
+        Timestamp createDate,
+        List<Map<String, String>> share,
+        int progress,
+        String location,
+        String timeTest,
+        String type}) async {
     FirebaseAuthProvider _firebaseAuthProvider =
-        Provider.of<FirebaseAuthProvider>(context, listen: false);
+    Provider.of<FirebaseAuthProvider>(context, listen: false);
 
     // 타이틀 미입력
     if(workTitle.trim() == "") {
       return;
     }
-    
+
     // 시작및 종료시간 미선택
     if(startDate == "") {
       return;
@@ -72,10 +72,10 @@ class WorkScheduleMethod{
     );
 
     CrudRepository _crudRepository = CrudRepository();
-    
+
     // 데이터 베이스 추가
     _crudRepository.addCompanyWorkDataToFirebase(
-      dataModel: work
+        dataModel: work
     );
 
     Navigator.pop(context);
@@ -91,7 +91,7 @@ class WorkScheduleMethod{
     String s;
 
     categoryList.then((value) =>
-    value.forEach((element) { print(element.bigCategoryTitle);}));
+        value.forEach((element) { print(element.bigCategoryTitle);}));
 
 
     return _crudRepository.fetchWorkCategory();

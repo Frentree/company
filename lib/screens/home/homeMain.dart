@@ -28,6 +28,9 @@ class HomeMainPageState extends State<HomeMainPage> {
   //페이지 이동
   void _pageChange(int pageIndex){
     if(pageIndex == 2){
+
+      //WorkMainPage(context);
+
       MainBottomSheet(context);
     }
     else{
@@ -49,7 +52,7 @@ class HomeMainPageState extends State<HomeMainPage> {
           ),
 
           //배너
-          Expanded(
+          /*Expanded(
             flex: 2,
             child: Container(
               color: bottomColor,
@@ -72,7 +75,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                 ],
               ),
             ),
-          )
+          )*/
         ],
       ),
 
@@ -87,28 +90,28 @@ class HomeMainPageState extends State<HomeMainPage> {
         currentIndex: _currentPateIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.calendar_today,
-              size: customHeight(
-                context: context,
-                heightSize: 0.04,
+              icon: Icon(
+                Icons.calendar_today,
+                size: customHeight(
+                  context: context,
+                  heightSize: 0.04,
+                ),
               ),
-            ),
-            title: Text(
-              "Schedule"
-            )
+              title: Text(
+                  "Schedule"
+              )
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.search,
-              size: customHeight(
-                context: context,
-                heightSize: 0.04,
+              icon: Icon(
+                Icons.search,
+                size: customHeight(
+                  context: context,
+                  heightSize: 0.04,
+                ),
               ),
-            ),
-            title: Text(
-              "Search"
-            )
+              title: Text(
+                  "Search"
+              )
           ),
           BottomNavigationBarItem(
               icon: Icon(

@@ -17,7 +17,8 @@ class SignInMethod{
   Future<void> signInWithFirebaseAuth({BuildContext context, String mail, String password}) async {
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
-    CrudRepository _crudRepository = CrudRepository.userAttendance();
+    CrudRepository _crudRepository = CrudRepository.attendance();
+
 
     User _loginUser;
 
@@ -25,7 +26,7 @@ class SignInMethod{
       bool _signInEmailResult = await _firebaseAuthProvider.singInWithEmail(mail: mail, password: password);
       if(_signInEmailResult == true){
         _loginUser = await _crudRepository.getUserDataToFirebaseById(documentId: mail);
-        _loginUserInfoProvider.saveLoginUserToPhone(value: _loginUser);
+        _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
       }
 
       else{

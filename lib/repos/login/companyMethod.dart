@@ -1,6 +1,5 @@
 //Flutter
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:math';
 
 //Provider
@@ -104,7 +103,7 @@ class CompanyMethod{
     _user.companyCode = company.companyCode;
     _user.companyName = company.companyName;
 
-    _loginUserInfoProvider.saveLoginUserToPhone(value: _user);
+    _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _user);
 
     _companyUserRepository.setCompanyUserDataToFirebase(
       dataModel: _companyUser,
@@ -143,8 +142,6 @@ class CompanyMethod{
       _user.companyCode = _company.companyCode;
       _user.companyName = _company.companyName;
 
-      _loginUserInfoProvider.saveLoginUserToPhone(value: _user);
-
       _companyUserRepository.setCompanyUserDataToFirebase(
         dataModel: _companyUser,
         documentId: _user.mail
@@ -152,8 +149,10 @@ class CompanyMethod{
 
       _crudRepository.updateUserDataToFirebase(
         dataModel: _user,
-        documentId: _user.mail
+        documentId: _user.mail,
       );
+
+      await _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _user);
 
       showFunctionSuccessMessage(
         context: context,

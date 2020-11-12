@@ -267,6 +267,7 @@ class CalendarController {
 
     _visibleDays.value = _getVisibleDays();
     _incrementPage();
+
   }
 
   void _selectPreviousMonth() {
@@ -407,7 +408,7 @@ class CalendarController {
   }
 
   DateTime _previousMonth(DateTime month) {
-    if (month.month == 1) {
+    if (month.month == 1 ) {
       return DateTime(month.year - 1, 12);
     } else {
       return DateTime(month.year, month.month - 1);
@@ -459,6 +460,15 @@ class CalendarController {
 
   bool _isWeekend(DateTime day, List<int> weekendDays) {
     return weekendDays.contains(day.weekday);
+  }
+
+  bool _isSaturday(DateTime day) {
+    if(day.weekday == 6){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   bool _isExtraDay(DateTime day) {
