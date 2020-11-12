@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
@@ -8,6 +10,7 @@ import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/setting/myInfomationCard.dart';
 import 'package:companyplaylist/screens/setting/myWork.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +29,15 @@ class SettingMainPageState extends State<SettingMainPage>{
   bool notice_alert = false;
   bool doNotDisturb_alert = true;
 
+  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
+    StorageReference storageReference =
+    _firebaseStorage.ref().child("profile/${_loginUser.mail}");
+
 
     return Scaffold(
       backgroundColor: mainColor,
@@ -83,8 +91,17 @@ class SettingMainPageState extends State<SettingMainPage>{
                     color: whiteColor,
                     border: Border.all(color: whiteColor, width: 2)
                 ),
-                child: Image.network(
-                    "https://i.pinimg.com/originals/d9/82/f4/d982f4ec7d06f6910539472634e1f9b1.png"
+                child: FutureBuilder(
+                  future: storageReference.getDownloadURL(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData == false) {
+                      return CircularProgressIndicator();
+                    }
+
+                    return Image.network(
+                        snapshot.data
+                    );
+                  },
                 ),
               ),
               onTap: (){

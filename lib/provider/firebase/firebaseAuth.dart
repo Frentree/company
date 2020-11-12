@@ -172,13 +172,29 @@ class FirebaseAuthProvider with ChangeNotifier {
     }
   }
 
-  //패스워드 변경
-  Future<bool> updatePassword({String mail, String password, String name}) async {
+  //패스워드 확인
+  Future<bool> confirmPassword({String mail, String password, String name}) async {
     try {
-      AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+      var result = await _firebaseAuth.signInWithEmailAndPassword(
           email: mail,
           password: password
       );
+      if(result.user != null) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } on PlatformException catch (e) {
+      setLastFirebaseMessage(message: e.code);
+      return false;
+    }
+  }
+
+  //패스워드 변경
+  Future<bool> updatePassword({String mail, String password, String name}) async {
+    try {
+      _user.updatePassword(password);
 
       /*if(result.user != null) {
         updateInfo.displayName = name;
@@ -186,7 +202,7 @@ class FirebaseAuthProvider with ChangeNotifier {
         return true;
       }*/
 
-      return false;
+      return true;
 
     } on PlatformException catch (e) {
       setLastFirebaseMessage(message: e.code);
