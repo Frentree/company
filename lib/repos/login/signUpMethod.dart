@@ -14,21 +14,29 @@ import 'package:companyplaylist/repos/showSnackBarMethod.dart';
 import 'package:companyplaylist/models/userModel.dart';
 
 class SignUpMethod{
-  Future<void> signUpWithFirebaseAuth({BuildContext context, String smsCode, String mail, String password, String name, User user}) async {
-    FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
+  Future<void> signUpWithFirebaseAuth(
+      {BuildContext context,
+      String smsCode,
+      String mail,
+      String password,
+      String name,
+      User user}) async {
+    FirebaseAuthProvider _firebaseAuthProvider =
+        Provider.of<FirebaseAuthProvider>(context, listen: false);
 
-    LoginScreenChangeProvider _loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context, listen: false);
+    LoginScreenChangeProvider _loginScreenChangeProvider =
+        Provider.of<LoginScreenChangeProvider>(context, listen: false);
     CrudRepository _crudRepository = CrudRepository();
 
-    bool _codeConfirmResult = await _firebaseAuthProvider.isVerifySuccess(smsCode: smsCode);
+    bool _codeConfirmResult =
+        await _firebaseAuthProvider.isVerifySuccess(smsCode: smsCode);
 
-    if(_codeConfirmResult == true){
-      bool _signUpEmailResult = await _firebaseAuthProvider.signUpWithEmail(mail: mail, password: password, name: name);
-      if(_signUpEmailResult == true){
+    if (_codeConfirmResult == true) {
+      bool _signUpEmailResult = await _firebaseAuthProvider.signUpWithEmail(
+          mail: mail, password: password, name: name);
+      if (_signUpEmailResult == true) {
         _crudRepository.setUserDataToFirebase(
-          dataModel: user,
-          documentId: mail
-        );
+            dataModel: user, documentId: mail);
 
         showFunctionSuccessMessage(
           context: context,

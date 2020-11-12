@@ -1,7 +1,6 @@
 //Flutter
-import 'package:companyplaylist/screens/alarm/alarmMain.dart';
+import 'package:companyplaylist/widgets/album/widgetMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
-import 'package:companyplaylist/widgets/bottomsheet/work/workMain.dart';
 import 'package:flutter/material.dart';
 
 //Const
@@ -19,7 +18,7 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
-  List<Widget> _page = [HomeScheduleMainPage(),AlarmMainPage(),null,AlarmMainPage(),AlarmMainPage()];
+  List<Widget> _page = [HomeScheduleMainPage()];
 
   //현재 페이지 인덱스
   int _currentPateIndex = 0;
@@ -60,7 +59,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.03)),
+                    padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.04)),
                     child: Text(
                       "슬기로운 회사 생활",
                       style: customStyle(

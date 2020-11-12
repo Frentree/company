@@ -1,6 +1,8 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/screens/work/workContent.dart';
+import 'package:companyplaylist/widgets/bottomsheet/expense/expenseMain.dart';
+import 'package:companyplaylist/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import 'package:flutter/material.dart';
 
 MainBottomSheet(BuildContext context) {
   // 사용자 권한
-  int _userGrade = 9;
+  int _userGrade = 0;
 
   void _workBottomMove(int type) {
     if(type == 0) {   // 내근 또는 외근 일때
@@ -21,10 +23,14 @@ MainBottomSheet(BuildContext context) {
 
     } else if (type == 5) {
 
-    } else if (type == 6) {
+    } else if (type == 6) { //구매 품의
+      PurchaseMain(context);
 
-    } else if (type == 7) { //공지사항
-      WorkNoticeBottomSheet(context);
+    } else if (type == 7) { //경비 품의
+      if (_userGrade == 9) { //공지사항
+        WorkNoticeBottomSheet(context);
+      }
+      ExpenseMain(context);
     }
   }
 
@@ -144,38 +150,47 @@ MainBottomSheet(BuildContext context) {
                           ),
                         )
                     ),
-                    Chip(
-                        backgroundColor: chipColorRed,
-                        label: Text(
-                          "구매 품의",
-                          style: customStyle(
-                              fontSize: 14,
-                              fontWeightName:'Regular',
-                              fontColor: mainColor
-                          ),
-                        )
+                    ActionChip(
+                      backgroundColor: chipColorRed,
+                      label: Text(
+                        "구매 품의",
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
+                      ),
+                      onPressed: () {
+                        _workBottomMove(6);
+                      },
                     ),
-                    Chip(
-                        backgroundColor: chipColorRed,
-                        label: Text(
-                          "경비 품의",
-                          style: customStyle(
-                              fontSize: 14,
-                              fontWeightName:'Regular',
-                              fontColor: mainColor
-                          ),
-                        )
+                    ActionChip(
+                      backgroundColor: chipColorRed,
+                      label: Text(
+                        "경비 품의",
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
+                      ),
+                      onPressed: () {
+                        _workBottomMove(7);
+                      },
                     ),
-                    Chip(
-                        backgroundColor: chipColorRed,
-                        label: Text(
-                          "연차 신청",
-                          style: customStyle(
-                              fontSize: 14,
-                              fontWeightName:'Regular',
-                              fontColor: mainColor
-                          ),
-                        )
+                    ActionChip(
+                      backgroundColor: chipColorRed,
+                      label: Text(
+                        "연차 신청",
+                        style: customStyle(
+                            fontSize: 14,
+                            fontWeightName:'Regular',
+                            fontColor: mainColor
+                        ),
+                      ),
+                      onPressed: () {
+                        _workBottomMove(7);
+                      },
                     ),
                   ],
                 ),

@@ -78,7 +78,7 @@ workContent(BuildContext context, int type) {
                                 fontWeightName: 'Regular',
                               ),
                               decoration: InputDecoration(
-                                  hintText: '제목을 입력하세요',
+                                hintText: '제목을 입력하세요',
                               ),
                             ),
                           ),
@@ -92,8 +92,8 @@ workContent(BuildContext context, int type) {
                                 backgroundColor: _titleController.text == ''
                                     ? Colors.black12
                                     : _titleController.text == ''
-                                        ? Colors.black12
-                                        : Colors.blue,
+                                    ? Colors.black12
+                                    : Colors.blue,
                                 child: IconButton(
                                   icon: Icon(Icons.arrow_upward),
                                   onPressed: () => {
@@ -234,49 +234,49 @@ workContent(BuildContext context, int type) {
                       ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       Visibility(
-                          visible: (type == 2),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: InkWell(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.location_on_outlined,
-                                      ),
-                                      Padding(padding: EdgeInsets.only(left: 10)),
-                                      Text(
-                                        "외근 장소",
-                                        style: customStyle(
-                                          fontSize: 14,
-                                          fontColor: mainColor,
-                                          fontWeightName: 'Regular',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                  flex: 5,
-                                  child: Container(
-                                    height: 30,
-                                    child: TextField(
-                                      controller: _locationController,
+                        visible: (type == 2),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: InkWell(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                    ),
+                                    Padding(padding: EdgeInsets.only(left: 10)),
+                                    Text(
+                                      "외근 장소",
                                       style: customStyle(
                                         fontSize: 14,
                                         fontColor: mainColor,
                                         fontWeightName: 'Regular',
                                       ),
-                                      decoration: InputDecoration(
-                                        hintText: '외근지를 입력하세요',
-                                      ),
                                     ),
-                                  )
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                                flex: 5,
+                                child: Container(
+                                  height: 30,
+                                  child: TextField(
+                                    controller: _locationController,
+                                    style: customStyle(
+                                      fontSize: 14,
+                                      fontColor: mainColor,
+                                      fontWeightName: 'Regular',
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: '외근지를 입력하세요',
+                                    ),
+                                  ),
+                                )
+                            ),
+                          ],
+                        ),
                       ),
                       InkWell(
                         child: Row(
@@ -329,104 +329,104 @@ workContent(BuildContext context, int type) {
                                     ),
                                   ),
                                   Expanded(
-                                      flex: 5,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: InkWell(
-                                              child: Text("전체 공개",
-                                                  style: customStyle(
-                                                    fontSize: 13,
-                                                    fontColor: isColor[0] == true ? mainColor : greyColor,
-                                                    fontWeightName: 'Bold',
-                                                  )
-                                              ),
-                                              onTap: () {
-                                                setState(() {
-                                                  isColor[0] = true;
-                                                  isColor[1] = false;
-                                                  isColor[2] = false;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: InkWell(
-                                              child: Text("팀원 공개",
+                                    flex: 5,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: InkWell(
+                                            child: Text("전체 공개",
                                                 style: customStyle(
                                                   fontSize: 13,
-                                                  fontColor: isColor[1] == true ? mainColor : greyColor,
+                                                  fontColor: isColor[0] == true ? mainColor : greyColor,
                                                   fontWeightName: 'Bold',
-                                                ),
+                                                )
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                isColor[0] = true;
+                                                isColor[1] = false;
+                                                isColor[2] = false;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: InkWell(
+                                            child: Text("팀원 공개",
+                                              style: customStyle(
+                                                fontSize: 13,
+                                                fontColor: isColor[1] == true ? mainColor : greyColor,
+                                                fontWeightName: 'Bold',
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                isColor[0] = false;
+                                                isColor[1] = true;
+                                                isColor[2] = false;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            child: InkWell(
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text("기타 공개",
+                                                    style: customStyle(
+                                                      fontSize: 13,
+                                                      fontColor: isColor[2] == true ? mainColor : greyColor,
+                                                      fontWeightName: 'Bold',
+                                                    ),
+                                                  ),
+                                                  Padding(padding: EdgeInsets.only(right: 10)),
+                                                  Visibility(
+                                                    visible: isColor[2],
+                                                    child: InkWell(
+                                                      child: Text(
+                                                        "수정",
+                                                        style: customStyle(
+                                                          fontSize: 13,
+                                                          fontColor: blueColor,
+                                                          fontWeightName: 'Bold',
+                                                        ),
+                                                      ),
+                                                      onTap: () async {
+                                                        List<Map<String, String>>
+                                                        _teamNameList =
+                                                        await WorkTeamPage(context);
+                                                        _teamList = _teamNameList;
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
                                               ),
                                               onTap: () {
                                                 setState(() {
                                                   isColor[0] = false;
-                                                  isColor[1] = true;
-                                                  isColor[2] = false;
+                                                  isColor[1] = false;
+                                                  isColor[2] = true;
                                                 });
+                                                _teamList = WorkTeamPage(context);
                                               },
                                             ),
                                           ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              child: InkWell(
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text("기타 공개",
-                                                      style: customStyle(
-                                                        fontSize: 13,
-                                                        fontColor: isColor[2] == true ? mainColor : greyColor,
-                                                        fontWeightName: 'Bold',
-                                                      ),
-                                                    ),
-                                                    Padding(padding: EdgeInsets.only(right: 10)),
-                                                    Visibility(
-                                                      visible: isColor[2],
-                                                      child: InkWell(
-                                                        child: Text(
-                                                          "수정",
-                                                          style: customStyle(
-                                                            fontSize: 13,
-                                                            fontColor: blueColor,
-                                                            fontWeightName: 'Bold',
-                                                          ),
-                                                        ),
-                                                        onTap: () async {
-                                                          List<Map<String, String>>
-                                                          _teamNameList =
-                                                          await WorkTeamPage(context);
-                                                          _teamList = _teamNameList;
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                                onTap: () {
-                                                  setState(() {
-                                                    isColor[0] = false;
-                                                    isColor[1] = false;
-                                                    isColor[2] = true;
-                                                  });
-                                                  _teamList = WorkTeamPage(context);
-                                                },
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                             SizedBox(
                               height: customHeight(
-                                context: context,
-                                heightSize: 0.01
+                                  context: context,
+                                  heightSize: 0.01
                               ),
                             ),
                             Container(
@@ -451,7 +451,7 @@ workContent(BuildContext context, int type) {
                                     ),
                                   ),
                                   TextField(
-                                   controller: _contentController,
+                                    controller: _contentController,
                                     keyboardType: TextInputType.multiline,
                                     maxLines: 2,
                                     maxLengthEnforced: true,

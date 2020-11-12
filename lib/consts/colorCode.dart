@@ -19,6 +19,7 @@ const Color dividerColor = Color(0xff29304D);
 const Color bottomColor = Color(0xff8CCCCB);
 const Color scheduleChipColor= Color(0xffF7F9FC);
 const Color boarderColor = Color(0xffEEEEEE);
+const Color inputBoarderColor = Color(0xff464646);
 const Color chipColorBlue = Color(0xffDDE9F8);
 const Color chipColorPurple = Color(0xffD3DBFF);
 const Color chipColorRed = Color(0xffFFD1CF);
