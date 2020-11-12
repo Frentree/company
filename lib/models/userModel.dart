@@ -29,7 +29,7 @@ class User {
     this.name,
     this.mail,
     this.birthday,
-    this.phone,`
+    this.phone,
     this.companyName,
     this.companyCode,
     this.image,
