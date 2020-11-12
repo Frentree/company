@@ -9,16 +9,10 @@ ChoiceImage(BuildContext context) {
             title: Text("업데이트 예정"),
             content: SingleChildScrollView(
                 child: ListBody(children: <Widget>[
-              Text("사진촬영 또는 갤러리에서 선택"),
-              Text("OK 또는 Cancel 버튼 클릭으로 종료"),
+              Text("아직 구현되지 않은 화면입니다."),
+              Text("Cancel 버튼을 클릭하여 종료해주세요"),
             ])),
             actions: <Widget>[
-              FlatButton(
-                child: Text("ok"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
               FlatButton(
                 child: Text("cancel"),
                 onPressed: () {
