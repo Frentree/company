@@ -63,7 +63,7 @@ class SettingMainPageState extends State<SettingMainPage>{
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                 "설정"
+                  "설정"
               ),
             ),
 
@@ -141,8 +141,8 @@ class SettingMainPageState extends State<SettingMainPage>{
                 title: Text('내 정보'),
                 children: [
                   getMyInfomationCard(
-                    context: context,
-                    user: _loginUser
+                      context: context,
+                      user: _loginUser
                   ),
                 ],
               ),

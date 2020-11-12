@@ -88,11 +88,11 @@ SettingMyPageUpdate(BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
-                    color: blackColor,
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }
+                      color: blackColor,
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }
                   ),
                   ExpansionTile(
                     initiallyExpanded: true,
@@ -135,7 +135,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                 border: Border.all(color: whiteColor, width: 2)
                                             ),
                                             child: Image.network(
-                                               _loginUser.profilePhoto
+                                                _loginUser.profilePhoto
                                             ),
                                           ),
                                           onTap: () {},
@@ -155,44 +155,44 @@ SettingMyPageUpdate(BuildContext context) {
                                             ),
                                             onPressed: () {
                                               showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return SimpleDialog(
-                                                    title: Text(
-                                                      "선택",
-                                                      style: customStyle(
-                                                        fontColor: mainColor,
-                                                        fontSize: 14
-                                                      ),
-                                                    ),
-                                                    children: [
-                                                      SimpleDialogOption(
-                                                        onPressed: () {
-                                                          _uploadImageToStorage(ImageSource.camera);
-                                                        },
-                                                        child: Text(
-                                                          "카메라",
-                                                          style: customStyle(
-                                                              fontColor: mainColor,
-                                                              fontSize: 13
-                                                          ),
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return SimpleDialog(
+                                                      title: Text(
+                                                        "선택",
+                                                        style: customStyle(
+                                                            fontColor: mainColor,
+                                                            fontSize: 14
                                                         ),
                                                       ),
-                                                      SimpleDialogOption(
-                                                        onPressed: () {
-                                                          _uploadImageToStorage(ImageSource.gallery);
-                                                        },
-                                                        child:Text(
-                                                          "갤러리",
-                                                          style: customStyle(
-                                                              fontColor: mainColor,
-                                                              fontSize: 13
+                                                      children: [
+                                                        SimpleDialogOption(
+                                                          onPressed: () {
+                                                            _uploadImageToStorage(ImageSource.camera);
+                                                          },
+                                                          child: Text(
+                                                            "카메라",
+                                                            style: customStyle(
+                                                                fontColor: mainColor,
+                                                                fontSize: 13
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  );
-                                              });
+                                                        SimpleDialogOption(
+                                                          onPressed: () {
+                                                            _uploadImageToStorage(ImageSource.gallery);
+                                                          },
+                                                          child:Text(
+                                                            "갤러리",
+                                                            style: customStyle(
+                                                                fontColor: mainColor,
+                                                                fontSize: 13
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
                                             },
                                           ),
                                         ),
@@ -398,7 +398,7 @@ SettingMyPageUpdate(BuildContext context) {
                                               ),
                                             ),
                                             onPressed: () {
-                                              
+
 
                                             }
                                         ),
@@ -444,11 +444,11 @@ SettingMyPageUpdate(BuildContext context) {
                                             ),
                                             onPressed: () {
                                               _loginRepository.InfomationUpdateWithFirebaseAuth(
-                                                context: context,
-                                                mail: _loginUser.mail,
-                                                name: _loginUser.name,
-                                                newPassword: _passwordNewTextCon.text.trim(),
-                                                newPasswordConfirm: _passwordNewConfirmTextCon.text.trim()
+                                                  context: context,
+                                                  mail: _loginUser.mail,
+                                                  name: _loginUser.name,
+                                                  newPassword: _passwordNewTextCon.text.trim(),
+                                                  newPasswordConfirm: _passwordNewConfirmTextCon.text.trim()
                                               );
                                             }
                                         ),
@@ -688,6 +688,6 @@ SettingMyPageUpdate(BuildContext context) {
           },
         );
       }
-   );
+  );
 
 }

@@ -14,13 +14,15 @@ import 'package:table_calendar/table_calendar.dart';
 
 class AlarmMainPage extends StatefulWidget {
   @override
-  _AlarmMainPageState createState() => _AlarmMainPageState();
+  AlarmMainPageState createState() => AlarmMainPageState();
 }
 
-class _AlarmMainPageState extends State<AlarmMainPage> {
+class AlarmMainPageState extends State<AlarmMainPage> {
   int tabIndex = 0;
   User _loginUser;
   Attendance _attendance = Attendance();
+
+  List<Widget> _page = [HomeSchedulePage(),AlarmNoticePage(),AlarmNoticePage()];
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +136,8 @@ class _AlarmMainPageState extends State<AlarmMainPage> {
                 children: <Widget>[
                   tabBtn(
                       context: context,
+                      heightSize: 0.05,
+                      widthSize: 0.3,
                       btnText: "알림",
                       tabIndexVariable: tabIndex,
                       tabOrder: 0,
@@ -145,6 +149,8 @@ class _AlarmMainPageState extends State<AlarmMainPage> {
                   ),
                   tabBtn(
                       context: context,
+                      heightSize: 0.05,
+                      widthSize: 0.3,
                       btnText: "파일함",
                       tabIndexVariable: tabIndex,
                       tabOrder: 1,
@@ -156,6 +162,8 @@ class _AlarmMainPageState extends State<AlarmMainPage> {
                   ),
                   tabBtn(
                       context: context,
+                      heightSize: 0.05,
+                      widthSize: 0.3,
                       btnText: "공지사항",
                       tabIndexVariable: tabIndex,
                       tabOrder: 2,
@@ -165,6 +173,7 @@ class _AlarmMainPageState extends State<AlarmMainPage> {
                         });
                       }
                   ),
+
                 ],
               ),
             ),
@@ -172,11 +181,7 @@ class _AlarmMainPageState extends State<AlarmMainPage> {
               padding: EdgeInsets.only(top: 5),
             ),
             Expanded(
-              child:
-              Visibility(
-                child: AlarmNoticePage(),
-                visible: (tabIndex == 2),
-              ),
+              child:_page[tabIndex],
             )
           ],
         ),

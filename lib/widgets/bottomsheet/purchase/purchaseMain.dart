@@ -6,18 +6,17 @@ import 'package:companyplaylist/models/expenseModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:companyplaylist/widgets/bottomsheet/dateSetBottomSheet.dart';
 import 'package:companyplaylist/widgets/form/customInputFormatter.dart';
-import 'package:companyplaylist/widgets/popupMenu/choiceImage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 //테스트 계정
 //abc@frentree / fren1212
 
-ExpenseMain(BuildContext context) {
+PurchaseMain(BuildContext context) {
   FirebaseRepository _reposistory = FirebaseRepository();
 
   LoginUserInfoProvider _loginUserInfoProvider;
@@ -38,20 +37,6 @@ ExpenseMain(BuildContext context) {
   _itemCount = entries.length;
   int _expenses = 8000;
 
-  /// Which holds the selected date
-  /// Defaults to today's date.
-  DateTime selectedDate = DateTime.now();
-
-  /// This decides which day will be enabled
-  /// This will be called every time while displaying day in calender.
-  bool _decideWhichDayToEnable(DateTime day) {
-    if ((day.isAfter(DateTime.now().subtract(Duration(days: 1))) &&
-        day.isBefore(DateTime.now().add(Duration(days: 10))))) {
-      return true;
-    }
-    return false;
-  }
-
   String date = "일자를 선택하세요";
 
   Widget _buildExpenseSizedBox() {
@@ -68,7 +53,7 @@ ExpenseMain(BuildContext context) {
           ),
           controller: _expenseController,
           keyboardType:
-              TextInputType.numberWithOptions(signed: true, decimal: true),
+          TextInputType.numberWithOptions(signed: true, decimal: true),
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
             CustomTextInputFormatter(),
@@ -98,7 +83,7 @@ ExpenseMain(BuildContext context) {
       companyCode: user.companyCode,
       createDate: Timestamp.now(),
       contentType: _buildChosenItem(_chosenItem),
-      buyDate: selectedDate,
+      //buyDate: selected,
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       memo: "",
       imageUrl: "",
@@ -123,157 +108,11 @@ ExpenseMain(BuildContext context) {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            buildCupertinoDatePicker(BuildContext context) {
-              showModalBottomSheet(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          topLeft: Radius.circular(20))),
-                  context: context,
-                  builder: (BuildContext builder) {
-                    return Container(
-                        padding: EdgeInsets.only(left : 20, right: 20, top: 10),
-                        height:
-                            MediaQuery.of(context).copyWith().size.height / 2.5,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Chip(
-                                        backgroundColor: chipColorBlue,
-                                        label: Text(
-                                          "경비 정산",
-                                          style: customStyle(
-                                            fontSize: 14,
-                                            fontColor: mainColor,
-                                            fontWeightName: 'Regular',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 5),
-                                    ),
-                                    Expanded(
-                                      flex: 5,
-                                      child: RaisedButton(
-                                        disabledColor: Colors.white,
-                                        child: Text(
-                                          _buildChosenItem(_chosenItem),
-                                          style: customStyle(
-                                              fontSize: 14,
-                                              fontWeightName: "regular",
-                                              fontColor: mainColor),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor:
-                                              _titleController.text == ''
-                                                  ? Colors.black12
-                                                  : _titleController.text == ''
-                                                      ? Colors.black12
-                                                      : Colors.blue,
-                                          child: IconButton(
-                                            icon: Icon(Icons.arrow_upward),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              if (_titleController.text != '') {
-                                              } else if (_titleController
-                                                      .text ==
-                                                  '') {
-                                                // 제목 미입력
-
-                                              } else {
-                                                // 내용 미입력
-
-                                              }
-                                            },
-                                          )),
-                                    ),
-                                  ]),
-                              Container(
-                                height: MediaQuery.of(context)
-                                        .copyWith()
-                                        .size
-                                        .height /
-                                    3.2,
-                                child: CupertinoDatePicker(
-                                  mode: CupertinoDatePickerMode.date,
-                                  onDateTimeChanged: (picked) {
-                                    if (picked != null &&
-                                        picked != selectedDate)
-                                      setState(() {
-                                        selectedDate = picked;
-                                      });
-                                  },
-                                  initialDateTime: selectedDate,
-                                  minimumYear: 2000,
-                                  maximumYear: 2025,
-                                ),
-                              )
-                            ]));
-                  });
-            }
-
-            buildMaterialDatePicker(BuildContext context) async {
-              final DateTime picked = await showDatePicker(
-                context: context,
-                initialDate: selectedDate,
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2025),
-                initialEntryMode: DatePickerEntryMode.calendar,
-                initialDatePickerMode: DatePickerMode.day,
-                selectableDayPredicate: _decideWhichDayToEnable,
-                helpText: '날짜를 선택해 주세요',
-                cancelText: '취소',
-                confirmText: '확인',
-                errorFormatText: 'Enter valid date',
-                errorInvalidText: 'Enter date in valid range',
-                fieldLabelText: 'Booking date',
-                fieldHintText: 'Month/Date/Year',
-                builder: (context, child) {
-                  return Theme(
-                    data: ThemeData.light(),
-                    child: child,
-                  );
-                },
-              );
-              if (picked != null && picked != selectedDate)
-                setState(() {
-                  selectedDate = picked;
-                });
-            }
-
-            _selectDate(BuildContext context) {
-              final ThemeData theme = Theme.of(context);
-              assert(theme.platform != null);
-              switch (theme.platform) {
-                case TargetPlatform.android:
-                case TargetPlatform.fuchsia:
-                case TargetPlatform.linux:
-                case TargetPlatform.windows:
-                  return //debugPrint("android");
-                      buildMaterialDatePicker(context);
-                case TargetPlatform.iOS:
-                case TargetPlatform.macOS:
-                  return //debugPrint("iOS");
-                      buildCupertinoDatePicker(context);
-              }
-            }
-
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
-                    top: 10,
+                    top: 30,
                     left: 20,
                     right: 20,
                     bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -288,7 +127,7 @@ ExpenseMain(BuildContext context) {
                             child: Chip(
                               backgroundColor: chipColorBlue,
                               label: Text(
-                                "경비 정산",
+                                "구매 품의",
                                 style: customStyle(
                                   fontSize: 14,
                                   fontColor: mainColor,
@@ -302,7 +141,14 @@ ExpenseMain(BuildContext context) {
                           ),
                           Expanded(
                               flex: 5,
-                              child: PopupMenuButton(
+                              child:
+                              /*TextField(
+                              controller: _titleController,
+                              autofocus: true,
+                              decoration:
+                                  InputDecoration(hintText: '항목을 선택해 주세제요'),
+                            ),*/
+                              PopupMenuButton(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   side: BorderSide(
@@ -385,8 +231,8 @@ ExpenseMain(BuildContext context) {
                                 backgroundColor: _titleController.text == ''
                                     ? Colors.black12
                                     : _titleController.text == ''
-                                        ? Colors.black12
-                                        : Colors.blue,
+                                    ? Colors.black12
+                                    : Colors.blue,
                                 child: IconButton(
                                   icon: Icon(Icons.arrow_upward),
                                   onPressed: () {
@@ -432,8 +278,7 @@ ExpenseMain(BuildContext context) {
                               Row(
                                 children: [
                                   Text(
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(selectedDate),
+                                    date,
                                     style: customStyle(
                                         fontSize: 14,
                                         fontWeightName: "regular",
@@ -446,18 +291,12 @@ ExpenseMain(BuildContext context) {
                               ),
                             ]),
                         onTap: () async {
-                          //String setDate =
-                          //Locale myLocale = Localizations.localeOf(context);
-                          //debugPrint(myLocale.toString());
-                          //buildCupertinoDatePicker(context);
-                          //buildMaterialDatePicker(context);
-                          _selectDate(context);
-
-                          /*if (setDate != '') {
+                          String setDate = await dateSetBottomSheet(context);
+                          if (setDate != '') {
                             setState(() {
                               date = setDate;
                             });
-                          }*/
+                          }
                         },
                       ),
                       Padding(
@@ -530,61 +369,56 @@ ExpenseMain(BuildContext context) {
                               ],
                             ),
                             Padding(
-                              padding: EdgeInsets.only(bottom: 20),
+                              padding: EdgeInsets.only(bottom: 15),
                             ),
                           ],
                         ),
                       ),
                       Visibility(
                         visible: _detailClicked == true ? true : false,
-                        child: InkWell(
-                          child: Column(children: [
-                            Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: customWidth(
-                                        context: context, widthSize: 0.37),
-                                    child: Row(children: [
-                                      Icon(
-                                        Icons.receipt_outlined,
-                                        color: mainColor,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 8),
-                                      ),
-                                      Text(
-                                        "영수증 첨부",
-                                        style: customStyle(
-                                            fontSize: 14,
-                                            fontWeightName: "regular",
-                                            fontColor: mainColor),
-                                      ),
-                                    ]),
-                                  ),
-                                  SizedBox(
-                                      child: Row(children: [
+                        child: Column(children: [
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: customWidth(
+                                      context: context, widthSize: 0.37),
+                                  child: Row(children: [
                                     Icon(
-                                      Icons.linked_camera,
+                                      Icons.receipt_outlined,
                                       color: mainColor,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 15),
+                                      padding: EdgeInsets.only(left: 8),
                                     ),
-                                    Icon(
-                                      Icons.image_outlined,
-                                      color: mainColor,
+                                    Text(
+                                      "영수증 첨부",
+                                      style: customStyle(
+                                          fontSize: 14,
+                                          fontWeightName: "regular",
+                                          fontColor: mainColor),
                                     ),
-                                  ]))
-                                ]),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                            ),
-                          ]),
-                          onTap: () {
-                            ChoiceImage(context);
-                          },
-                        ),
+                                  ]),
+                                ),
+                                SizedBox(
+                                    child: Row(children: [
+                                      Icon(
+                                        Icons.linked_camera,
+                                        color: mainColor,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 15),
+                                      ),
+                                      Icon(
+                                        Icons.image_outlined,
+                                        color: mainColor,
+                                      ),
+                                    ]))
+                              ]),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 15),
+                          ),
+                        ]),
                       ),
                     ]),
               ),
@@ -598,7 +432,7 @@ String _buildChosenItem(int chosenItem) {
   String _chosenItem = chosenItem.toString();
   switch (_chosenItem) {
     case '0':
-      return "항목을 선택해 주세요";
+      return "테스트 중인 화면 (클릭) >>";
     case '1':
       return "중식비";
     case '2':

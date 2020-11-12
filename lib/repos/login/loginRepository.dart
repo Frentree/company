@@ -41,7 +41,7 @@ class LoginRepository{
           password: password,
           name: name
       );
-  
+
   // 패스워드 변경
   Future<void> InfomationUpdateWithFirebaseAuth({BuildContext context, String mail, String newPassword, String newPasswordConfirm, String name}) =>
       _myInfoMethod.InfomationUpdateWithFirebaseAuth(
@@ -54,7 +54,7 @@ class LoginRepository{
 
   Future<void> signInWithFirebaseAuth({BuildContext context, String mail, String password}) =>
       _signInMethod.signInWithFirebaseAuth(
-        context: context,
+          context: context,
           mail: mail,
           password: password
       );
@@ -72,5 +72,4 @@ class LoginRepository{
           companyCode: companyCode
       );
 }
-
 

@@ -20,7 +20,7 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
-  List<Widget> _page = [HomeScheduleMainPage(),AlarmMainPage(),null,AlarmMainPage(), SettingMainPage()];
+  List<Widget> _page = [HomeScheduleMainPage(),SettingMainPage(),null, AlarmMainPage(), SettingMainPage()];
 
   //현재 페이지 인덱스
   int _currentPateIndex = 0;
@@ -30,11 +30,11 @@ class HomeMainPageState extends State<HomeMainPage> {
     if(pageIndex == 2){
 
       //WorkMainPage(context);
-
       MainBottomSheet(context);
     }
     else{
       setState(() {
+        print(pageIndex);
         _currentPateIndex = pageIndex;
       });
     }

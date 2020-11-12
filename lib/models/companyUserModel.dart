@@ -26,7 +26,7 @@ class CompanyUser {
   String mail;
   String birthday;
   String phone;
-  String image;
+  String profilePhoto;
   Timestamp createDate;
   Timestamp lastModDate;
   bool alrCoSchedule;
@@ -59,7 +59,7 @@ class CompanyUser {
         mail = snapshot["mail"] ?? "",
         birthday = snapshot["birthday"] ?? "",
         phone = snapshot["phone"] ?? "",
-        image = snapshot["image"] ?? "",
+        profilePhoto = snapshot["profilePhoto"] ?? "",
         createDate = snapshot["createDate"] ?? "",
         lastModDate = snapshot["lastModDate"] ?? "",
         alrCoSchedule = snapshot["alrCoSchedule"] ?? "",
@@ -77,7 +77,7 @@ class CompanyUser {
       "mail": user.mail,
       "birthday": user.birthday,
       "phone": user.phone,
-      "image": user.image,
+      "profilePhoto": user.profilePhoto,
       "createDate": createDate,
       "lastModDate": lastModDate,
       "alrCoSchedule": alrCoSchedule,

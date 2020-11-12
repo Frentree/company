@@ -1,4 +1,3 @@
-/*
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
@@ -58,8 +57,7 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                   child: DropdownButton<ListItem>(
                       value: _selectedItem,
                       items: _dropdownMenuItems,
-                      */
-/*[
+                      /*[
                         DropdownMenuItem(
                           child: Text("First Item"),
                           value: 1,
@@ -70,8 +68,7 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                         ),
                         DropdownMenuItem(child: Text("Third Item"), value: 3),
                         DropdownMenuItem(child: Text("Fourth Item"), value: 4)
-                      ],*//*
-
+                      ],*/
                       onChanged: (value) {
                         setState(() {
                           _selectedItem = value;
@@ -239,12 +236,10 @@ class _CreateBuyRequestState extends State<CreateBuyRequest> {
                                           ),
                                           )],
                                       )),
-                                  */
-/*SizedBox(
+                                  /*SizedBox(
                                     width: MediaQuery.of(context).size.width *
                                         0.25,
-                                  ),*//*
-
+                                  ),*/
                                   SizedBox(
                                     width: 70,
                                     child: RaisedButton(
@@ -321,4 +316,3 @@ class ListItem {
 
   ListItem(this.value, this.name);
 }
-*/

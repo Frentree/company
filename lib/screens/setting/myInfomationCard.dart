@@ -8,232 +8,232 @@ import 'package:companyplaylist/widgets/form/textFormField.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-  Widget getMyInfomationCard({BuildContext context, User user}){
-    FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-    StorageReference storageReference =
-    _firebaseStorage.ref().child("profile/${user.mail}");
-    return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                color: mainColor,
-                alignment: Alignment.center,
-                width: customWidth(
-                    context: context,
-                    widthSize: 0.1
-                ),
-                child: GestureDetector(
-                  child: Container(
-                    height: customHeight(
-                        context: context,
-                        heightSize: 0.05
-                    ),
-                    width: customWidth(
-                        context: context,
-                        widthSize: 0.1
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: whiteColor,
-                        border: Border.all(color: whiteColor, width: 2)
-                    ),
-                    child: FutureBuilder(
-                      future: storageReference.getDownloadURL(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData == false) {
-                          return CircularProgressIndicator();
-                        }
+Widget getMyInfomationCard({BuildContext context, User user}){
+  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  StorageReference storageReference =
+  _firebaseStorage.ref().child("profile/${user.mail}");
+  return Padding(
+    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Container(
+              color: mainColor,
+              alignment: Alignment.center,
+              width: customWidth(
+                  context: context,
+                  widthSize: 0.1
+              ),
+              child: GestureDetector(
+                child: Container(
+                  height: customHeight(
+                      context: context,
+                      heightSize: 0.05
+                  ),
+                  width: customWidth(
+                      context: context,
+                      widthSize: 0.1
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: whiteColor,
+                      border: Border.all(color: whiteColor, width: 2)
+                  ),
+                  child: FutureBuilder(
+                    future: storageReference.getDownloadURL(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData == false) {
+                        return CircularProgressIndicator();
+                      }
 
-                        return Image.network(
-                            snapshot.data
-                        );
-                      },
-                    ),
-                    /*Text(
+                      return Image.network(
+                          snapshot.data
+                      );
+                    },
+                  ),
+                  /*Text(
                                     "사진",
                                     style: TextStyle(
                                         color: Colors.black
                                     ),
                                   ),*/
-                  ),
-                  onTap: (){
-                  },
                 ),
-              ),
-              Padding(padding: EdgeInsets.only(left: 10)),
-              Expanded(
-                child: Text(
-                  user.name,
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: mainColor,
-                    fontWeightName: 'Medium',
-                  ),
-                ),
-              ),
-
-              Text(
-                "개발팀",
-                style: customStyle(
-                  fontSize: 14,
-                  fontColor: greyColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-              Padding(padding: EdgeInsets.only(left: 15)),
-              Text(
-                "사원",
-                style: customStyle(
-                  fontSize: 14,
-                  fontColor: greyColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-              Padding(padding: EdgeInsets.only(left: 15)),
-              ActionChip(
-                backgroundColor: blueColor,
-                label: Text(
-                  "수정",
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: whiteColor,
-                    fontWeightName: 'Medium',
-                  ),
-                ),
-                onPressed: () {
-                  SettingMyPageUpdate(context);
+                onTap: (){
                 },
               ),
+            ),
+            Padding(padding: EdgeInsets.only(left: 10)),
+            Expanded(
+              child: Text(
+                user.name,
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: mainColor,
+                  fontWeightName: 'Medium',
+                ),
+              ),
+            ),
 
-            ],
-          ),
-          SizedBox(
-            height: customHeight(
-                context: context,
-                heightSize: 0.01
+            Text(
+              "개발팀",
+              style: customStyle(
+                fontSize: 14,
+                fontColor: greyColor,
+                fontWeightName: 'Medium',
+              ),
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "입사일",
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: mainColor,
-                    fontWeightName: 'Medium',
-                  ),
-                ),
+            Padding(padding: EdgeInsets.only(left: 15)),
+            Text(
+              "사원",
+              style: customStyle(
+                fontSize: 14,
+                fontColor: greyColor,
+                fontWeightName: 'Medium',
               ),
-              Expanded(
-                child: Text(
-                  "2018.11.01",
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: greyColor,
-                    fontWeightName: 'Medium',
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: customHeight(
-                context: context,
-                heightSize: 0.01
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "이메일",
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: mainColor,
-                    fontWeightName: 'Medium',
-                  ),
+            Padding(padding: EdgeInsets.only(left: 15)),
+            ActionChip(
+              backgroundColor: blueColor,
+              label: Text(
+                "수정",
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: whiteColor,
+                  fontWeightName: 'Medium',
                 ),
               ),
-              Expanded(
-                child: Text(
-                  user.mail,
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: greyColor,
-                    fontWeightName: 'Medium',
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: customHeight(
-                context: context,
-                heightSize: 0.01
+              onPressed: () {
+                SettingMyPageUpdate(context);
+              },
             ),
+
+          ],
+        ),
+        SizedBox(
+          height: customHeight(
+              context: context,
+              heightSize: 0.01
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "전화번호",
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: mainColor,
-                    fontWeightName: 'Medium',
-                  ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                "입사일",
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: mainColor,
+                  fontWeightName: 'Medium',
                 ),
               ),
-              Expanded(
-                child: Text(
-                  user.phone,
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: greyColor,
-                    fontWeightName: 'Medium',
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: customHeight(
-                context: context,
-                heightSize: 0.01
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "계정탈퇴",
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: mainColor,
-                    fontWeightName: 'Medium',
-                  ),
+            Expanded(
+              child: Text(
+                "2018.11.01",
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: greyColor,
+                  fontWeightName: 'Medium',
                 ),
               ),
-              Expanded(
-                child: Text(
-                  "",
-                  style: customStyle(
-                    fontSize: 14,
-                    fontColor: greyColor,
-                    fontWeightName: 'Medium',
-                  ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: customHeight(
+              context: context,
+              heightSize: 0.01
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                "이메일",
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: mainColor,
+                  fontWeightName: 'Medium',
                 ),
               ),
-            ],
+            ),
+            Expanded(
+              child: Text(
+                user.mail,
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: greyColor,
+                  fontWeightName: 'Medium',
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: customHeight(
+              context: context,
+              heightSize: 0.01
           ),
-        ],
-      ),
-    );
-  }
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                "전화번호",
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: mainColor,
+                  fontWeightName: 'Medium',
+                ),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                user.phone,
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: greyColor,
+                  fontWeightName: 'Medium',
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: customHeight(
+              context: context,
+              heightSize: 0.01
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                "계정탈퇴",
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: mainColor,
+                  fontWeightName: 'Medium',
+                ),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                "",
+                style: customStyle(
+                  fontSize: 14,
+                  fontColor: greyColor,
+                  fontWeightName: 'Medium',
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
 Widget getUpdateMyInfomationCard({BuildContext context, User user}){
   LoginRepository _loginRepository = LoginRepository();
