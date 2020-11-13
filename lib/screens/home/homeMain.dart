@@ -7,6 +7,7 @@ import 'package:companyplaylist/screens/alarm/alarmMain.dart';
 import 'package:companyplaylist/screens/setting/settingMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workMain.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -79,7 +80,9 @@ class HomeMainPageState extends State<HomeMainPage> {
                   ),
                   color: Colors.white,
                 ),
-                onPressed: _attendance.status == 1 ? () async {
+                onPressed: (){
+                  NotImplementedFunction(context);
+                /*onPressed: _attendance.status == 1 ? () async {
                   String result = await _attendanceProvider.manualOffWork(
                     context: context,
                   );
@@ -104,7 +107,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                         gravity:  ToastGravity.BOTTOM,
                         backgroundColor: blackColor
                     );
-                  }
+                  }*/
                 }
             ),
             Padding(
