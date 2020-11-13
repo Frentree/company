@@ -289,7 +289,6 @@ SettingMyPageUpdate(BuildContext context) {
                                         password: _passwordNowConfirmTextCon.text.trim(),
                                         name: _loginUser.name
                                     );
-                                    setState(()  {
                                       if(isChk) {
                                         showDialog(
                                           context: context,
@@ -317,8 +316,10 @@ SettingMyPageUpdate(BuildContext context) {
                                                         fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                   ),
                                                   onPressed: () {
-                                                    isPwdConfirm =  isChk;
-                                                    _passwordNowConfirmTextCon.selection;
+                                                    setState((){
+                                                      isPwdConfirm =  isChk;
+                                                      _passwordNowConfirmTextCon.selection;
+                                                    });
                                                     Navigator.pop(context);
                                                   },
                                                 ),
@@ -362,7 +363,6 @@ SettingMyPageUpdate(BuildContext context) {
                                           },
                                         );
                                       }
-                                    });
                                   },
                                 ),
                               ],
@@ -399,7 +399,7 @@ SettingMyPageUpdate(BuildContext context) {
                                             ),
                                           ),
                                         ),
-                                        ActionChip(
+                                        Chip(
                                             backgroundColor: whiteColor,
                                             label: Text(
                                               "변경",
@@ -409,10 +409,6 @@ SettingMyPageUpdate(BuildContext context) {
                                                 fontWeightName: 'Medium',
                                               ),
                                             ),
-                                            onPressed: () {
-
-
-                                            }
                                         ),
                                       ],
                                     ),
@@ -462,6 +458,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                   newPassword: _passwordNewTextCon.text.trim(),
                                                   newPasswordConfirm: _passwordNewConfirmTextCon.text.trim()
                                               );
+                                              _loginUserInfoProvider.logoutUesr();
                                             }
                                         ),
                                       ],

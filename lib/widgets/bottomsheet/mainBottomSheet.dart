@@ -32,6 +32,8 @@ MainBottomSheet(BuildContext context) {
         WorkNoticeBottomSheet(context);
       }
       ExpenseMain(context);
+    }else {
+      NotImplementedFunction(context);
     }
   }
 
@@ -122,11 +124,11 @@ MainBottomSheet(BuildContext context) {
                               fontColor: mainColor
                           ),
                         ),
-                      onPressed: () {
-                        NotImplementedFunction(context);
+                      onPressed: (){
+                          NotImplementedFunction(context);
                       },
                     ),
-                    Chip(
+                    ActionChip(
                         backgroundColor: chipColorBlue,
                         label: Text(
                           "개인 일정",
@@ -135,14 +137,17 @@ MainBottomSheet(BuildContext context) {
                               fontWeightName:'Regular',
                               fontColor: mainColor
                           ),
-                        )
+                        ),
+                      onPressed: (){
+                        NotImplementedFunction(context);
+                      },
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Chip(
+                    ActionChip(
 
                         backgroundColor: chipColorPurple,
                         label: Text(
@@ -152,7 +157,10 @@ MainBottomSheet(BuildContext context) {
                               fontWeightName:'Regular',
                               fontColor: mainColor
                           ),
-                        )
+                        ),
+                      onPressed: (){
+                        NotImplementedFunction(context);
+                      },
                     ),
                     ActionChip(
                       backgroundColor: chipColorRed,
@@ -193,7 +201,8 @@ MainBottomSheet(BuildContext context) {
                         ),
                       ),
                       onPressed: () {
-                        _workBottomMove(7);
+                        NotImplementedFunction(context);
+                        //_workBottomMove(7);
                       },
                     ),
                   ],

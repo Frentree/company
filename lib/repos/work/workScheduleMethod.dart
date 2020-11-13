@@ -11,6 +11,7 @@
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/bigCategoryModel.dart';
+import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,9 @@ class WorkScheduleMethod{
         int progress,
         String location,
         String timeTest,
-        String type}) async {
+        String type,
+        User user,
+      }) async {
     FirebaseAuthProvider _firebaseAuthProvider =
     Provider.of<FirebaseAuthProvider>(context, listen: false);
 
@@ -73,7 +76,7 @@ class WorkScheduleMethod{
       timeTest: timeTest,
     );
 
-    CrudRepository _crudRepository = CrudRepository();
+    CrudRepository _crudRepository = CrudRepository.companyWork(companyCode: user.companyCode);
 
     // 데이터 베이스 추가
     _crudRepository.addCompanyWorkDataToFirebase(
