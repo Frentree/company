@@ -8,6 +8,7 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/home/homeSchedule.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -142,6 +143,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       tabIndexVariable: tabIndex,
                       tabOrder: 0,
                       tabAction: (){
+                        NotImplementedFunction(context);
                         setState(() {
                           tabIndex = 0;
                         });

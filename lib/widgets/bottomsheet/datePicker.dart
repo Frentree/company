@@ -4,7 +4,6 @@ import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart
 import 'package:intl/intl.dart';
 
 import '../../consts/widgetSize.dart';
-
 DatePicker1(BuildContext context) async {
 
   String date = "";
