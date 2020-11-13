@@ -77,7 +77,9 @@ SettingMyPageUpdate(BuildContext context) {
 
               // 업로드된 사진의 URL을 페이지에 반영
               setState(() {
-                _profileImageURL = downloadURL;
+                _loginUser.profilePhoto = downloadURL;
+                _loginUserInfoProvider.setLoginUser(_loginUser);
+                _loginUser = _loginUserInfoProvider.getLoginUser();
               });
             }
 
@@ -134,8 +136,18 @@ SettingMyPageUpdate(BuildContext context) {
                                                 color: whiteColor,
                                                 border: Border.all(color: whiteColor, width: 2)
                                             ),
-                                            child: Image.network(
-                                                _loginUser.profilePhoto
+                                            child: FutureBuilder(
+                                              future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
+                                              builder: (context, snapshot) {
+                                                if (!snapshot.hasData) {
+                                                  return Icon(
+                                                      Icons.person_outline
+                                                  );
+                                                }
+                                                return Image.network(
+                                                    snapshot.data
+                                                );
+                                              },
                                             ),
                                           ),
                                           onTap: () {},
@@ -641,7 +653,11 @@ SettingMyPageUpdate(BuildContext context) {
                                                       .document(_loginUser.mail).updateData({
                                                     "phone": _phoneEdit.text
                                                   });
-
+                                                  setState((){
+                                                    _loginUser.phone = _phoneEdit.text;
+                                                    _loginUserInfoProvider.setLoginUser(_loginUser);
+                                                    _phoneEdit.text = "";
+                                                  });
                                                   Navigator.pop(context);
                                                 },
                                               ),

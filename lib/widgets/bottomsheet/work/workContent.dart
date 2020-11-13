@@ -20,7 +20,8 @@ workContent(BuildContext context, int type) {
   User _loginUser;
 
   String date = "";
-  String timeTest = "";
+  String formatDate = "";
+  String timeTest = "종일";
 
   bool isChk = false;
 
@@ -101,14 +102,15 @@ workContent(BuildContext context, int type) {
                                       context: context,
                                       createUid: _loginUser.mail,
                                       name: _loginUser.name,
-                                      startDate: Timestamp.fromDate(DateTime.parse(date)),
+                                      startDate: Timestamp.fromDate(DateTime.parse(formatDate)),
+                                      startTime: Timestamp.fromDate(DateTime.parse(date).add(Duration(hours: -14))),
                                       type: type == 1 ? "내근" : "외근",
                                       workTitle: _titleController.text,
                                       workContents: isChk == true ? _contentController.text : "",
                                       createDate: Timestamp.now(),
                                       progress: 3,
                                       location: _locationController.text,
-                                      timeTest: timeTest,
+                                      timeTest: timeTest == null ? "종일" : timeTest,
                                       share: isChk == true ? _teamList : null,
                                     ): null
                                   },
@@ -146,7 +148,7 @@ workContent(BuildContext context, int type) {
                               alignment: Alignment.center,
                               child: InkWell(
                                 child: Text(
-                                  date.trim() == "" ? "일자를 선택해 주세요" : DateFormat('yyyy년 MM월 dd일').format(DateTime.parse(date)).toString(),
+                                  date.trim() == "" ? "일자를 선택해 주세요" : DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(DateTime.parse(date)).toString(),
                                   style: customStyle(
                                     fontSize: 13,
                                     fontColor: mainColor,
@@ -155,6 +157,13 @@ workContent(BuildContext context, int type) {
                                 ),
                                 onTap: () async {
                                   date = await workDatePage(context);
+
+                                  formatDate = DateFormat('yyyy-MM-dd 07:00:00').format(
+                                      DateTime.parse(
+                                          date
+                                      )
+                                  );
+
                                   setState((){
                                   });
                                 },
@@ -304,7 +313,7 @@ workContent(BuildContext context, int type) {
                         visible: isChk,
                         child: Column(
                           children: [
-                            Container(
+                            /*Container(
                               child: Row(
                                 children: [
                                   Expanded(
@@ -422,7 +431,7 @@ workContent(BuildContext context, int type) {
                                   ),
                                 ],
                               ),
-                            ),
+                            ),*/
                             SizedBox(
                               height: customHeight(
                                   context: context,

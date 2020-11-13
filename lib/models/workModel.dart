@@ -13,6 +13,7 @@ class CompanyWork {
   String createUid;
   Timestamp createDate;
   Timestamp startDate;
+  Timestamp startTime;
   String name;
   String workTitle;       // 글제목
   String workContents;    // 글내용
@@ -37,6 +38,7 @@ class CompanyWork {
     this.createUid,
     this.createDate,
     this.startDate,
+    this.startTime,
     this.workTitle,
     this.name,
     this.workContents,
@@ -52,6 +54,7 @@ class CompanyWork {
         createUid = snapshot["createUid"] ?? "",
         createDate = snapshot["createDate"] ?? "",
         startDate = snapshot["startDate"] ?? "",
+        startTime = snapshot["startTime"] ?? null,
         workTitle = snapshot["workTitle"] ?? "",
         name = snapshot["name"] ?? "",
         workContents = snapshot["workContents"] ?? "",
@@ -66,6 +69,7 @@ class CompanyWork {
       "createUid": createUid,
       "createDate": createDate,
       "startDate": startDate,
+      "startTime": startTime,
       "workTitle": workTitle,
       "name": name,
       "workContents": workContents,

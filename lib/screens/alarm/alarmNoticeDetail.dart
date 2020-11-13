@@ -8,6 +8,7 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +18,26 @@ class AlarmNoticeDetailPage extends StatefulWidget {
   final noticeTitle;
   final noticeContent;
   final noticeCreateDate;
+  final noticeCreateUser;
 
   AlarmNoticeDetailPage(
-      {Key key, @required this.noticeUid, @required this.noticeTitle, @required this.noticeContent, @required this.noticeCreateDate});
+      {Key key,
+        @required this.noticeUid,
+        @required this.noticeTitle,
+        @required this.noticeContent,
+        @required this.noticeCreateDate,
+        @required this.noticeCreateUser
+      });
 
   @override
   AlarmNoticeDetailPageState createState() =>
-      AlarmNoticeDetailPageState(noticeUid: noticeUid, noticeTitle: noticeTitle, noticeCreateDate: noticeCreateDate, noticeContent: noticeContent);
+      AlarmNoticeDetailPageState(
+          noticeUid: noticeUid,
+          noticeTitle: noticeTitle,
+          noticeCreateDate: noticeCreateDate,
+          noticeContent: noticeContent,
+          noticeCreateUser: noticeCreateUser
+      );
 }
 
 class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
@@ -31,16 +45,23 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   final noticeTitle;
   final noticeContent;
   final noticeCreateDate;
-
+  final noticeCreateUser;
 
   AlarmNoticeDetailPageState(
-      {Key key, @required this.noticeUid, @required this.noticeTitle, @required this.noticeContent, @required this.noticeCreateDate});
+      {Key key,
+        @required this.noticeUid,
+        @required this.noticeTitle,
+        @required this.noticeContent,
+        @required this.noticeCreateDate,
+        @required this.noticeCreateUser
+      });
 
   User _loginUser;
 
   TextEditingController _noticeComment = TextEditingController();
 
   final Firestore _db = Firestore.instance;
+  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   String _commentId = "";
 
   // 댓글 달릴 유저명
@@ -61,6 +82,8 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   _getCommentList(List<DocumentSnapshot> documents, BuildContext context, String documentID){
     List<Widget> widgets = [];
     for (int i = 0; i < documents.length; i++) {
+      StorageReference storageReference =
+      _firebaseStorage.ref().child("profile/${documents[i].data['commentsUser']['mail']}");
       widgets.add(Column(
         children: [
           SizedBox(
@@ -87,11 +110,20 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: whiteColor,
-                      border: Border.all(color: blackColor, width: 2)),
-                  child: Text(
-                    "사진",
-                    style: TextStyle(color: Colors.black),
-                  ),
+                      border: Border.all(color: whiteColor, width: 2)),
+                  child: FutureBuilder(
+                    future: storageReference.getDownloadURL(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Icon(
+                            Icons.person_outline
+                        );
+                      }
+                      return Image.network(
+                          snapshot.data
+                      );
+                    },
+                  )
                 ),
                 onTap: () {},
               ),
@@ -136,8 +168,8 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                           padding: EdgeInsets.only(left: 10),
                           alignment: Alignment.topRight,
                           width: customWidth(
-                            context: context,
-                            widthSize: 0.34
+                              context: context,
+                              widthSize: 0.34
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -145,11 +177,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                               Expanded(
                                 flex: 3,
                                 child: InkWell(
-                                  child: Text("댓글 달기",
+                                  child: Text("댓글달기",
                                     style: customStyle(
                                         fontColor: blueColor,
-                                        fontSize: 13,
-                                        fontWeightName: 'Bold'
+                                        fontSize: 11,
+                                        fontWeightName: 'Medium'
                                     ),
                                   ),
                                   onTap: (){
@@ -176,7 +208,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                           child: Text("수정",
                                             style: customStyle(
                                                 fontColor: blueColor,
-                                                fontSize: 13,
+                                                fontSize: 11,
                                                 fontWeightName: 'Bold'
                                             ),
                                           ),
@@ -197,8 +229,8 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                           child: Text("삭제",
                                             style: customStyle(
                                                 fontColor: redColor,
-                                                fontSize: 13,
-                                                fontWeightName: 'Bold'
+                                                fontSize: 11,
+                                                fontWeightName: 'Medium'
                                             ),
                                           ),
                                           onTap: (){
@@ -295,6 +327,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
+  print("noticeCreateUser ========> "  +noticeCreateUser);
 
     return Scaffold(
       backgroundColor: mainColor,
@@ -328,10 +361,19 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                 height: customHeight(context: context, heightSize: 0.05),
                 width: customWidth(context: context, widthSize: 0.1),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: whiteColor, border: Border.all(color: whiteColor, width: 2)),
-                child: Text(
-                  "사진",
-                  style: TextStyle(color: Colors.black),
-                ),
+                child: FutureBuilder(
+                  future: _firebaseStorage.ref().child("profile/${noticeCreateUser}").getDownloadURL(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Icon(
+                          Icons.person_outline
+                      );
+                    }
+                    return Image.network(
+                        snapshot.data
+                    );
+                  },
+                )
               ),
               onTap: () {
                 _loginUserInfoProvider.logoutUesr();
@@ -385,10 +427,19 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                       height: customHeight(context: context, heightSize: 0.06),
                                       width: customWidth(context: context, widthSize: 0.1),
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5), color: whiteColor, border: Border.all(color: blackColor, width: 2)),
-                                      child: Text(
-                                        "사진",
-                                        style: TextStyle(color: Colors.black),
+                                          borderRadius: BorderRadius.circular(5), color: whiteColor, border: Border.all(color: whiteColor, width: 2)),
+                                      child: FutureBuilder(
+                                        future: _firebaseStorage.ref().child("profile/${noticeCreateUser}").getDownloadURL(),
+                                        builder: (context, snapshot) {
+                                          if (!snapshot.hasData) {
+                                            return Icon(
+                                                Icons.person_outline
+                                            );
+                                          }
+                                          return Image.network(
+                                              snapshot.data
+                                          );
+                                        },
                                       ),
                                     ),
                                     onTap: () {},
@@ -453,7 +504,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
 
                               return ConstrainedBox(
                                 constraints: BoxConstraints(
-                                  minHeight: customHeight(context: context, heightSize: documents.length * 0.13),
+                                  minHeight: customHeight(context: context, heightSize: documents.length * 0.11),
                                   maxHeight: customHeight(context: context, heightSize: documents.length * 0.5),
                                 ),
                                 child: ListView.builder(
@@ -461,6 +512,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: documents.length,
                                   itemBuilder: (context, index) {
+
                                     return Container(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -469,7 +521,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsets.only(left: 13),
+                                                padding: EdgeInsets.only(left: 11),
                                               ),
                                               GestureDetector(
                                                 child: Container(
@@ -478,11 +530,20 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                   decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(5),
                                                       color: whiteColor,
-                                                      border: Border.all(color: blackColor, width: 2)),
-                                                  child: Text(
-                                                    "사진",
-                                                    style: TextStyle(color: Colors.black),
-                                                  ),
+                                                      border: Border.all(color: whiteColor, width: 2)),
+                                                  child: FutureBuilder(
+                                                    future: _firebaseStorage.ref().child("profile/${documents[index].data['createUser']['mail']}").getDownloadURL(),
+                                                    builder: (context, snapshot) {
+                                                      if (!snapshot.hasData) {
+                                                        return Icon(
+                                                            Icons.person_outline
+                                                        );
+                                                      }
+                                                      return Image.network(
+                                                          snapshot.data
+                                                      );
+                                                    },
+                                                  )
                                                 ),
                                                 onTap: () {},
                                               ),
@@ -530,8 +591,8 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                   "댓글 달기",
                                                                   style: customStyle(
                                                                       fontColor: blueColor,
-                                                                      fontSize: 13,
-                                                                      fontWeightName: 'Bold'
+                                                                      fontSize: 11,
+                                                                      fontWeightName: 'Medium'
                                                                   ),
                                                                 ),
                                                                 onTap: () {
@@ -558,11 +619,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                         child: Text(
                                                                           "수정",
                                                                           style:
-                                                                              customStyle(
-                                                                                  fontColor: blueColor,
-                                                                                  fontSize: 13,
-                                                                                  fontWeightName: 'Bold'
-                                                                              ),
+                                                                          customStyle(
+                                                                              fontColor: blueColor,
+                                                                              fontSize: 11,
+                                                                              fontWeightName: 'Medium'
+                                                                          ),
                                                                         ),
                                                                         onTap: () {
                                                                           setState(() {
@@ -581,11 +642,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                         child: Text(
                                                                           "삭제",
                                                                           style:
-                                                                              customStyle(
-                                                                                  fontColor: redColor,
-                                                                                  fontSize: 13,
-                                                                                  fontWeightName: 'Bold'
-                                                                              ),
+                                                                          customStyle(
+                                                                              fontColor: redColor,
+                                                                              fontSize: 11,
+                                                                              fontWeightName: 'Medium'
+                                                                          ),
                                                                         ),
                                                                         onTap: () {
                                                                           showDialog(
@@ -597,7 +658,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                                   "댓글 삭제",
                                                                                   style: customStyle(
                                                                                       fontColor: redColor,
-                                                                                      fontSize: 13,
+                                                                                      fontSize: 11,
                                                                                       fontWeightName: 'Bold'
                                                                                   ),
                                                                                 ),
@@ -824,18 +885,18 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                               if (_noticeComment.text.trim() != "") {
                                                 if (_commentId.trim() == "") {
                                                   print("답글 미선택 ====> " + _commentId);
-                                                    _commnetModel = CommentModel(
-                                                      comment: _noticeComment.text,
-                                                      createUser: _commentMap,
-                                                      createDate: Timestamp.now(),
-                                                    );
+                                                  _commnetModel = CommentModel(
+                                                    comment: _noticeComment.text,
+                                                    createUser: _commentMap,
+                                                    createDate: Timestamp.now(),
+                                                  );
 
-                                                    _db.collection("company")
-                                                        .document(_loginUser.companyCode)
-                                                        .collection("notice")
-                                                        .document(noticeUid)
-                                                        .collection("comment")
-                                                        .add(_commnetModel.toJson());
+                                                  _db.collection("company")
+                                                      .document(_loginUser.companyCode)
+                                                      .collection("notice")
+                                                      .document(noticeUid)
+                                                      .collection("comment")
+                                                      .add(_commnetModel.toJson());
 
 
                                                 } else {

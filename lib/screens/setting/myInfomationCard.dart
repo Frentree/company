@@ -19,7 +19,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
         Row(
           children: [
             Container(
-              color: mainColor,
+              color: whiteColor,
               alignment: Alignment.center,
               width: customWidth(
                   context: context,
@@ -41,12 +41,13 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                       border: Border.all(color: whiteColor, width: 2)
                   ),
                   child: FutureBuilder(
-                    future: storageReference.getDownloadURL(),
+                    future: _firebaseStorage.ref().child("profile/${user.mail}").getDownloadURL(),
                     builder: (context, snapshot) {
-                      if (snapshot.hasData == false) {
-                        return CircularProgressIndicator();
+                      if (!snapshot.hasData) {
+                        return Icon(
+                            Icons.person_outline
+                        );
                       }
-
                       return Image.network(
                           snapshot.data
                       );
