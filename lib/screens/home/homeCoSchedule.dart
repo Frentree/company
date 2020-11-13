@@ -188,7 +188,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                       padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08)),
                       child: Container(
                         //color: Colors.purple,
-                        height: customHeight(context: context, heightSize: 0.48),
+                        height: MediaQuery.of(context).size.height <= 600 ? customHeight(context: context, heightSize: 0.4) : customHeight(context: context, heightSize: 0.48),
                         child: SingleChildScrollView(
                           child: Table(
                               border: TableBorder.all(width: 0.1),
