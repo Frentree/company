@@ -28,7 +28,7 @@ class HomeSchedulePage extends StatefulWidget {
 }
 
 class HomeSchedulePageState extends State<HomeSchedulePage> {
-  DateTime selectTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 00);
+  DateTime selectTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 21, 00);
   Firestore _db = Firestore.instance;
   User _companyUser;
   CalendarController _calendarController;
