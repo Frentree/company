@@ -5,6 +5,7 @@ import 'package:companyplaylist/widgets/bottomsheet/expense/expenseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 
 
@@ -18,11 +19,11 @@ MainBottomSheet(BuildContext context) {
       /*Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));*/
       workContent(context, type);
     } else if (type == 3) {
-
+      NotImplementedFunction(context);
     } else if (type == 4) {
-
+      NotImplementedFunction(context);
     } else if (type == 5) {
-
+      NotImplementedFunction(context);
     } else if (type == 6) { //구매 품의
       PurchaseMain(context);
 
@@ -31,6 +32,8 @@ MainBottomSheet(BuildContext context) {
         WorkNoticeBottomSheet(context);
       }
       ExpenseMain(context);
+    }else {
+      NotImplementedFunction(context);
     }
   }
 
@@ -111,7 +114,7 @@ MainBottomSheet(BuildContext context) {
                         _workBottomMove(2);
                       },
                     ),
-                    Chip(
+                    ActionChip(
                         backgroundColor: chipColorBlue,
                         label: Text(
                           "회의 일정",
@@ -120,9 +123,12 @@ MainBottomSheet(BuildContext context) {
                               fontWeightName:'Regular',
                               fontColor: mainColor
                           ),
-                        )
+                        ),
+                      onPressed: (){
+                          NotImplementedFunction(context);
+                      },
                     ),
-                    Chip(
+                    ActionChip(
                         backgroundColor: chipColorBlue,
                         label: Text(
                           "개인 일정",
@@ -131,14 +137,17 @@ MainBottomSheet(BuildContext context) {
                               fontWeightName:'Regular',
                               fontColor: mainColor
                           ),
-                        )
+                        ),
+                      onPressed: (){
+                        NotImplementedFunction(context);
+                      },
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Chip(
+                    ActionChip(
 
                         backgroundColor: chipColorPurple,
                         label: Text(
@@ -148,7 +157,10 @@ MainBottomSheet(BuildContext context) {
                               fontWeightName:'Regular',
                               fontColor: mainColor
                           ),
-                        )
+                        ),
+                      onPressed: (){
+                        NotImplementedFunction(context);
+                      },
                     ),
                     ActionChip(
                       backgroundColor: chipColorRed,
@@ -189,7 +201,8 @@ MainBottomSheet(BuildContext context) {
                         ),
                       ),
                       onPressed: () {
-                        _workBottomMove(7);
+                        NotImplementedFunction(context);
+                        //_workBottomMove(7);
                       },
                     ),
                   ],

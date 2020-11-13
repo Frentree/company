@@ -112,6 +112,7 @@ workContent(BuildContext context, int type) {
                                       location: _locationController.text,
                                       timeTest: timeTest == null ? "종일" : timeTest,
                                       share: isChk == true ? _teamList : null,
+                                      user : _loginUser,
                                     ): null
                                   },
                                 )),

@@ -51,7 +51,6 @@ class LoginRepository{
           newPasswordConfirm: newPasswordConfirm,
           name: name
       );
-
   Future<void> signInWithFirebaseAuth({BuildContext context, String mail, String password}) =>
       _signInMethod.signInWithFirebaseAuth(
           context: context,

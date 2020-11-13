@@ -34,7 +34,7 @@ class CrudRepository {
   CompanyUserCrud _companyUserCrud;
 
   // Work Crud 2020-09-23, 이윤혁
-  CompanyWorkCrud _companyWorkCrud = CompanyWorkCrud("HYOIE13");
+  CompanyWorkCrud _companyWorkCrud;
 
   // WorkCategory Crud 2020-09-28, 이윤혁
   WorkCategoryCrud _workCategoryCrud;

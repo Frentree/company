@@ -1,6 +1,7 @@
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/bigCategoryModel.dart';
+import 'package:companyplaylist/models/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:companyplaylist/repos/work/workScheduleMethod.dart';
 
@@ -21,7 +22,9 @@ class WorkRepository{
     int progress,
     String location,
     String timeTest,
-    String type})
+    String type,
+    User user,
+  })
   => _workScheduleMethod.workScheduleFirebaseAuth(
     context: context,
     createUid : createUid,
@@ -36,6 +39,7 @@ class WorkRepository{
     location: location,
     type: type,
     timeTest: timeTest,
+    user : user,
   );
 
   Future<List<bigCategoryModel>> workCategoryFirebaseAuth({BuildContext context}) => _workScheduleMethod.workCategoryFirebaseAuth();
