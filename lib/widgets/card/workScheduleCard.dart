@@ -12,10 +12,12 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 
+import '../notImplementedPopup.dart';
+
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;
 const typeFontSize = 12.0;
-const titleFontSize = 20.0;
+const titleFontSize = 15.0;
 const writeTimeFontSize = 14.0;
 const fontColor = mainColor;
 
@@ -90,7 +92,7 @@ Row titleContents({BuildContext context, String documentId, String companyCode, 
 
       //제목
       Container(
-        width: customWidth(context: context, widthSize: 0.6),
+        width: companyWork.type == "외근" ? customWidth(context: context, widthSize: 0.45) : customWidth(context: context, widthSize: 0.6),
         child: Text(
           companyWork.workTitle,
           //textAlign: ,
@@ -102,6 +104,17 @@ Row titleContents({BuildContext context, String documentId, String companyCode, 
           ),
         ),
       ),
+      companyWork.type == "외근" ? Container(
+        width: customWidth(context: context, widthSize: 0.15),
+        child: Text(
+          companyWork.location == null ? "" : "[${companyWork.location}]",
+          style: customStyle(
+              fontSize: titleFontSize,
+              fontWeightName: "Medium",
+              fontColor: mainColor,
+              height: 1),
+        ),
+      ) : Container(),
       SizedBox(
         width: customWidth(context: context, widthSize: 0.02),
       ),
@@ -185,7 +198,7 @@ Column detailContents({BuildContext context, String documentId, String companyCo
             ),
           ),
           Text(
-            _format.timeStampToDateTime(companyWork.createDate).toString().substring(0, 16),
+            _format.timeStampToDateTime(companyWork.createDate).add(Duration(hours: 9)).toString().substring(0, 16),
             style: customStyle(
               fontSize: writeTimeFontSize,
               fontWeightName: "Regular",
@@ -208,7 +221,7 @@ Container popupMenu({BuildContext context, String documentId, String companyCode
       ),
       onSelected: (value) async {
         if(value == 1) {
-          print("수정하기");
+          NotImplementedFunction(context);
         }
         else{
           await _crudRepository.removeCompanyWorkDataToFirebase(documentId: documentId);

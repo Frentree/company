@@ -27,6 +27,8 @@ import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/models/attendanceModel.dart';
 
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
+
 class HomeScheduleMainPage extends StatefulWidget {
   @override
   HomeScheduleMainPageState createState() => HomeScheduleMainPageState();
@@ -63,7 +65,10 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                   ),
                   color: Colors.white,
                 ),
-                onPressed: _attendance.status == 1 ? () async {
+                onPressed: (){
+                  NotImplementedFunction(context);
+                },
+                /*onPressed: _attendance.status == 1 ? () async {
                   String result = await _attendanceProvider.manualOffWork(
                     context: context,
                   );
@@ -89,12 +94,12 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                         backgroundColor: blackColor
                     );
                   }
-                }
+                }*/
             ),
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                  "근무중"
+                _attendance.status == 0 ? "출근전" :  _attendance.status == 1 ? "근무" : "퇴근"
               ),
             )
           ],

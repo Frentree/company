@@ -2,6 +2,7 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -93,6 +94,9 @@ Container workChip({BuildContext context, CompanyWork companyWork, int count}){
                 ),
               ),
             ),
+            onTap: (){
+              NotImplementedFunction(context);
+            },
           ),
         ),
         (count-1) != 0 ? Text(
@@ -112,7 +116,9 @@ Container emptyChip({BuildContext context}){
   return Container(
     height: customHeight(context: context, heightSize: workChipHeightSize),
     child: GestureDetector(
-
+      onTap: (){
+        NotImplementedFunction(context);
+      },
     ),
   );
 }

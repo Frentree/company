@@ -5,6 +5,7 @@ import 'package:companyplaylist/widgets/bottomsheet/expense/expenseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 
 
@@ -111,7 +112,7 @@ MainBottomSheet(BuildContext context) {
                         _workBottomMove(2);
                       },
                     ),
-                    Chip(
+                    ActionChip(
                         backgroundColor: chipColorBlue,
                         label: Text(
                           "회의 일정",
@@ -120,7 +121,10 @@ MainBottomSheet(BuildContext context) {
                               fontWeightName:'Regular',
                               fontColor: mainColor
                           ),
-                        )
+                        ),
+                      onPressed: () {
+                        NotImplementedFunction(context);
+                      },
                     ),
                     Chip(
                         backgroundColor: chipColorBlue,

@@ -2,6 +2,7 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:companyplaylist/widgets/table/workDetailTable.dart';
 
 //Flutter
@@ -130,9 +131,8 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                   );
                 }
                 DateTime weekMonday = selectTime.subtract(Duration(days: selectTime.weekday-1));
+
                 DateTime testTime = DateTime.utc(weekMonday.year, weekMonday.month, weekMonday.day, 12, 00);
-                print("testTime ======> $testTime");
-                print("selectTime ====> $selectTime");
                 List<DateTime> term = [testTime, testTime.add(Duration(days: 1)), testTime.add(Duration(days: 2)), testTime.add(Duration(days: 3)), testTime.add(Duration(days: 4))];
                 List<Timestamp> testTerm = [];
                 term.forEach((element) {
@@ -168,18 +168,13 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     });
 
                     convertCompanyWork.forEach((element) {
-                      print(element.createUid);
                       mapB[element.createUid].add(element);
                       name[element.createUid] = element.name;
                     });
-                    print("nowUser ===> ${_companyUser.mail}");
-                    print("mapB =====> $mapB");
-                    print("name =====> $name");
 
                     List<TableRow> childRow = [];
 
                     mapB.forEach((key, value) {
-                      print("Key ====> $key");
                       childRow.add(
                           workDetailTableRow(
                               context: context,
@@ -188,7 +183,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                           )
                       );
                     });
-                    
+
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08)),
                       child: Container(
@@ -228,7 +223,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 print(_coUserUid);
               });
               return StreamBuilder(
-                stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
+                stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).orderBy("timeTest").snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
                   if(snapshot.data == null){
                     return Center(
@@ -306,6 +301,9 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                               key: k[index],
                               name: _name[index]
                             ),
+                            onTap: (){
+                              NotImplementedFunction(context);
+                            },
                           );
                         },
                       ),

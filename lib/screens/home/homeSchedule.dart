@@ -181,6 +181,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                       CompanyWork _companyData = CompanyWork.fromMap(_companyWork[index].data, _companyWork[index].documentID);
                       switch(_companyData.type) {
                         case '내근':
+                        case '외근':
                           return GestureDetector(
                             child: workScheduleCard(
                               context: context,

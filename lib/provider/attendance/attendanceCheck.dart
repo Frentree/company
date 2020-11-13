@@ -84,6 +84,7 @@ class AttendanceCheck extends ChangeNotifier{
       _tempAttendance = Attendance(
         mail: _loginUser.mail,
         name: _loginUser.name,
+        status: 0,
         createDate: _format.dateTimeToTimeStamp(today),
       );
 

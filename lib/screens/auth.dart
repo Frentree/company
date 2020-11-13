@@ -11,11 +11,14 @@ import 'package:companyplaylist/screens/login/signUpMain.dart';
 import 'package:companyplaylist/screens/home/homeMain.dart';
 import 'package:companyplaylist/models/userModel.dart';
 
+import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
+
 class AuthPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+    AttendanceCheck _attendanceCheck = Provider.of<AttendanceCheck>(context);
     User _user = _loginUserInfoProvider.getLoginUser();
 
     if(_user != null){
