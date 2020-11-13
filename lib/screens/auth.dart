@@ -18,10 +18,8 @@ class AuthPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-    AttendanceCheck _attendanceCheck = Provider.of<AttendanceCheck>(context);
     User _user = _loginUserInfoProvider.getLoginUser();
-
-    if(_user != null){
+    if(_user.mail != null){
       if(_user.companyCode != ""){
         return HomeMainPage();
       }
