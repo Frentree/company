@@ -37,92 +37,7 @@ class SettingMainPageState extends State<SettingMainPage>{
     _loginUser = _loginUserInfoProvider.getLoginUser();
 
     return Scaffold(
-      backgroundColor: mainColor,
-      appBar: AppBar(
-        backgroundColor: mainColor,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-
-        title: Row(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.power_settings_new,
-                size: customHeight(
-                    context: context,
-                    heightSize: 0.04
-                ),
-              ),
-              onPressed: (){
-                null;
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                  "설정"
-              ),
-            ),
-
-          ],
-        ),
-        actions: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: customWidth(
-                context: context,
-                widthSize: 0.2
-            ),
-            child: GestureDetector(
-              child: Container(
-                height: customHeight(
-                    context: context,
-                    heightSize: 0.05
-                ),
-                width: customWidth(
-                    context: context,
-                    widthSize: 0.1
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: whiteColor,
-                    border: Border.all(color: whiteColor, width: 2)
-                ),
-                child: Image.network(
-                    _loginUser.profilePhoto
-                ),
-              ),
-              onTap: (){
-                _loginUserInfoProvider.logoutUesr();
-              },
-            ),
-          ),
-        ],
-      ),
-
-      body: Container (
-          width: customWidth(
-              context: context,
-              widthSize: 1
-          ),
-          padding: EdgeInsets.only(
-              left: customWidth(
-                context: context,
-                widthSize: 0.02,
-              ),
-              right: customWidth(
-                context: context,
-                widthSize: 0.02,
-              )
-          ),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30)
-              ),
-              color: whiteColor
-          ),
-          child: ListView(
+      body: ListView(
             children: <Widget>[
               ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!
                 leading: Icon(Icons.person_outline),
@@ -237,7 +152,20 @@ class SettingMainPageState extends State<SettingMainPage>{
               ),
               ListTile(
                 leading: Icon(Icons.info_outline),
-                title: Text('앱버전'),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('앱버전'),
+                    Text(
+                      '0.01',
+                      style: customStyle(
+                        fontSize: 12,
+                        fontColor: greyColor
+                      ),
+                    ),
+                  ],
+                ),
                 trailing: Text('최신'),
               ),
               ListTile(
@@ -246,7 +174,6 @@ class SettingMainPageState extends State<SettingMainPage>{
               ),
             ],
           )
-      ),
     );
   }
 }

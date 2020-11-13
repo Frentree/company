@@ -136,8 +136,18 @@ SettingMyPageUpdate(BuildContext context) {
                                                 color: whiteColor,
                                                 border: Border.all(color: whiteColor, width: 2)
                                             ),
-                                            child: Image.network(
-                                                _loginUser.profilePhoto
+                                            child: FutureBuilder(
+                                              future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
+                                              builder: (context, snapshot) {
+                                                if (!snapshot.hasData) {
+                                                  return Icon(
+                                                      Icons.person_outline
+                                                  );
+                                                }
+                                                return Image.network(
+                                                    snapshot.data
+                                                );
+                                              },
                                             ),
                                           ),
                                           onTap: () {},

@@ -8,6 +8,7 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/home/homeSchedule.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -19,109 +20,13 @@ class AlarmMainPage extends StatefulWidget {
 
 class AlarmMainPageState extends State<AlarmMainPage> {
   int tabIndex = 0;
-  User _loginUser;
-  Attendance _attendance = Attendance();
-
-  List<Widget> _page = [HomeSchedulePage(),AlarmNoticePage(),AlarmNoticePage()];
+  List<Widget> _page = [Container(),Container(),AlarmNoticePage()];
 
   @override
   Widget build(BuildContext context) {
-    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-    _loginUser = _loginUserInfoProvider.getLoginUser();
     return Scaffold(
-      backgroundColor: mainColor,
-      appBar: AppBar(
-        backgroundColor: mainColor,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-
-        title: Row(
+      body: Column(
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.power_settings_new,
-                size: customHeight(
-                    context: context,
-                    heightSize: 0.04
-                ),
-              ),
-              onPressed: (){
-                null;
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                  "알림 센터"
-              ),
-            ),
-
-          ],
-        ),
-        actions: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: customWidth(
-                context: context,
-                widthSize: 0.2
-            ),
-            child: GestureDetector(
-              child: Container(
-                height: customHeight(
-                    context: context,
-                    heightSize: 0.05
-                ),
-                width: customWidth(
-                    context: context,
-                    widthSize: 0.1
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: whiteColor,
-                    border: Border.all(color: whiteColor, width: 2)
-                ),
-                child: Text(
-                  "사진",
-                  style: TextStyle(
-                      color: Colors.black
-                  ),
-                ),
-              ),
-              onTap: (){
-                _loginUserInfoProvider.logoutUesr();
-              },
-            ),
-          ),
-        ],
-      ),
-
-      body: Container(
-        width: customWidth(
-            context: context,
-            widthSize: 1
-        ),
-        padding: EdgeInsets.only(
-            left: customWidth(
-              context: context,
-              widthSize: 0.02,
-            ),
-            right: customWidth(
-              context: context,
-              widthSize: 0.02,
-            )
-        ),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30)
-            ),
-            color: whiteColor
-        ),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.02)),
-            ),
             Container(
               height: customHeight(
                   context: context,
@@ -142,6 +47,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       tabIndexVariable: tabIndex,
                       tabOrder: 0,
                       tabAction: (){
+                        NotImplementedFunction(context);
                         setState(() {
                           tabIndex = 0;
                         });
@@ -151,10 +57,11 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       context: context,
                       heightSize: 0.05,
                       widthSize: 0.3,
-                      btnText: "파일함",
+                      btnText: "내 결재함",
                       tabIndexVariable: tabIndex,
                       tabOrder: 1,
                       tabAction: (){
+                        NotImplementedFunction(context);
                         setState(() {
                           tabIndex = 1;
                         });
@@ -185,7 +92,6 @@ class AlarmMainPageState extends State<AlarmMainPage> {
             )
           ],
         ),
-      ),
     );
   }
 }

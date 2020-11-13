@@ -40,7 +40,7 @@ workDatePage(BuildContext context) async {
                          ),
                          child: DateTimePickerWidget(
                            locale: DateTimePickerLocale.ko,
-                           dateFormat: "yyyy년 MM월 dd일",
+                           dateFormat: "yyyy년 MM월 dd일 HH:mm",
                            onConfirm: (dateTime, selectedIndex) {
                              date= DateTime.parse(dateTime.toString()).toString();
                            },
