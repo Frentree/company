@@ -19,11 +19,11 @@ MainBottomSheet(BuildContext context) {
       /*Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));*/
       workContent(context, type);
     } else if (type == 3) {
-
+      NotImplementedFunction(context);
     } else if (type == 4) {
-
+      NotImplementedFunction(context);
     } else if (type == 5) {
-
+      NotImplementedFunction(context);
     } else if (type == 6) { //구매 품의
       PurchaseMain(context);
 

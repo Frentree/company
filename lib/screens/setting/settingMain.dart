@@ -10,6 +10,7 @@ import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/setting/myInfomationCard.dart';
 import 'package:companyplaylist/screens/setting/myWork.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,21 +59,24 @@ class SettingMainPageState extends State<SettingMainPage>{
                       title: Text("근태 조회"),
                       dense: true,
                       onTap: (){
-                        movePage(context, "myWork", "0");
+                        NotImplementedFunction(context);
+                        //movePage(context, "myWork", "0");
                       },
                     ),
                     ListTile(
                       title: Text("연차 사용 내역 조회"),
                       dense: true,
                       onTap: (){
-                        movePage(context, "myWork", "1");
+                        NotImplementedFunction(context);
+                        //movePage(context, "myWork", "1");
                       },
                     ),
                     ListTile(
                       title: Text("급여 내역 조회"),
                       dense: true,
                       onTap: (){
-                        movePage(context, "myWork", "2");
+                        NotImplementedFunction(context);
+                        //movePage(context, "myWork", "2");
                       },
                     )
                   ]
@@ -131,22 +135,37 @@ class SettingMainPageState extends State<SettingMainPage>{
                   ListTile(
                     title: Text('도움말'),
                     dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
                   ),
                   ListTile(
                     title: Text('1:1 문의하기'),
                     dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
                   ),
                   ListTile(
                     title: Text('공지사항'),
                     dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
                   ),
                   ListTile(
                     title: Text('서비스 이용약관'),
                     dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
                   ),
                   ListTile(
                     title: Text('개인정보 취급방침'),
                     dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
                   )
                 ],
               ),
@@ -171,6 +190,9 @@ class SettingMainPageState extends State<SettingMainPage>{
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text('로그 아웃'),
+                onTap: (){
+                  _loginUserInfoProvider.logoutUesr();
+                },
               ),
             ],
           )
