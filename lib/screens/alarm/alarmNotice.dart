@@ -10,6 +10,7 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeComment.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +26,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
   Stream<QuerySnapshot> currentStream;
   CrudRepository _crudRepository;
   LoginUserInfoProvider _loginUserInfoProvider;
+  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   User _loginUser;
 
@@ -54,6 +56,10 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                     documents[index].data['noticeCreateDate'].toDate().toString()
                 ).add(Duration(hours: 9))
             );
+
+            StorageReference storageReference =
+            _firebaseStorage.ref().child("profile/${documents[index].data['noticeCreateUser']['mail']}");
+
             return Card(
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -96,12 +102,20 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                     border: Border.all(
                                         color: whiteColor, width: 2)
                                 ),
-                                child: Text(
-                                  "사진",
-                                  style: TextStyle(
-                                      color: Colors.black
-                                  ),
-                                ),
+                                child: FutureBuilder(
+                                  future: storageReference.getDownloadURL(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return Icon(
+                                        Icons.person_outline
+                                      );
+                                    }
+
+                                    return Image.network(
+                                        snapshot.data
+                                    );
+                                  },
+                                )
                               ),
                               onTap: () {},
                             ),

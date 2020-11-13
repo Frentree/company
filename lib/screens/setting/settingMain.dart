@@ -35,9 +35,6 @@ class SettingMainPageState extends State<SettingMainPage>{
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-    StorageReference storageReference =
-    _firebaseStorage.ref().child("profile/${_loginUser.mail}");
-
 
     return Scaffold(
       backgroundColor: mainColor,
@@ -91,17 +88,8 @@ class SettingMainPageState extends State<SettingMainPage>{
                     color: whiteColor,
                     border: Border.all(color: whiteColor, width: 2)
                 ),
-                child: FutureBuilder(
-                  future: storageReference.getDownloadURL(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData == false) {
-                      return CircularProgressIndicator();
-                    }
-
-                    return Image.network(
-                        snapshot.data
-                    );
-                  },
+                child: Image.network(
+                    _loginUser.profilePhoto
                 ),
               ),
               onTap: (){

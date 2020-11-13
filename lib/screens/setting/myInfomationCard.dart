@@ -40,17 +40,8 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                       color: whiteColor,
                       border: Border.all(color: whiteColor, width: 2)
                   ),
-                  child: FutureBuilder(
-                    future: storageReference.getDownloadURL(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData == false) {
-                        return CircularProgressIndicator();
-                      }
-
-                      return Image.network(
-                          snapshot.data
-                      );
-                    },
+                  child: Image.network(
+                      user.profilePhoto
                   ),
                   /*Text(
                                     "사진",
