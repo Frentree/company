@@ -45,6 +45,7 @@ workContent(BuildContext context, int type) {
               return Padding(
                 padding: MediaQuery.of(context).viewInsets,
                 child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.only(top: 30, left: 20, right: 20, bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
