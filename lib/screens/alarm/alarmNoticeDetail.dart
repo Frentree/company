@@ -82,8 +82,6 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   _getCommentList(List<DocumentSnapshot> documents, BuildContext context, String documentID){
     List<Widget> widgets = [];
     for (int i = 0; i < documents.length; i++) {
-      StorageReference storageReference =
-      _firebaseStorage.ref().child("profile/${documents[i].data['commentsUser']['mail']}");
       widgets.add(Column(
         children: [
           SizedBox(
@@ -112,7 +110,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                       color: whiteColor,
                       border: Border.all(color: whiteColor, width: 2)),
                   child: FutureBuilder(
-                    future: storageReference.getDownloadURL(),
+                    future: _firebaseStorage.ref().child("profile/${documents[i].data['commentsUser']['mail']}").getDownloadURL(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Icon(
@@ -348,7 +346,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
             ),
             Padding(
               padding: EdgeInsets.only(left: 10),
-              child: Text("공지 사항"),
+              child: Text("근무중"),
             ),
           ],
         ),
@@ -362,7 +360,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                 width: customWidth(context: context, widthSize: 0.1),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: whiteColor, border: Border.all(color: whiteColor, width: 2)),
                 child: FutureBuilder(
-                  future: _firebaseStorage.ref().child("profile/${noticeCreateUser}").getDownloadURL(),
+                  future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Icon(
