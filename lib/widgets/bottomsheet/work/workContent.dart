@@ -103,7 +103,7 @@ workContent(BuildContext context, int type) {
                                       createUid: _loginUser.mail,
                                       name: _loginUser.name,
                                       startDate: Timestamp.fromDate(DateTime.parse(formatDate)),
-                                      startTime: Timestamp.fromDate(DateTime.parse(date).add(Duration(hours: -14))),
+                                      startTime: Timestamp.fromDate(DateTime.parse(date)),
                                       type: type == 1 ? "내근" : "외근",
                                       workTitle: _titleController.text,
                                       workContents: isChk == true ? _contentController.text : "",
@@ -158,7 +158,7 @@ workContent(BuildContext context, int type) {
                                 onTap: () async {
                                   date = await workDatePage(context);
 
-                                  formatDate = DateFormat('yyyy-MM-dd 07:00:00').format(
+                                  formatDate = DateFormat('yyyy-MM-dd 21:00:00').format(
                                       DateTime.parse(
                                           date
                                       )
