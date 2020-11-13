@@ -360,9 +360,7 @@ class SignUpPageState extends State<SignUpPage> {
                             _newUser = User(
                               mail: _mailTextCon.text,
                               name: _nameTextCon.text,
-                              birthday: _format.dateTimeToTimeStamp(
-                                  DateTime.parse(_birthdayTextCon.text
-                                      .replaceAll(".", ""))),
+                              birthday: _birthdayTextCon.text,
                               phone: _phoneNumberTextCon.text,
                             ),
                             _loginRepository.signUpWithFirebaseAuth(
