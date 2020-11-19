@@ -63,7 +63,9 @@ List<Column> columnChild(
 
               //제목
               Container(
-                width: element.type == "외근" ? customWidth(context: context, widthSize: 0.4) : customWidth(context: context, widthSize: 0.55),
+                width: element.type == "외근"
+                    ? customWidth(context: context, widthSize: 0.4)
+                    : customWidth(context: context, widthSize: 0.55),
                 child: Text(
                   element.workTitle,
                   //textAlign: ,
@@ -74,17 +76,19 @@ List<Column> columnChild(
                       height: 1),
                 ),
               ),
-              element.type == "외근" ? Container(
-                width: customWidth(context: context, widthSize: 0.15),
-                child: Text(
-                  element.location == null ? "" : "[${element.location}]",
-                  style: customStyle(
-                      fontSize: titleFontSize,
-                      fontWeightName: "Medium",
-                      fontColor: mainColor,
-                      height: 1),
-                ),
-              ) : Container()
+              element.type == "외근"
+                  ? Container(
+                      width: customWidth(context: context, widthSize: 0.15),
+                      child: Text(
+                        element.location == null ? "" : "[${element.location}]",
+                        style: customStyle(
+                            fontSize: titleFontSize,
+                            fontWeightName: "Medium",
+                            fontColor: mainColor,
+                            height: 1),
+                      ),
+                    )
+                  : Container()
             ],
           ),
         )
@@ -100,24 +104,27 @@ Widget workCoScheduleCard(
     String key,
     String name,
     Map<String, List<CompanyWork>> companyWork}) {
-  return companyWork[key].length == 0 ? Container() : Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          width: 1,
-          color: boarderColor,
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Text(name),
-            Column(
-              children: columnChild(context: context, companyWorkList: companyWork[key])
-            )
-          ],
-        ),
-      ));
+  return companyWork[key].length == 0
+      ? Container()
+      : Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              width: 1,
+              color: boarderColor,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text(name),
+                Column(
+                    children: columnChild(
+                        context: context, companyWorkList: companyWork[key]))
+              ],
+            ),
+          ),
+        );
 }
