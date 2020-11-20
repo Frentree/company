@@ -2,6 +2,7 @@
 import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
+import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmMain.dart';
 import 'package:companyplaylist/screens/search/searchMain.dart';
@@ -39,15 +40,19 @@ class HomeMainPageState extends State<HomeMainPage> {
   // 프로필
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   User _loginUser;
+  LoginScreenChangeProvider loginScreenChangeProvider;
 
   //페이지 이동
   void _pageChange(int pageIndex){
     if(pageIndex == 2){
-
       //WorkMainPage(context);
       MainBottomSheet(context);
-    }
-    else{
+    } else if(pageIndex == 1){
+      setState(() {
+        loginScreenChangeProvider.setPageName(pageName: "searchAll");
+        _currentPateIndex = pageIndex;
+      });
+    }else{
       setState(() {
         print(pageIndex);
         _currentPateIndex = pageIndex;
@@ -57,6 +62,7 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
 

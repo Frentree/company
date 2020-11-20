@@ -44,6 +44,49 @@ InkWell tabBtn({BuildContext context, double heightSize, double widthSize, Strin
   );
 }
 
+Container filterBtn({BuildContext context, double heightSize, double widthSize, String btnText, int tabIndexVariable, int tabOrder, Function tabAction, Color color}){
+  return Container(
+    padding: EdgeInsets.all(1),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: tabColor
+    ),
+    child: Container(
+      height: customHeight(
+        context: context,
+        heightSize: heightSize,
+      ),
+      width: customWidth(
+          context: context,
+          widthSize: widthSize
+      ),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: whiteColor
+      ),
+      child: InkWell(
+        child: Container(
+            child: Center(
+              child: Text(
+                btnText,
+                style: customStyle(
+                    fontSize: 14,
+                    fontWeightName: "Medium",
+                    fontColor: mainColor
+                ),
+              ),
+            ),
+            decoration: tabIndexVariable == tabOrder ? BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: color
+            ) : null
+        ),
+        onTap: tabAction,
+      ),
+    ),
+  );
+}
+
 InkWell manualOnWorkBtn({BuildContext context, String btnText, Function btnAction, bool isSelect}) {
   return InkWell(
     child: Container(

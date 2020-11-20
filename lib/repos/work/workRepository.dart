@@ -11,8 +11,6 @@ class WorkRepository{
   // 내근, 외근 등록
   Future<void> workScheduleFirebaseAuth({
     BuildContext context,
-    String createUid,
-    String name,
     String workTitle,
     Timestamp startDate,
     Timestamp startTime,
@@ -27,8 +25,6 @@ class WorkRepository{
   })
   => _workScheduleMethod.workScheduleFirebaseAuth(
     context: context,
-    createUid : createUid,
-    name: name,
     workTitle: workTitle,
     workContents: workContents,
     startDate: startDate,

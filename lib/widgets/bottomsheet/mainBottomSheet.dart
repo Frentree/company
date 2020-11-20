@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 MainBottomSheet(BuildContext context) {
   // 사용자 권한
-  int _userGrade = 0;
+  int _userGrade = 9;
 
   void _workBottomMove(int type) {
     if(type == 0) {   // 내근 또는 외근 일때
@@ -29,7 +29,7 @@ MainBottomSheet(BuildContext context) {
 
     } else if (type == 7) { //경비 품의
       if (_userGrade == 9) { //공지사항
-        WorkNoticeBottomSheet(context);
+        WorkNoticeBottomSheet(context, "", "", "");
       }
       ExpenseMain(context);
     }else {
@@ -42,6 +42,7 @@ MainBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
+
           return Container(
             height: 200,
             padding: EdgeInsets.only(left: 15, right: 15),
