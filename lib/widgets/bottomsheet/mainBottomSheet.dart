@@ -5,21 +5,26 @@ import 'package:companyplaylist/widgets/bottomsheet/expense/expenseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
+import 'package:companyplaylist/widgets/bottomsheet/meeting/meetingMain.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
-
 
 MainBottomSheet(BuildContext context) {
   // 사용자 권한
   int _userGrade = 0;
-
-  void _workBottomMove(int type) {
+  bool result = false;
+  void _workBottomMove(int type) async {
     if(type == 0) {   // 내근 또는 외근 일때
     } else if(type == 1 || type == 2) {   // 내근 또는 외근 일때
-      /*Navigator.push(context, MaterialPageRoute(builder: (context) => WorkContentPage(type)));*/
-      workContent(context, type);
+        result = await workContent(context: context, type: type);
+        if(result){
+          Navigator.of(context).pop();
+        }
     } else if (type == 3) {
-      NotImplementedFunction(context);
+      result = await meetingMain(context: context);
+      if(result){
+        Navigator.of(context).pop();
+      }
     } else if (type == 4) {
       NotImplementedFunction(context);
     } else if (type == 5) {
@@ -125,7 +130,7 @@ MainBottomSheet(BuildContext context) {
                           ),
                         ),
                       onPressed: (){
-                          NotImplementedFunction(context);
+                        _workBottomMove(3);
                       },
                     ),
                     ActionChip(

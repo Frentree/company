@@ -6,7 +6,8 @@
 * @version 1.0
 * 이윤혁, 마지막 수정일 2020-09-23
 *
-* */
+* *//*
+
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/workModel.dart';
@@ -55,4 +56,4 @@ class CompanyWorkCrud {
     await _firestoreApi.setDocument(dataModel.toJson(), documentId);
     return null;
   }
-}
+}*/

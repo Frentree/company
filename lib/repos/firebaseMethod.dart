@@ -2,6 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/universalString.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
+import 'package:companyplaylist/models/meetingModel.dart';
+import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +21,80 @@ class FirebaseMethods {
         .collection(EXPENSE)
         .add(map);
   }
+
+  Future<void> saveWork({WorkModel workModel, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .add(workModel.toJson());
+  }
+
+  Future<void> updateWork({WorkModel workModel, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .document(workModel.id)
+        .updateData(workModel.toJson());
+  }
+
+  Future<void> deleteWork({String documentID, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .document(documentID)
+        .delete();
+  }
+
+  Future<Map<String, String>> getColleague(
+      {String loginUserMail, String companyCode}) async {
+    Map<String, String> colleague = {};
+    QuerySnapshot querySnapshot = await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .getDocuments();
+    querySnapshot.documents.forEach((element) {
+      if (element.documentID != loginUserMail) {
+        colleague[element.documentID] = element.data["name"];
+      }
+    });
+
+    return colleague;
+  }
+
+  Future<void> saveMeeting(
+      {MeetingModel meetingModel, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .add(meetingModel.toJson());
+  }
+
+  Future<void> updateMeeting(
+      {MeetingModel meetingModel, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .document(meetingModel.id)
+        .updateData(meetingModel.toJson());
+  }
+
+  Future<void> deleteMeeting({String documentID, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .document(documentID)
+        .delete();
+  }
 }
 
-class FirestoreApi{
+class FirestoreApi {
   final Firestore _db = Firestore.instance;
   String path;
   String secondPath;
@@ -30,43 +103,49 @@ class FirestoreApi{
   String secondDocumentId;
   CollectionReference ref;
 
-  FirestoreApi.onePath(this.path){
+  FirestoreApi.onePath(this.path) {
     ref = _db.collection(path);
   }
 
-  FirestoreApi.twoPath(this.path, this.secondPath, this.documentId){
+  FirestoreApi.twoPath(this.path, this.secondPath, this.documentId) {
     ref = _db.collection(path).document(documentId).collection(secondPath);
   }
 
-  FirestoreApi.threePath(this.path, this.documentId, this.secondPath, this.secondDocumentId, this.thirdPath){
-    ref = _db.collection(path).document(documentId).collection(secondPath).document(secondDocumentId).collection(thirdPath);
+  FirestoreApi.threePath(this.path, this.documentId, this.secondPath,
+      this.secondDocumentId, this.thirdPath) {
+    ref = _db
+        .collection(path)
+        .document(documentId)
+        .collection(secondPath)
+        .document(secondDocumentId)
+        .collection(thirdPath);
   }
 
-  Future<QuerySnapshot> getDataCollection(){
+  Future<QuerySnapshot> getDataCollection() {
     return ref.getDocuments();
   }
 
-  Stream<QuerySnapshot> streamDataCollection(){
+  Stream<QuerySnapshot> streamDataCollection() {
     return ref.snapshots();
   }
 
-  Future<DocumentSnapshot> getDocumentById(String id){
+  Future<DocumentSnapshot> getDocumentById(String id) {
     return ref.document(id).get();
   }
 
-  Future<void> removeDocument(String id){
+  Future<void> removeDocument(String id) {
     return ref.document(id).delete();
   }
 
-  Future<DocumentReference> addDocument(Map data){
+  Future<DocumentReference> addDocument(Map data) {
     return ref.add(data);
   }
 
-  Future<void> updateDocument(Map data, String id){
+  Future<void> updateDocument(Map data, String id) {
     return ref.document(id).updateData(data);
   }
 
-  Future<void> setDocument(Map data, String id){
+  Future<void> setDocument(Map data, String id) {
     return ref.document(id).setData(data);
   }
 }

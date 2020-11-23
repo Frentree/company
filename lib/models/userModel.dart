@@ -55,7 +55,7 @@ class User {
       "phone": phone,
       "companyName": companyName,
       "companyCode": companyCode,
-      "image": profilePhoto,
+      "profilePhoto": profilePhoto,
       "screenTheme": screenTheme,
     };
   }

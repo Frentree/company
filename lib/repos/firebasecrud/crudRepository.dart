@@ -33,8 +33,8 @@ class CrudRepository {
 
   CompanyUserCrud _companyUserCrud;
 
-  // Work Crud 2020-09-23, 이윤혁
-  CompanyWorkCrud _companyWorkCrud;
+/*  // Work Crud 2020-09-23, 이윤혁
+  CompanyWorkCrud _companyWorkCrud;*/
 
   // WorkCategory Crud 2020-09-28, 이윤혁
   WorkCategoryCrud _workCategoryCrud;
@@ -54,10 +54,10 @@ class CrudRepository {
     _companyUserCrud = CompanyUserCrud(companyCode);
   }
 
-  // Work Repository 2020-09-23, 이윤혁
+/*  // Work Repository 2020-09-23, 이윤혁
   CrudRepository.companyWork({this.companyCode}){
     _companyWorkCrud = CompanyWorkCrud(companyCode);
-  }
+  }*/
 
   // Work Repository 2020-09-28, 이윤혁
   CrudRepository.workCategory({this.companyCode}){
@@ -105,7 +105,7 @@ class CrudRepository {
   Future<void> updateAttendanceDataToFirebase({Attendance dataModel, String documentId}) => _attendanceCrud.updateAttendanceDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> setAttendanceDataToFirebase({Attendance dataModel}) => _attendanceCrud.setAttendanceDataToFirebase(dataModel: dataModel);
 
-  // companyWork Repository 2020-09-23, 이윤혁
+  /*// companyWork Repository 2020-09-23, 이윤혁
   Future<List<CompanyWork>> fetchCompanyWork() => _companyWorkCrud.fetchCompanyWork();
   Stream<QuerySnapshot> fetchCompanyWorkAsStream() => _companyWorkCrud.fetchCompanyWorkAsStream();
   // Future<CompanyUser> getCompanyWorkDataToFirebaseById({String documentId}) => _companyWorkCrud.getCompanyUserDataToFirebaseById(documentId: documentId);
@@ -113,7 +113,7 @@ class CrudRepository {
   Future<void> updateCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) => _companyWorkCrud.updateCompanyWorkDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> setCompanyWorkDataToFirebase({CompanyWork dataModel, String documentId}) => _companyWorkCrud.setCompanyWorkDataToFirebase(dataModel: dataModel, documentId: documentId);
   Future<void> addCompanyWorkDataToFirebase({CompanyWork dataModel}) => _companyWorkCrud.addCompanyWorkDataToFirebase(dataModel: dataModel);
-
+*/
 
   // WorkCategory Repository 2020-09-28, 이윤혁
   Future<List<bigCategoryModel>> fetchWorkCategory() => _workCategoryCrud.fetchWorkCategory();

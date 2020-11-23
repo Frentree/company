@@ -2,6 +2,8 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/models/meetingModel.dart';
+import 'package:companyplaylist/widgets/card/meetingScheduleCard.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -124,14 +126,20 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
             ),
           ),
           StreamBuilder(
-            stream: _db.collection("company").document(_companyUser.companyCode).collection("work").where("createUid", isEqualTo: _companyUser.mail).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
+            stream: _db.collection("company").document(_companyUser.companyCode).collection("work").where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.data == null){
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              var _companyWork = snapshot.data.documents ?? [];
+              var _companyWork = [];
+
+              snapshot.data.documents.forEach((element){
+                if(element.data["createUid"] == _companyUser.mail || element.data["attendees"].keys.contains(_companyUser.mail)){
+                  _companyWork.add(element);
+                }
+              });
 
               if(_companyWork.length == 0) {
                 isDetail = [];
@@ -178,7 +186,17 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   child: ListView.builder(
                     itemCount: _companyWork.length,
                     itemBuilder: (context, index) {
-                      CompanyWork _companyData = CompanyWork.fromMap(_companyWork[index].data, _companyWork[index].documentID);
+                      dynamic _companyData;
+                      if(_companyWork[index].data["type"] == "내근" || _companyWork[index].data["type"] == "외근")
+                        {
+                          _companyData = WorkModel.fromMap(_companyWork[index].data, _companyWork[index].documentID);
+                        }
+                      else if(_companyWork[index].data["type"] == "미팅"){
+                        print("미팅");
+                        _companyData = MeetingModel.fromMap(_companyWork[index].data, _companyWork[index].documentID);
+                      }
+
+
                       switch(_companyData.type) {
                         case '내근':
                         case '외근':
@@ -186,8 +204,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                             child: workScheduleCard(
                               context: context,
                               companyCode: _companyUser.companyCode,
-                              documentId: _companyWork[index].documentID,
-                              companyWork: _companyData,
+                              workModel: _companyData,
                               isDetail: isDetail[index],
                             ),
                             onTap: () {
@@ -198,7 +215,27 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                     isDetail[i] = false;
                                   }
                                 }
-                                _events[DateTime(_format.timeStampToDateTime(_companyData.startDate).year, _format.timeStampToDateTime(_companyData.startDate).month, _format.timeStampToDateTime(_companyData.startDate).day)] = ["mmm"];
+                              });
+                            },
+                          );
+                          break;
+                        case '미팅':
+                          return GestureDetector(
+                            child: meetingScheduleCard(
+                              context: context,
+                              loginUserMail: _companyUser.mail,
+                              companyCode: _companyUser.companyCode,
+                              meetingModel: _companyData,
+                              isDetail: isDetail[index],
+                            ),
+                            onTap: () {
+                              setState(() {
+                                isDetail[index] = !isDetail[index];
+                                for(int i = 0; i < isDetail.length; i++){
+                                  if(i != index) {
+                                    isDetail[i] = false;
+                                  }
+                                }
                               });
                             },
                           );

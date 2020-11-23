@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:companyplaylist/models/userModel.dart';
 
 class LoginUserInfoProvider with ChangeNotifier{
-  User _loginUser = User();
+  User _loginUser;
 
   //User 정보 가져오기
   User getLoginUser() {

@@ -13,17 +13,19 @@ import 'package:companyplaylist/models/workModel.dart';
 //Util
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 
+import '../../models/workModel.dart';
+
 const double heightSize = 0.08;
 const double sizedBoxHeight = 0.01;
 const double workChipHeightSize = 0.025;
 
-List<Map<String, List<CompanyWork>>> dataFetch(List<CompanyWork> companyWork){
+List<Map<String, List<WorkModel>>> dataFetch(List<WorkModel> companyWork){
   Format _format = Format();
 
-  List<Map<String, List<CompanyWork>>> companyWorkList = List(5);
+  List<Map<String, List<WorkModel>>> companyWorkList = List(5);
   List<String> key = ["오전", "종일", "오후"];
   for(int i = 0; i < 5; i++){
-    Map<String, List<CompanyWork>> timeMap = Map();
+    Map<String, List<WorkModel>> timeMap = Map();
 
     key.forEach((element) {
       timeMap[element] = [];
@@ -31,7 +33,7 @@ List<Map<String, List<CompanyWork>>> dataFetch(List<CompanyWork> companyWork){
     companyWork.forEach((element) {
       int week = _format.timeStampToDateTime(element.startDate).weekday;
       if((week -1) == i){
-        timeMap[element.timeTest].add(element);
+        timeMap[element.timeSlot.toString()].add(element);
       }
     });
     companyWorkList[i] = timeMap;
@@ -39,9 +41,9 @@ List<Map<String, List<CompanyWork>>> dataFetch(List<CompanyWork> companyWork){
   return companyWorkList;
 }
 
-TableRow workDetailTableRow({BuildContext context, List<CompanyWork> companyWork, String name}){
+TableRow workDetailTableRow({BuildContext context, List<WorkModel> companyWork, String name}){
 
-  List<Map<String, List<CompanyWork>>> companyWorkList = dataFetch(companyWork);
+  List<Map<String, List<WorkModel>>> companyWorkList = dataFetch(companyWork);
   List<Container> tableRow = List();
 
   companyWorkList.forEach((element) {
@@ -73,7 +75,7 @@ TableRow workDetailTableRow({BuildContext context, List<CompanyWork> companyWork
 }
 
 //일정 칩
-Container workChip({BuildContext context, CompanyWork companyWork, int count}){
+Container workChip({BuildContext context, WorkModel companyWork, int count}){
   return Container(
     child: Row(
       children: [

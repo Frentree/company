@@ -1,8 +1,7 @@
 //Flutter
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 //Const
 import 'package:companyplaylist/consts/colorCode.dart';
@@ -10,7 +9,6 @@ import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 
 import 'package:companyplaylist/models/workModel.dart';
-import 'package:companyplaylist/utils/date/dateFormat.dart';
 
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;
@@ -20,9 +18,9 @@ const writeTimeFontSize = 14.0;
 const fontColor = mainColor;
 
 List<Column> columnChild(
-    {BuildContext context, List<CompanyWork> companyWorkList}) {
+    {BuildContext context, List<WorkModel> companyWorkList}) {
   List<Column> columnChild = [];
-
+  Format _format = Format();
   companyWorkList.forEach((element) {
     columnChild.add(Column(
       children: [
@@ -31,7 +29,7 @@ List<Column> columnChild(
           child: Row(
             children: [
               Text(
-                element.timeTest,
+                _format.timeToString(element.startDate),
                 style: customStyle(
                     fontSize: timeFontSize,
                     fontWeightName: "Regular",
@@ -64,11 +62,10 @@ List<Column> columnChild(
               //제목
               Container(
                 width: element.type == "외근"
-                    ? customWidth(context: context, widthSize: 0.4)
-                    : customWidth(context: context, widthSize: 0.55),
+                    ? customWidth(context: context, widthSize: 0.35)
+                    : customWidth(context: context, widthSize: 0.5),
                 child: Text(
-                  element.workTitle,
-                  //textAlign: ,
+                  element.title,
                   style: customStyle(
                       fontSize: titleFontSize,
                       fontWeightName: "Medium",
@@ -103,7 +100,7 @@ Widget workCoScheduleCard(
     {BuildContext context,
     String key,
     String name,
-    Map<String, List<CompanyWork>> companyWork}) {
+    Map<String, List<WorkModel>> companyWork}) {
   return companyWork[key].length == 0
       ? Container()
       : Card(

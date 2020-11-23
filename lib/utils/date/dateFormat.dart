@@ -37,11 +37,54 @@ class Format{
     return week;
   }
 
+  String twoDigitsFormat(int date){
+    String newDate = "";
+
+    if(date < 10) {
+      newDate = "0" + date.toString();
+    }
+
+    else{
+      newDate = date.toString();
+    }
+
+    return newDate;
+  }
+
+
+
   String dateFormat(DateTime date){
     String dateText;
 
-    dateText = date.month.toString() + "월 " + date.day.toString() + "일 " + weekFormat(date) + "요일";
+    dateText = date.year.toString() + "년 " + twoDigitsFormat(date.month) + "월 " + twoDigitsFormat(date.day) + "일 " + weekFormat(date) + "요일";
     return dateText;
+  }
+
+  String dateToString(DateTime date){
+    String dateText;
+
+    dateText = date.year.toString() + "년 " + twoDigitsFormat(date.month) + "월 " + twoDigitsFormat(date.day) + "일 " + twoDigitsFormat(date.hour) + "시 " + twoDigitsFormat(date.minute) + "분";
+    return dateText;
+  }
+
+  String timeToString(Timestamp time){
+    DateTime dateTime = timeStampToDateTime(time);
+    String dateText;
+    dateText = twoDigitsFormat(dateTime.hour) + ":" + twoDigitsFormat(dateTime.minute);
+    return dateText;
+  }
+
+  int timeSlot(DateTime time){
+    int timeSlot;
+
+    if(time.hour < 12){
+      timeSlot = 1;
+    }
+    else {
+      timeSlot = 2;
+    }
+
+    return timeSlot;
   }
 
   DateTime timeFormat(DateTime date){

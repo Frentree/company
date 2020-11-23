@@ -31,3 +31,4 @@ const Color progressHold = Color(0xffFF6092);
 const Color workTypeOut = Color(0xff25D5BD);
 const Color workTypeRest = Color(0xffD525A0);
 const Color workTypeBirthDay = Color(0xffD5B825);
+const Color disableUploadBtn = Color(0xff9CC0EC);

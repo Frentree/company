@@ -25,6 +25,8 @@ import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
 
+import '../../models/workModel.dart';
+
 
 class HomeScheduleCoPage extends StatefulWidget {
   @override
@@ -132,7 +134,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 }
                 DateTime weekMonday = selectTime.subtract(Duration(days: selectTime.weekday-1));
 
-                DateTime testTime = DateTime.utc(weekMonday.year, weekMonday.month, weekMonday.day, 12, 00);
+                DateTime testTime = DateTime(weekMonday.year, weekMonday.month, weekMonday.day, 12, 00);
                 List<DateTime> term = [testTime, testTime.add(Duration(days: 1)), testTime.add(Duration(days: 2)), testTime.add(Duration(days: 3)), testTime.add(Duration(days: 4))];
                 List<Timestamp> testTerm = [];
                 term.forEach((element) {
@@ -158,11 +160,11 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     }
                     var _companyWork = snapshot.data.documents ?? [];
 
-                    List<CompanyWork> convertCompanyWork = [];
+                    List<WorkModel> convertCompanyWork = [];
 
-                    _companyWork.forEach((doc) => convertCompanyWork.add(CompanyWork.fromMap(doc.data, doc.documentID)));
+                    _companyWork.forEach((doc) => convertCompanyWork.add(WorkModel.fromMap(doc.data, doc.documentID)));
 
-                    Map<String, List<CompanyWork>> mapB = Map();
+                    Map<String, List<WorkModel>> mapB = Map();
                     _coUserUid.forEach((element) {
                       mapB[element] = [];
                     });
@@ -232,11 +234,11 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                   }
                   var _companyWork = snapshot.data.documents ?? [];
 
-                  List<CompanyWork> convertCompanyWork = [];
+                  List<WorkModel> convertCompanyWork = [];
 
-                  _companyWork.forEach((doc) => convertCompanyWork.add(CompanyWork.fromMap(doc.data, doc.documentID)));
+                  _companyWork.forEach((doc) => convertCompanyWork.add(WorkModel.fromMap(doc.data, doc.documentID)));
 
-                  Map<String, List<CompanyWork>> mapB = Map();
+                  Map<String, List<WorkModel>> mapB = Map();
                   _coUserUid.forEach((element) {
                     mapB[element] = [];
                   });
@@ -247,7 +249,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
 
                   List<String> k = [];
                   print(mapB);
-                  List<Map<String, List<CompanyWork>>> a = List();
+                  List<Map<String, List<WorkModel>>> a = List();
                   mapB.forEach((key, value) {
                     a.add({key: value});
                     k.add(key);

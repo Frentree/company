@@ -9,76 +9,66 @@
 */
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CompanyWork {
+class WorkModel {
+  String id;
   String createUid;
+  String name;
+  String type;
+  String title; // 글제목
+  String contents; // 글내용
+  String location;
   Timestamp createDate;
+  Timestamp lastModDate;
   Timestamp startDate;
   Timestamp startTime;
-  String name;
-  String workTitle;       // 글제목
-  String workContents;    // 글내용
-  int level;              // 권한
-  List<dynamic> share;     // 공유할 사람
-  String type;            // 내외근 일정 입력
-  int progress;        // 진행 상태( 1. 완료, 2. 진행중, 3.진행전, 4.보류, 5. 지연 )
-  String location;
-  String timeTest;
-//  String endDate;
-//  String bigCategory;     // 상위 프로젝트
-//  String normalCategory;  // 하위 프로젝트
-//  int workNo;             // 글넘버
-//  String lastModifier;    // 마지막 수정자
-//  String workReq;
-//  String workRequester;
-//  String ReqStatus;
-//  List<String> exception; // 공유안 할 사람
-//  List<Map<String,String>> coWorker;     // 일정을 같이 하는 사람
+  int timeSlot;
+  int level;
 
-  CompanyWork({
+  WorkModel({
+    this.id,
     this.createUid,
+    this.name,
+    this.type,
+    this.title,
+    this.contents,
+    this.location,
     this.createDate,
+    this.lastModDate,
     this.startDate,
     this.startTime,
-    this.workTitle,
-    this.name,
-    this.workContents,
+    this.timeSlot,
     this.level,
-    this.share,
-    this.type,
-    this.progress,
-    this.location,
-    this.timeTest,
   });
 
-  CompanyWork.fromMap(Map snapshot, String id) :
+  WorkModel.fromMap(Map snapshot, String id)
+      : id = id ?? "",
         createUid = snapshot["createUid"] ?? "",
-        createDate = snapshot["createDate"] ?? "",
-        startDate = snapshot["startDate"] ?? "",
-        startTime = snapshot["startTime"] ?? null,
-        workTitle = snapshot["workTitle"] ?? "",
         name = snapshot["name"] ?? "",
-        workContents = snapshot["workContents"] ?? "",
-        level = snapshot["level"] ?? "",
-        //share = snapshot["share"] ?? "",
         type = snapshot["type"] ?? "",
-        progress = snapshot["progress"] ?? 3,
+        title = snapshot["title"] ?? "",
+        contents = snapshot["contents"] ?? "",
         location = snapshot["location"] ?? "",
-        timeTest = snapshot["timeTest"] ?? "";
-  toJson(){
+        createDate = snapshot["createDate"] ?? null,
+        lastModDate = snapshot["lastModDate"] ?? null,
+        startDate = snapshot["startDate"] ?? null,
+        startTime = snapshot["startTime"] ?? null,
+        timeSlot = snapshot["timeSlot"] ?? 0,
+        level = snapshot["level"] ?? 0;
+
+  toJson() {
     return {
       "createUid": createUid,
+      "name": name,
+      "type": type,
+      "title": title,
+      "contents": contents,
+      "location": location,
       "createDate": createDate,
+      "lastModDate": lastModDate,
       "startDate": startDate,
       "startTime": startTime,
-      "workTitle": workTitle,
-      "name": name,
-      "workContents": workContents,
+      "timeSlot": timeSlot,
       "level": level,
-      //"share": share,
-      "type": type,
-      "progress": progress,
-      "location": location,
-      "timeTest": timeTest,
     };
   }
 }
