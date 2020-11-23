@@ -92,6 +92,17 @@ class FirebaseMethods {
         .document(documentID)
         .delete();
   }
+
+  Stream<QuerySnapshot> getSelectedDateCompanyWork(
+      {String companyCode, Timestamp selectedDate}) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .where("startDate", isEqualTo: selectedDate)
+        .orderBy("startTime")
+        .snapshots();
+  }
 }
 
 class FirestoreApi {

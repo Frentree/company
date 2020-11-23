@@ -109,4 +109,14 @@ class Format{
 
     return dateTime;
   }
+
+  List<DateTime> oneWeekDay(DateTime selectTime){
+    DateTime monday = selectTime.subtract(Duration(days: selectTime.weekday -1));
+    List<DateTime> weekDay = [monday];
+    for(int i = 1; i < 5; i++){
+      weekDay.add(monday.add(Duration(days: i)));
+    }
+
+    return weekDay;
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
 import 'package:companyplaylist/models/meetingModel.dart';
 import 'package:companyplaylist/repos/firebaseMethod.dart';
@@ -50,5 +51,11 @@ class FirebaseRepository {
       _firebaseMethods.deleteWork(
         documentID: documentID,
         companyCode: companyCode,
+      );
+
+  Stream<QuerySnapshot> getSelectedDateCompanyWork({String companyCode, Timestamp selectedDate}) =>
+      _firebaseMethods.getSelectedDateCompanyWork(
+        companyCode: companyCode,
+        selectedDate: selectedDate,
       );
 }
