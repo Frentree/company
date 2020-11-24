@@ -37,14 +37,10 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
 
   Attendance _attendance = Attendance();
 
-  List<Widget> _page = [HomeSchedulePage(),HomeScheduleCoPage()];
+  List<Widget> _page = [HomeSchedulePage(), HomeScheduleCoPage()];
 
   @override
   Widget build(BuildContext context) {
-    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-    AttendanceCheck _attendanceProvider = Provider.of<AttendanceCheck>(context);
-    _attendance = _attendanceProvider.getAttendanceData();
-
     return Scaffold(
 
       body: Column(

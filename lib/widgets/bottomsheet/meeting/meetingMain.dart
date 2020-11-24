@@ -15,10 +15,12 @@ import 'package:companyplaylist/utils/date/dateFormat.dart';
 meetingMain({BuildContext context, MeetingModel meetingModel}) async {
   MeetingModel _meetingModel = meetingModel;
   bool result = false;
+  bool isChk = false;
 
   Format _format = Format();
 
   TextEditingController _titleController = TextEditingController();
+  TextEditingController _contentController = TextEditingController();
 
   Map<dynamic, dynamic> attendees;
 
@@ -34,6 +36,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
 
   if (_meetingModel != null) {
     _titleController.text = _meetingModel.title;
+    _contentController.text = _meetingModel.contents;
     attendees = _meetingModel.attendees;
     startTime = _format.timeStampToDateTime(_meetingModel.startTime);
   }
@@ -299,6 +302,76 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                                     );
                                   })),
                     ],
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 25,
+                          height: 30,
+                          child: Checkbox(
+                            value: isChk,
+                            onChanged: (value) {
+                              setState(() {
+                                isChk = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Text(
+                          "추가 항목 입력",
+                          style: customStyle(
+                            fontSize: 14,
+                            fontColor: mainColor,
+                            fontWeightName: 'Regular',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: isChk,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: customWidth(context: context, widthSize: 0.25),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.list,
+                              ),
+                              Padding(padding: EdgeInsets.only(left: 10)),
+                              Text(
+                                "상세 내용",
+                                style: customStyle(
+                                  fontSize: 14,
+                                  fontColor: mainColor,
+                                  fontWeightName: 'Regular',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: customWidth(context: context, widthSize: 0.6),
+                          child: TextField(
+                            maxLines: null,
+                            controller: _contentController,
+                            keyboardType: TextInputType.multiline,
+                            style: customStyle(
+                              fontSize: 13,
+                              fontColor: mainColor,
+                              fontWeightName: 'Bold',
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "상세 내용을 입력하세요",
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 20)),
                 ],

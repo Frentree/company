@@ -117,7 +117,7 @@ Container certificationNumberTextFormField(
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: greyColor, width: 10),
+            borderSide: BorderSide(color: grayColor, width: 10),
           ),
         ),
         onChanged: (value) {

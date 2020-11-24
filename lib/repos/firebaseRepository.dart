@@ -30,11 +30,6 @@ class FirebaseRepository {
         companyCode: companyCode,
       );
 
-  Future<Map<String, String>> getColleague(
-          {String loginUserMail, String companyCode}) =>
-      _firebaseMethods.getColleague(
-          loginUserMail: loginUserMail, companyCode: companyCode);
-
   Future<void> saveMeeting({MeetingModel meetingModel, String companyCode}) =>
       _firebaseMethods.saveMeeting(
         meetingModel: meetingModel,
@@ -58,4 +53,15 @@ class FirebaseRepository {
         companyCode: companyCode,
         selectedDate: selectedDate,
       );
+
+  Stream<QuerySnapshot> getSelectedWeekCompanyWork({String companyCode, List<Timestamp> selectedWeek}) =>
+      _firebaseMethods.getSelectedWeekCompanyWork(
+        companyCode: companyCode,
+        selectedWeek: selectedWeek,
+      );
+
+  Future<Map<String, String>> getColleague(
+      {String loginUserMail, String companyCode}) =>
+      _firebaseMethods.getColleague(
+          loginUserMail: loginUserMail, companyCode: companyCode);
 }

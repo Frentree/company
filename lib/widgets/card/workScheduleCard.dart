@@ -19,7 +19,11 @@ const titleFontSize = 15.0;
 const writeTimeFontSize = 14.0;
 const fontColor = mainColor;
 
-Card workScheduleCard({BuildContext context, String companyCode, WorkModel workModel, bool isDetail}) {
+Card workScheduleCard(
+    {BuildContext context,
+    String companyCode,
+    WorkModel workModel,
+    bool isDetail}) {
   return Card(
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -34,7 +38,7 @@ Card workScheduleCard({BuildContext context, String companyCode, WorkModel workM
             horizontal: customWidth(context: context, widthSize: 0.02),
             vertical: customHeight(context: context, heightSize: 0.01)),
         child: isDetail
-            ? detailContents(
+            ? workDetailContents(
                 context: context,
                 companyCode: companyCode,
                 workModel: workModel,
@@ -49,14 +53,15 @@ Card workScheduleCard({BuildContext context, String companyCode, WorkModel workM
   );
 }
 
-Container titleCard({BuildContext context, String companyCode, WorkModel workModel, bool isDetail}) {
+Container titleCard(
+    {BuildContext context,
+    String companyCode,
+    WorkModel workModel,
+    bool isDetail}) {
   Format _format = Format();
 
   return Container(
-    height: customHeight(
-      context: context,
-      heightSize: 0.06
-    ),
+    height: customHeight(context: context, heightSize: 0.06),
     child: Row(
       children: [
         //시간대
@@ -94,8 +99,8 @@ Container titleCard({BuildContext context, String companyCode, WorkModel workMod
         //제목
         Container(
           width: workModel.type == "외근"
-              ? customWidth(context: context, widthSize: 0.45)
-              : customWidth(context: context, widthSize: 0.6),
+              ? customWidth(context: context, widthSize: 0.4)
+              : customWidth(context: context, widthSize: 0.55),
           child: Text(
             workModel.title,
             style: customStyle(
@@ -105,21 +110,21 @@ Container titleCard({BuildContext context, String companyCode, WorkModel workMod
                 height: 1),
           ),
         ),
-        workModel.type == "외근"
-            ? Container(
-                width: customWidth(context: context, widthSize: 0.15),
-                child: Text(
-                  workModel.location == null ? "" : "[${workModel.location}]",
-                  style: customStyle(
-                      fontSize: titleFontSize,
-                      fontWeightName: "Medium",
-                      fontColor: mainColor,
-                      height: 1),
-                ),
-              )
-            : Container(),
+        Visibility(
+          visible: workModel.type == "외근",
+          child: Container(
+            width: customWidth(context: context, widthSize: 0.15),
+            child: Text(
+                workModel.location == "" ? "" : "[${workModel.location}]",
+                style: customStyle(
+                    fontSize: titleFontSize,
+                    fontWeightName: "Medium",
+                    fontColor: mainColor,
+                    height: 1)),
+          ),
+        ),
         SizedBox(
-          width: customWidth(context: context, widthSize: 0.02),
+          width: customWidth(context: context, widthSize: 0.01),
         ),
 
         //popup 버튼
@@ -135,9 +140,8 @@ Container titleCard({BuildContext context, String companyCode, WorkModel workMod
   );
 }
 
-Column detailContents(
+Column workDetailContents(
     {BuildContext context,
-    String documentId,
     String companyCode,
     WorkModel workModel,
     bool isDetail}) {
@@ -161,23 +165,25 @@ Column detailContents(
       SizedBox(
         height: customHeight(context: context, heightSize: 0.01),
       ),
-
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Text(
-            workModel.createDate == workModel.lastModDate ? "작성시간 : " : "수정시간 : ",
+            workModel.createDate == workModel.lastModDate
+                ? "작성시간 : "
+                : "수정시간 : ",
             style: customStyle(
                 fontSize: writeTimeFontSize,
                 fontWeightName: "Regular",
-                fontColor: greyColor),
+                fontColor: grayColor),
           ),
           Text(
-            _format.dateToString(_format.timeStampToDateTime(workModel.lastModDate)),
+            _format.dateToString(
+                _format.timeStampToDateTime(workModel.lastModDate)),
             style: customStyle(
                 fontSize: writeTimeFontSize,
                 fontWeightName: "Regular",
-                fontColor: greyColor),
+                fontColor: grayColor),
           )
         ],
       )

@@ -60,7 +60,7 @@ MainBottomSheet(BuildContext context) {
                   style: customStyle(
                       fontSize: 16,
                       fontWeightName:'Regular',
-                      fontColor: greyColor
+                      fontColor: grayColor
                   ),
                 ),
                 Padding(
@@ -234,7 +234,7 @@ MainBottomSheet(BuildContext context) {
                   style: customStyle(
                       fontSize: 14,
                       fontWeightName:'Regular',
-                      fontColor: greyColor
+                      fontColor: grayColor
                   ),
                 ),
                 Padding(

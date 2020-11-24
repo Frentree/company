@@ -110,11 +110,11 @@ class Format{
     return dateTime;
   }
 
-  List<DateTime> oneWeekDay(DateTime selectTime){
+  List<Timestamp> oneWeekDay(DateTime selectTime){
     DateTime monday = selectTime.subtract(Duration(days: selectTime.weekday -1));
-    List<DateTime> weekDay = [monday];
+    List<Timestamp> weekDay = [dateTimeToTimeStamp(monday)];
     for(int i = 1; i < 5; i++){
-      weekDay.add(monday.add(Duration(days: i)));
+      weekDay.add(dateTimeToTimeStamp(monday.add(Duration(days: i))));
     }
 
     return weekDay;

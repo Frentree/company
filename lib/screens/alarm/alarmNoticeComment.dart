@@ -92,7 +92,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                           DateTime.parse(documents[i].data['createDate'].toDate().toString())
                               .add(Duration(hours: 9))),
                       style:
-                      customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
+                      customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                     ),
                     Text(
                       documents[i].data['comments'].toString(),
@@ -235,7 +235,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                 ),
                                 Text(
                                   noticeCreateDate,
-                                  style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
+                                  style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                                 ),
                                 Container(
                                   width: customWidth(context: context, widthSize: 0.7),
@@ -255,7 +255,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                       Container(
                         height: customHeight(context: context, heightSize: 0.001),
                         width: double.infinity,
-                        color: greyColor,
+                        color: grayColor,
                       ),
                       SizedBox(
                         height: customHeight(context: context, heightSize: 0.02),
@@ -349,7 +349,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                     style: customStyle(
                                                         fontSize: 12,
                                                         fontWeightName: 'Regular',
-                                                        fontColor: greyColor),
+                                                        fontColor: grayColor),
                                                   ),
                                                   Container(
                                                     width: 100,
@@ -514,7 +514,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                     Container(
                       height: customHeight(context: context, heightSize: 0.001),
                       width: double.infinity,
-                      color: greyColor,
+                      color: grayColor,
                     ),
                     Container(
                       width: double.infinity,

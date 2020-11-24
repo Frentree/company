@@ -160,7 +160,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                               DateTime.parse(documents[i].data['createDate'].toDate().toString())
                                   .add(Duration(hours: 9))),
                           style:
-                          customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
+                          customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                         ),
                         Container(
                           padding: EdgeInsets.only(left: 10),
@@ -460,7 +460,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                     ),
                                     Text(
                                       noticeCreateDate,
-                                      style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
+                                      style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                                     ),
                                     Container(
                                       width: customWidth(context: context, widthSize: 0.7),
@@ -480,7 +480,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                           Container(
                             height: customHeight(context: context, heightSize: 0.001),
                             width: double.infinity,
-                            color: greyColor,
+                            color: grayColor,
                           ),
                           SizedBox(
                             height: customHeight(context: context, heightSize: 0.02),
@@ -573,7 +573,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                         DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
                                                             DateTime.parse(documents[index].data['createDate'].toDate().toString())
                                                                 .add(Duration(hours: 9))),
-                                                        style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
+                                                        style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                                                       ),
                                                       Container(
                                                         padding: EdgeInsets.only(left: 10),
@@ -837,7 +837,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                       Container(
                         height: customHeight(context: context, heightSize: 0.001),
                         width: double.infinity,
-                        color: greyColor,
+                        color: grayColor,
                       ),
                       Container(
                         width: double.infinity,

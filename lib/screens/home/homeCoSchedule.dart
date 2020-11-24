@@ -2,6 +2,8 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:companyplaylist/widgets/bottomsheet/schedule/coScheduleDetail.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:companyplaylist/widgets/table/workDetailTable.dart';
 
@@ -27,16 +29,16 @@ import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
 
 import '../../models/workModel.dart';
 
-
 class HomeScheduleCoPage extends StatefulWidget {
   @override
   HomeScheduleCoPageState createState() => HomeScheduleCoPageState();
 }
 
 class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
-  DateTime selectTime = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 00);
-  Firestore _db = Firestore.instance;
-  User _companyUser;
+  DateTime selectTime = DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day, 21, 00);
+  FirebaseRepository _repository = FirebaseRepository();
+  User _loginUser;
   CalendarController _calendarController;
 
   List<bool> isDetail = List<bool>();
@@ -45,21 +47,22 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
   Format _format = Format();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _calendarController = CalendarController();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _calendarController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-    _companyUser = _loginUserInfoProvider.getLoginUser();
+    LoginUserInfoProvider _loginUserInfoProvider =
+        Provider.of<LoginUserInfoProvider>(context);
+    _loginUser = _loginUserInfoProvider.getLoginUser();
 
     return Scaffold(
       body: Column(
@@ -88,233 +91,202 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 formatButtonTextStyle: customStyle(
                     fontSize: 13,
                     fontWeightName: "Bold",
-                    fontColor: whiteColor
-                ),
+                    fontColor: whiteColor),
               ),
-              calendarStyle:  CalendarStyle(
+              calendarStyle: CalendarStyle(
                 selectedColor: mainColor,
                 selectedStyle: customStyle(
                     fontSize: 18,
                     fontWeightName: "Bold",
-                    fontColor: whiteColor
-                ),
+                    fontColor: whiteColor),
               ),
             ),
           ),
           Container(
-              width: customWidth(context: context, widthSize: 1),
-              color: Colors.white,
-              child: GestureDetector(
-                onTap: (){
-                  setState(() {
-                    isTable = !isTable;
-                  });
-                },
-                child: Column(
-                  children: [
-                    Text(
-                        isTable ? "일간" : "상세"
-                    ),
-                    Icon(
-                        isTable ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down
-                    ),
-                  ],
-                ),
-              )
+            width: customWidth(context: context, widthSize: 1),
+            color: Colors.white,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isTable = !isTable;
+                });
+              },
+              child: Column(
+                children: [
+                  Text(isTable ? "일간" : "상세"),
+                  Icon(isTable
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down),
+                ],
+              ),
+            ),
           ),
 
-          isTable ? Container(
-            child: StreamBuilder(
-              stream:_db.collection("company").document(_companyUser.companyCode).collection("user").snapshots(),
-              builder: (BuildContext context, AsyncSnapshot snapshot){
-                if(snapshot.data == null){
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                DateTime weekMonday = selectTime.subtract(Duration(days: selectTime.weekday-1));
-
-                DateTime testTime = DateTime(weekMonday.year, weekMonday.month, weekMonday.day, 12, 00);
-                List<DateTime> term = [testTime, testTime.add(Duration(days: 1)), testTime.add(Duration(days: 2)), testTime.add(Duration(days: 3)), testTime.add(Duration(days: 4))];
-                List<Timestamp> testTerm = [];
-                term.forEach((element) {
-                  testTerm.add(_format.dateTimeToTimeStamp(element));
-                });
-                List<DocumentSnapshot> _coUser = snapshot.data.documents ?? [];
-                List<String> _coUserUid = [_companyUser.mail];
-                Map<String, String> name = {_companyUser.mail : "나"};
-                _coUser.forEach((element) {
-                  if(element.documentID != _companyUser.mail){
-                    _coUserUid.add(element.documentID);
-                    name[element.documentID] = element.data["name"];
-                  }
-                });
-
-                return StreamBuilder(
-                  stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("startDate", whereIn: testTerm).snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot){
-                    if(snapshot.data == null){
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    var _companyWork = snapshot.data.documents ?? [];
-
-                    List<WorkModel> convertCompanyWork = [];
-
-                    _companyWork.forEach((doc) => convertCompanyWork.add(WorkModel.fromMap(doc.data, doc.documentID)));
-
-                    Map<String, List<WorkModel>> mapB = Map();
-                    _coUserUid.forEach((element) {
-                      mapB[element] = [];
-                    });
-
-                    convertCompanyWork.forEach((element) {
-                      mapB[element.createUid].add(element);
-                      name[element.createUid] = element.name;
-                    });
-
-                    List<TableRow> childRow = [];
-
-                    mapB.forEach((key, value) {
-                      childRow.add(
-                          workDetailTableRow(
-                              context: context,
-                              companyWork: mapB[key],
-                              name: name[key]
-                          )
-                      );
-                    });
-
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08)),
-                      child: Container(
-                        //color: Colors.purple,
-                        height: MediaQuery.of(context).size.height <= 600 ? customHeight(context: context, heightSize: 0.4) : customHeight(context: context, heightSize: 0.48),
-                        child: SingleChildScrollView(
-                          child: Table(
-                              border: TableBorder.all(width: 0.1),
-                              columnWidths: {
-                                5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
-                              },
-                              children: childRow
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ) : StreamBuilder(
-            stream:_db.collection("company").document(_companyUser.companyCode).collection("user").orderBy("name").snapshots(),
+          StreamBuilder(
+            stream: _repository.getColleague(loginUserMail: _loginUser.mail, companyCode: _loginUser.companyCode).asStream(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
-              if(snapshot.data == null){
+              if (snapshot.data == null) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              List<DocumentSnapshot> _coUser = snapshot.data.documents ?? [];
-              List<String> _coUserUid = [];
-              List<String> _name =[];
-              _coUser.forEach((element) {
-                if(element.documentID != _companyUser.mail){
-                  _coUserUid.add(element.documentID);
-                  _name.add(element.data["name"]);
-                }
-                print(_coUserUid);
-              });
-              return StreamBuilder(
-                stream:_db.collection("company").document(_companyUser.companyCode).collection("work").orderBy("name").where("createUid", whereIn: _coUserUid).where("startDate", isEqualTo: _format.dateTimeToTimeStamp(selectTime)).orderBy("timeTest").snapshots(),
+
+              Map<dynamic, dynamic> colleague = isTable ? {_loginUser.mail : "나"} : {}; //회원 리스트
+              colleague.addAll(snapshot.data);
+
+              return isTable ? StreamBuilder(
+                stream: _repository.getSelectedWeekCompanyWork(companyCode: _loginUser.companyCode, selectedWeek: _format.oneWeekDay(selectTime)),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
-                  if(snapshot.data == null){
+                  if (snapshot.data == null) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  var _companyWork = snapshot.data.documents ?? [];
 
-                  List<WorkModel> convertCompanyWork = [];
+                  Map<String, List<dynamic>> companyWorkData = {};//회원 별 데이터
 
-                  _companyWork.forEach((doc) => convertCompanyWork.add(WorkModel.fromMap(doc.data, doc.documentID)));
-
-                  Map<String, List<WorkModel>> mapB = Map();
-                  _coUserUid.forEach((element) {
-                    mapB[element] = [];
+                  colleague.keys.forEach((element) {
+                    companyWorkData[element] = []; //회원 별 데이터에 키값 저장
                   });
 
-                  convertCompanyWork.forEach((element) {
-                    mapB[element.createUid].add(element);
-                  });
-
-                  List<String> k = [];
-                  print(mapB);
-                  List<Map<String, List<WorkModel>>> a = List();
-                  mapB.forEach((key, value) {
-                    a.add({key: value});
-                    k.add(key);
-                  });
-
-                  if(_companyWork.length == 0) {
-                    return Expanded(
-                      child: ListView(
-                        children: [
-                          Card(
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: BorderSide(
-                                width: 1,
-                                color: boarderColor,
-                              ),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: customHeight(context: context, heightSize: 0.02)),
-                                  child: Text(
-                                    "일정이 없습니다.",
-                                    style: customStyle(
-                                        fontColor: blackColor,
-                                        fontSize: 16,
-                                        fontWeightName: "Medium"
-                                    ),
-                                  )
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  else{
-                    while(isDetail.length < _companyWork.length){
-                      isDetail.add(false);
+                  snapshot.data.documents.forEach((element){
+                    if(element.data["type"] == "내근" || element.data["type"] == "외근"){
+                      companyWorkData[element.data["createUid"]].add(element);
                     }
 
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: a.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            child: workCoScheduleCard(
-                              context: context,
-                              companyWork: a[index],
-                              key: k[index],
-                              name: _name[index]
-                            ),
-                            onTap: (){
-                              NotImplementedFunction(context);
-                            },
-                          );
-                        },
-                      ),
+                    else if(element.data["type"] == "미팅"){
+                      companyWorkData[element.data["createUid"]].add(element);
+                      if(element.data["attendees"] != null){
+                        element.data["attendees"].keys.forEach((key){
+                          companyWorkData[key].add(element);
+                        });
+                      }
+                    }
+                  });
+
+                  List<TableRow> childRow = [];
+
+                  companyWorkData.forEach((key, value) {
+                    childRow.add(
+                      workDetailTableRow(
+                        context: context,
+                        companyWork: value,
+                        loginUserMail: key,
+                        name: colleague[key],
+                      )
                     );
-                  }
+                  });
+
+                  return Expanded(
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08), vertical: customHeight(context: context, heightSize: 0.01)),
+                        child: SingleChildScrollView(
+                          child: Table(
+                            border: TableBorder.all(width: 0.1,),
+                            columnWidths: {
+                              5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
+                            },
+                            children: childRow,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 },
+              ) : Expanded(
+                child: Column(
+                  children: [
+                    InkWell(
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            width: 1,
+                            color: blueColor,
+                          ),
+                        ),
+                        child: Center(
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: customHeight(
+                                      context: context, heightSize: 0.02)),
+                              child: Text(
+                                "이 시각 동료 근무 현황 보기",
+                                style: customStyle(
+                                    fontColor: blackColor,
+                                    fontSize: 16,
+                                    fontWeightName: "Regular",),
+                              )),
+                        ),
+                      ),
+                      onTap: (){
+                        NotImplementedFunction(context);
+                      },
+                    ),
+                    StreamBuilder(
+                      stream: _repository.getSelectedDateCompanyWork(companyCode: _loginUser.companyCode, selectedDate: _format.dateTimeToTimeStamp(selectTime)),
+                      builder: (BuildContext context, AsyncSnapshot snapshot){
+                        if (snapshot.data == null) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        Map<String, List<dynamic>> companyWorkData = {};//회원 별 데이터
+
+                        colleague.keys.forEach((element) {
+                          companyWorkData[element] = []; //회원 별 데이터에 키값 저장
+                        });
+
+                        snapshot.data.documents.forEach((element){
+                          if(element.data["createUid"] != _loginUser.mail) {
+                            companyWorkData[element.data["createUid"]].add(element);
+                          }
+                          else{
+                            if(element.data["type"] == "미팅"){
+                              if(element.data["attendees"] != null){
+                                element.data["attendees"].keys.forEach((key){
+                                  if(companyWorkData.keys.contains(key)){
+                                    companyWorkData[key].add(element);
+                                  }
+                                });
+                              }
+                            }
+                          }
+                        });
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: companyWorkData.keys.length,
+                            itemBuilder: (context, index){
+                              return GestureDetector(
+                                child: workCoScheduleCard(
+                                  context: context,
+                                  name: colleague[companyWorkData.keys.elementAt(index)],
+                                  workData: companyWorkData[companyWorkData.keys.elementAt(index)],
+                                ),
+                                onTap: companyWorkData[companyWorkData.keys.elementAt(index)].length != 0 ? (){
+                                  coScheduleDetail(
+                                    context: context,
+                                    name: colleague[companyWorkData.keys.elementAt(index)],
+                                    loginUserMail: colleague.keys.elementAt(index),
+                                    scheduleData: companyWorkData[companyWorkData.keys.elementAt(index)],
+                                  );
+                                } : null
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               );
             },
           )
+
         ],
       ),
     );

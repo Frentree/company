@@ -34,7 +34,7 @@ Card meetingScheduleCard({BuildContext context, String loginUserMail, String com
             horizontal: customWidth(context: context, widthSize: 0.02),
             vertical: customHeight(context: context, heightSize: 0.01)),
         child: isDetail
-            ? detailContents(
+            ? meetingDetailContents(
           context: context,
           loginUserMail: loginUserMail,
           companyCode: companyCode,
@@ -95,7 +95,7 @@ Container titleCard({BuildContext context, String loginUserMail, String companyC
 
         //제목
         Container(
-          width: customWidth(context: context, widthSize: 0.6),
+          width: customWidth(context: context, widthSize: 0.55),
           child: Text(
             meetingModel.title,
             style: customStyle(
@@ -106,7 +106,7 @@ Container titleCard({BuildContext context, String loginUserMail, String companyC
           ),
         ),
         SizedBox(
-          width: customWidth(context: context, widthSize: 0.02),
+          width: customWidth(context: context, widthSize: 0.01),
         ),
 
         //popup 버튼
@@ -120,7 +120,7 @@ Container titleCard({BuildContext context, String loginUserMail, String companyC
   );
 }
 
-Column detailContents(
+Column meetingDetailContents(
     {BuildContext context,
       String loginUserMail,
       String companyCode,
@@ -148,14 +148,14 @@ Column detailContents(
             style: customStyle(
                 fontSize: writeTimeFontSize,
                 fontWeightName: "Regular",
-                fontColor: greyColor),
+                fontColor: grayColor),
           ),
           Text(
             _format.dateToString(_format.timeStampToDateTime(meetingModel.lastModDate)),
             style: customStyle(
                 fontSize: writeTimeFontSize,
                 fontWeightName: "Regular",
-                fontColor: greyColor),
+                fontColor: grayColor),
           )
         ],
       ),
@@ -177,14 +177,14 @@ Column detailContents(
               style: customStyle(
                   fontSize: writeTimeFontSize,
                   fontWeightName: "Regular",
-                  fontColor: greyColor),
+                  fontColor: grayColor),
             ),
             Text(
               meetingModel.name,
               style: customStyle(
                   fontSize: writeTimeFontSize,
                   fontWeightName: "Regular",
-                  fontColor: greyColor),
+                  fontColor: grayColor),
             )
           ],
         ),

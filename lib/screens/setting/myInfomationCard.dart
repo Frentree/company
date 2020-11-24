@@ -80,7 +80,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
               "개발팀",
               style: customStyle(
                 fontSize: 14,
-                fontColor: greyColor,
+                fontColor: grayColor,
                 fontWeightName: 'Medium',
               ),
             ),
@@ -89,7 +89,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
               "사원",
               style: customStyle(
                 fontSize: 14,
-                fontColor: greyColor,
+                fontColor: grayColor,
                 fontWeightName: 'Medium',
               ),
             ),
@@ -134,7 +134,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                 "2018.11.01",
                 style: customStyle(
                   fontSize: 14,
-                  fontColor: greyColor,
+                  fontColor: grayColor,
                   fontWeightName: 'Medium',
                 ),
               ),
@@ -164,7 +164,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                 user.mail,
                 style: customStyle(
                   fontSize: 14,
-                  fontColor: greyColor,
+                  fontColor: grayColor,
                   fontWeightName: 'Medium',
                 ),
               ),
@@ -194,7 +194,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                 user.phone,
                 style: customStyle(
                   fontSize: 14,
-                  fontColor: greyColor,
+                  fontColor: grayColor,
                   fontWeightName: 'Medium',
                 ),
               ),
@@ -224,7 +224,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                 "",
                 style: customStyle(
                   fontSize: 14,
-                  fontColor: greyColor,
+                  fontColor: grayColor,
                   fontWeightName: 'Medium',
                 ),
               ),

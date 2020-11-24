@@ -21,6 +21,7 @@ class MeetingModel {
   String name;
   String type;
   String title;
+  String contents;
   Map<dynamic, dynamic> attendees;
   Timestamp createDate;
   Timestamp lastModDate;
@@ -34,6 +35,7 @@ class MeetingModel {
     this.name,
     this.type,
     this.title,
+    this.contents,
     this.attendees,
     this.createDate,
     this.lastModDate,
@@ -48,6 +50,7 @@ class MeetingModel {
         name = snapshot["name"] ?? "",
         type = snapshot["type"] ?? "",
         title = snapshot["title"] ?? "",
+        contents = snapshot["contents"] ?? "",
         attendees = snapshot["attendees"] ?? null,
         createDate = snapshot["createDate"] ?? null,
         lastModDate = snapshot["lastModDate"] ?? null,
@@ -61,6 +64,7 @@ class MeetingModel {
       "name": name,
       "type": type,
       "title": title,
+      "contents": contents,
       "attendees": attendees,
       "createDate": createDate,
       "lastModDate": lastModDate,

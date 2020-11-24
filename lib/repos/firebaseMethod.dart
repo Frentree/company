@@ -48,23 +48,6 @@ class FirebaseMethods {
         .delete();
   }
 
-  Future<Map<String, String>> getColleague(
-      {String loginUserMail, String companyCode}) async {
-    Map<String, String> colleague = {};
-    QuerySnapshot querySnapshot = await firestore
-        .collection(COMPANY)
-        .document(companyCode)
-        .collection(USER)
-        .getDocuments();
-    querySnapshot.documents.forEach((element) {
-      if (element.documentID != loginUserMail) {
-        colleague[element.documentID] = element.data["name"];
-      }
-    });
-
-    return colleague;
-  }
-
   Future<void> saveMeeting(
       {MeetingModel meetingModel, String companyCode}) async {
     return await firestore
@@ -102,6 +85,35 @@ class FirebaseMethods {
         .where("startDate", isEqualTo: selectedDate)
         .orderBy("startTime")
         .snapshots();
+  }
+
+  Stream<QuerySnapshot> getSelectedWeekCompanyWork(
+      {String companyCode, List<Timestamp> selectedWeek}) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(WORK)
+        .where("startDate", whereIn: selectedWeek)
+        .orderBy("startTime")
+        .snapshots();
+  }
+
+  Future<Map<String, String>> getColleague(
+      {String loginUserMail, String companyCode}) async {
+    Map<String, String> colleague = {};
+    QuerySnapshot querySnapshot = await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .orderBy("name")
+        .getDocuments();
+    querySnapshot.documents.forEach((element) {
+      if (element.documentID != loginUserMail) {
+        colleague[element.documentID] = element.data["name"];
+      }
+    });
+
+    return colleague;
   }
 }
 

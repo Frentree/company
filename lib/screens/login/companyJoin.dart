@@ -80,7 +80,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
           style: customStyle(
             fontSize: 14,
             fontWeightName: "Regular",
-            fontColor: greyColor
+            fontColor: grayColor
           ),
         ),
 

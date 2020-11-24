@@ -291,7 +291,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   style: customStyle(
                                       fontSize: 12,
                                       fontWeightName: 'Regular',
-                                      fontColor: greyColor
+                                      fontColor: grayColor
                                   ),
                                 ),
                                 Column(

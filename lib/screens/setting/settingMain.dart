@@ -180,7 +180,7 @@ class SettingMainPageState extends State<SettingMainPage>{
                       '0.01',
                       style: customStyle(
                         fontSize: 12,
-                        fontColor: greyColor
+                        fontColor: grayColor
                       ),
                     ),
                   ],
