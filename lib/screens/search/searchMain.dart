@@ -8,6 +8,7 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/home/homeSchedule.dart';
 import 'package:companyplaylist/screens/search/seachAll.dart';
+import 'package:companyplaylist/screens/search/searchContent.dart';
 import 'package:companyplaylist/screens/search/searchFilter.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
@@ -25,6 +26,7 @@ class SearchMainPage extends StatelessWidget {
     Map<String,Widget> _page = {
       "searchAll" : SearchAllPage(),
       "searchFilter" : SearchFilterPage(),
+      "searchContent" : SearchContentPage(),
     };
 
     return Scaffold(

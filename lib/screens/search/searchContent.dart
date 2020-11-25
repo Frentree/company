@@ -7,18 +7,15 @@ import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:companyplaylist/widgets/card/searchDataCard.dart';
-import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class SearchAllPage extends StatefulWidget {
+class SearchContentPage extends StatefulWidget {
   @override
-  SearchAllPageState createState() => SearchAllPageState();
+  SearchContentPageState createState() => SearchContentPageState();
 }
 
-class SearchAllPageState extends State<SearchAllPage> {
+class SearchContentPageState extends State<SearchContentPage> {
   final Firestore _db = Firestore.instance;
 
   TextEditingController _seachTitleCon = TextEditingController();
@@ -105,42 +102,6 @@ class SearchAllPageState extends State<SearchAllPage> {
           SizedBox(
             height: 15,
           ),
-          Container(
-            width: customWidth(widthSize: 1, context: context),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                filterBtn(
-                    context: context,
-                    heightSize: 0.04,
-                    widthSize: 0.3,
-                    btnText: "전체검색",
-                    tabIndexVariable: tabIndex,
-                    tabOrder: 0,
-                    color: tabColor,
-                    tabAction: () {
-                      setState(() {
-                        tabIndex = 0;
-                        loginScreenChangeProvider.setPageName(pageName: "searchAll");
-                      });
-                    }),
-                filterBtn(
-                    context: context,
-                    heightSize: 0.04,
-                    widthSize: 0.3,
-                    btnText: "필터검색",
-                    tabIndexVariable: tabIndex,
-                    tabOrder: 1,
-                    color: tabColor,
-                    tabAction: () {
-                      setState(() {
-                        tabIndex = 1;
-                        loginScreenChangeProvider.setPageName(pageName: "searchFilter");
-                      });
-                    }),
-              ],
-            ),
-          ),
           SizedBox(
             height: 10,
           ),
@@ -189,58 +150,56 @@ class SearchAllPageState extends State<SearchAllPage> {
                         children: [
                           _seachTitleCon.text.trim() != ""
                               ? Text.rich(
+                            TextSpan(
+                                text: _seachTitleCon.text,
+                                style: customStyle(
+                                  fontSize: 12,
+                                  fontColor: blueColor,
+                                  fontWeightName: 'Bold',
+                                ),
+                                children: [
                                   TextSpan(
-                                      text: _seachTitleCon.text,
-                                      style: customStyle(
-                                        fontSize: 12,
-                                        fontColor: blueColor,
-                                        fontWeightName: 'Bold',
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: " 검색어에 대해 공지사항에서 " + documents.length.toString() + "건 검색되었습니다.",
-                                          style: customStyle(
-                                            fontSize: 12,
-                                            fontColor: mainColor,
-                                            fontWeightName: 'Regular',
-                                          ),
-                                        ),
-                                      ]),
-                                )
+                                    text: " 검색어에 대해 공지사항에서 " + documents.length.toString() + "건 검색되었습니다.",
+                                    style: customStyle(
+                                      fontSize: 12,
+                                      fontColor: mainColor,
+                                      fontWeightName: 'Regular',
+                                    ),
+                                  ),
+                                ]),
+                          )
                               : Text(""),
                           SizedBox(
                             height: customHeight(heightSize: 0.01, context: context),
                           ),
                           Container(
                               child: Column(
-                            children: [
-                              Column(
-                                children: getSearchNoticeDataList(documents, context),
-                              ),
-                              SizedBox(
-                                height: customHeight(heightSize: 0.01, context: context),
-                              ),
-                              (documents.length > 4)
-                                  ? InkWell(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: customWidth(context: context, widthSize: 1),
-                                        child: Text(
-                                          "더보기",
-                                          style: customStyle(
-                                            fontColor: blueColor,
-                                            fontSize: 12,
-                                            fontWeightName: 'Medium',
-                                          ),
+                                children: [
+                                  Column(
+                                    children: getSearchNoticeDataList(documents, context),
+                                  ),
+                                  SizedBox(
+                                    height: customHeight(heightSize: 0.01, context: context),
+                                  ),
+                                  (documents.length > 4)
+                                      ? InkWell(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: customWidth(context: context, widthSize: 1),
+                                      child: Text(
+                                        "더보기",
+                                        style: customStyle(
+                                          fontColor: blueColor,
+                                          fontSize: 12,
+                                          fontWeightName: 'Medium',
                                         ),
                                       ),
-                                      onTap: () {
-                                        loginScreenChangeProvider.setPageName(pageName: "searchContent");
-                                      },
-                                    )
-                                  : Text(""),
-                            ],
-                          )),
+                                    ),
+                                    onTap: () {},
+                                  )
+                                      : Text(""),
+                                ],
+                              )),
                           SizedBox(
                             height: customHeight(heightSize: 0.01, context: context),
                           ),
@@ -308,24 +267,24 @@ class SearchAllPageState extends State<SearchAllPage> {
                         children: [
                           (_seachTitleCon.text != "")
                               ? Text.rich(
+                            TextSpan(
+                                text: _seachTitleCon.text,
+                                style: customStyle(
+                                  fontSize: 12,
+                                  fontColor: blueColor,
+                                  fontWeightName: 'Bold',
+                                ),
+                                children: [
                                   TextSpan(
-                                      text: _seachTitleCon.text,
-                                      style: customStyle(
-                                        fontSize: 12,
-                                        fontColor: blueColor,
-                                        fontWeightName: 'Bold',
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: " 검색어에 대해 일정에서 " + documents.length.toString() + "건 검색되었습니다.",
-                                          style: customStyle(
-                                            fontSize: 12,
-                                            fontColor: mainColor,
-                                            fontWeightName: 'Regular',
-                                          ),
-                                        ),
-                                      ]),
-                                )
+                                    text: " 검색어에 대해 일정에서 " + documents.length.toString() + "건 검색되었습니다.",
+                                    style: customStyle(
+                                      fontSize: 12,
+                                      fontColor: mainColor,
+                                      fontWeightName: 'Regular',
+                                    ),
+                                  ),
+                                ]),
+                          )
                               : Text(""),
                           SizedBox(
                             height: customHeight(heightSize: 0.01, context: context),
@@ -338,22 +297,20 @@ class SearchAllPageState extends State<SearchAllPage> {
                                 ),
                                 (documents.length > 4)
                                     ? InkWell(
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          width: customWidth(context: context, widthSize: 1),
-                                          child: Text(
-                                            "더보기",
-                                            style: customStyle(
-                                              fontColor: blueColor,
-                                              fontSize: 12,
-                                              fontWeightName: 'Medium',
-                                            ),
-                                          ),
-                                        ),
-                                        onTap: () {
-
-                                        },
-                                      )
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: customWidth(context: context, widthSize: 1),
+                                    child: Text(
+                                      "더보기",
+                                      style: customStyle(
+                                        fontColor: blueColor,
+                                        fontSize: 12,
+                                        fontWeightName: 'Medium',
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {},
+                                )
                                     : Text(""),
                               ],
                             ),

@@ -518,6 +518,7 @@ class SearchFilterPageState extends State<SearchFilterPage> {
                               onTap: (){
                                 setState(() {
                                   isfilter = false;
+                                  loginScreenChangeProvider.setPageName(pageName: "searchContent");
                                 });
                               },
                             ),

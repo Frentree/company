@@ -68,7 +68,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
         stream: stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Text("");
           }
           List<DocumentSnapshot> documents =
               snapshot.data.documents;

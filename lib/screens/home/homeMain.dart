@@ -6,6 +6,7 @@ import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmMain.dart';
 import 'package:companyplaylist/screens/search/searchMain.dart';
+import 'package:companyplaylist/screens/setting/gradeMain.dart';
 import 'package:companyplaylist/screens/setting/settingMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workMain.dart';
@@ -30,7 +31,7 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
-  List<Widget> _page = [HomeScheduleMainPage(),SearchMainPage(),null, AlarmMainPage(), SettingMainPage()];
+  List<Widget> _page = [HomeScheduleMainPage(),GradeMainPage(),null, AlarmMainPage(), SettingMainPage()];
 
   //현재 페이지 인덱스
   int _currentPateIndex = 0;

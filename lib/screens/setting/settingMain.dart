@@ -9,9 +9,11 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/setting/myInfomationCard.dart';
 import 'package:companyplaylist/screens/setting/myWork.dart';
+import 'package:companyplaylist/widgets/bottomsheet/setting/settingUserManager.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +42,57 @@ class SettingMainPageState extends State<SettingMainPage>{
     return Scaffold(
       body: ListView(
             children: <Widget>[
+              ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!
+                leading: Icon(Icons.person_outline),
+                title: Text('회사 정보',
+                style: customStyle(
+                  fontColor: Colors.green
+                ),),
+                children:[],
+              ),
+              ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!
+                leading: Icon(Icons.people_outline),
+                title: Text('사용자 관리',
+                  style: customStyle(
+                      fontColor: Colors.green
+                  ),
+                ),
+                childrenPadding: EdgeInsets.only(left: 20),
+                children:[
+                  ListTile(
+                    leading: Icon(Icons.account_tree_outlined),
+                    title: Text('조직도'),
+                    dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.person_add_alt_1_outlined),
+                    title: Text('사용자 추가 요청/삭제'),
+                    dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.badge),
+                    title: Text('사용자 권한 관리'),
+                    dense: true,
+                    onTap: (){
+                      SettingUserManager(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.list_alt_sharp),
+                    title: Text('사용자별 근채/연차/급여 조회'),
+                    dense: true,
+                    onTap: (){
+                      NotImplementedFunction(context);
+                    },
+                  ),
+                ],
+              ),
               ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!
                 leading: Icon(Icons.person_outline),
                 title: Text('내 정보'),
