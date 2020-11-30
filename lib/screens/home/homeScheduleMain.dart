@@ -35,14 +35,11 @@ class HomeScheduleMainPage extends StatefulWidget {
 class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
   int tabIndex = 0;
 
-  Attendance _attendance = Attendance();
-
   List<Widget> _page = [HomeSchedulePage(), HomeScheduleCoPage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Column(
         children: <Widget>[
           Container(

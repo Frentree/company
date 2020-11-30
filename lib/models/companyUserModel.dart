@@ -3,13 +3,9 @@
 이메일 <mail>
 생일 <birthday>
 핸드폰번호 <phone>
-프로필 이미지 <image>
+프로필 이미지 <profilePhoto>
 생성일 <createDate>
 최종수정일 <lastModDate>
-동료일정알림 <alrCoSchedule>
-승인요청알림 <alrApprovalReq>
-출근처리알림 <alrAttendance>
-방해금지모드 <alrNoInterrupt>
 상태 <status>
 레벨 <level>
 직급 <position>
@@ -29,10 +25,6 @@ class CompanyUser {
   String profilePhoto;
   Timestamp createDate;
   Timestamp lastModDate;
-  bool alrCoSchedule;
-  bool alrApprovalReq;
-  bool alrAttendance;
-  bool alrNoInterrupt;
   int status;
   int level;
   String position;
@@ -43,10 +35,6 @@ class CompanyUser {
     this.user,
     this.createDate,
     this.lastModDate,
-    this.alrCoSchedule = true,
-    this.alrApprovalReq = true,
-    this.alrAttendance = true,
-    this.alrNoInterrupt = false,
     this.status = 0,
     this.level = 0,
     this.position,
@@ -60,14 +48,10 @@ class CompanyUser {
         birthday = snapshot["birthday"] ?? "",
         phone = snapshot["phone"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
-        createDate = snapshot["createDate"] ?? "",
-        lastModDate = snapshot["lastModDate"] ?? "",
-        alrCoSchedule = snapshot["alrCoSchedule"] ?? "",
-        alrApprovalReq = snapshot["alrApprovalReq"] ?? "",
-        alrAttendance = snapshot["alrAttendance"] ?? "",
-        alrNoInterrupt = snapshot["alrNoInterrupt"] ?? "",
-        status = snapshot["status"] ?? "",
-        level = snapshot["level"] ?? "",
+        createDate = snapshot["createDate"] ?? null,
+        lastModDate = snapshot["lastModDate"] ?? null,
+        status = snapshot["status"] ?? 0,
+        level = snapshot["level"] ?? 0,
         position = snapshot["position"] ?? "",
         team = snapshot["team"] ?? "";
 
@@ -80,10 +64,6 @@ class CompanyUser {
       "profilePhoto": user.profilePhoto,
       "createDate": createDate,
       "lastModDate": lastModDate,
-      "alrCoSchedule": alrCoSchedule,
-      "alrApprovalReq": alrApprovalReq,
-      "alrAttendance": alrAttendance,
-      "alrNoInterrupt": alrNoInterrupt,
       "status": status,
       "level": level,
       "position": position,

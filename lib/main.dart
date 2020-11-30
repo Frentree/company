@@ -1,8 +1,9 @@
 import 'dart:io';
-
 import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
+import 'package:companyplaylist/screens/login/companyCreate.dart';
+import 'package:companyplaylist/screens/login/companySetMain.dart';
 import 'package:companyplaylist/screens/splash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +12,6 @@ import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-
 
 void main() {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AttendanceCheck>(
           create: (_) => AttendanceCheck(),
-        )
+        ),
       ],
       child: MaterialApp(
         localizationsDelegates: [

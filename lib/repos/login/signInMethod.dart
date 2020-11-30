@@ -8,24 +8,24 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 
 //Repos
 import 'package:companyplaylist/repos/showSnackBarMethod.dart';
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 
 //Model
 import 'package:companyplaylist/models/userModel.dart';
 
 class SignInMethod{
+  FirebaseRepository _repository = FirebaseRepository();
+
   Future<void> signInWithFirebaseAuth({BuildContext context, String mail, String password}) async {
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
-    CrudRepository _crudRepository = CrudRepository.attendance();
-
 
     User _loginUser;
 
     if(mail != "" && password != ""){
       bool _signInEmailResult = await _firebaseAuthProvider.singInWithEmail(mail: mail, password: password);
       if(_signInEmailResult == true){
-        _loginUser = await _crudRepository.getUserDataToFirebaseById(documentId: mail);
+        _loginUser = await _repository.getUser(userMail: mail);
         _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
       }
 

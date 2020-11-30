@@ -101,8 +101,7 @@ Container titleCard({BuildContext context, String loginUserMail, String companyC
             style: customStyle(
                 fontSize: titleFontSize,
                 fontWeightName: "Medium",
-                fontColor: mainColor,
-                height: 1),
+                fontColor: mainColor,),
           ),
         ),
         SizedBox(

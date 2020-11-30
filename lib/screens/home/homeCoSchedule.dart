@@ -84,14 +84,6 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               locale: 'ko_KR',
               headerStyle: HeaderStyle(
                 formatButtonVisible: false,
-                formatButtonDecoration: BoxDecoration(
-                  color: mainColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                formatButtonTextStyle: customStyle(
-                    fontSize: 13,
-                    fontWeightName: "Bold",
-                    fontColor: whiteColor),
               ),
               calendarStyle: CalendarStyle(
                 selectedColor: mainColor,

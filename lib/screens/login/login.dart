@@ -1,18 +1,11 @@
 //Flutter
+import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 
 //Const
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
-
-//Widget
-import 'package:companyplaylist/widgets/button/raisedButton.dart';
-import 'package:companyplaylist/widgets/form/textFormField.dart';
-
-//Provider
-import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 
 //Repos
 import 'package:companyplaylist/repos/login/loginRepository.dart';
@@ -45,96 +38,162 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    //화면 이동을 위한 Provider
-    LoginScreenChangeProvider _loginScreenChangeProvider =
-        Provider.of<LoginScreenChangeProvider>(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        //상단 글자
-        Text(
-          "로그인",
-          style: customStyle(
-            fontSize: 18,
-            fontWeightName: "Medium",
-            fontColor: blueColor,
-          ),
-        ),
-
-        //공백
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.01,
-          ),
-        ),
-
-        //ID/PW 입력 란
-        Container(
+    return Scaffold(
+      backgroundColor: whiteColor,
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (OverscrollIndicatorNotification overScroll) {
+          overScroll.disallowGlow();
+          return false;
+        },
+        child: SingleChildScrollView(
           child: Column(
-            children: <Widget>[
-              textFormField(
-                textEditingController: _mailTextCon,
-                hintText: "이메일",
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: heightRatio(
+                  context: context,
+                  heightRatio: 0.06,
+                ),
+                child: font(
+                  text: "로그인",
+                  textStyle: customStyle(
+                    fontWeightName: "Medium",
+                    fontColor: blueColor,
+                  ),
+                ),
               ),
-              textFormField(
-                textEditingController: _passwordTextCon,
-                hintText: "비밀번호",
+              Container(
+                height: heightRatio(
+                  context: context,
+                  heightRatio: 0.03,
+                ),
+              ),
+              Container(
+                height: heightRatio(
+                  context: context,
+                  heightRatio: 0.24,
+                ),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _mailTextCon,
+                      decoration: InputDecoration(
+                        hintText: "이메일",
+                        hintStyle: customStyle(
+                          fontWeightName: "Regular",
+                          fontColor: mainColor,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: textFieldUnderLine,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      controller: _passwordTextCon,
+                      decoration: InputDecoration(
+                        hintText: "비밀번호",
+                        hintStyle: customStyle(
+                          fontWeightName: "Regular",
+                          fontColor: mainColor,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: textFieldUnderLine,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: heightRatio(
+                  context: context,
+                  heightRatio: 0.025,
+                ),
+              ),
+              Container(
+                height: heightRatio(
+                  context: context,
+                  heightRatio: 0.06,
+                ),
+                width: widthRatio(context: context, widthRatio: 1),
+                padding: EdgeInsets.symmetric(
+                    horizontal: widthRatio(context: context, widthRatio: 0.2)),
+                child: RaisedButton(
+                  color: blueColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(
+                      color: whiteColor,
+                    ),
+                  ),
+                  elevation: 0.0,
+                  child: font(
+                    text: "로그인",
+                    textStyle: customStyle(
+                      fontWeightName: "Medium",
+                      fontColor: whiteColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    _loginRepository.signInWithFirebaseAuth(
+                      context: context,
+                      mail: _mailTextCon.text,
+                      password: _passwordTextCon.text,
+                    );
+                  },
+                ),
+              ),
+              Container(
+                height: heightRatio(
+                  context: context,
+                  heightRatio: 0.025,
+                ),
+              ),
+              Container(
+                height: heightRatio(
+                  context: context,
+                  heightRatio: 0.06,
+                ),
+                width: widthRatio(
+                  context: context,
+                  widthRatio: 1,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: widthRatio(
+                    context: context,
+                    widthRatio: 0.2,
+                  ),
+                ),
+                child: RaisedButton(
+                  color: whiteColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(
+                      color: blueColor,
+                    ),
+                  ),
+                  elevation: 0.0,
+                  child: font(
+                    text: "회원가입",
+                    textStyle: customStyle(
+                      fontWeightName: "Medium",
+                      fontColor: blueColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/SignUp");
+                  },
+                ),
               ),
             ],
           ),
         ),
-
-        //공백
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.05,
-          ),
-        ),
-
-        //로그인 버튼
-        Row(
-          children: <Widget>[
-            Spacer(),
-            loginScreenRaisedBtn(
-              context: context,
-              btnColor: blueColor,
-              btnText: "로그인",
-              btnTextColor: whiteColor,
-              btnAction: () => _loginRepository.signInWithFirebaseAuth(
-                context: context,
-                mail: _mailTextCon.text,
-                password: _passwordTextCon.text,
-              ),
-            ),
-            Spacer(),
-          ],
-        ),
-
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.01,
-          ),
-        ),
-
-        Row(
-          children: <Widget>[
-            Spacer(),
-            loginScreenRaisedBtn(
-              context: context,
-              btnColor: whiteColor,
-              btnText: "회원가입",
-              btnTextColor: blueColor,
-              btnAction: () =>
-                  _loginScreenChangeProvider.setPageName(pageName: "signUp"),
-            ),
-            Spacer(),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

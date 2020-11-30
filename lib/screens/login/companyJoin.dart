@@ -1,14 +1,12 @@
 //Flutter
+import 'package:companyplaylist/screens/login/companySearch.dart';
 import 'package:flutter/material.dart';
+import 'package:kopo/kopo.dart';
 
 //Const
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
-
-//Widget
-import 'package:companyplaylist/widgets/button/raisedButton.dart';
-import 'package:companyplaylist/widgets/form/textFormField.dart';
 
 //Repos
 import 'package:companyplaylist/repos/login/loginRepository.dart';
@@ -16,94 +14,145 @@ import 'package:companyplaylist/repos/login/loginRepository.dart';
 //Model
 import 'package:companyplaylist/models/companyModel.dart';
 
-class CompanyJoinPage extends StatefulWidget{
+class CompanyJoinPage extends StatefulWidget {
   @override
   CompanyJoinPageState createState() => CompanyJoinPageState();
 }
 
 class CompanyJoinPageState extends State<CompanyJoinPage> {
   //TextEditingController
-  TextEditingController _companyCodeCon;
+  TextEditingController _companyNameCon;
 
   LoginRepository _loginRepository = LoginRepository();
 
-  Company _newCompany = Company();
+  Company _newCompany;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _companyCodeCon = TextEditingController();
+    _companyNameCon = TextEditingController();
   }
 
   @override
-  void dispose(){
-    _companyCodeCon.dispose();
+  void dispose() {
+    _companyNameCon.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          "초대 코드",
-          style: customStyle(
-            fontSize: 18,
-            fontWeightName: "Medium",
-            fontColor: blueColor,
-          ),
-        ),
-
-        //공백
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.05,
-          ),
-        ),
-
-        textFormField(
-          textEditingController: _companyCodeCon,
-          hintText: "초대코드를 입력해주세요",
-        ),
-
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.1,
-          ),
-        ),
-
-        Text(
-          "초대코드는 관리자에게 받을 수 있습니다.",
-          style: customStyle(
-            fontSize: 14,
-            fontWeightName: "Regular",
-            fontColor: grayColor
-          ),
-        ),
-
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.3,
-          ),
-        ),
-
-        loginScreenRaisedBtn(
-          context: context,
-          btnColor: blueColor,
-          btnText:  "합류하기",
-          btnTextColor: whiteColor,
-          btnAction: (_companyCodeCon.text != "") ? () => {
-            _loginRepository.joinCompanyUser(
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: whiteColor,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: heightRatio(
               context: context,
-              companyCode: _companyCodeCon.text
-            )
-          } : null
-        )
-      ],
+              heightRatio: 0.06,
+            ),
+            child: font(
+              text: "회사 가입",
+              textStyle: customStyle(
+                fontWeightName: "Medium",
+                fontColor: blueColor,
+              ),
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.03,
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.36,
+            ),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _companyNameCon,
+                  readOnly: true,
+                  showCursor: false,
+                  decoration: InputDecoration(
+                    hintText: "회사명",
+                    hintStyle: customStyle(
+                      fontWeightName: "Regular",
+                      fontColor: mainColor,
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: textFieldUnderLine,
+                      ),
+                    ),
+                  ),
+                  onTap: () async {
+                    Company company = await Navigator.push(
+                      Scaffold.of(context).context,
+                      MaterialPageRoute(
+                          builder: (context) => CompanySearchPage(_companyNameCon.text)
+                      ),
+                    );
+                    if(company != null){
+                      setState(() {
+                        _companyNameCon.text = company.companyName;
+                        _newCompany = company;
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.025,
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.06,
+            ),
+            width: widthRatio(context: context, widthRatio: 1),
+            padding: EdgeInsets.symmetric(
+                horizontal: widthRatio(context: context, widthRatio: 0.2)),
+            child: RaisedButton(
+              color: blueColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(
+                  color: whiteColor,
+                ),
+              ),
+              elevation: 0.0,
+              child: font(
+                text: "회사 가입",
+                textStyle: customStyle(
+                  fontWeightName: "Medium",
+                  fontColor: whiteColor,
+                ),
+              ),
+              onPressed: _companyNameCon.text != "" ? () async {
+                _loginRepository.joinCompanyUser(
+                  context: context,
+                  companyCode: _newCompany.companyCode,
+                );
+              } : null,
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.025,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

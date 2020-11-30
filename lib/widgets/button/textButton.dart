@@ -29,7 +29,7 @@ InkWell tabBtn({BuildContext context, double heightSize, double widthSize, Strin
         child: Text(
           btnText,
           style: customStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontWeightName: "Medium",
             fontColor: mainColor
           ),

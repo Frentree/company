@@ -1,4 +1,5 @@
 //Flutter
+import 'package:companyplaylist/consts/universalString.dart';
 import 'package:flutter/material.dart';
 
 //Const
@@ -6,129 +7,110 @@ import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 
-//Provider
-import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
-
 //Screen
 import 'package:companyplaylist/screens/login/login.dart';
 import 'package:companyplaylist/screens/login/signUp.dart';
-import 'package:companyplaylist/screens/login/userTypeSelect.dart';
-
 
 class SignUpMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    LoginScreenChangeProvider loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context);
-
-    Map<String,Widget> _page = {
-      "login" : LoginPage(),
-      "signUp" : SignUpPage(),
-      "userTypeSelect": UserTypeSelectPage(),
-    };
-
     return Scaffold(
-      backgroundColor: mainColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-
-        child: Column(
-          children: <Widget>[
-            //상단 로고
-            Container(
-              width: customWidth(
-                context: context,
-                widthSize: 1,
-              ),
-              height: customHeight(
-                context: context,
-                heightSize: 0.25,
-              ),
-              decoration: BoxDecoration(
-                  color: mainColor
-              ),
-
-              //앱 이름 및 버전 표시
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: customHeight(
+      resizeToAvoidBottomPadding : false,
+      backgroundColor : mainColor,
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    height: heightRatio(
                       context: context,
-                      heightSize: 0.1,
+                      heightRatio: 0.06,
                     ),
                   ),
-                  Text(
-                    "슬기로운 회사생활",
-                    style: customStyle(
-                      fontSize: 20,
-                      fontWeightName: "Bold",
-                      fontColor: whiteColor,
-                    ),
-                  ),
-                  SizedBox(
-                    height: customHeight(
+                  Container(
+                    height: heightRatio(
                       context: context,
-                      heightSize: 0.05,
+                      heightRatio: 0.07,
                     ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: customWidth(
-                          context: context,
-                          widthSize: 0.55,
-                        ),
+                    width: widthRatio(context: context, widthRatio: 0.6),
+                    child: font(
+                      text: APP_NAME,
+                      textStyle: customStyle(
+                        fontWeightName: "Medium",
+                        fontColor: whiteColor,
                       ),
-                      Text(
-                        "Release 0.1.0714",
-                        style: customStyle(
-                          fontSize: 18,
+                    ),
+                  ),
+                  Container(
+                    height: heightRatio(
+                      context: context,
+                      heightRatio: 0.03,
+                    ),
+                  ),
+                  Container(
+                    height: heightRatio(
+                      context: context,
+                      heightRatio: 0.03,
+                    ),
+                    width: widthRatio(context: context, widthRatio: 1),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: widthRatio(context: context, widthRatio: 0.6),
+                        right: widthRatio(context: context, widthRatio: 0.1),
+                      ),
+                      child: font(
+                        text: "Release " + APP_VERSION,
+                        textStyle: customStyle(
                           fontWeightName: "Regular",
-                          fontColor: whiteColor
+                          fontColor: whiteColor,
                         ),
                       ),
-                    ],
+                    ),
+                  ),
+                  Container(
+                    height: heightRatio(
+                      context: context,
+                      heightRatio: 0.06,
+                    ),
                   ),
                 ],
               ),
-            ),
-
-            //하단
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(
-                  top: customHeight(
-                    context: context,
-                    heightSize: 0.03
-                  ),
-                  left: customWidth(
-                    context: context,
-                    widthSize: 0.05,
-                  ),
-                  right: customWidth(
-                    context: context,
-                    widthSize: 0.05
-                  )
-                ),
-                width: customWidth(
+              Container(
+                height: heightRatio(
                   context: context,
-                  widthSize: 1
+                  heightRatio: 0.75,
+                ),
+                width: widthRatio(
+                  context: context,
+                  widthRatio: 1,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: widthRatio(context: context, widthRatio: 0.1),
+                  vertical: heightRatio(context: context, heightRatio: 0.025),
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    color: whiteColor
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                  color: whiteColor,
                 ),
-                child: SingleChildScrollView(
-                  child: _page[loginScreenChangeProvider.getPageName()],
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  initialRoute: "/Login",
+                  routes: {
+                    "/Login" : (context) => LoginPage(),
+                    "/SignUp" : (context) => SignUpPage(),
+                  },
                 ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

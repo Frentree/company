@@ -4,6 +4,7 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmMain.dart';
+import 'package:companyplaylist/screens/approval/approval.dart';
 import 'package:companyplaylist/screens/search/searchMain.dart';
 import 'package:companyplaylist/screens/setting/settingMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
@@ -58,10 +59,6 @@ class HomeMainPageState extends State<HomeMainPage> {
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-
-    AttendanceCheck _attendanceProvider = Provider.of<AttendanceCheck>(context);
-    _attendance = _attendanceProvider.getAttendanceData();
-
     return Scaffold(
       backgroundColor: mainColor,
       appBar: AppBar(
@@ -81,33 +78,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                   color: Colors.white,
                 ),
                 onPressed: (){
-                  NotImplementedFunction(context);
-                /*onPressed: _attendance.status == 1 ? () async {
-                  String result = await _attendanceProvider.manualOffWork(
-                    context: context,
-                  );
-
-                  if(result == "OK"){
-                    Fluttertoast.showToast(
-                        msg: "퇴근이 정상적으로 처리되었습니다.",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity:  ToastGravity.BOTTOM,
-                        backgroundColor: blackColor
-                    );
-                  }
-                } : () async {
-                  String result = await _attendanceProvider.manualOnWork(
-                      context: context
-                  );
-
-                  if(result == "OK"){
-                    Fluttertoast.showToast(
-                        msg: "출근이 정상적으로 처리되었습니다.",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity:  ToastGravity.BOTTOM,
-                        backgroundColor: blackColor
-                    );
-                  }*/
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ApprovalPage()));
                 }
             ),
             Padding(
@@ -192,32 +163,6 @@ class HomeMainPageState extends State<HomeMainPage> {
               flex: 11,
               child: _page[_currentPateIndex],
             ),
-
-            //배너
-            /*Expanded(
-              flex: 2,
-              child: Container(
-                color: bottomColor,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: customHeight(context: context, heightSize: 0.03)),
-                      child: Text(
-                        "슬기로운 회사 생활",
-                        style: customStyle(
-                          fontSize: 16,
-                          fontWeightName: "Regular",
-                          fontColor: whiteColor,
-                        ),
-                      ),
-                    ),
-                    Image.asset("images/bannerImage.jpg")
-                  ],
-                ),
-              ),
-            )*/
           ],
         ),
       ),

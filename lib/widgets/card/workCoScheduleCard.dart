@@ -66,7 +66,6 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
                   fontSize: titleFontSize,
                   fontWeightName: "Medium",
                   fontColor: mainColor,
-                  height: 1,
                 ),
               ),
             ),
@@ -81,8 +80,7 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
                     style: customStyle(
                         fontSize: titleFontSize,
                         fontWeightName: "Medium",
-                        fontColor: mainColor,
-                        height: 1)),
+                        fontColor: mainColor,)),
               ),
             )
           ],
@@ -131,14 +129,16 @@ Card workCoScheduleCard(
             width: customWidth(context: context, widthSize: widthDistance),
           ),
           workData.length == 0
-              ? Text(
-                  "일정이 없습니다.",
-                  style: customStyle(
-                      fontSize: titleFontSize,
-                      fontWeightName: "Medium",
-                      fontColor: mainColor,
-                      height: 1),
-                )
+              ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                    "일정이 없습니다.",
+                    style: customStyle(
+                        fontSize: titleFontSize,
+                        fontWeightName: "Medium",
+                        fontColor: mainColor,),
+                  ),
+              )
               : childColumn(
             context: context,
             workData: workData,

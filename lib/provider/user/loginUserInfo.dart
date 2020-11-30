@@ -1,5 +1,8 @@
 //Flutter
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,16 +25,34 @@ class LoginUserInfoProvider with ChangeNotifier{
 
   //핸드폰에 User 정보 저장하기
   Future<void> saveLoginUserToPhone({BuildContext context, User value}) async {
+    Format _format = Format();
     SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
-    _sharedPreferences.setString("loginUser", json.encode(value));
+
+    dynamic encodeData = value.toJson();
+
+    encodeData["createDate"] = _format.timeStampToDateTime(encodeData["createDate"]).toIso8601String();
+    encodeData["lastModDate"] = _format.timeStampToDateTime(encodeData["lastModDate"]).toIso8601String();
+
+    _sharedPreferences.setString("loginUser", jsonEncode(encodeData));
     setLoginUser(value);
   }
 
   //핸드폰에 저장된 User 정보 불러오기
   Future<void> loadLoginUserToPhone() async {
+    Format _format = Format();
+    FirebaseRepository _repository = FirebaseRepository();
     SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
     if(_sharedPreferences.getString("loginUser") != null){
-      _loginUser = User.fromMap(await json.decode(_sharedPreferences.getString("loginUser")), null);
+      dynamic decodeData = jsonDecode(_sharedPreferences.getString("loginUser"));
+      decodeData["createDate"] = _format.dateTimeToTimeStamp(DateTime.parse(decodeData["createDate"]));
+      decodeData["lastModDate"] = _format.dateTimeToTimeStamp(DateTime.parse(decodeData["lastModDate"]));
+
+      _loginUser = User.fromMap(decodeData, null);
+
+      User user = await _repository.getUser(userMail: _loginUser.mail);
+      if(user != _loginUser){
+        _loginUser = user;
+      }
       notifyListeners();
     }
 

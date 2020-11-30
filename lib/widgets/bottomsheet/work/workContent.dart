@@ -48,7 +48,6 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
     builder: (BuildContext context) {
       LoginUserInfoProvider _loginUserInfoProvider =
       Provider.of<LoginUserInfoProvider>(context);
-
       _loginUser = _loginUserInfoProvider.getLoginUser();
 
       return StatefulBuilder(

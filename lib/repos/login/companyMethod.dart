@@ -1,4 +1,7 @@
 //Flutter
+import 'package:companyplaylist/models/approvalModel.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -14,6 +17,8 @@ import 'package:companyplaylist/repos/showSnackBarMethod.dart';
 import 'package:companyplaylist/models/companyModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
+
+import 'loginRepository.dart';
 
 class CompanyMethod{
   //회사코드 랜덤 생성
@@ -34,7 +39,7 @@ class CompanyMethod{
     List<int> _companyCode = []; //회사 코드
 
     //6자리 까지 반복
-    while (_companyCode.length <= 5) {
+    while (_companyCode.length <= 6) {
       //랜덤값 생성
       int tempValue = minRandomValue + _random.nextInt(maxRandomValue - minRandomValue);
 
@@ -87,33 +92,31 @@ class CompanyMethod{
   }
 
   //회사 컬렉션 생성
-  Future<void> createCompanyCollectionToFirebase({BuildContext context, Company company}) async{
-    CrudRepository _crudRepository = CrudRepository();
-    CrudRepository _companyUserRepository = CrudRepository.companyUser(companyCode: company.companyCode);
+  Future<void> createCompany({BuildContext context, Company companyModel}) async{
+    Format _format = Format();
+    FirebaseRepository _repository = FirebaseRepository();
+
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
+    User _loginUser = _loginUserInfoProvider.getLoginUser(); //로그인한 사용자 정보 가져오기
 
-    User _user = _loginUserInfoProvider.getLoginUser(); //로그인한 사용자 정보 가져오기
-    CompanyUser _companyUser = CompanyUser(user: _user);
-
-    _crudRepository.setCompanyInfoDataToFirebase(
-      dataModel: company,
-      documentId: company.companyCode
-    ); //회사 컬렉션 생성
-
-    _user.companyCode = company.companyCode;
-    _user.companyName = company.companyName;
-
-    _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _user);
-
-    _companyUserRepository.setCompanyUserDataToFirebase(
-      dataModel: _companyUser,
-      documentId: _user.mail
+    CompanyUser _companyUser = CompanyUser(
+      user: _loginUser,
+      level: 5,
+      createDate: _format.dateTimeToTimeStamp(DateTime.now()),
+      lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
     );
 
-    _crudRepository.updateUserDataToFirebase(
-      dataModel: _user,
-      documentId: _user.mail
-    );
+    companyModel.companyCode = await createCompanyCode();
+    _loginUser.companyCode = companyModel.companyCode;
+    _loginUser.state = 1;
+
+    //회사 컬렉션 생성
+    await _repository.saveCompany(companyModel: companyModel);
+
+    _repository.saveCompanyUser(companyUserModel: _companyUser);
+    _repository.updateUser(userModel: _loginUser);
+
+    _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
 
     showFunctionSuccessMessage(
       context: context,
@@ -123,48 +126,57 @@ class CompanyMethod{
 
   //회사 가입
   Future<void> joinCompanyUser({BuildContext context, String companyCode}) async {
-    CrudRepository _crudRepository = CrudRepository();
-    Company _company = Company();
-    CrudRepository _companyUserRepository = CrudRepository.companyUser(companyCode: companyCode);
+    FirebaseRepository _repository = FirebaseRepository();
+
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
+    User _loginUser = _loginUserInfoProvider.getLoginUser(); //로그인한 사용자 정보 가져오기
 
-    _company = await _crudRepository.getCompanyInfoDataToFirebaseById(documentId: companyCode);
+    _loginUser.companyCode = companyCode;
+    _repository.updateUser(userModel: _loginUser);
 
-    User _user = _loginUserInfoProvider.getLoginUser();
+    String appManagerMail = await _repository.geAppManagerMail(comapanyCode: companyCode);
 
-    CompanyUser _companyUser = CompanyUser(user: _user);
+    Approval approvalModel = Approval(
+      name: _loginUser.name,
+      mail: _loginUser.mail,
+      birthday: _loginUser.birthday,
+      phone: _loginUser.phone
+    );
 
-    bool _isCompanyCodeExist = false; //회사코드 존재 여부(존재: false, 존재안함: true)
+    _repository.saveApproval(
+      companyCode: companyCode,
+      appManagerMail: appManagerMail,
+      approvalModel: approvalModel,
+    );
 
-    _isCompanyCodeExist = await duplicateCompanyCodeCheck(newCompanyCode: companyCode);
+    _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
+  }
 
-    if(_isCompanyCodeExist == false){
-      _user.companyCode = _company.companyCode;
-      _user.companyName = _company.companyName;
+  //가입자 승인
+  Future<void> userApproval({BuildContext context, String approvalUserMail}) async {
+    FirebaseRepository _repository = FirebaseRepository();
 
-      _companyUserRepository.setCompanyUserDataToFirebase(
-        dataModel: _companyUser,
-        documentId: _user.mail
-      );
+    User approvalUser = await _repository.getUser(userMail: approvalUserMail);
 
-      _crudRepository.updateUserDataToFirebase(
-        dataModel: _user,
-        documentId: _user.mail,
-      );
+    CompanyUser _newCompanyUser = CompanyUser(
+      user: approvalUser
+    );
 
-      await _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _user);
+    approvalUser.state = 1;
 
-      showFunctionSuccessMessage(
-        context: context,
-        successMessage: "${_company.companyName} 에 가입되었습니다!"
-      );
-    }
+    _repository.updateUser(userModel: approvalUser);
+    _repository.saveCompanyUser(companyUserModel: _newCompanyUser);
+  }
 
-    else{
-      showFunctionErrorMessage(
-        context: context,
-        errorMessage: "회사 코드가 존재하지 않습니다"
-      );
-    }
+  //가입자 거절
+  Future<void> userRejection({BuildContext context, String approvalUserMail}) async {
+    FirebaseRepository _repository = FirebaseRepository();
+
+    User approvalUser = await _repository.getUser(userMail: approvalUserMail);
+
+    approvalUser.state = 2;
+    approvalUser.companyCode = "";
+
+    _repository.updateUser(userModel: approvalUser);
   }
 }

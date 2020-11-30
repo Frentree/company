@@ -22,7 +22,6 @@ TextFormField textFormField(
     decoration: InputDecoration(
         hintText: hintText,
         hintStyle: customStyle(
-          fontSize: 15,
           fontWeightName: "Regular",
           fontColor: mainColor,
         ),
@@ -30,7 +29,8 @@ TextFormField textFormField(
             borderSide: BorderSide(
           color: textFieldUnderLine,
         )),
-        suffixIcon: suffixWidget),
+        suffixIcon: suffixWidget
+    ),
     onTap: onTap,
   );
 }

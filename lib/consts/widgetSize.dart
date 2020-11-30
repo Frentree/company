@@ -19,3 +19,15 @@ double customHeight({BuildContext context, double heightSize}){
   double _customHeight = MediaQuery.of(context).size.height*heightSize;
   return _customHeight;
 }
+
+//넓이 비율
+double widthRatio({BuildContext context, double widthRatio}){
+  double _widthRatio = MediaQuery.of(context).size.width*widthRatio;
+  return _widthRatio;
+}
+
+//높이 비율
+double heightRatio({BuildContext context, double heightRatio}){
+  double _heightRatio = (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top)*heightRatio;
+  return _heightRatio;
+}

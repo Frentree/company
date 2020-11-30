@@ -4,61 +4,56 @@ import 'package:flutter/material.dart';
 //Provider
 import 'package:provider/provider.dart';
 import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/repos/showSnackBarMethod.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 
 //Model
 import 'package:companyplaylist/models/userModel.dart';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
 
-class SignUpMethod{
+class SignUpMethod {
+  Format _format = Format();
+
   Future<void> signUpWithFirebaseAuth(
       {BuildContext context,
       String smsCode,
-      String mail,
       String password,
-      String name,
       User user}) async {
     FirebaseAuthProvider _firebaseAuthProvider =
         Provider.of<FirebaseAuthProvider>(context, listen: false);
 
-    LoginScreenChangeProvider _loginScreenChangeProvider =
-        Provider.of<LoginScreenChangeProvider>(context, listen: false);
-    CrudRepository _crudRepository = CrudRepository();
+    FirebaseRepository _repository = FirebaseRepository();
 
-    bool _codeConfirmResult =
-        await _firebaseAuthProvider.isVerifySuccess(smsCode: smsCode);
+    bool _codeConfirmResult = await _firebaseAuthProvider.isVerifySuccess(
+      smsCode: smsCode,
+    );
 
     if (_codeConfirmResult == true) {
       bool _signUpEmailResult = await _firebaseAuthProvider.signUpWithEmail(
-          mail: mail, password: password, name: name);
+        mail: user.mail,
+        password: password,
+        name: user.name,
+      );
       if (_signUpEmailResult == true) {
-        _crudRepository.setUserDataToFirebase(
-            dataModel: user, documentId: mail);
+        user.createDate = _format.dateTimeToTimeStamp(DateTime.now());
+        user.lastModDate = _format.dateTimeToTimeStamp(DateTime.now());
+        _repository.saveUser(
+          userModel: user,
+        );
 
         showFunctionSuccessMessage(
-          context: context,
-          successMessage: "회원가입을 축하합니다!"
-        );
-
-        _loginScreenChangeProvider.setPageName(pageName: "login");
-      }
-
-      else{
+            context: context, successMessage: "회원가입을 축하합니다!");
+      } else {
         showLastFirebaseMessage(
-          context: context,
-          lastFirebaseMessage: _firebaseAuthProvider.manageErrorMessage()
-        );
+            context: context,
+            lastFirebaseMessage: _firebaseAuthProvider.manageErrorMessage());
       }
-    }
-
-    else{
+    } else {
       showLastFirebaseMessage(
-        context: context,
-        lastFirebaseMessage: _firebaseAuthProvider.manageErrorMessage()
-      );
+          context: context,
+          lastFirebaseMessage: _firebaseAuthProvider.manageErrorMessage());
     }
   }
 }

@@ -7,8 +7,15 @@
 핸드폰번호 <phone>
 회사이름 <companyName>
 회사코드 <companyCode>
-프로필 이미지 <image>
+프로필 이미지 <profilePhoto>
+생성일 <createDate>
+최종수정일 <lastModDate>
+동료일정알림 <alrCoSchedule>
+승인요청알림 <alrApprovalReq>
+출근처리알림 <alrAttendance>
+방해금지모드 <alrNoInterrupt>
 앱 테마 옵션 <screenTheme>
+승인 상태 <state> 0 : 미승인/ 1: 승인
 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,10 +26,16 @@ class User {
   String mail;
   String birthday;
   String phone;
-  String companyName;
   String companyCode;
   String profilePhoto;
+  Timestamp createDate;
+  Timestamp lastModDate;
+  bool alrCoSchedule;
+  bool alrApprovalReq;
+  bool alrAttendance;
+  bool alrNoInterrupt;
   int screenTheme;
+  int state;
 
   User({
     this.id,
@@ -30,10 +43,16 @@ class User {
     this.mail,
     this.birthday,
     this.phone,
-    this.companyName,
     this.companyCode,
     this.profilePhoto,
-    this.screenTheme,
+    this.createDate,
+    this.lastModDate,
+    this.alrCoSchedule = true,
+    this.alrApprovalReq = true,
+    this.alrAttendance = true,
+    this.alrNoInterrupt = false,
+    this.screenTheme = 1,
+    this.state = 0,
   });
 
   User.fromMap(Map snapshot, String id)
@@ -42,10 +61,16 @@ class User {
         mail = snapshot["mail"] ?? "",
         birthday = snapshot["birthday"] ?? "",
         phone = snapshot["phone"] ?? "",
-        companyName = snapshot["companyName"] ?? "",
         companyCode = snapshot["companyCode"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
-        screenTheme = snapshot["screenTheme"];
+        createDate = snapshot["createDate"] ?? null,
+        lastModDate = snapshot["lastModDate"] ?? null,
+        alrCoSchedule = snapshot["alrCoSchedule"] ?? true,
+        alrApprovalReq = snapshot["alrApprovalReq"] ?? true,
+        alrAttendance = snapshot["alrAttendance"] ?? true,
+        alrNoInterrupt = snapshot["alrNoInterrupt"] ?? false,
+        screenTheme = snapshot["screenTheme"] ?? 1,
+        state = snapshot["state"] ?? 0;
 
   toJson() {
     return {
@@ -53,10 +78,16 @@ class User {
       "mail": mail,
       "birthday": birthday,
       "phone": phone,
-      "companyName": companyName,
       "companyCode": companyCode,
       "profilePhoto": profilePhoto,
+      "createDate": createDate,
+      "lastModDate": lastModDate,
+      "alrCoSchedule": alrCoSchedule,
+      "alrApprovalReq": alrApprovalReq,
+      "alrAttendance": alrAttendance,
+      "alrNoInterrupt": alrNoInterrupt,
       "screenTheme": screenTheme,
+      "state": state,
     };
   }
 }

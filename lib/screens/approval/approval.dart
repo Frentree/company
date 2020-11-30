@@ -2,8 +2,10 @@
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/models/approvalModel.dart';
 import 'package:companyplaylist/models/meetingModel.dart';
 import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:companyplaylist/repos/login/loginRepository.dart';
 import 'package:companyplaylist/widgets/card/meetingScheduleCard.dart';
 
 //Flutter
@@ -25,12 +27,13 @@ import 'package:companyplaylist/utils/date/dateFormat.dart';
 //Widget
 import 'package:companyplaylist/widgets/card/workScheduleCard.dart';
 
-class HomeSchedulePage extends StatefulWidget {
+class ApprovalPage extends StatefulWidget {
   @override
-  HomeSchedulePageState createState() => HomeSchedulePageState();
+  ApprovalPageState createState() => ApprovalPageState();
 }
 
-class HomeSchedulePageState extends State<HomeSchedulePage> {
+class ApprovalPageState extends State<ApprovalPage> {
+  LoginRepository _loginRepository = LoginRepository();
   Widget _buildEventMarker(DateTime date, List events) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -150,9 +153,9 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
             },
           ),
           StreamBuilder(
-            stream: _repository.getSelectedDateCompanyWork(
+            stream: _repository.getApproval(
                 companyCode: _loginUser.companyCode,
-                selectedDate: _format.dateTimeToTimeStamp(selectTime)),
+                managerMail: _loginUser.mail),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return Center(
@@ -160,17 +163,11 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                 );
               }
 
-              var _companyWork = [];
+              var _approvalData = [];
               snapshot.data.documents.forEach((element) {
-                if (element.data["createUid"] == _loginUser.mail ||
-                    (element.data["attendees"] != null &&
-                        element.data["attendees"].keys
-                            .contains(_loginUser.mail))) {
-                  _companyWork.add(element);
-                }
+                _approvalData.add(element);
               });
-              if (_companyWork.length == 0) {
-                isDetail = [];
+              if (_approvalData.length == 0) {
                 return Expanded(
                   child: ListView(
                     children: [
@@ -189,7 +186,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                   vertical: customHeight(
                                       context: context, heightSize: 0.02)),
                               child: Text(
-                                "일정이 없습니다.",
+                                "승인할 내용이 없습니다.",
                                 style: customStyle(
                                     fontColor: blackColor,
                                     fontSize: 16,
@@ -201,79 +198,107 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   ),
                 );
               } else {
-                while (isDetail.length != _companyWork.length) {
-                  isDetail =
-                      List.generate(_companyWork.length, (index) => false);
-                }
-                if (isDetail.length > _companyWork.length) {
-                  if (isDetail.contains(true)) {
-                    isDetail.remove(true);
-                  } else
-                    isDetail = [];
-                }
-                print(isDetail);
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: _companyWork.length,
+                    itemCount: _approvalData.length,
                     itemBuilder: (context, index) {
-                      dynamic _companyData;
-                      if (_companyWork[index].data["type"] == "내근" ||
-                          _companyWork[index].data["type"] == "외근") {
-                        _companyData = WorkModel.fromMap(
-                            _companyWork[index].data,
-                            _companyWork[index].documentID);
-                      } else if (_companyWork[index].data["type"] == "미팅") {
-                        _companyData = MeetingModel.fromMap(
-                            _companyWork[index].data,
-                            _companyWork[index].documentID);
-                      }
-
-                      switch (_companyData.type) {
-                        case '내근':
-                        case '외근':
-                          return GestureDetector(
-                            child: workScheduleCard(
+                      Approval _APData;
+                      _APData = Approval.fromMap(
+                          _approvalData[index].data,
+                          _approvalData[index].documentID);
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            width: 1,
+                            color: boarderColor,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: widthRatio(
                               context: context,
-                              companyCode: _loginUser.companyCode,
-                              workModel: _companyData,
-                              isDetail: isDetail[index],
+                              widthRatio: 0.02,
                             ),
-                            onTap: () {
-                              setState(() {
-                                isDetail[index] = !isDetail[index];
-                                for (int i = 0; i < isDetail.length; i++) {
-                                  if (i != index) {
-                                    isDetail[i] = false;
-                                  }
-                                }
-                              });
-                            },
-                          );
-                          break;
-                        case '미팅':
-                          return GestureDetector(
-                            child: meetingScheduleCard(
+                            vertical: heightRatio(
                               context: context,
-                              loginUserMail: _loginUser.mail,
-                              companyCode: _loginUser.companyCode,
-                              meetingModel: _companyData,
-                              isDetail: isDetail[index],
+                              heightRatio: 0.01,
                             ),
-                            onTap: () {
-                              setState(() {
-                                isDetail[index] = !isDetail[index];
-                                for (int i = 0; i < isDetail.length; i++) {
-                                  if (i != index) {
-                                    isDetail[i] = false;
-                                  }
-                                }
-                              });
-                            },
-                          );
-                          break;
-                        default:
-                          return Container();
-                      }
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: heightRatio(
+                                    context: context, heightRatio: 0.03),
+                                child: font(
+                                  text: _APData.name,
+                                  textStyle: customStyle(
+                                    fontColor: mainColor,
+                                    fontWeightName: "Medium",
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: heightRatio(
+                                    context: context, heightRatio: 0.03),
+                                child: font(
+                                  text: _APData.mail,
+                                  textStyle: customStyle(
+                                    fontColor: grayColor,
+                                    fontWeightName: "Regular",
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: heightRatio(
+                                    context: context, heightRatio: 0.03),
+                                child: font(
+                                  text: _APData.phone,
+                                  textStyle: customStyle(
+                                    fontColor: grayColor,
+                                    fontWeightName: "Regular",
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: heightRatio(
+                                    context: context, heightRatio: 0.03),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    RaisedButton(
+                                      child: Text("승인"),
+                                      onPressed: () async {
+                                        _APData.state = 1;
+                                       await _repository.updateApproval(
+                                          companyCode: _loginUser.companyCode,
+                                          managerMail: _loginUser.mail,
+                                          approvalModel: _APData,
+                                        );
+                                       await _loginRepository.userApproval(approvalUserMail:  _APData.mail, context: context);
+                                      },
+                                    ),
+                                    RaisedButton(
+                                      child: Text("거절"),
+                                      onPressed: () async {
+                                        _APData.state = 2;
+                                        await _repository.updateApproval(
+                                          companyCode: _loginUser.companyCode,
+                                          managerMail: _loginUser.mail,
+                                          approvalModel: _APData,
+                                        );
+                                        await _loginRepository.userRejection(approvalUserMail: _APData.mail, context: context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   ),
                 );

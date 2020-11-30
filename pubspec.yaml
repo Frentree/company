@@ -42,6 +42,7 @@ dependencies:
   fluttertoast: ^7.1.1
   configurable_expansion_tile: ^1.0.0
   firebase_auth: ^0.14.0+5
+  firebase_messaging: ^6.0.16
 
   flutter_local_notifications: ^3.0.1+2
   flutter_masked_text: ^0.8.0

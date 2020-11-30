@@ -19,12 +19,22 @@ Map<String, FontWeight> fontWeight = {
 };
 
 //커스텀 폰트 스타일
-TextStyle customStyle({double fontSize, String fontWeightName, Color fontColor, double height}){
+TextStyle customStyle({double fontSize, String fontWeightName, Color fontColor}){
   return TextStyle(
     fontFamily: fontStyle,
     fontSize: fontSize,
     fontWeight: fontWeight[fontWeightName],
     color: fontColor,
-    height: height
+  );
+}
+
+//Container 크기에 맞는 폰트
+FittedBox font({String text, TextStyle textStyle}){
+  return FittedBox(
+    fit: BoxFit.contain,
+    child: Text(
+      text,
+      style: textStyle,
+    )
   );
 }

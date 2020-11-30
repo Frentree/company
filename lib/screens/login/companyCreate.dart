@@ -1,14 +1,11 @@
 //Flutter
 import 'package:flutter/material.dart';
+import 'package:kopo/kopo.dart';
 
 //Const
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
-
-//Widget
-import 'package:companyplaylist/widgets/button/raisedButton.dart';
-import 'package:companyplaylist/widgets/form/textFormField.dart';
 
 //Repos
 import 'package:companyplaylist/repos/login/loginRepository.dart';
@@ -16,7 +13,7 @@ import 'package:companyplaylist/repos/login/loginRepository.dart';
 //Model
 import 'package:companyplaylist/models/companyModel.dart';
 
-class CompanyCreatePage extends StatefulWidget{
+class CompanyCreatePage extends StatefulWidget {
   @override
   CompanyCreatePageState createState() => CompanyCreatePageState();
 }
@@ -24,100 +21,245 @@ class CompanyCreatePage extends StatefulWidget{
 class CompanyCreatePageState extends State<CompanyCreatePage> {
   //TextEditingController
   TextEditingController _companyNameCon;
-  TextEditingController _companyCodeCon;
+  TextEditingController _companyAddressCon;
+  TextEditingController _companyDetailAddressCon;
+
+  //TextForm Key
+  final _formKeyCompanyName = GlobalKey<FormState>();
 
   LoginRepository _loginRepository = LoginRepository();
 
   Company _newCompany = Company();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _companyNameCon = TextEditingController();
-    _companyCodeCon = TextEditingController();
+    _companyAddressCon = TextEditingController();
+    _companyDetailAddressCon = TextEditingController();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _companyNameCon.dispose();
-    _companyCodeCon.dispose();
+    _companyAddressCon.dispose();
+    _companyDetailAddressCon.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     _newCompany = Company(
-      id: null,
       companyName: _companyNameCon.text,
-      companyCode: _companyCodeCon.text
+      companyAddr:
+          _companyAddressCon.text + " " + _companyDetailAddressCon.text,
     );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          "회사 생성",
-          style: customStyle(
-            fontSize: 18,
-            fontWeightName: "Medium",
-            fontColor: blueColor
-          ),
-        ),
-
-        //공백
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.05
-          ),
-        ),
-
-        textFormField(
-          textEditingController: _companyNameCon,
-          hintText: "회사명",
-        ),
-
-        textFormField(
-          textEditingController: _companyCodeCon,
-          hintText: "회사 코드",
-          showCursor: false,
-          readOnly: true,
-          suffixWidget: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RaisedButton(
-              child: Text(
-                "코드 생성"
-              ),
-              onPressed: _companyNameCon.text != "" ? () async {
-                String _result = await _loginRepository.createCompanyCode();
-                setState(() {
-                  _companyCodeCon.text = _result;
-                });
-              } : null
-            )
-          )
-        ),
-
-        SizedBox(
-          height: customHeight(
-            context: context,
-            heightSize: 0.3
-          ),
-        ),
-
-        loginScreenRaisedBtn(
-          context: context,
-          btnColor: blueColor,
-          btnText:  "생성하기",
-          btnTextColor: whiteColor,
-          btnAction: (_companyNameCon.text != "" && _companyCodeCon.text != "") ? () => {
-            _loginRepository.createCompanyCollectionToFirebase(
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: whiteColor,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: heightRatio(
               context: context,
-              company: _newCompany
-            )
-          } : null
-        )
-      ],
+              heightRatio: 0.06,
+            ),
+            child: font(
+              text: "회사 생성",
+              textStyle: customStyle(
+                fontWeightName: "Medium",
+                fontColor: blueColor,
+              ),
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.03,
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.36,
+            ),
+            child: Column(
+              children: [
+                Form(
+                  key: _formKeyCompanyName,
+                  child: TextFormField(
+                    controller: _companyNameCon,
+                    decoration: InputDecoration(
+                      hintText: "회사명",
+                      hintStyle: customStyle(
+                        fontWeightName: "Regular",
+                        fontColor: mainColor,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: textFieldUnderLine,
+                        ),
+                      ),
+                    ),
+                    validator: ((value) {
+                      return _loginRepository.validationRegExpCheckMessage(
+                        field: "이름",
+                        value: value,
+                      );
+                    }),
+                  ),
+                ),
+                TextFormField(
+                  controller: _companyAddressCon,
+                  readOnly: true,
+                  showCursor: false,
+                  decoration: InputDecoration(
+                    hintText: "회사 주소",
+                    hintStyle: customStyle(
+                      fontWeightName: "Regular",
+                      fontColor: mainColor,
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: textFieldUnderLine,
+                      ),
+                    ),
+                    /*suffixIcon: Container(
+                      width: widthRatio(context: context, widthRatio: 0.2),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: heightRatio(
+                          context: context,
+                          heightRatio: 0.015,
+                        )),
+                        child: Container(
+                          height:
+                              heightRatio(context: context, heightRatio: 0.01),
+                          width: widthRatio(context: context, widthRatio: 0.2),
+                          child: RaisedButton(
+                            color: blueColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: whiteColor,
+                              ),
+                            ),
+                            elevation: 0.0,
+                            child: font(
+                              text: "주소 검색",
+                              textStyle: customStyle(
+                                fontWeightName: "Medium",
+                                fontColor: whiteColor,
+                              ),
+                            ),
+                            onPressed: _companyNameCon.text != ""
+                                ? () async {
+                                    KopoModel model = await Navigator.push(
+                                      Scaffold.of(context).context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Kopo()),
+                                    );
+                                    if (model != null) {
+                                      setState(() {
+                                        _companyAddressCon.text =
+                                            "${model.address}";
+                                        _companyDetailAddressCon.text =
+                                            "${model.buildingName}${model.apartment == 'Y' ? '아파트' : ""}";
+                                      });
+                                    }
+                                  }
+                                : null,
+                          ),
+                        ),
+                      ),
+                    ),*/
+                  ),
+                  onTap: () async {
+                    KopoModel model = await Navigator.push(
+                      Scaffold.of(context).context,
+                      MaterialPageRoute(builder: (context) => Kopo()),
+                    );
+                    if (model != null) {
+                      setState(
+                        () {
+                          _companyAddressCon.text = "${model.address}";
+                          _companyDetailAddressCon.text =
+                              "${model.buildingName}${model.apartment == 'Y' ? '아파트' : ""}";
+                        },
+                      );
+                    }
+                  },
+                ),
+                TextFormField(
+                  controller: _companyDetailAddressCon,
+                  readOnly: _companyAddressCon.text == "",
+                  showCursor: _companyAddressCon.text != "",
+                  autofocus: _companyAddressCon.text != "",
+                  decoration: InputDecoration(
+                    hintText: "상세 주소",
+                    hintStyle: customStyle(
+                      fontWeightName: "Regular",
+                      fontColor: mainColor,
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: textFieldUnderLine,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.025,
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.06,
+            ),
+            width: widthRatio(context: context, widthRatio: 1),
+            padding: EdgeInsets.symmetric(
+                horizontal: widthRatio(context: context, widthRatio: 0.2)),
+            child: RaisedButton(
+              color: blueColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(
+                  color: whiteColor,
+                ),
+              ),
+              elevation: 0.0,
+              child: font(
+                text: "회사 생성",
+                textStyle: customStyle(
+                  fontWeightName: "Medium",
+                  fontColor: whiteColor,
+                ),
+              ),
+              onPressed: _companyAddressCon.text != ""
+                  ? () async {
+                      _loginRepository.createCompany(
+                        context: context,
+                        companyModel: _newCompany,
+                      );
+                    }
+                  : null,
+            ),
+          ),
+          Container(
+            height: heightRatio(
+              context: context,
+              heightRatio: 0.025,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

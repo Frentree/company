@@ -113,7 +113,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   }
 
   //핸드폰 번호 인증
-  Future<void> verifyPhone({String phoneNumber}) async {
+  Future<bool> verifyPhone({String phoneNumber}) async {
     //핸드폰 번호 인증이 실패했을 때
     final PhoneVerificationFailed verificationFailed = (AuthException authException){
       setLastFirebaseMessage(message: authException.message);
@@ -133,6 +133,8 @@ class FirebaseAuthProvider with ChangeNotifier {
       verificationFailed:verificationFailed,
       codeSent: smsSent,
     );
+
+    return true;
   }
 
   //핸드폰 인증 결과 가져오기
@@ -184,12 +186,6 @@ class FirebaseAuthProvider with ChangeNotifier {
   Future<bool> updatePassword({String mail, String password, String name}) async {
     try {
       _user.updatePassword(password);
-
-      /*if(result.user != null) {
-        updateInfo.displayName = name;
-        result.user.updateProfile(updateInfo);
-        return true;
-      }*/
 
       return true;
 

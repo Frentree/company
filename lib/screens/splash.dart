@@ -1,7 +1,9 @@
 //Flutter
 import 'dart:async';
 
+import 'package:companyplaylist/consts/universalString.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/screens/auth.dart';
 
 import 'package:flutter/material.dart';
@@ -36,12 +38,11 @@ class SplashPageState extends State<SplashPage>{
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
     _loginUserInfoProvider.loadLoginUserToPhone();
-
     return Scaffold(
       backgroundColor: mainColor,
       body: Center(
         child: Text(
-          "슬기로운 회사 생활",
+          APP_NAME,
           style: customStyle(
             fontSize: 36,
             fontWeightName: "Bold",
