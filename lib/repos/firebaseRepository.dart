@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/approvalModel.dart';
+import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/companyModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
@@ -101,6 +102,27 @@ class FirebaseRepository {
           {String loginUserMail, String companyCode}) =>
       _firebaseMethods.getColleague(
           loginUserMail: loginUserMail, companyCode: companyCode);
+
+  Future<DocumentReference> saveAttendance(
+      {Attendance attendanceModel, String companyCode}) => _firebaseMethods.saveAttendance(
+    attendanceModel: attendanceModel,
+    companyCode: companyCode,
+  );
+
+  Future<QuerySnapshot> getMyTodayAttendance(
+          {String companyCode, String loginUserMail, Timestamp today}) =>
+      _firebaseMethods.getMyTodayAttendance(
+        companyCode: companyCode,
+        loginUserMail: loginUserMail,
+        today: today,
+      );
+
+  Future<void> updateAttendance(
+      {Attendance attendanceModel, String documentId ,String companyCode}) => _firebaseMethods.updateAttendance(
+    attendanceModel: attendanceModel,
+    documentId: documentId,
+    companyCode: companyCode,
+  );
 
   Future<void> saveApproval(
           {String companyCode,

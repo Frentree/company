@@ -125,55 +125,6 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                         color: textFieldUnderLine,
                       ),
                     ),
-                    /*suffixIcon: Container(
-                      width: widthRatio(context: context, widthRatio: 0.2),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: heightRatio(
-                          context: context,
-                          heightRatio: 0.015,
-                        )),
-                        child: Container(
-                          height:
-                              heightRatio(context: context, heightRatio: 0.01),
-                          width: widthRatio(context: context, widthRatio: 0.2),
-                          child: RaisedButton(
-                            color: blueColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(
-                                color: whiteColor,
-                              ),
-                            ),
-                            elevation: 0.0,
-                            child: font(
-                              text: "주소 검색",
-                              textStyle: customStyle(
-                                fontWeightName: "Medium",
-                                fontColor: whiteColor,
-                              ),
-                            ),
-                            onPressed: _companyNameCon.text != ""
-                                ? () async {
-                                    KopoModel model = await Navigator.push(
-                                      Scaffold.of(context).context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Kopo()),
-                                    );
-                                    if (model != null) {
-                                      setState(() {
-                                        _companyAddressCon.text =
-                                            "${model.address}";
-                                        _companyDetailAddressCon.text =
-                                            "${model.buildingName}${model.apartment == 'Y' ? '아파트' : ""}";
-                                      });
-                                    }
-                                  }
-                                : null,
-                          ),
-                        ),
-                      ),
-                    ),*/
                   ),
                   onTap: () async {
                     KopoModel model = await Navigator.push(

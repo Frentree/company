@@ -1,5 +1,7 @@
 //Flutter
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
 
 //Provider
 import 'package:provider/provider.dart';
@@ -14,13 +16,21 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 
 class SignUpMethod {
-  Format _format = Format();
-
   Future<void> signUpWithFirebaseAuth(
       {BuildContext context,
       String smsCode,
       String password,
       User user}) async {
+
+    Format _format = Format();
+
+    FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+    StorageReference storageReference =
+    _firebaseStorage.ref().child("defaultImage/defaultImage.png");
+
+    String ImageURL = await storageReference.getDownloadURL();
+
     FirebaseAuthProvider _firebaseAuthProvider =
         Provider.of<FirebaseAuthProvider>(context, listen: false);
 
@@ -39,6 +49,7 @@ class SignUpMethod {
       if (_signUpEmailResult == true) {
         user.createDate = _format.dateTimeToTimeStamp(DateTime.now());
         user.lastModDate = _format.dateTimeToTimeStamp(DateTime.now());
+        user.profilePhoto = ImageURL;
         _repository.saveUser(
           userModel: user,
         );

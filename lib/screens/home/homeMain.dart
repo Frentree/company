@@ -1,4 +1,5 @@
 //Flutter
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
@@ -8,18 +9,15 @@ import 'package:companyplaylist/screens/approval/approval.dart';
 import 'package:companyplaylist/screens/search/searchMain.dart';
 import 'package:companyplaylist/screens/setting/settingMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
-import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 //Const
 import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 
 //Screen
 import 'package:companyplaylist/screens/home/homeScheduleMain.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class HomeMainPage extends StatefulWidget {
@@ -29,7 +27,13 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
-  List<Widget> _page = [HomeScheduleMainPage(),SearchMainPage(),null, AlarmMainPage(), SettingMainPage()];
+  List<Widget> _page = [
+    HomeScheduleMainPage(),
+    SearchMainPage(),
+    null,
+    AlarmMainPage(),
+    SettingMainPage()
+  ];
 
   //현재 페이지 인덱스
   int _currentPateIndex = 0;
@@ -41,13 +45,10 @@ class HomeMainPageState extends State<HomeMainPage> {
   User _loginUser;
 
   //페이지 이동
-  void _pageChange(int pageIndex){
-    if(pageIndex == 2){
-
-      //WorkMainPage(context);
+  void _pageChange(int pageIndex) {
+    if (pageIndex == 2) {
       MainBottomSheet(context);
-    }
-    else{
+    } else {
       setState(() {
         print(pageIndex);
         _currentPateIndex = pageIndex;
@@ -57,7 +58,10 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+    LoginUserInfoProvider _loginUserInfoProvider =
+        Provider.of<LoginUserInfoProvider>(context);
+    AttendanceCheck _attendanceCheckProvider =
+        Provider.of<AttendanceCheck>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
     return Scaffold(
       backgroundColor: mainColor,
@@ -65,67 +69,76 @@ class HomeMainPageState extends State<HomeMainPage> {
         backgroundColor: mainColor,
         elevation: 0,
         automaticallyImplyLeading: false,
-
-        title: Row(
-          children: <Widget>[
-            IconButton(
-                icon: Icon(
-                  Icons.power_settings_new,
-                  size: customHeight(
-                      context: context,
-                      heightSize: 0.04
-                  ),
-                  color: Colors.white,
-                ),
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ApprovalPage()));
-                }
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                  "근무중"
-              ),
-            )
-          ],
-        ),
+        title: FutureBuilder(
+            future: _attendanceCheckProvider.attendanceCheck(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              } else {
+                _attendance = snapshot.data;
+                return Row(
+                  children: <Widget>[
+                    IconButton(
+                        icon: Icon(
+                          Icons.power_settings_new,
+                          size:
+                              customHeight(context: context, heightSize: 0.04),
+                          color: Colors.white,
+                        ),
+                        onPressed:
+                            /*_attendance.status == 0 ? () async {
+                          await _attendanceCheckProvider.manualOnWork(
+                              context: context);
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => ApprovalPage()));
+                        } : _attendance.status != 3 ? () async {
+                          await _attendanceCheckProvider.manualOffWork(
+                              context: context);
+                        } : null,*/
+                            () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ApprovalPage()));
+                        }),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        _attendanceCheckProvider
+                            .attendanceStatus(_attendance.status),
+                      ),
+                    )
+                  ],
+                );
+              }
+            }),
         actions: <Widget>[
           Container(
             alignment: Alignment.center,
-            width: customWidth(
-                context: context,
-                widthSize: 0.2
-            ),
+            width: customWidth(context: context, widthSize: 0.2),
             child: GestureDetector(
               child: Container(
-                height: customHeight(
-                    context: context,
-                    heightSize: 0.05
-                ),
-                width: customWidth(
-                    context: context,
-                    widthSize: 0.1
-                ),
+                height: customHeight(context: context, heightSize: 0.05),
+                width: customWidth(context: context, widthSize: 0.1),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: whiteColor,
-                    border: Border.all(color: whiteColor, width: 2)
-                ),
+                    border: Border.all(color: whiteColor, width: 2)),
                 child: FutureBuilder(
-                  future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
+                  future: Firestore.instance
+                      .collection("company")
+                      .document(_loginUser.companyCode)
+                      .collection("user")
+                      .document(_loginUser.mail)
+                      .get(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Icon(
-                          Icons.person_outline
-                      );
+                      return Icon(Icons.person_outline);
                     }
-                    return Image.network(
-                        snapshot.data
-                    );
+                    return Image.network(_loginUser.profilePhoto);
                   },
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 _loginUserInfoProvider.logoutUesr();
               },
             ),
@@ -133,10 +146,7 @@ class HomeMainPageState extends State<HomeMainPage> {
         ],
       ),
       body: Container(
-        width: customWidth(
-            context: context,
-            widthSize: 1
-        ),
+        width: customWidth(context: context, widthSize: 1),
         padding: EdgeInsets.only(
             left: customWidth(
               context: context,
@@ -145,15 +155,11 @@ class HomeMainPageState extends State<HomeMainPage> {
             right: customWidth(
               context: context,
               widthSize: 0.02,
-            )
-        ),
+            )),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30)
-            ),
-            color: whiteColor
-        ),
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+            color: whiteColor),
         child: Column(
           children: <Widget>[
             Padding(
@@ -185,10 +191,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                   heightSize: 0.04,
                 ),
               ),
-              title: Text(
-                  "Schedule"
-              )
-          ),
+              title: Text("Schedule")),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
@@ -197,10 +200,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                   heightSize: 0.04,
                 ),
               ),
-              title: Text(
-                  "Search"
-              )
-          ),
+              title: Text("Search")),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.add_circle_outline,
@@ -210,10 +210,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                 ),
                 color: blueColor,
               ),
-              title: Text(
-                  "Create"
-              )
-          ),
+              title: Text("Create")),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.notifications_none,
@@ -222,10 +219,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                   heightSize: 0.04,
                 ),
               ),
-              title: Text(
-                  "Push"
-              )
-          ),
+              title: Text("Push")),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.menu,
@@ -234,10 +228,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                   heightSize: 0.04,
                 ),
               ),
-              title: Text(
-                  "Setting"
-              )
-          ),
+              title: Text("Setting")),
         ],
       ),
     );

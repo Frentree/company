@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/universalString.dart';
 import 'package:companyplaylist/models/approvalModel.dart';
+import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/companyModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
@@ -190,6 +191,37 @@ class FirebaseMethods {
         .where("startDate", whereIn: selectedWeek)
         .orderBy("startTime")
         .snapshots();
+  }
+
+  //출퇴근 관련
+  Future<DocumentReference> saveAttendance(
+      {Attendance attendanceModel, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(ATTENDANCE)
+        .add(attendanceModel.toJson());
+  }
+
+  Future<QuerySnapshot> getMyTodayAttendance(
+      {String companyCode, String loginUserMail, Timestamp today}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(ATTENDANCE)
+        .where("mail", isEqualTo: loginUserMail)
+        .where("createDate", isEqualTo: today)
+        .getDocuments();
+  }
+
+  Future<void> updateAttendance(
+      {Attendance attendanceModel, String documentId ,String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(ATTENDANCE)
+        .document(documentId)
+        .updateData(attendanceModel.toJson());
   }
 
   //알람 관련

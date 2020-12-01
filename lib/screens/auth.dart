@@ -1,4 +1,5 @@
 //자동 로그인 여부를 판단하는 페이지 입니다.
+import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
