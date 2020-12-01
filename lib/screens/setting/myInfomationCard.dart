@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
@@ -41,24 +42,19 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                       border: Border.all(color: whiteColor, width: 2)
                   ),
                   child: FutureBuilder(
-                    future: _firebaseStorage.ref().child("profile/${user.mail}").getDownloadURL(),
+                    future: Firestore.instance.collection("company").document(user.companyCode).collection("user").document(user.mail).get(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Icon(
                             Icons.person_outline
                         );
                       }
+
                       return Image.network(
-                          snapshot.data
+                          snapshot.data['profilePhoto']
                       );
                     },
                   ),
-                  /*Text(
-                                    "사진",
-                                    style: TextStyle(
-                                        color: Colors.black
-                                    ),
-                                  ),*/
                 ),
                 onTap: (){
                 },

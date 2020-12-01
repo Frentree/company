@@ -1,4 +1,5 @@
 //Flutter
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
@@ -11,6 +12,7 @@ import 'package:companyplaylist/screens/setting/settingMain.dart';
 import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workMain.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -149,7 +151,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                     border: Border.all(color: whiteColor, width: 2)
                 ),
                 child: FutureBuilder(
-                  future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
+                  future: Firestore.instance.collection("company").document(_loginUser.companyCode).collection("user").document(_loginUser.mail).get(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Icon(
@@ -157,7 +159,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                       );
                     }
                     return Image.network(
-                        snapshot.data
+                        snapshot.data['profilePhoto']
                     );
                   },
                 ),

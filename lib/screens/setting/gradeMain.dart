@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +33,7 @@ class GradeMainPageState extends State<GradeMainPage> {
 
 Widget _buildBody(BuildContext context, User user) {
   return StreamBuilder<QuerySnapshot>(
-    stream: Firestore.instance.collection("company").document(user.companyCode).collection("grade").snapshots(),
+    stream: Firestore.instance.collection("company").document(user.companyCode).collection("grade").orderBy("gradeID", descending: true).snapshots(),
     builder: (context, snapshot) {
       if (!snapshot.hasData) return LinearProgressIndicator();
 
@@ -65,104 +69,136 @@ Widget _buildUserList(BuildContext context, GradeData grade, String companyCode)
   List<String> gradeList = List();
   return Expanded(
     child: Container(
-      height: customHeight(context: context, heightSize: 0.1),
-      child: Stack(
-        children: [
-          Container(
+      height: customHeight(context: context, heightSize: 0.08),
+      child: Container(
             height: customHeight(context: context, heightSize: 1),
-            child: DragTarget<GradeData>(
-              key: ValueKey(grade.reference.documentID),
+            child: DragTarget<Map<String, dynamic>>(
               onAccept: (receivedItem) {
-                acceptData = receivedItem.gradeID.toString();
+                print(receivedItem);
+                if(receivedItem["documentID"] == grade.reference.documentID){
+                  print("기존 위치");
+                }else {
+                  List<String> gradeUser = List();
+                  List<String> reGradeUser = List();
+                  for(int i = 0; i < grade.gradeUser.length; i++){
+                    gradeUser.add(grade.gradeUser[i]);
+                  }
+
+                  for(int i = 0; i < receivedItem["gradeUser"].length; i++){
+                    reGradeUser.add(receivedItem["gradeUser"][i]);
+                  }
+                  gradeUser.add(receivedItem["mail"]);
+
+                  reGradeUser.remove(receivedItem["mail"]);
+
+                  //var gradeUser = [receivedItem["mail"]];
+                  print("바뀐 위치   ===== > " + gradeUser.toString());
+                  print(receivedItem["mail"] + "  , " + receivedItem["documentID"]);
+                  print(grade.reference.documentID);
+                  //gradeUser.add(receivedItem["mail"]);
+                  Firestore.instance.collection("company").document(companyCode).collection("grade").document(grade.reference.documentID).updateData({
+                    "gradeUser" : gradeUser,
+                  });
+
+                  Firestore.instance.collection("company").document(companyCode).collection("grade").document(receivedItem["documentID"]).updateData({
+                    "gradeUser" : reGradeUser,
+                  });
+
+                  Firestore.instance.collection("company").document(companyCode).collection("user").document(receivedItem["mail"]).updateData({
+                    "level" : grade.gradeID,
+                  });
+                }
                 //Firestore.instance.collection("company").document(companyCode).collection("grade").document(grade.reference.documentID).updateData({'gradeUser' : grade.gradeUser});
               },
               onLeave: (receivedItem) {
-                print(receivedItem);
                 //Firestore.instance.collection("company").document(companyCode).collection("grade").document(grade.reference.documentID).updateData({'gradeUser' : gradeList});
               },
               onWillAccept: (receivedItem) {
                 return true;
               },
               builder: (context, acceptedItems, rejectedItems) {
-                 return Container(
-                    width: customWidth(context: context, widthSize: 1),
-                    height: customHeight(context: context, heightSize: 1),
-                    color: Colors.red,
-                    child: Center(child: Text(acceptData)),
-                );
-            }),
-          ),
-          ListView(
-            scrollDirection: Axis.horizontal,
-            children: grade.gradeUser
-                .map(
-                  (data) => FutureBuilder(
-                    future: FirebaseStorage.instance.ref().child("profile/${data}").getDownloadURL(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Icon(Icons.person_outline);
-                      }
-                      return Draggable(
-                        data: data,
-                        child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(snapshot.data),
-                          ),
+                return Container(
+                  width: customWidth(context: context, widthSize: 1),
+                  height: customHeight(context: context, heightSize: 1),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            Icon(Icons.grade),
+                            Text(
+                              grade.gradeName,
+                              style: customStyle(
+                                  fontSize: 14,
+                                  fontWeightName: 'Medium',
+                                  fontColor: mainColor
+                              ),
+                            ),
+                          ],
                         ),
-                        feedback: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(snapshot.data),
-                          ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: IconButton(
+                          icon: Icon(Icons.more_horiz),
+                          onPressed: () {
+
+                          },
                         ),
-                      );
-                    },
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: grade.gradeUser.map((data) => _buildUserListItem(context, data, grade, companyCode)).toList(),
+                        ),
+                      ),
+                    ],
                   ),
-                ).toList(),
+                );
+              }),
           ),
-        ],
-      ),
     ),
   );
 }
 
-Widget _buildUserListItem(BuildContext context, String data) {
-  return Draggable(
-    data: data,
-    child: SizedBox(
-      width: 40,
-      height: 40,
-      child: FutureBuilder(
-        future: FirebaseStorage.instance.ref().child("profile/${data}").getDownloadURL(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Icon(Icons.person_outline);
-          }
-          return CircleAvatar(
-            backgroundImage: NetworkImage(snapshot.data),
-          );
-        },
-      ),
-    ),
-    feedback: SizedBox(
-      width: 40,
-      height: 40,
-      child: FutureBuilder(
-        future: FirebaseStorage.instance.ref().child("profile/${data}").getDownloadURL(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Icon(Icons.person_outline);
-          }
-          return CircleAvatar(
-            backgroundImage: NetworkImage(snapshot.data),
-          );
-        },
-      ),
-    ),
-  );
+Widget _buildUserListItem(BuildContext context, String data, GradeData grade, String companyCode) {
+  Map<String, dynamic> map = ({
+    "mail" : data,
+    "documentID" : grade.reference.documentID,
+    "gradeUser" : grade.gradeUser
+  });
+
+  return FutureBuilder(
+      future: Firestore.instance
+          .collection("company").document(companyCode)
+          .collection("user").document(data).get(),
+      builder: (context, snapshot) {
+
+        if (!snapshot.hasData) {
+          return Text("");
+        }
+        return Draggable(
+          data: map,
+          child: SizedBox(
+            width: 40,
+            height: 40,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+            ),
+          ),
+          feedback: SizedBox(
+            width: 40,
+            height: 40,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+            ),
+          ),
+        );
+      },
+    );
+
 }
 
 class GradeData {

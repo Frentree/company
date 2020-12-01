@@ -3,10 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/universalString.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseMethods {
   static final Firestore firestore = Firestore.instance;
+  static final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
   Future<void> saveExpense(ExpenseModel expenseModel) async {
     var map = expenseModel.toMap();
@@ -18,6 +20,15 @@ class FirebaseMethods {
         .document(expenseModel.mail)
         .collection(EXPENSE)
         .add(map);
+  }
+
+  Future<String> getImageUrl(String email) async {
+    String url;
+    StorageReference ref = firebaseStorage.ref().child("profile/${email}");
+
+
+    url = (await ref.getDownloadURL()).toString();
+    return url;
   }
 }
 

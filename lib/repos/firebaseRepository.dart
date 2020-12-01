@@ -6,4 +6,7 @@ class FirebaseRepository {
 
   Future<void> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
+
+  Future<String> getImageUrl(String email) =>
+      _firebaseMethods.getImageUrl(email);
 }
