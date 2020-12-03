@@ -27,7 +27,7 @@ ExpenseMain(BuildContext context) {
       Provider.of<LoginUserInfoProvider>(context, listen: false);
   User user = _loginUserInfoProvider.getLoginUser();
 
-  TextEditingController _titleController = TextEditingController();
+  TextEditingController _detailController = TextEditingController();
   TextEditingController _expenseController = TextEditingController();
 
   final List<String> entries = <String>['A', 'B', 'C'];
@@ -103,6 +103,7 @@ ExpenseMain(BuildContext context) {
       memo: "",
       imageUrl: "",
       status: 0,
+      detailNote: _detailController.text,
     );
     debugPrint("In an instance of saveExpense() " +
         _expenseModel.name +
@@ -428,18 +429,7 @@ ExpenseMain(BuildContext context) {
                               ),
                             ]),
                         onTap: () async {
-                          //String setDate =
-                          //Locale myLocale = Localizations.localeOf(context);
-                          //debugPrint(myLocale.toString());
-                          //buildCupertinoDatePicker(context);
-                          //buildMaterialDatePicker(context);
                           _selectDate(context);
-
-                          /*if (setDate != '') {
-                            setState(() {
-                              date = setDate;
-                            });
-                          }*/
                         },
                       ),
                       Padding(
@@ -508,6 +498,28 @@ ExpenseMain(BuildContext context) {
                                       fontSize: 14,
                                       fontWeightName: "regular",
                                       fontColor: mainColor),
+                                ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 8),
+                              ),
+                              Visibility(
+                                visible: _detailClicked == true? true : false,
+                                child: Container(
+                                  width: customWidth(context: context, widthSize: 0.5),
+                                  child: TextField(
+                                    controller: _detailController,
+                                    keyboardType: TextInputType.multiline,
+                                    style: customStyle(
+                                      fontSize: 14,
+                                      fontColor: mainColor,
+                                      fontWeightName: 'regular',
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: "상세 내용을 입력하세요",
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                  )
                                 ),
                               ],
                             ),

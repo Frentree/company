@@ -24,19 +24,20 @@ class ExpenseModel {
   String memo;
   String imageUrl;
   int status;
+  String detailNote;
 
-  ExpenseModel({
-    this.name,
-    this.mail,
-    this.companyCode,
-    this.createDate,
-    this.contentType,
-    this.buyDate,
-    this.cost,
-    this.memo,
-    this.imageUrl,
-    this.status = 0
-  });
+  ExpenseModel(
+      {this.name,
+      this.mail,
+      this.companyCode,
+      this.createDate,
+      this.contentType,
+      this.buyDate,
+      this.cost,
+      this.memo,
+      this.imageUrl,
+      this.status = 0,
+      this.detailNote});
 
   ExpenseModel.fromMap(Map snapshot, String id)
       : name = snapshot["name"],
@@ -48,20 +49,22 @@ class ExpenseModel {
         cost = snapshot["cost"],
         memo = snapshot["memo"],
         imageUrl = snapshot["imageUrl"],
-        status = snapshot["status"];
+        status = snapshot["status"],
+        detailNote = snapshot["detailNote"];
 
   toJson() => {
-      "name": name,
-      "mail": mail,
-      "companyCode": companyCode,
-      "createDate": createDate,
-      "contentType": contentType,
-      "buyDate": buyDate,
-      "cost": cost,
-      "memo": memo,
-      "imageUrl": imageUrl,
-      "status": status,
-    };
+        "name": name,
+        "mail": mail,
+        "companyCode": companyCode,
+        "createDate": createDate,
+        "contentType": contentType,
+        "buyDate": buyDate,
+        "cost": cost,
+        "memo": memo,
+        "imageUrl": imageUrl,
+        "status": status,
+        "detailNote": detailNote,
+      };
 
   Map toMap() {
     var map = Map<String, dynamic>();
@@ -75,6 +78,7 @@ class ExpenseModel {
     map['memo'] = this.memo;
     map['imageUrl'] = this.imageUrl;
     map['status'] = this.status;
+    map['detailNote'] = this.detailNote;
     return map;
   }
 }
