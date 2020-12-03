@@ -8,6 +8,7 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/widgets/form/customInputFormatter.dart';
 import 'package:companyplaylist/widgets/popupMenu/choiceImage.dart';
+import 'package:companyplaylist/widgets/popupMenu/invalidData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,7 +37,6 @@ ExpenseMain(BuildContext context) {
   int _chosenItem = 0;
   int _itemCount = 0;
   _itemCount = entries.length;
-  int _expenses = 8000;
 
   /// Which holds the selected date
   /// Defaults to today's date.
@@ -171,33 +171,23 @@ ExpenseMain(BuildContext context) {
                                         ),
                                       ),
                                     ),
-                                    Expanded(
+                                    /*Expanded(
                                       flex: 1,
                                       child: CircleAvatar(
                                           radius: 20,
                                           backgroundColor:
-                                              _titleController.text == ''
-                                                  ? Colors.black12
-                                                  : _titleController.text == ''
-                                                      ? Colors.black12
-                                                      : Colors.blue,
+                                          _expenseController.text == '' && _chosenItem == 0
+                                                  ? disableUploadBtn
+                                                  : blueColor,
                                           child: IconButton(
                                             icon: Icon(Icons.arrow_upward),
                                             onPressed: () {
+                                              debugPrint("_expenseController.text = " + _expenseController.text);
+                                              debugPrint("_chosenItem.text = " + _chosenItem.toString());
                                               Navigator.pop(context);
-                                              if (_titleController.text != '') {
-                                              } else if (_titleController
-                                                      .text ==
-                                                  '') {
-                                                // 제목 미입력
-
-                                              } else {
-                                                // 내용 미입력
-
-                                              }
                                             },
                                           )),
-                                    ),
+                                    ),*/
                                   ]),
                               Container(
                                 height: MediaQuery.of(context)
@@ -382,24 +372,16 @@ ExpenseMain(BuildContext context) {
                             flex: 1,
                             child: CircleAvatar(
                                 radius: 20,
-                                backgroundColor: _titleController.text == ''
-                                    ? Colors.black12
-                                    : _titleController.text == ''
-                                        ? Colors.black12
-                                        : Colors.blue,
+                                backgroundColor:
+                                _expenseController.text == '' || _chosenItem == 0
+                                    ? disableUploadBtn
+                                    : blueColor,
                                 child: IconButton(
                                   icon: Icon(Icons.arrow_upward),
                                   onPressed: () {
-                                    saveExpense();
-
-                                    if (_titleController.text != '') {
-                                    } else if (_titleController.text == '') {
-                                      // 제목 미입력
-
-                                    } else {
-                                      // 내용 미입력
-
-                                    }
+                                    bool _isInput =! (_expenseController.text == '' || _chosenItem == 0);
+                                    _isInput ? saveExpense()
+                                    : InvalidData(context);
                                   },
                                 )),
                           ),
