@@ -11,7 +11,7 @@ import 'package:companyplaylist/repos/firebaseMethod.dart';
 class FirebaseRepository {
   FirebaseMethods _firebaseMethods = FirebaseMethods();
 
-  Future<void> saveExpense(ExpenseModel expenseModel) =>
+  Future<DocumentReference> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(

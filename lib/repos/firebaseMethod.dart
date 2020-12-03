@@ -14,16 +14,26 @@ import 'package:flutter/material.dart';
 class FirebaseMethods {
   static final Firestore firestore = Firestore.instance;
 
-  Future<void> saveExpense(ExpenseModel expenseModel) async {
+  Future<DocumentReference> saveExpense(ExpenseModel expenseModel) async {
     var map = expenseModel.toMap();
 
-    return await firestore
+    Future<DocumentReference> doc = firestore
         .collection(COMPANY)
         .document(expenseModel.companyCode)
         .collection(USER)
         .document(expenseModel.mail)
         .collection(EXPENSE)
         .add(map);
+
+    return doc;
+
+    /*return await firestore
+        .collection(COMPANY)
+        .document(expenseModel.companyCode)
+        .collection(USER)
+        .document(expenseModel.mail)
+        .collection(EXPENSE)
+        .add(map);  */
   }
 
   //사용자 데이터 관련

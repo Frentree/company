@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
@@ -9,9 +11,11 @@ import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/widgets/form/customInputFormatter.dart';
 import 'package:companyplaylist/widgets/popupMenu/choiceImage.dart';
 import 'package:companyplaylist/widgets/popupMenu/invalidData.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -20,12 +24,18 @@ import 'package:provider/provider.dart';
 
 ExpenseMain(BuildContext context) {
   FirebaseRepository _reposistory = FirebaseRepository();
+  final Firestore _db = Firestore.instance;
+  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   LoginUserInfoProvider _loginUserInfoProvider;
+  DocumentReference docRef;
 
   _loginUserInfoProvider =
       Provider.of<LoginUserInfoProvider>(context, listen: false);
   User user = _loginUserInfoProvider.getLoginUser();
+
+  StorageReference storageReference = _firebaseStorage.ref().child(
+      "expenses/${user.companyCode}/${user.mail}/${DateTime.now().toString()}");
 
   TextEditingController _detailController = TextEditingController();
   TextEditingController _expenseController = TextEditingController();
@@ -37,6 +47,8 @@ ExpenseMain(BuildContext context) {
   int _chosenItem = 0;
   int _itemCount = 0;
   _itemCount = entries.length;
+  String _documentID;
+  String _downloadUrl;
 
   /// Which holds the selected date
   /// Defaults to today's date.
@@ -53,6 +65,30 @@ ExpenseMain(BuildContext context) {
   }
 
   String date = "일자를 선택하세요";
+
+  void _uploadImageToStorage(ImageSource source) async {
+    File image = await ImagePicker.pickImage(source: source);
+
+    if (image == null) return;
+
+    // 파일 업로드
+    StorageUploadTask storageUploadTask = storageReference.putFile(image);
+
+    // 파일 업로드 완료까지 대기
+    await storageUploadTask.onComplete;
+
+    // 업로드한 사진의 URL 획득
+    _downloadUrl = await storageReference.getDownloadURL();
+
+    _db
+        .collection("company")
+        .document(user.companyCode)
+        .collection("user")
+        .document(user.mail)
+        .collection("expense")
+        .document(_documentID)
+        .updateData({"imageUrl": _downloadUrl});
+  }
 
   Widget _buildExpenseSizedBox() {
     return SizedBox(
@@ -87,11 +123,6 @@ ExpenseMain(BuildContext context) {
   }
 
   saveExpense() {
-    debugPrint("saveExpense Method has been clicked and a user name is " +
-        user.name.toString() +
-        "and a email is " +
-        user.mail.toString());
-
     ExpenseModel _expenseModel = ExpenseModel(
       name: user.name,
       mail: user.mail,
@@ -101,18 +132,17 @@ ExpenseMain(BuildContext context) {
       buyDate: selectedDate,
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       memo: "",
-      imageUrl: "",
+      imageUrl: _downloadUrl,
       status: 0,
       detailNote: _detailController.text,
     );
-    debugPrint("In an instance of saveExpense() " +
-        _expenseModel.name +
-        " " +
-        _expenseModel.mail +
-        " " +
-        _expenseModel.companyCode);
+    debugPrint(_downloadUrl);
 
-    _reposistory.saveExpense(_expenseModel);
+    _returnValue() async {
+      DocumentReference doc = await _reposistory.saveExpense(_expenseModel);
+      _documentID = doc.documentID.toString();
+    }
+    _returnValue();
   }
 
   showModalBottomSheet(
@@ -133,7 +163,7 @@ ExpenseMain(BuildContext context) {
                   context: context,
                   builder: (BuildContext builder) {
                     return Container(
-                        padding: EdgeInsets.only(left : 20, right: 20, top: 10),
+                        padding: EdgeInsets.only(left: 20, right: 20, top: 10),
                         height:
                             MediaQuery.of(context).copyWith().size.height / 2.5,
                         child: Column(
@@ -374,15 +404,19 @@ ExpenseMain(BuildContext context) {
                             child: CircleAvatar(
                                 radius: 20,
                                 backgroundColor:
-                                _expenseController.text == '' || _chosenItem == 0
-                                    ? disableUploadBtn
-                                    : blueColor,
+                                    _expenseController.text == '' ||
+                                            _chosenItem == 0
+                                        ? disableUploadBtn
+                                        : blueColor,
                                 child: IconButton(
                                   icon: Icon(Icons.arrow_upward),
                                   onPressed: () {
-                                    bool _isInput =! (_expenseController.text == '' || _chosenItem == 0);
-                                    _isInput ? saveExpense()
-                                    : InvalidData(context);
+                                    bool _isInput =
+                                        !(_expenseController.text == '' ||
+                                            _chosenItem == 0);
+                                    _isInput
+                                        ? saveExpense()
+                                        : InvalidData(context);
                                   },
                                 )),
                           ),
@@ -499,28 +533,29 @@ ExpenseMain(BuildContext context) {
                                       fontWeightName: "regular",
                                       fontColor: mainColor),
                                 ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 8),
-                              ),
-                              Visibility(
-                                visible: _detailClicked == true? true : false,
-                                child: Container(
-                                  width: customWidth(context: context, widthSize: 0.5),
-                                  child: TextField(
-                                    controller: _detailController,
-                                    keyboardType: TextInputType.multiline,
-                                    style: customStyle(
-                                      fontSize: 14,
-                                      fontColor: mainColor,
-                                      fontWeightName: 'regular',
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: "상세 내용을 입력하세요",
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                  )
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8),
                                 ),
+                                Visibility(
+                                    visible:
+                                        _detailClicked == true ? true : false,
+                                    child: Container(
+                                      width: customWidth(
+                                          context: context, widthSize: 0.5),
+                                      child: TextField(
+                                        controller: _detailController,
+                                        keyboardType: TextInputType.multiline,
+                                        style: customStyle(
+                                          fontSize: 14,
+                                          fontColor: mainColor,
+                                          fontWeightName: 'regular',
+                                        ),
+                                        decoration: InputDecoration(
+                                          hintText: "상세 내용을 입력하세요",
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    )),
                               ],
                             ),
                             Padding(
@@ -576,7 +611,45 @@ ExpenseMain(BuildContext context) {
                             ),
                           ]),
                           onTap: () {
-                            ChoiceImage(context);
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SimpleDialog(
+                                    title: Text(
+                                      "선택",
+                                      style: customStyle(
+                                          fontColor: mainColor,
+                                          fontSize: 14
+                                      ),
+                                    ),
+                                    children: [
+                                      SimpleDialogOption(
+                                        onPressed: () {
+                                          _uploadImageToStorage(ImageSource.camera);
+                                        },
+                                        child: Text(
+                                          "카메라",
+                                          style: customStyle(
+                                              fontColor: mainColor,
+                                              fontSize: 13
+                                          ),
+                                        ),
+                                      ),
+                                      SimpleDialogOption(
+                                        onPressed: () {
+                                          _uploadImageToStorage(ImageSource.gallery);
+                                        },
+                                        child:Text(
+                                          "갤러리",
+                                          style: customStyle(
+                                              fontColor: mainColor,
+                                              fontSize: 13
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
                           },
                         ),
                       ),
