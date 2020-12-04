@@ -6,6 +6,7 @@ import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
+import 'package:companyplaylist/screens/alarm/signBox.dart';
 import 'package:companyplaylist/screens/home/homeSchedule.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
@@ -20,7 +21,7 @@ class AlarmMainPage extends StatefulWidget {
 
 class AlarmMainPageState extends State<AlarmMainPage> {
   int tabIndex = 0;
-  List<Widget> _page = [Container(),Container(),AlarmNoticePage()];
+  List<Widget> _page = [Container(),SignBox(),AlarmNoticePage()];
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,6 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       tabIndexVariable: tabIndex,
                       tabOrder: 1,
                       tabAction: (){
-                        NotImplementedFunction(context);
                         setState(() {
                           tabIndex = 1;
                         });

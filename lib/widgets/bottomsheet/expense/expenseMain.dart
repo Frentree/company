@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:intl/intl.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,6 +46,7 @@ ExpenseMain(BuildContext context) {
   /// Which holds the selected date
   /// Defaults to today's date.
   DateTime selectedDate = DateTime.now();
+  Format _format = Format();
 
   /// This decides which day will be enabled
   /// This will be called every time while displaying day in calender.
@@ -81,7 +83,7 @@ ExpenseMain(BuildContext context) {
         .updateData({"imageUrl": _downloadUrl});
   }
 
-  // 금액 입력 텍스트 위젯
+  /// 금액 입력 텍스트 위젯
   Widget _buildExpenseSizedBox() {
     return SizedBox(
         width: customWidth(context: context, widthSize: 0.5),
@@ -114,7 +116,7 @@ ExpenseMain(BuildContext context) {
         ));
   }
 
-  // 설정한 경비 데이터들을 파이어스토어에 저장하고 URL을 변수에 저장하는 메서드
+  /// 설정한 경비 데이터들을 파이어스토어에 저장하고 URL을 변수에 저장하는 메서드
   saveExpense() {
     ExpenseModel _expenseModel = ExpenseModel(
       name: user.name,
@@ -122,7 +124,7 @@ ExpenseMain(BuildContext context) {
       companyCode: user.companyCode,
       createDate: Timestamp.now(),
       contentType: _buildChosenItem(_chosenItem),
-      buyDate: selectedDate,
+      buyDate: _format.dateTimeToTimeStamp(selectedDate),
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       memo: "",
       imageUrl: _downloadUrl,
@@ -138,7 +140,7 @@ ExpenseMain(BuildContext context) {
     _returnValue();
   }
 
-  // 경비 품의 바텀시트
+  /// 경비 품의 바텀시트
   showModalBottomSheet(
       isScrollControlled: false,
       shape: RoundedRectangleBorder(
@@ -149,7 +151,7 @@ ExpenseMain(BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
 
-            // iOS용 데이트 피커 위젯
+            /// iOS용 데이트 피커 위젯
             buildCupertinoDatePicker(BuildContext context) {
               showModalBottomSheet(
                   shape: RoundedRectangleBorder(
@@ -235,7 +237,7 @@ ExpenseMain(BuildContext context) {
                   });
             }
 
-            // 안드로이드용 데이트 피커 위젯
+            /// 안드로이드용 데이트 피커 위젯
             buildMaterialDatePicker(BuildContext context) async {
               final DateTime picked = await showDatePicker(
                 context: context,
@@ -265,7 +267,7 @@ ExpenseMain(BuildContext context) {
                 });
             }
 
-            // 플랫폼 종류 인식 후 데이트 피커 제공 메서드
+            /// 플랫폼 종류 인식 후 데이트 피커 제공 메서드
             _selectDate(BuildContext context) {
               final ThemeData theme = Theme.of(context);
               assert(theme.platform != null);
@@ -655,8 +657,8 @@ ExpenseMain(BuildContext context) {
       });
 }
 
-// 경비 항목 선택 메뉴
-// 추후 사용자 정의 화면 생성 및 해당 화면에서 생성된 데이터 리턴 적용 필요
+/// 경비 항목 선택 메뉴
+/// 추후 사용자 정의 화면 생성 및 해당 화면에서 생성된 데이터 리턴 적용 필요
 String _buildChosenItem(int chosenItem) {
   String _chosenItem = chosenItem.toString();
   switch (_chosenItem) {

@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 class FirebaseMethods {
   static final Firestore firestore = Firestore.instance;
 
+  // 경비 청구 항목 저장 메서드
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) async {
     var map = expenseModel.toMap();
 
@@ -26,14 +27,18 @@ class FirebaseMethods {
         .add(map);
 
     return doc;
+  }
 
-    /*return await firestore
+  // 경비 청구 항목 불러오기 메서드
+  Stream<QuerySnapshot> getExpense(String companyCode, String uid) {
+    return firestore
         .collection(COMPANY)
-        .document(expenseModel.companyCode)
+        .document(companyCode)
         .collection(USER)
-        .document(expenseModel.mail)
+        .document(uid)
         .collection(EXPENSE)
-        .add(map);  */
+        .orderBy("buyDate", descending: true)
+        .snapshots();
   }
 
   //사용자 데이터 관련

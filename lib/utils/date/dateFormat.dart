@@ -51,7 +51,17 @@ class Format{
     return newDate;
   }
 
+  String dateFormatForExpenseCard(Timestamp date) {
+    String dateText;
+    DateTime _date = timeStampToDateTime(date);
 
+    dateText = twoDigitsFormat(_date.month) +
+        "." +
+        twoDigitsFormat(_date.day) +
+        " " +
+        weekFormat(_date);
+    return dateText;
+  }
 
   String dateFormat(DateTime date){
     String dateText;

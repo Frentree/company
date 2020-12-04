@@ -11,8 +11,12 @@ import 'package:companyplaylist/repos/firebaseMethod.dart';
 class FirebaseRepository {
   FirebaseMethods _firebaseMethods = FirebaseMethods();
 
+  // 경비 청구 항목 저장 메서드
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
+
+  Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
+    _firebaseMethods.getExpense(companyCode, uid);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
         userModel: userModel,
