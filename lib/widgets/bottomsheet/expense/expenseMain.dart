@@ -1,6 +1,15 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
@@ -9,18 +18,7 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/widgets/form/customInputFormatter.dart';
-import 'package:companyplaylist/widgets/popupMenu/choiceImage.dart';
 import 'package:companyplaylist/widgets/popupMenu/invalidData.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-
-//테스트 계정
-//abc@frentree / fren1212
 
 ExpenseMain(BuildContext context) {
   FirebaseRepository _reposistory = FirebaseRepository();
@@ -28,7 +26,6 @@ ExpenseMain(BuildContext context) {
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   LoginUserInfoProvider _loginUserInfoProvider;
-  DocumentReference docRef;
 
   _loginUserInfoProvider =
       Provider.of<LoginUserInfoProvider>(context, listen: false);
@@ -40,13 +37,8 @@ ExpenseMain(BuildContext context) {
   TextEditingController _detailController = TextEditingController();
   TextEditingController _expenseController = TextEditingController();
 
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
-
   bool _detailClicked = false;
   int _chosenItem = 0;
-  int _itemCount = 0;
-  _itemCount = entries.length;
   String _documentID;
   String _downloadUrl;
 
@@ -64,8 +56,7 @@ ExpenseMain(BuildContext context) {
     return false;
   }
 
-  String date = "일자를 선택하세요";
-
+  // 이미지 파일 업로드 메서드
   void _uploadImageToStorage(ImageSource source) async {
     File image = await ImagePicker.pickImage(source: source);
 
@@ -90,6 +81,7 @@ ExpenseMain(BuildContext context) {
         .updateData({"imageUrl": _downloadUrl});
   }
 
+  // 금액 입력 텍스트 위젯
   Widget _buildExpenseSizedBox() {
     return SizedBox(
         width: customWidth(context: context, widthSize: 0.5),
@@ -122,6 +114,7 @@ ExpenseMain(BuildContext context) {
         ));
   }
 
+  // 설정한 경비 데이터들을 파이어스토어에 저장하고 URL을 변수에 저장하는 메서드
   saveExpense() {
     ExpenseModel _expenseModel = ExpenseModel(
       name: user.name,
@@ -145,6 +138,7 @@ ExpenseMain(BuildContext context) {
     _returnValue();
   }
 
+  // 경비 품의 바텀시트
   showModalBottomSheet(
       isScrollControlled: false,
       shape: RoundedRectangleBorder(
@@ -154,6 +148,8 @@ ExpenseMain(BuildContext context) {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
+
+            // iOS용 데이트 피커 위젯
             buildCupertinoDatePicker(BuildContext context) {
               showModalBottomSheet(
                   shape: RoundedRectangleBorder(
@@ -202,23 +198,18 @@ ExpenseMain(BuildContext context) {
                                         ),
                                       ),
                                     ),
-                                    /*Expanded(
+                                    Expanded(
                                       flex: 1,
                                       child: CircleAvatar(
                                           radius: 20,
-                                          backgroundColor:
-                                          _expenseController.text == '' && _chosenItem == 0
-                                                  ? disableUploadBtn
-                                                  : blueColor,
+                                          backgroundColor: blueColor,
                                           child: IconButton(
                                             icon: Icon(Icons.arrow_upward),
                                             onPressed: () {
-                                              debugPrint("_expenseController.text = " + _expenseController.text);
-                                              debugPrint("_chosenItem.text = " + _chosenItem.toString());
                                               Navigator.pop(context);
                                             },
                                           )),
-                                    ),*/
+                                    ),
                                   ]),
                               Container(
                                 height: MediaQuery.of(context)
@@ -244,6 +235,7 @@ ExpenseMain(BuildContext context) {
                   });
             }
 
+            // 안드로이드용 데이트 피커 위젯
             buildMaterialDatePicker(BuildContext context) async {
               final DateTime picked = await showDatePicker(
                 context: context,
@@ -273,6 +265,7 @@ ExpenseMain(BuildContext context) {
                 });
             }
 
+            // 플랫폼 종류 인식 후 데이트 피커 제공 메서드
             _selectDate(BuildContext context) {
               final ThemeData theme = Theme.of(context);
               assert(theme.platform != null);
@@ -281,15 +274,16 @@ ExpenseMain(BuildContext context) {
                 case TargetPlatform.fuchsia:
                 case TargetPlatform.linux:
                 case TargetPlatform.windows:
-                  return //debugPrint("android");
+                  return
                       buildMaterialDatePicker(context);
                 case TargetPlatform.iOS:
                 case TargetPlatform.macOS:
-                  return //debugPrint("iOS");
+                  return
                       buildCupertinoDatePicker(context);
               }
             }
 
+            // 경비 품의 바텀시트 드로잉
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: SingleChildScrollView(
@@ -661,6 +655,8 @@ ExpenseMain(BuildContext context) {
       });
 }
 
+// 경비 항목 선택 메뉴
+// 추후 사용자 정의 화면 생성 및 해당 화면에서 생성된 데이터 리턴 적용 필요
 String _buildChosenItem(int chosenItem) {
   String _chosenItem = chosenItem.toString();
   switch (_chosenItem) {
