@@ -35,10 +35,10 @@ class CustomTextInputFormatter extends TextInputFormatter {
   }
 }
 
-CustomTextInputFormatterReverse(String _inputCost) {
+CustomTextInputFormatterReverse(String inputCost) {
   int _returnCost;
 
-  var temp = _inputCost.replaceAll(",","");
+  var temp = inputCost.replaceAll(",","");
   debugPrint("a value of temp is " + temp);
   _returnCost = int.parse(temp);
 

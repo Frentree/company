@@ -127,7 +127,7 @@ ExpenseMain(BuildContext context) {
       buyDate: _format.dateTimeToTimeStamp(selectedDate),
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       memo: "",
-      imageUrl: _downloadUrl,
+      imageUrl: _downloadUrl == null ? "" : _downloadUrl,
       status: 0,
       detailNote: _detailController.text,
     );

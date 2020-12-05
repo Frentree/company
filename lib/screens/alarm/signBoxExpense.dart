@@ -55,58 +55,93 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                 children: [
                   Expanded(
                     flex: 3,
-                    child: Text(
-                      "지출일자",
-                      style: customStyle(
-                          fontSize: timeFontSize,
-                          fontWeightName: "Regular",
-                          fontColor: blueColor),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "지출일자",
+                        style: customStyle(
+                            fontSize: timeFontSize,
+                            fontWeightName: "Regular",
+                            fontColor: blueColor),
+                      ),
                     ),
                   ),
                   Expanded(
                     flex: 4,
-                    child: Text(
-                      "항목",
-                      style: customStyle(
-                          fontSize: timeFontSize,
-                          fontWeightName: "Regular",
-                          fontColor: blueColor),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "항목",
+                        style: customStyle(
+                            fontSize: timeFontSize,
+                            fontWeightName: "Regular",
+                            fontColor: blueColor),
+                      ),
                     ),
                   ),
                   Expanded(
                     flex: 4,
-                    child: Text(
-                      "금액",
-                      style: customStyle(
-                          fontSize: timeFontSize,
-                          fontWeightName: "Regular",
-                          fontColor: blueColor),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "금액",
+                        style: customStyle(
+                            fontSize: timeFontSize,
+                            fontWeightName: "Regular",
+                            fontColor: blueColor),
+                      ),
                     ),
                   ),
                   Expanded(
                     flex: 3,
-                    child: Text(
-                      "영수증",
-                      style: customStyle(
-                          fontSize: timeFontSize,
-                          fontWeightName: "Regular",
-                          fontColor: blueColor),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "영수증",
+                        style: customStyle(
+                            fontSize: timeFontSize,
+                            fontWeightName: "Regular",
+                            fontColor: blueColor),
+                      ),
                     ),
                   ),
                   Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 1),
-                      )
+                    flex: 4,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "상태",
+                        style: customStyle(
+                            fontSize: timeFontSize,
+                            fontWeightName: "Regular",
+                            fontColor: blueColor),
+                      ),
+                    ),
                   ),
                   Expanded(
-                    flex: 4,
-                    child: Text(
-                      "상태",
-                      style: customStyle(
-                          fontSize: timeFontSize,
-                          fontWeightName: "Regular",
-                          fontColor: blueColor),
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "",
+                        style: customStyle(
+                            fontSize: timeFontSize,
+                            fontWeightName: "Regular",
+                            fontColor: blueColor),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "",
+                        style: customStyle(
+                            fontSize: timeFontSize,
+                            fontWeightName: "Regular",
+                            fontColor: blueColor),
+                      ),
                     ),
                   ),
 
