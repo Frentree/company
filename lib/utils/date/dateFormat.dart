@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class Format{
   String weekFormat(DateTime date){
@@ -116,6 +117,13 @@ class Format{
   Timestamp dateTimeToTimeStamp(DateTime time){
     Timestamp dateTime;
     dateTime = Timestamp.fromDate(time);
+
+    return dateTime;
+  }
+  String timeStampToDateTimeString(Timestamp time){
+    String dateTime;
+    dateTime = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
+        DateTime.parse(time.toDate().toString()));
 
     return dateTime;
   }

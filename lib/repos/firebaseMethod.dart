@@ -300,6 +300,15 @@ class FirebaseMethods {
         .updateData(approvalModel.toJson());
   }
 
+  Future<DocumentSnapshot> photoProfile(String companyCode, String mail) async {
+    return await firestore
+        .collection("company")
+        .document(companyCode)
+        .collection("user")
+        .document(mail)
+        .get();
+  }
+
   Future<DocumentSnapshot> userGrade(String companyCode, String mail) async {
     return await firestore
         .collection(COMPANY)
@@ -358,6 +367,21 @@ class FirebaseMethods {
         .collection(GRADE)
         .document(documentID)
         .delete();
+  }
+
+  Future<void> deleteUserGrade(String documentID, String companyCode, int level) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .where("level", arrayContains: level)
+        .getDocuments().then((value) {
+      value.documents.forEach((element) {
+        element.reference.updateData({
+          "level" : FieldValue.arrayRemove([level])
+        });
+      });
+    });
   }
 
   Stream<QuerySnapshot> getGreadeUserDetail(String companyCode, int level) {

@@ -149,7 +149,7 @@ Future<void> getGradeUpadateDialog({BuildContext context, String gradeName, Stri
 }
 
 // 권한 삭제 다이얼로그
-Future<void> getGradeDeleteDialog({BuildContext context, String documentID, String companyCode}) {
+Future<void> getGradeDeleteDialog({BuildContext context, String documentID, String companyCode, int level}) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -189,6 +189,7 @@ Future<void> getGradeDeleteDialog({BuildContext context, String documentID, Stri
                               ),
                             ),
                             onPressed: () {
+                              FirebaseRepository().deleteUserGrade(documentID, companyCode, level);
                               FirebaseRepository().deleteGrade(documentID, companyCode);
 
                               Navigator.pop(context);

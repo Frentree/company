@@ -4,6 +4,7 @@ import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmMain.dart';
 import 'package:companyplaylist/screens/approval/approval.dart';
 import 'package:companyplaylist/screens/search/searchMain.dart';
@@ -128,17 +129,12 @@ class HomeMainPageState extends State<HomeMainPage> {
                     color: whiteColor,
                     border: Border.all(color: whiteColor, width: 2)),
                 child: FutureBuilder(
-                  future: Firestore.instance
-                      .collection("company")
-                      .document(_loginUser.companyCode)
-                      .collection("user")
-                      .document(_loginUser.mail)
-                      .get(),
+                  future: FirebaseRepository().photoProfile(_loginUser.companyCode, _loginUser.mail),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Icon(Icons.person_outline);
                     }
-                    return Image.network(_loginUser.profilePhoto);
+                    return Image.network(snapshot.data['profilePhoto']);
                   },
                 ),
               ),

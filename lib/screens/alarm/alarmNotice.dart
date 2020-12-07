@@ -10,9 +10,11 @@ import 'package:companyplaylist/main.dart';
 import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeComment.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeDetail.dart';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
 import 'package:companyplaylist/widgets/popupMenu/expensePopupMenu.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -30,8 +32,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
   LoginUserInfoProvider _loginUserInfoProvider;
 
   final Firestore _db = Firestore.instance;
-  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-
+  Format _format = Format();
   Stream stream;
 
   User _loginUser;
@@ -82,8 +83,6 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                       documents[index].data['noticeCreateDate'].toDate().toString()
                   ).add(Duration(hours: 9))
               );*/
-              StorageReference storageReference =
-              _firebaseStorage.ref().child("profile/${documents[index].data['noticeCreateUser']['mail']}");
 
               return Card(
                 elevation: 0,
@@ -128,18 +127,14 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                             color: whiteColor, width: 2)
                                     ),
                                     child: FutureBuilder(
-                                      future: storageReference.getDownloadURL(),
+                                      future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data['noticeCreateUser']['mail']),
                                       builder: (context, snapshot) {
                                         if (!snapshot.hasData) {
-                                          return Icon(
-                                              Icons.person_outline
-                                          );
+                                          return Icon(Icons.person_outline);
                                         }
-                                        return Image.network(
-                                            snapshot.data
-                                        );
+                                        return Image.network(snapshot.data['profilePhoto']);
                                       },
-                                    )
+                                    ),
                                 ),
                                 onTap: () {},
                               ),
@@ -273,7 +268,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   ),
                                 ),
                                 Text(
-                                  "_createDate",
+                                _format.timeStampToDateTimeString(documents[index].data['noticeCreateDate']).toString(),
                                   style: customStyle(
                                       fontSize: 12,
                                       fontWeightName: 'Regular',
@@ -344,18 +339,12 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(builder: (context) =>
-                                                        /*AlarmNoticeCommentPage(
-                                      noticeUid: documents[index].data['noticeUid'].toString(),
-                                      noticeTitle: documents[index].data['noticeTitle'].toString(),
-                                      noticeContent: documents[index].data['noticeContent'].toString(),
-                                      noticeCreateDate: _createDate,
-                                    )*/
                                                         AlarmNoticeDetailPage(
                                                           noticeUid: documents[index].documentID,
                                                           noticeTitle: documents[index].data['noticeTitle'].toString(),
                                                           noticeContent: documents[index].data['noticeContent'].toString(),
                                                           noticeCreateUser: documents[index].data['noticeCreateUser']['mail'].toString(),
-                                                          noticeCreateDate: "_createDate",
+                                                          noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data['noticeCreateDate']).toString(),
                                                         )
                                                         )
                                                     );
@@ -468,7 +457,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                     noticeTitle: documents[index].data['noticeTitle'].toString(),
                                     noticeContent: documents[index].data['noticeContent'].toString(),
                                     noticeCreateUser: documents[index].data['noticeCreateUser']['mail'].toString(),
-                                    noticeCreateDate: "_createDate",
+                                    noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data['noticeCreateDate']).toString(),
                                   )
                                   )
                               ),

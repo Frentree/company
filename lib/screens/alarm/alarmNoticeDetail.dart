@@ -6,7 +6,9 @@ import 'package:companyplaylist/models/commentListModel.dart';
 import 'package:companyplaylist/models/commentModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
+import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -110,18 +112,14 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                       color: whiteColor,
                       border: Border.all(color: whiteColor, width: 2)),
                   child: FutureBuilder(
-                    future: _firebaseStorage.ref().child("profile/${documents[i].data['commentsUser']['mail']}").getDownloadURL(),
+                    future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[i].data['commentsUser']['mail']),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return Icon(
-                            Icons.person_outline
-                        );
+                        return Icon(Icons.person_outline);
                       }
-                      return Image.network(
-                          snapshot.data
-                      );
+                      return Image.network(snapshot.data['profilePhoto']);
                     },
-                  )
+                  ),
                 ),
                 onTap: () {},
               ),
@@ -156,9 +154,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                     Row(
                       children: [
                         Text(
-                          DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                              DateTime.parse(documents[i].data['createDate'].toDate().toString())
-                                  .add(Duration(hours: 9))),
+                          Format().timeStampToDateTimeString(documents[i].data['createDate']),
                           style:
                           customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                         ),
@@ -359,16 +355,12 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                 width: customWidth(context: context, widthSize: 0.1),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: whiteColor, border: Border.all(color: whiteColor, width: 2)),
                 child: FutureBuilder(
-                  future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
+                  future: FirebaseRepository().photoProfile(_loginUser.companyCode, _loginUser.mail),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Icon(
-                          Icons.person_outline
-                      );
+                      return Icon(Icons.person_outline);
                     }
-                    return Image.network(
-                        snapshot.data
-                    );
+                    return Image.network(snapshot.data['profilePhoto']);
                   },
                 )
               ),
@@ -426,16 +418,12 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5), color: whiteColor, border: Border.all(color: whiteColor, width: 2)),
                                       child: FutureBuilder(
-                                        future: _firebaseStorage.ref().child("profile/${noticeCreateUser}").getDownloadURL(),
+                                        future: FirebaseRepository().photoProfile(_loginUser.companyCode, noticeCreateUser),
                                         builder: (context, snapshot) {
                                           if (!snapshot.hasData) {
-                                            return Icon(
-                                                Icons.person_outline
-                                            );
+                                            return Icon(Icons.person_outline);
                                           }
-                                          return Image.network(
-                                              snapshot.data
-                                          );
+                                          return Image.network(snapshot.data['profilePhoto']);
                                         },
                                       ),
                                     ),
@@ -529,18 +517,14 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       color: whiteColor,
                                                       border: Border.all(color: whiteColor, width: 2)),
                                                   child: FutureBuilder(
-                                                    future: _firebaseStorage.ref().child("profile/${documents[index].data['createUser']['mail']}").getDownloadURL(),
+                                                    future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data['createUser']['mail']),
                                                     builder: (context, snapshot) {
                                                       if (!snapshot.hasData) {
-                                                        return Icon(
-                                                            Icons.person_outline
-                                                        );
+                                                        return Icon(Icons.person_outline);
                                                       }
-                                                      return Image.network(
-                                                          snapshot.data
-                                                      );
+                                                      return Image.network(snapshot.data['profilePhoto']);
                                                     },
-                                                  )
+                                                  ),
                                                 ),
                                                 onTap: () {},
                                               ),
@@ -569,9 +553,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                                                            DateTime.parse(documents[index].data['createDate'].toDate().toString())
-                                                                .add(Duration(hours: 9))),
+                                                        Format().timeStampToDateTimeString(documents[index].data['createDate']),
                                                         style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                                                       ),
                                                       Container(

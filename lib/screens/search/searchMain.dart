@@ -33,7 +33,7 @@ class SearchMainPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: _page[loginScreenChangeProvider.getPageName()],
+            child: SizedBox(),
           ),
         ],
       ),

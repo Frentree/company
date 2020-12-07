@@ -6,9 +6,11 @@ import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
+import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/utils/search/searchFormat.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noticeTitle, String noticeContent) async {
@@ -17,16 +19,12 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
 
   FocusNode _noticeFocusNode = FocusNode();
 
-  SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
-  User _loginUser = User.fromMap(
-      await json.decode(_sharedPreferences.getString("loginUser")), null);
+  User _loginUser;
 
   Map<String, String> _noticeUser = Map();
 
-  _noticeUser.addAll({"mail": _loginUser.mail, "name": _loginUser.name});
 
-  CrudRepository _crudRepository =
-      CrudRepository.noticeAttendance(companyCode: _loginUser.companyCode);
+  CrudRepository _crudRepository;
   NoticeModel _notice;
 
   if(noticeDocumentID != "") {
@@ -43,6 +41,12 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
+            LoginUserInfoProvider _loginUserInfoProvider =
+                Provider.of<LoginUserInfoProvider>(context);
+            _loginUser = _loginUserInfoProvider.getLoginUser();
+            _noticeUser.addAll({"mail": _loginUser.mail, "name": _loginUser.name});
+            _crudRepository =
+                CrudRepository.noticeAttendance(companyCode: _loginUser.companyCode);
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Listener(
@@ -111,7 +115,7 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                                         noticeContent: _noticeContent.text,
                                         noticeCreateUser: _noticeUser,
                                         noticeCreateDate:
-                                        Timestamp.fromDate(DateTime.now()),
+                                        Timestamp.now(),
                                         caseSearch: SearchFormat.setSearchParam(_noticeTitle.text),
                                         //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
                                       );
