@@ -151,6 +151,9 @@ class FirebaseRepository {
   Stream<QuerySnapshot> getGrade(String companyCode) =>
       _firebaseMethods.getGrade(companyCode);
 
+  Future<void> userGrade(String companyCode, String mail) =>
+      _firebaseMethods.userGrade(companyCode, mail);
+
   Future<void> deleteUser(String documentID, String companyCode, int level) =>
       _firebaseMethods.deleteUser(documentID, companyCode, level);
 
