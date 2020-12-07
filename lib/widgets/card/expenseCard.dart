@@ -5,6 +5,7 @@ import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:companyplaylist/widgets/alarm/expenseImageDialog.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -68,7 +69,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                   child: Container(
                     child: Row(children: [
                       Expanded(
-                        flex: 3,
+                        flex: 5,
                         child: Container(
                           alignment: Alignment.centerRight,
                           child: Text(
@@ -88,19 +89,19 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: GestureDetector(
                     onTap: () {
-                      NotImplementedFunction(context);
+                      ExpenseImageDialog(context, model.imageUrl);
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      child: Icon(Icons.receipt_long_outlined, size: 20),
+                      child: model.imageUrl == "" ? Container() : Icon(Icons.receipt_long_outlined, size: 20),
                     ),
                   ),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
