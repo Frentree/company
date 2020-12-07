@@ -47,7 +47,11 @@ class HomeMainPageState extends State<HomeMainPage> {
   //페이지 이동
   void _pageChange(int pageIndex) {
     if (pageIndex == 2) {
-      MainBottomSheet(context);
+      MainBottomSheet(
+          context : context,
+          companyCode: _loginUser.companyCode,
+          mail: _loginUser.mail
+      );
     } else {
       setState(() {
         print(pageIndex);

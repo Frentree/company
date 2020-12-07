@@ -285,6 +285,15 @@ class FirebaseMethods {
         .updateData(approvalModel.toJson());
   }
 
+  Future<DocumentSnapshot> userGrade(String companyCode, String mail) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .document(mail)
+        .get();
+  }
+
   Stream<QuerySnapshot> getGrade(String companyCode) {
     return Firestore.instance
         .collection("company")
