@@ -341,16 +341,33 @@ class FirebaseMethods {
         .snapshots();
   }
 
-  Future<void> changeGradeUser(String companyCode, List<Map<String,dynamic>> user) async {
-    for(int i = 0; i < user.length; i++)
+  Future<void> addGradeUser(String companyCode, List<Map<String,dynamic>> user) async {
+    for(int i = 0; i < user.length; i++) {
+      print("추가 ====> " + user[i]['mail']);
       await firestore
           .collection(COMPANY)
           .document(companyCode)
           .collection(USER)
           .document(user[i]['mail'])
           .updateData({
-        "level" : user[i]['level']
+        "level": FieldValue.arrayUnion([user[i]['level']])
       });
+    }
+    return null;
+  }
+
+  Future<void> deleteGradeUser(String companyCode, List<Map<String,dynamic>> user) async {
+    for(int i = 0; i < user.length; i++) {
+      print("삭제 ====> " + user[i]['mail']);
+      await firestore
+          .collection(COMPANY)
+          .document(companyCode)
+          .collection(USER)
+          .document(user[i]['mail'])
+          .updateData({
+        "level": FieldValue.arrayRemove([user[i]['level']])
+      });
+    }
     return null;
   }
 }

@@ -177,6 +177,10 @@ class FirebaseRepository {
       _firebaseMethods.getGreadeUserDelete(companyCode, level);
 
   // 권한 - 사용자 추가
-  Future<void> changeGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
-      _firebaseMethods.changeGradeUser(companyCode, user);
+  Future<void> addGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
+      _firebaseMethods.addGradeUser(companyCode, user);
+
+  // 권한 - 사용자 추가
+  Future<void> deleteGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
+      _firebaseMethods.deleteGradeUser(companyCode, user);
 }

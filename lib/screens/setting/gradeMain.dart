@@ -103,12 +103,12 @@ Widget _buildUserList(BuildContext context, GradeData grade, String companyCode)
             child: DragTarget<Map<String, dynamic>>(
               onAccept: (receivedItem) {
                 print(receivedItem);
-                //getErrorDialog(context: context, text: "아직 기능이 구현되지 않았습니다.");
+                getErrorDialog(context: context, text: "아직 기능이 구현되지 않았습니다.");
 
                 if(receivedItem["documentID"] == grade.reference.documentID){
                   print("기존 위치");
                 }else {
-                  FirebaseRepository().deleteUser(receivedItem["mail"], companyCode, 7);
+                  //FirebaseRepository().deleteUser(receivedItem["mail"], companyCode, 7);
 
                   /*List<int> gradeLevel = List();
                   List<dynamic> levelList = receivedItem["level"];

@@ -309,25 +309,23 @@ Widget _getUserListAdd(BuildContext context, List<DocumentSnapshot> snapshot, in
                                 onChanged: (bool value){
                                   setState((){
                                     isChk = value;
-                                    List<int> gradeLevel = List();
+                                    /*List<int> gradeLevel = List();
 
                                     for(int i = 0; i < levelList.length; i++){
                                       if(levelList[i] != 0)
                                         gradeLevel.add(levelList[i]);
-                                    }
+                                    }*/
 
                                     if(isChk == true) {
-                                      gradeLevel.add(level);
+                                      //gradeLevel.add(level);
                                       Map<String, dynamic> map = {
                                         "mail" : snapshot[index]['mail'],
-                                        "level" : gradeLevel
+                                        "level" : level
                                       };
                                       gradeList.add(map);
-                                      print(gradeList);
                                     } else {
-                                      gradeLevel.remove(level);
+                                      //gradeLevel.remove(level);
                                       gradeList.removeWhere((element) => snapshot[index]['mail'] == element['mail']);
-                                      print(gradeList);
                                     }
                                   });
                                 },
@@ -363,7 +361,7 @@ Widget _getUserListAdd(BuildContext context, List<DocumentSnapshot> snapshot, in
                     ),
                   ),
                   onPressed: () {
-                    FirebaseRepository().changeGradeUser(companyCode, gradeList);
+                    FirebaseRepository().addGradeUser(companyCode, gradeList);
                     Navigator.pop(context);
                   },
                 ),
@@ -476,20 +474,11 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
                                 onChanged: (bool value){
                                   setState((){
                                     isChk = value;
-                                    List<int> gradeLevel = List();
-                                    for(int i = 0; i < levelList.length; i++){
-                                      print(levelList[i].toString() + ", " + level.toString());
-                                      gradeLevel.add(levelList[i]);
-                                    }
 
                                     if(isChk == true) {
-                                      gradeLevel.remove(level);
-                                      if(gradeLevel.length == 0){
-                                        gradeLevel.add(0);
-                                      }
                                       Map<String, dynamic> map = {
                                         "mail" : snapshot[index]['mail'],
-                                        "level" : gradeLevel
+                                        "level" : level
                                       };
                                       gradeList.add(map);
                                       print(gradeList);
@@ -537,7 +526,7 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
                       }
                     }
 
-                    FirebaseRepository().changeGradeUser(companyCode, gradeList);
+                    FirebaseRepository().deleteGradeUser(companyCode, gradeList);
                     Navigator.pop(context);
                   },
                 ),
