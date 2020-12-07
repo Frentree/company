@@ -10,25 +10,29 @@ class Company {
   String companyName;
   String companyCode;
   String companyAddr;
+  List<dynamic> companySearch;
 
   Company({
     this.id,
     this.companyName,
     this.companyCode,
     this.companyAddr,
+    this.companySearch,
   });
 
-  Company.fromMap(Map snapshot, String id) :
-      id = id ?? "",
-      companyName = snapshot["companyName"] ?? "",
-      companyCode = snapshot["companyCode"] ?? "",
-      companyAddr = snapshot["companyAddr"] ?? "";
+  Company.fromMap(Map snapshot, String id)
+      : id = id ?? "",
+        companyName = snapshot["companyName"] ?? "",
+        companyCode = snapshot["companyCode"] ?? "",
+        companyAddr = snapshot["companyAddr"] ?? "",
+        companySearch = snapshot["companySearch"] ?? [];
 
-  toJson(){
+  toJson() {
     return {
       "companyName": companyName,
       "companyCode": companyCode,
       "companyAddr": companyAddr,
+      "companySearch": companySearch,
     };
   }
 }

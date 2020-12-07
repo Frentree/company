@@ -101,7 +101,7 @@ class CompanyMethod{
 
     CompanyUser _companyUser = CompanyUser(
       user: _loginUser,
-      level: 5,
+      level: [8, 9],
       createDate: _format.dateTimeToTimeStamp(DateTime.now()),
       lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
     );
@@ -132,9 +132,10 @@ class CompanyMethod{
     User _loginUser = _loginUserInfoProvider.getLoginUser(); //로그인한 사용자 정보 가져오기
 
     _loginUser.companyCode = companyCode;
+    _loginUser.state = 0;
     _repository.updateUser(userModel: _loginUser);
 
-    String appManagerMail = await _repository.geAppManagerMail(comapanyCode: companyCode);
+    String appManagerMail = await _repository.geAppManagerMail(companyCode: companyCode);
 
     Approval approvalModel = Approval(
       name: _loginUser.name,
@@ -159,7 +160,8 @@ class CompanyMethod{
     User approvalUser = await _repository.getUser(userMail: approvalUserMail);
 
     CompanyUser _newCompanyUser = CompanyUser(
-      user: approvalUser
+      user: approvalUser,
+      level: [0],
     );
 
     approvalUser.state = 1;

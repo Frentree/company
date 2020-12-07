@@ -32,7 +32,7 @@ class FirebaseRepository {
         companyModel: companyModel,
       );
 
-  Future<QuerySnapshot> getCompany({String companyName}) =>
+  Future<List<DocumentSnapshot>> getCompany({String companyName}) =>
       _firebaseMethods.getCompany(
         companyName: companyName,
       );
@@ -40,8 +40,8 @@ class FirebaseRepository {
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) =>
       _firebaseMethods.saveCompanyUser(companyUserModel: companyUserModel);
 
-  Future<String> geAppManagerMail({String comapanyCode}) =>
-      _firebaseMethods.geAppManagerMail(comapanyCode: comapanyCode);
+  Future<String> geAppManagerMail({String companyCode}) =>
+      _firebaseMethods.geAppManagerMail(companyCode: companyCode);
 
   Future<void> saveWork({WorkModel workModel, String companyCode}) =>
       _firebaseMethods.saveWork(

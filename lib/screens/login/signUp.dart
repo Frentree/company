@@ -17,7 +17,6 @@ import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
 
 
 //Repos
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/repos/login/loginRepository.dart';
 
 //Model
@@ -36,6 +35,8 @@ class SignUpPageState extends State<SignUpPage> {
   TextEditingController _passwordConfirmTextCon;
   TextEditingController _birthdayTextCon;
   TextEditingController _phoneNumberTextCon;
+  List<TextEditingController> _certificationNumberTexCon;
+
 
   //TextForm Key
   final _formKeyName = GlobalKey<FormState>();
@@ -68,6 +69,7 @@ class SignUpPageState extends State<SignUpPage> {
     _passwordConfirmTextCon = TextEditingController();
     _birthdayTextCon = MaskedTextController(mask: '0000.00.00');
     _phoneNumberTextCon = MaskedTextController(mask: '000-0000-0000');
+    _certificationNumberTexCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(), TextEditingController()];
   }
 
   @override
@@ -78,6 +80,10 @@ class SignUpPageState extends State<SignUpPage> {
     _passwordConfirmTextCon.dispose();
     _birthdayTextCon.dispose();
     _phoneNumberTextCon.dispose();
+    _certificationNumberTexCon.forEach((element) {
+      element.dispose();
+    });
+    FocusScope.of(context).unfocus();
     super.dispose();
   }
 
@@ -406,6 +412,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   width: widthRatio(
                                       context: context, widthRatio: 0.1),
                                   child: TextFormField(
+                                    controller: _certificationNumberTexCon[0],
                                     textAlign: TextAlign.center,
                                     style: customStyle(
                                       fontWeightName: "Regular",
@@ -432,6 +439,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   width: widthRatio(
                                       context: context, widthRatio: 0.1),
                                   child: TextFormField(
+                                    controller: _certificationNumberTexCon[1],
                                     textAlign: TextAlign.center,
                                     style: customStyle(
                                       fontWeightName: "Regular",
@@ -458,6 +466,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   width: widthRatio(
                                       context: context, widthRatio: 0.1),
                                   child: TextFormField(
+                                    controller: _certificationNumberTexCon[2],
                                     textAlign: TextAlign.center,
                                     style: customStyle(
                                       fontWeightName: "Regular",
@@ -484,6 +493,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   width: widthRatio(
                                       context: context, widthRatio: 0.1),
                                   child: TextFormField(
+                                    controller: _certificationNumberTexCon[3],
                                     textAlign: TextAlign.center,
                                     style: customStyle(
                                       fontWeightName: "Regular",
@@ -510,6 +520,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   width: widthRatio(
                                       context: context, widthRatio: 0.1),
                                   child: TextFormField(
+                                    controller: _certificationNumberTexCon[4],
                                     textAlign: TextAlign.center,
                                     style: customStyle(
                                       fontWeightName: "Regular",
@@ -536,6 +547,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   width: widthRatio(
                                       context: context, widthRatio: 0.1),
                                   child: TextFormField(
+                                    controller: _certificationNumberTexCon[5],
                                     textAlign: TextAlign.center,
                                     style: customStyle(
                                       fontWeightName: "Regular",

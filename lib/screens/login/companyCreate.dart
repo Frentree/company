@@ -53,6 +53,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
       companyName: _companyNameCon.text,
       companyAddr:
           _companyAddressCon.text + " " + _companyDetailAddressCon.text,
+      companySearch: _companyNameCon.text.split(""),
     );
     return Scaffold(
       resizeToAvoidBottomPadding: false,

@@ -58,11 +58,32 @@ class FirebaseMethods {
         .setData(companyModel.toJson());
   }
 
-  Future<QuerySnapshot> getCompany({String companyName}) async {
-    return await firestore
+  Future<List<DocumentSnapshot>> getCompany({String companyName}) async {
+    List<DocumentSnapshot> result = [];
+    List<String> findString = companyName.split("");
+    QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
-        .where("companyName", isGreaterThanOrEqualTo: companyName)
+        .where("companySearch", arrayContains: findString[0])
         .getDocuments();
+
+    querySnapshot.documents.forEach((element) {
+      if(findString.length == 1){
+        result.add(element);
+      }
+      else{
+        int firstIndex = element.data["companySearch"].indexOf(findString[0]);
+        for (int i = 1; i < findString.length; i++) {
+          if (element.data["companySearch"][firstIndex + i] != findString[i]) {
+            break;
+          } else {
+            if (i == (findString.length - 1)) {
+              result.add(element);
+            }
+          }
+        }
+      }
+    });
+    return result;
   }
 
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) async {
@@ -74,12 +95,12 @@ class FirebaseMethods {
         .setData(companyUserModel.toJson());
   }
 
-  Future<String> geAppManagerMail({String comapanyCode}) async {
+  Future<String> geAppManagerMail({String companyCode}) async {
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
-        .document(comapanyCode)
+        .document(companyCode)
         .collection(USER)
-        .where("level", isEqualTo: 5)
+        .where("level", arrayContains: 8)
         .getDocuments();
 
     String appManagerMail = querySnapshot.documents.first.documentID;
@@ -215,7 +236,9 @@ class FirebaseMethods {
   }
 
   Future<void> updateAttendance(
-      {Attendance attendanceModel, String documentId ,String companyCode}) async {
+      {Attendance attendanceModel,
+      String documentId,
+      String companyCode}) async {
     return await firestore
         .collection(COMPANY)
         .document(companyCode)
@@ -252,7 +275,6 @@ class FirebaseMethods {
 
   Future<void> updateApproval(
       {Approval approvalModel, String companyCode, String managerMail}) async {
-    print(approvalModel.toJson());
     return await firestore
         .collection(COMPANY)
         .document(companyCode)
