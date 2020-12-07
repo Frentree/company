@@ -16,6 +16,7 @@ class NoticeModel {
   Timestamp noticeCreateDate;
   Timestamp noticeUpdateDate;
   Map<String,String> noticeCreateUser;
+  List<String> caseSearch;
 
 
   NoticeModel({
@@ -25,6 +26,7 @@ class NoticeModel {
     this.noticeCreateDate,
     this.noticeUpdateDate,
     this.noticeCreateUser,
+    this.caseSearch,
    });
 
   NoticeModel.fromMap(Map snapshot, String id):
@@ -33,7 +35,8 @@ class NoticeModel {
         noticeContent = snapshot["noticeContent"] ?? "",
         noticeCreateDate = snapshot["noticeCon"] ?? "",
         noticeUpdateDate = snapshot["noticeUpdateDate"] ?? "null",
-        noticeCreateUser = snapshot["noticeCreateUser"] ?? "";
+        noticeCreateUser = snapshot["noticeCreateUser"] ?? "",
+        caseSearch = snapshot["caseSearch"] ?? "null";
 
   toJson() {
     return {
@@ -42,7 +45,8 @@ class NoticeModel {
       "noticeContent": noticeContent,
       "noticeCreateDate": noticeCreateDate,
       /*"noticeUpdateDate": noticeUpdateDate,*/
-      "noticeCreateUser": noticeCreateUser
+      "noticeCreateUser": noticeCreateUser,
+      "caseSearch": caseSearch,
     };
   }
 }

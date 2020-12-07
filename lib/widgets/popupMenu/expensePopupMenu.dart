@@ -1,3 +1,5 @@
+import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +45,27 @@ Container expensePopupMenu(BuildContext context){
             ],
           ),
         ),
+      ],
+    ),
+  );
+}
+
+PopupMenuItem getPopupItem({BuildContext context, IconData icons, int value, String text}) {
+  return PopupMenuItem(
+    value: value,
+    child: Row(
+      children: [
+        Icon(
+           icons
+        ),
+        Text(
+          text,
+          style: customStyle(
+              fontColor: mainColor,
+              fontSize: 13,
+              fontWeightName: 'Bold'
+          ),
+        )
       ],
     ),
   );

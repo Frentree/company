@@ -52,7 +52,7 @@ SettingMyPageUpdate(BuildContext context) {
               });
 
               // 파일 업로드
-              StorageUploadTask storageUploadTask = storageReference.putFile(_image);
+              StorageUploadTask storageUploadTask = storageReference.putFile(image);
 
               // 파일 업로드 완료까지 대기
               await storageUploadTask.onComplete;
@@ -136,15 +136,16 @@ SettingMyPageUpdate(BuildContext context) {
                                                 border: Border.all(color: whiteColor, width: 2)
                                             ),
                                             child: FutureBuilder(
-                                              future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
+                                              future: Firestore.instance.collection("company").document(_loginUser.companyCode).collection("user").document(_loginUser.mail).get(),
                                               builder: (context, snapshot) {
                                                 if (!snapshot.hasData) {
                                                   return Icon(
                                                       Icons.person_outline
                                                   );
                                                 }
+
                                                 return Image.network(
-                                                    snapshot.data
+                                                    snapshot.data['profilePhoto']
                                                 );
                                               },
                                             ),

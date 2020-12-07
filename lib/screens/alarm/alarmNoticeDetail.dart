@@ -325,7 +325,6 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-  print("noticeCreateUser ========> "  +noticeCreateUser);
 
     return Scaffold(
       backgroundColor: mainColor,

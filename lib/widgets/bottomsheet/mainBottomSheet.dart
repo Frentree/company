@@ -34,7 +34,7 @@ MainBottomSheet(BuildContext context) {
 
     } else if (type == 7) { //경비 품의
       if (_userGrade == 9) { //공지사항
-        WorkNoticeBottomSheet(context);
+        WorkNoticeBottomSheet(context, "", "", "");
       }
       ExpenseMain(context);
     }else {

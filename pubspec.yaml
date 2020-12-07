@@ -25,7 +25,9 @@ dependencies:
     sdk: flutter
   async: ^2.3.0
   intl: ^0.16.1
-  flutter_cupertino_date_picker: ^1.0.26+2
+  #flutter_cupertino_date_picker: ^1.0.26+2
+  flutter_cupertino_date_picker:
+    git: https://github.com/daveleenew/flutter-cupertino-date-picker.git
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   grouped_buttons: ^1.0.4
@@ -79,6 +81,7 @@ flutter:
   assets:
     - images/bannerImage.jpg
     - images/default.png
+    - images/personal.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

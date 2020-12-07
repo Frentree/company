@@ -31,8 +31,6 @@ class WorkScheduleMethod{
 
   Future<void> workScheduleFirebaseAuth(
       {BuildContext context,
-        String createUid,
-        String name,
         String workTitle,
         String workContents,
         Timestamp startDate,
@@ -66,8 +64,8 @@ class WorkScheduleMethod{
 *//*
 
     CompanyWork work = CompanyWork(
-      createUid: createUid,
-      name: name,
+      createUid: user.mail,
+      name: user.name,
       workTitle: workTitle,
       createDate: createDate,
       startDate: startDate,
