@@ -14,6 +14,7 @@ import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeComment.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeDetail.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
+import 'package:companyplaylist/widgets/popupMenu/expensePopupMenu.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -251,41 +252,17 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                 }
                                               },
                                               itemBuilder: (BuildContext context) => [
-                                                PopupMenuItem(
-                                                  value: 1,
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                          Icons.edit
-                                                      ),
-                                                      Text(
-                                                        "수정하기",
-                                                        style: customStyle(
-                                                            fontColor: mainColor,
-                                                            fontSize: 13,
-                                                            fontWeightName: 'Bold'
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
+                                                getPopupItem(
+                                                  context: context,
+                                                  icons: Icons.edit,
+                                                  text: "수정하기",
+                                                  value: 1
                                                 ),
-                                                PopupMenuItem(
-                                                  value: 2,
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                          Icons.delete
-                                                      ),
-                                                      Text(
-                                                        "삭제하기",
-                                                        style: customStyle(
-                                                            fontColor: mainColor,
-                                                            fontSize: 13,
-                                                            fontWeightName: 'Bold'
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
+                                                getPopupItem(
+                                                    context: context,
+                                                    icons: Icons.delete,
+                                                    text: "삭제하기",
+                                                    value: 2
                                                 ),
                                               ],
                                             ),
