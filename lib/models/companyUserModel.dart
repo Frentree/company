@@ -26,7 +26,7 @@ class CompanyUser {
   Timestamp createDate;
   Timestamp lastModDate;
   int status;
-  int level;
+  List<int> level;
   String position;
   String team;
 
@@ -36,7 +36,7 @@ class CompanyUser {
     this.createDate,
     this.lastModDate,
     this.status = 0,
-    this.level = 0,
+    this.level,
     this.position,
     this.team,
   });
@@ -51,7 +51,7 @@ class CompanyUser {
         createDate = snapshot["createDate"] ?? null,
         lastModDate = snapshot["lastModDate"] ?? null,
         status = snapshot["status"] ?? 0,
-        level = snapshot["level"] ?? 0,
+        level = snapshot["level"] ?? [],
         position = snapshot["position"] ?? "",
         team = snapshot["team"] ?? "";
 

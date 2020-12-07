@@ -1,5 +1,7 @@
 //Flutter
 import 'package:companyplaylist/consts/universalString.dart';
+import 'package:companyplaylist/models/userModel.dart';
+import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:flutter/material.dart';
 
 //Const
@@ -11,10 +13,13 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/screens/login/login.dart';
 import 'package:companyplaylist/screens/login/signUp.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class WaitingApprovalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LoginUserInfoProvider _loginUserInfoProvider =
+    Provider.of<LoginUserInfoProvider>(context);
     return Scaffold(
       resizeToAvoidBottomPadding : false,
       backgroundColor : mainColor,
@@ -41,7 +46,7 @@ class WaitingApprovalPage extends StatelessWidget {
                         fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
               ),
               onPressed: () {
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                _loginUserInfoProvider.logoutUesr();
               },
             ),
           ],

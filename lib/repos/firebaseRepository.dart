@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/models/approvalModel.dart';
+import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/companyModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
@@ -35,7 +36,7 @@ class FirebaseRepository {
         companyModel: companyModel,
       );
 
-  Future<QuerySnapshot> getCompany({String companyName}) =>
+  Future<List<DocumentSnapshot>> getCompany({String companyName}) =>
       _firebaseMethods.getCompany(
         companyName: companyName,
       );
@@ -43,8 +44,8 @@ class FirebaseRepository {
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) =>
       _firebaseMethods.saveCompanyUser(companyUserModel: companyUserModel);
 
-  Future<String> geAppManagerMail({String comapanyCode}) =>
-      _firebaseMethods.geAppManagerMail(comapanyCode: comapanyCode);
+  Future<String> geAppManagerMail({String companyCode}) =>
+      _firebaseMethods.geAppManagerMail(companyCode: companyCode);
 
   Future<void> saveWork({WorkModel workModel, String companyCode}) =>
       _firebaseMethods.saveWork(
@@ -106,6 +107,27 @@ class FirebaseRepository {
       _firebaseMethods.getColleague(
           loginUserMail: loginUserMail, companyCode: companyCode);
 
+  Future<DocumentReference> saveAttendance(
+      {Attendance attendanceModel, String companyCode}) => _firebaseMethods.saveAttendance(
+    attendanceModel: attendanceModel,
+    companyCode: companyCode,
+  );
+
+  Future<QuerySnapshot> getMyTodayAttendance(
+          {String companyCode, String loginUserMail, Timestamp today}) =>
+      _firebaseMethods.getMyTodayAttendance(
+        companyCode: companyCode,
+        loginUserMail: loginUserMail,
+        today: today,
+      );
+
+  Future<void> updateAttendance(
+      {Attendance attendanceModel, String documentId ,String companyCode}) => _firebaseMethods.updateAttendance(
+    attendanceModel: attendanceModel,
+    documentId: documentId,
+    companyCode: companyCode,
+  );
+
   Future<void> saveApproval(
           {String companyCode,
           String appManagerMail,
@@ -129,4 +151,43 @@ class FirebaseRepository {
         companyCode: companyCode,
         managerMail: managerMail,
       );
+
+  Stream<QuerySnapshot> getGrade(String companyCode) =>
+      _firebaseMethods.getGrade(companyCode);
+
+  Future<void> userGrade(String companyCode, String mail) =>
+      _firebaseMethods.userGrade(companyCode, mail);
+
+  Future<void> deleteUser(String documentID, String companyCode, int level) =>
+      _firebaseMethods.deleteUser(documentID, companyCode, level);
+
+  Future<void> addGrade(String companyCode, String gradeName, int gradeID) =>
+      _firebaseMethods.addGrade(companyCode, gradeName, gradeID);
+
+  Future<void> updateGradeName(String documentID, String gradeName, String companyCode) =>
+      _firebaseMethods.updateGradeName(documentID, gradeName, companyCode);
+
+  // 권한 삭제
+  Future<void> deleteGrade(String documentID, String companyCode) =>
+      _firebaseMethods.deleteGrade(documentID, companyCode);
+
+  // 등급 권한 유저 갖고오기
+  Stream<QuerySnapshot> getGreadeUserDetail(String companyCode, int level) =>
+      _firebaseMethods.getGreadeUserDetail(companyCode, level);
+
+  // 권한 - 사용자 추가시 데이터 갖고오기
+  Stream<QuerySnapshot> getGreadeUserAdd(String companyCode) =>
+      _firebaseMethods.getGreadeUserAdd(companyCode);
+
+  // 권한 - 사용자 삭제 데이터 갖고오기
+  Stream<QuerySnapshot> getGreadeUserDelete(String companyCode, int level) =>
+      _firebaseMethods.getGreadeUserDelete(companyCode, level);
+
+  // 권한 - 사용자 추가
+  Future<void> addGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
+      _firebaseMethods.addGradeUser(companyCode, user);
+
+  // 권한 - 사용자 추가
+  Future<void> deleteGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
+      _firebaseMethods.deleteGradeUser(companyCode, user);
 }

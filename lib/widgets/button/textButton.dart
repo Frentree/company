@@ -44,39 +44,46 @@ InkWell tabBtn({BuildContext context, double heightSize, double widthSize, Strin
   );
 }
 
-InkWell tabBtnWithUnderline({BuildContext context, double heightSize, double widthSize, String btnText, int tabIndexVariable, int tabOrder, Function tabAction}){
-  return InkWell(
-    child: Container(
-        height: customHeight(
-          context: context,
-          heightSize: heightSize,
-        ),
-        width: customWidth(
-            context: context,
-            widthSize: widthSize
-        ),
-        child: Center(
-          child: Text(
-            btnText,
-            style: customStyle(
-                fontSize: 16,
-                fontWeightName: "Medium",
-                fontColor: tabIndexVariable == tabOrder ? mainColor : grayColor
-            ),
-          ),
-        ),
-        decoration: tabIndexVariable == tabOrder ? BoxDecoration(
-            //borderRadius: BorderRadius.circular(8),
-            color: whiteColor,
-            border: Border(
-              bottom: BorderSide(
-                color: mainColor,
-                width: 1.0,
-              )
-        )
-        ) : null
+Container filterBtn({BuildContext context, double heightSize, double widthSize, String btnText, int tabIndexVariable, int tabOrder, Function tabAction, Color color}){
+  return Container(
+    padding: EdgeInsets.all(1),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: tabColor
     ),
-    onTap: tabAction,
+    child: Container(
+      height: customHeight(
+        context: context,
+        heightSize: heightSize,
+      ),
+      width: customWidth(
+          context: context,
+          widthSize: widthSize
+      ),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: whiteColor
+      ),
+      child: InkWell(
+        child: Container(
+            child: Center(
+              child: Text(
+                btnText,
+                style: customStyle(
+                    fontSize: 14,
+                    fontWeightName: "Medium",
+                    fontColor: mainColor
+                ),
+              ),
+            ),
+            decoration: tabIndexVariable == tabOrder ? BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: color
+            ) : null
+        ),
+        onTap: tabAction,
+      ),
+    ),
   );
 }
 

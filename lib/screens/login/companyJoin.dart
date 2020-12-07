@@ -93,7 +93,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
                     Company company = await Navigator.push(
                       Scaffold.of(context).context,
                       MaterialPageRoute(
-                          builder: (context) => CompanySearchPage(_companyNameCon.text)
+                          builder: (context) => CompanySearchPage(_newCompany)
                       ),
                     );
                     if(company != null){

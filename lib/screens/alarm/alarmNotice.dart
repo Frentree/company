@@ -1,5 +1,7 @@
 //Flutter
 
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
@@ -12,10 +14,10 @@ import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeComment.dart';
 import 'package:companyplaylist/screens/alarm/alarmNoticeDetail.dart';
 import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
+import 'package:companyplaylist/widgets/popupMenu/expensePopupMenu.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AlarmNoticePage extends StatefulWidget {
@@ -33,6 +35,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
   Stream stream;
 
   User _loginUser;
+
 
   // 댓글 카운트
   Future<String> countDocuments(String companyCode, String documentId) async {
@@ -66,7 +69,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
         stream: stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Text("");
           }
           List<DocumentSnapshot> documents =
               snapshot.data.documents;
@@ -74,11 +77,11 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
           return ListView.builder(
             itemCount: documents.length,
             itemBuilder: (context, index) {
-              String _createDate = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
+              /*String _createDate = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
                   DateTime.parse(
                       documents[index].data['noticeCreateDate'].toDate().toString()
                   ).add(Duration(hours: 9))
-              );
+              );*/
               StorageReference storageReference =
               _firebaseStorage.ref().child("profile/${documents[index].data['noticeCreateUser']['mail']}");
 
@@ -114,29 +117,29 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                               ),
                               child: GestureDetector(
                                 child: Container(
-                                  height: customHeight(
-                                      context: context,
-                                      heightSize: 0.05
-                                  ),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: whiteColor,
-                                      border: Border.all(
-                                          color: whiteColor, width: 2)
-                                  ),
-                                  child: FutureBuilder(
-                                    future: storageReference.getDownloadURL(),
-                                    builder: (context, snapshot) {
-                                      if (!snapshot.hasData) {
-                                        return Icon(
-                                            Icons.person_outline
+                                    height: customHeight(
+                                        context: context,
+                                        heightSize: 0.05
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: whiteColor,
+                                        border: Border.all(
+                                            color: whiteColor, width: 2)
+                                    ),
+                                    child: FutureBuilder(
+                                      future: storageReference.getDownloadURL(),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return Icon(
+                                              Icons.person_outline
+                                          );
+                                        }
+                                        return Image.network(
+                                            snapshot.data
                                         );
-                                      }
-                                      return Image.network(
-                                          snapshot.data
-                                      );
-                                    },
-                                  )
+                                      },
+                                    )
                                 ),
                                 onTap: () {},
                               ),
@@ -156,8 +159,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                       widthSize: 0.72
                                   ),
                                   height: customHeight(
-                                    context: context,
-                                    heightSize: 0.03
+                                      context: context,
+                                      heightSize: 0.03
                                   ),
                                   child: Row(
                                     children: [
@@ -177,109 +180,92 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         flex: 1,
                                         child: Container(
                                           alignment: Alignment.topRight,
-                                          child: PopupMenuButton(
-                                            icon: Icon(
-                                                Icons.more_horiz
+                                          child: Visibility(
+                                            visible: documents[index].data['noticeCreateUser']['mail'] == _loginUser.mail,
+                                            child: PopupMenuButton(
+                                              icon: Icon(
+                                                  Icons.more_horiz
+                                              ),
+                                              onSelected: (value) {
+                                                if(value == 1){  // 수정하기 버튼 클릭시
+                                                  WorkNoticeBottomSheet(context,
+                                                      documents[index].documentID,
+                                                      documents[index].data['noticeTitle'],
+                                                      documents[index].data['noticeContent']
+                                                  );
+                                                } else if(value == 2) { // 삭제 버튼 클릭시
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      // return object of type Dialog
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                          "공지사항 삭제",
+                                                          style: customStyle(
+                                                              fontColor: mainColor,
+                                                              fontSize: 14,
+                                                              fontWeightName: 'Bold'
+                                                          ),
+                                                        ),
+                                                        content: Text(
+                                                          "공지사항 내용을 지우시겠습니까?",
+                                                          style: customStyle(
+                                                              fontColor: mainColor,
+                                                              fontSize: 13,
+                                                              fontWeightName: 'Regular'
+                                                          ),
+                                                        ),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text("네",
+                                                              style: customStyle(
+                                                                  fontColor: blueColor,
+                                                                  fontSize: 15,
+                                                                  fontWeightName: 'Bold'
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                _db.collection("company")
+                                                                    .document(_loginUser.companyCode)
+                                                                    .collection("notice").document(documents[index].documentID).delete();
+                                                              });
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                          FlatButton(
+                                                            child: Text("아니오",
+                                                              style: customStyle(
+                                                                  fontColor: blueColor,
+                                                                  fontSize: 15,
+                                                                  fontWeightName: 'Bold'
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                              itemBuilder: (BuildContext context) => [
+                                                getPopupItem(
+                                                    context: context,
+                                                    icons: Icons.edit,
+                                                    text: "수정하기",
+                                                    value: 1
+                                                ),
+                                                getPopupItem(
+                                                    context: context,
+                                                    icons: Icons.delete,
+                                                    text: "삭제하기",
+                                                    value: 2
+                                                ),
+                                              ],
                                             ),
-                                            onSelected: (value) {
-                                              if(value == 1){  // 수정하기 버튼 클릭시
-                                                WorkNoticeBottomSheet(context);
-                                              } else if(value == 2) { // 삭제 버튼 클릭시
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) {
-                                                    // return object of type Dialog
-                                                    return AlertDialog(
-                                                      title: Text(
-                                                        "공지사항 삭제",
-                                                        style: customStyle(
-                                                            fontColor: mainColor,
-                                                            fontSize: 14,
-                                                            fontWeightName: 'Bold'
-                                                        ),
-                                                      ),
-                                                      content: Text(
-                                                        "공지사항 내용을 지우시겠습니까?",
-                                                        style: customStyle(
-                                                            fontColor: mainColor,
-                                                            fontSize: 13,
-                                                            fontWeightName: 'Regular'
-                                                        ),
-                                                      ),
-                                                      actions: <Widget>[
-                                                        FlatButton(
-                                                          child: Text("네",
-                                                            style: customStyle(
-                                                                fontColor: blueColor,
-                                                                fontSize: 15,
-                                                                fontWeightName: 'Bold'
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _db.collection("company")
-                                                                  .document(_loginUser.companyCode)
-                                                                  .collection("notice").document(documents[index].documentID).delete();
-                                                            });
-                                                            Navigator.pop(context);
-                                                          },
-                                                        ),
-                                                        FlatButton(
-                                                          child: Text("아니오",
-                                                            style: customStyle(
-                                                                fontColor: blueColor,
-                                                                fontSize: 15,
-                                                                fontWeightName: 'Bold'
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            },
-                                            itemBuilder: (BuildContext context) => [
-                                              PopupMenuItem(
-                                                value: 1,
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                        Icons.edit
-                                                    ),
-                                                    Text(
-                                                      "수정하기",
-                                                      style: customStyle(
-                                                          fontColor: mainColor,
-                                                          fontSize: 13,
-                                                          fontWeightName: 'Bold'
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              PopupMenuItem(
-                                                value: 2,
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                        Icons.delete
-                                                    ),
-                                                    Text(
-                                                      "삭제하기",
-                                                      style: customStyle(
-                                                          fontColor: mainColor,
-                                                          fontSize: 13,
-                                                          fontWeightName: 'Bold'
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
                                           ),
                                         ),
                                       ),
@@ -287,7 +273,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   ),
                                 ),
                                 Text(
-                                  _createDate,
+                                  "_createDate",
                                   style: customStyle(
                                       fontSize: 12,
                                       fontWeightName: 'Regular',
@@ -308,7 +294,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         widthSize: 0.7,
                                       ),
                                       padding:  const EdgeInsets.all(0.2),
-                                      child: Text(
+                                      child: /*Text(
                                         documents[index].data['noticeContent'].toString(),
                                         maxLines: 3,
                                         style: customStyle(
@@ -316,7 +302,99 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                             fontWeightName: 'Medium',
                                             fontColor: mainColor
                                         ),
+                                      ),*/
+                                      LayoutBuilder(
+                                        builder: (context, size) {
+                                          final span = TextSpan(text: documents[index].data['noticeContent'].toString(), style: customStyle(
+                                              fontSize: 13,
+                                              fontWeightName: 'Medium',
+                                              fontColor: mainColor
+                                          ),);
+                                          final tp = TextPainter(text: span,textDirection:TextDirection.ltr , maxLines: 3);
+                                          tp.layout(maxWidth: size.maxWidth);
+
+                                          List<LineMetrics> lines = tp.computeLineMetrics();
+                                          int numberOfLines = lines.length;
+                                          if (tp.didExceedMaxLines) {
+                                            // The text has more than three lines.
+                                            // TODO: display the prompt message
+                                            return Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  documents[index].data['noticeContent'].toString(),
+                                                  maxLines: 3,
+                                                  style: customStyle(
+                                                      fontSize: 13,
+                                                      fontWeightName: 'Medium',
+                                                      fontColor: mainColor
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  child: Text(
+                                                    "더보기",
+                                                    maxLines: 3,
+                                                    style: customStyle(
+                                                        fontSize: 13,
+                                                        fontWeightName: 'Medium',
+                                                        fontColor: blueColor
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(builder: (context) =>
+                                                        /*AlarmNoticeCommentPage(
+                                      noticeUid: documents[index].data['noticeUid'].toString(),
+                                      noticeTitle: documents[index].data['noticeTitle'].toString(),
+                                      noticeContent: documents[index].data['noticeContent'].toString(),
+                                      noticeCreateDate: _createDate,
+                                    )*/
+                                                        AlarmNoticeDetailPage(
+                                                          noticeUid: documents[index].documentID,
+                                                          noticeTitle: documents[index].data['noticeTitle'].toString(),
+                                                          noticeContent: documents[index].data['noticeContent'].toString(),
+                                                          noticeCreateUser: documents[index].data['noticeCreateUser']['mail'].toString(),
+                                                          noticeCreateDate: "_createDate",
+                                                        )
+                                                        )
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            return Text(documents[index].data['noticeContent'].toString(), style: customStyle(
+                                                fontSize: 13,
+                                                fontWeightName: 'Medium',
+                                                fontColor: mainColor
+                                            ),);
+                                          }
+
+
+                                        },
                                       ),
+                                      /*RichText(
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis, // TextOverflow.clip // TextOverflow.fade
+                                        text: TextSpan(
+                                          text: documents[index].data['noticeContent'].toString(),
+                                          style: customStyle(
+                                              fontSize: 13,
+                                              fontWeightName: 'Medium',
+                                              fontColor: mainColor
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(text: '더보기',
+                                              style: customStyle(
+                                                fontSize: 13,
+                                                fontWeightName: 'Medium',
+                                                fontColor: blueColor
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),*/
                                     ),
                                   ],
                                 ),
@@ -375,7 +453,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                 ),
                               ],
                             ),
-                            onPressed: () => {
+                            onPressed: () =>{
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) =>
@@ -386,11 +464,11 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                       noticeCreateDate: _createDate,
                                     )*/
                                   AlarmNoticeDetailPage(
-                                    noticeUid: documents[index].data['noticeUid'].toString(),
+                                    noticeUid: documents[index].documentID,
                                     noticeTitle: documents[index].data['noticeTitle'].toString(),
                                     noticeContent: documents[index].data['noticeContent'].toString(),
                                     noticeCreateUser: documents[index].data['noticeCreateUser']['mail'].toString(),
-                                    noticeCreateDate: _createDate,
+                                    noticeCreateDate: "_createDate",
                                   )
                                   )
                               ),

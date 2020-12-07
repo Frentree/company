@@ -44,7 +44,7 @@ class Attendance {
         createDate = snapshot["createDate"] ?? null,
         attendTime = snapshot["attendTime"] ?? null,
         endTime = snapshot["endTime"] ?? null,
-        status = snapshot["state"] ?? 0,
+        status = snapshot["status"] ?? 0,
         certificationDevice = snapshot["certificationDevice"] ?? 0,
         networkInfo = snapshot["networkInfo"] ?? "",
         manualOnWorkReason = snapshot["manualOnWorkReason"] ?? null;

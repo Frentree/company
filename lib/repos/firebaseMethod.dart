@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/universalString.dart';
 import 'package:companyplaylist/models/approvalModel.dart';
+import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/companyModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
@@ -72,11 +73,32 @@ class FirebaseMethods {
         .setData(companyModel.toJson());
   }
 
-  Future<QuerySnapshot> getCompany({String companyName}) async {
-    return await firestore
+  Future<List<DocumentSnapshot>> getCompany({String companyName}) async {
+    List<DocumentSnapshot> result = [];
+    List<String> findString = companyName.split("");
+    QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
-        .where("companyName", isGreaterThanOrEqualTo: companyName)
+        .where("companySearch", arrayContains: findString[0])
         .getDocuments();
+
+    querySnapshot.documents.forEach((element) {
+      if(findString.length == 1){
+        result.add(element);
+      }
+      else{
+        int firstIndex = element.data["companySearch"].indexOf(findString[0]);
+        for (int i = 1; i < findString.length; i++) {
+          if (element.data["companySearch"][firstIndex + i] != findString[i]) {
+            break;
+          } else {
+            if (i == (findString.length - 1)) {
+              result.add(element);
+            }
+          }
+        }
+      }
+    });
+    return result;
   }
 
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) async {
@@ -88,12 +110,12 @@ class FirebaseMethods {
         .setData(companyUserModel.toJson());
   }
 
-  Future<String> geAppManagerMail({String comapanyCode}) async {
+  Future<String> geAppManagerMail({String companyCode}) async {
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
-        .document(comapanyCode)
+        .document(companyCode)
         .collection(USER)
-        .where("level", isEqualTo: 5)
+        .where("level", arrayContains: 8)
         .getDocuments();
 
     String appManagerMail = querySnapshot.documents.first.documentID;
@@ -207,6 +229,39 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  //출퇴근 관련
+  Future<DocumentReference> saveAttendance(
+      {Attendance attendanceModel, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(ATTENDANCE)
+        .add(attendanceModel.toJson());
+  }
+
+  Future<QuerySnapshot> getMyTodayAttendance(
+      {String companyCode, String loginUserMail, Timestamp today}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(ATTENDANCE)
+        .where("mail", isEqualTo: loginUserMail)
+        .where("createDate", isEqualTo: today)
+        .getDocuments();
+  }
+
+  Future<void> updateAttendance(
+      {Attendance attendanceModel,
+      String documentId,
+      String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(ATTENDANCE)
+        .document(documentId)
+        .updateData(attendanceModel.toJson());
+  }
+
   //알람 관련
   //사용자 승인
   Future<void> saveApproval(
@@ -235,7 +290,6 @@ class FirebaseMethods {
 
   Future<void> updateApproval(
       {Approval approvalModel, String companyCode, String managerMail}) async {
-    print(approvalModel.toJson());
     return await firestore
         .collection(COMPANY)
         .document(companyCode)
@@ -244,6 +298,123 @@ class FirebaseMethods {
         .collection(APPROVAL)
         .document(approvalModel.id)
         .updateData(approvalModel.toJson());
+  }
+
+  Future<DocumentSnapshot> userGrade(String companyCode, String mail) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .document(mail)
+        .get();
+  }
+
+  Stream<QuerySnapshot> getGrade(String companyCode) {
+    return Firestore.instance
+        .collection("company")
+        .document(companyCode)
+        .collection("grade")
+        .orderBy("gradeID", descending: true)
+        .snapshots();
+  }
+
+  Future<void> deleteUser(String documentID, String companyCode, int level) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .document(documentID)
+        .updateData({
+      "level" : FieldValue.arrayRemove([level])
+    });
+  }
+
+  Future<void> addGrade(String companyCode, String gradeName, int gradeID) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(GRADE)
+        .add({
+      "gradeID" : gradeID,
+      "gradeName" : gradeName
+    });
+  }
+
+  Future<void> updateGradeName(String documentID, String gradeName, String companyCode) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(GRADE)
+        .document(documentID)
+        .updateData({
+      "gradeName" : gradeName
+    });
+  }
+
+  Future<void> deleteGrade(String documentID, String companyCode) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(GRADE)
+        .document(documentID)
+        .delete();
+  }
+
+  Stream<QuerySnapshot> getGreadeUserDetail(String companyCode, int level) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .where("level", arrayContains: level)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getGreadeUserAdd(String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .orderBy("name", descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getGreadeUserDelete(String companyCode, int level) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .where("level", arrayContains: level)
+        .snapshots();
+  }
+
+  Future<void> addGradeUser(String companyCode, List<Map<String,dynamic>> user) async {
+    for(int i = 0; i < user.length; i++) {
+      print("추가 ====> " + user[i]['mail']);
+      await firestore
+          .collection(COMPANY)
+          .document(companyCode)
+          .collection(USER)
+          .document(user[i]['mail'])
+          .updateData({
+        "level": FieldValue.arrayUnion([user[i]['level']])
+      });
+    }
+    return null;
+  }
+
+  Future<void> deleteGradeUser(String companyCode, List<Map<String,dynamic>> user) async {
+    for(int i = 0; i < user.length; i++) {
+      print("삭제 ====> " + user[i]['mail']);
+      await firestore
+          .collection(COMPANY)
+          .document(companyCode)
+          .collection(USER)
+          .document(user[i]['mail'])
+          .updateData({
+        "level": FieldValue.arrayRemove([user[i]['level']])
+      });
+    }
+    return null;
   }
 }
 
@@ -301,4 +472,5 @@ class FirestoreApi {
   Future<void> setDocument(Map data, String id) {
     return ref.document(id).setData(data);
   }
+
 }

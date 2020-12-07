@@ -100,13 +100,15 @@ class SignUpMainPage extends StatelessWidget {
                   ),
                   color: whiteColor,
                 ),
-                child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  initialRoute: "/Login",
-                  routes: {
-                    "/Login" : (context) => LoginPage(),
-                    "/SignUp" : (context) => SignUpPage(),
-                  },
+                child: ClipRect(
+                  child: MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    initialRoute: "/Login",
+                    routes: {
+                      "/Login" : (context) => LoginPage(),
+                      "/SignUp" : (context) => SignUpPage(),
+                    },
+                  ),
                 ),
               ),
             ],

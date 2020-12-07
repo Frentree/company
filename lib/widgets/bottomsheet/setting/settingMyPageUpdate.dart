@@ -37,7 +37,6 @@ SettingMyPageUpdate(BuildContext context) {
         LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
         _loginUser = _loginUserInfoProvider.getLoginUser();
 
-
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             // 프로필 사진을 업로드할 경로와 파일명을 정의. 사용자의 uid를 이용하여 파일명의 중복 가능성 제거
@@ -53,7 +52,7 @@ SettingMyPageUpdate(BuildContext context) {
               });
 
               // 파일 업로드
-              StorageUploadTask storageUploadTask = storageReference.putFile(_image);
+              StorageUploadTask storageUploadTask = storageReference.putFile(image);
 
               // 파일 업로드 완료까지 대기
               await storageUploadTask.onComplete;
@@ -137,15 +136,16 @@ SettingMyPageUpdate(BuildContext context) {
                                                 border: Border.all(color: whiteColor, width: 2)
                                             ),
                                             child: FutureBuilder(
-                                              future: _firebaseStorage.ref().child("profile/${_loginUser.mail}").getDownloadURL(),
+                                              future: Firestore.instance.collection("company").document(_loginUser.companyCode).collection("user").document(_loginUser.mail).get(),
                                               builder: (context, snapshot) {
                                                 if (!snapshot.hasData) {
                                                   return Icon(
                                                       Icons.person_outline
                                                   );
                                                 }
+
                                                 return Image.network(
-                                                    snapshot.data
+                                                    snapshot.data['profilePhoto']
                                                 );
                                               },
                                             ),

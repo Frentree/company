@@ -7,9 +7,9 @@ import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 
 class CompanySearchPage extends StatefulWidget {
-  String companyName;
+  Company company;
 
-  CompanySearchPage(this.companyName, {Key key}) : super(key: key);
+  CompanySearchPage(this.company, {Key key}) : super(key: key);
 
   @override
   CompanySearchPageState createState() => CompanySearchPageState();
@@ -19,7 +19,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
   FirebaseRepository _repository = FirebaseRepository();
 
   TextEditingController _companyNameCon;
-  Future<QuerySnapshot> searchResults;
+  Future<List<DocumentSnapshot>> searchResults;
 
   @override
   void initState() {
@@ -35,8 +35,9 @@ class CompanySearchPageState extends State<CompanySearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(_companyNameCon.text == "" && widget.companyName != ""){
-      _companyNameCon.text = widget.companyName;
+    if(_companyNameCon.text == "" && widget.company != null){
+      _companyNameCon.text = widget.company.companyName;
+      searchResults = _repository.getCompany(companyName: _companyNameCon.text);
     }
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +49,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
             border: InputBorder.none,
           ),
           onFieldSubmitted: ((value) {
-            Future<QuerySnapshot> result =
+            Future<List<DocumentSnapshot>> result =
                 _repository.getCompany(companyName: _companyNameCon.text);
             setState(() {
               searchResults = result;
@@ -100,10 +101,11 @@ class CompanySearchPageState extends State<CompanySearchPage> {
               );
             }
             List<Company> searchCompanyResult = [];
-            snapshot.data.documents.forEach((doc){
+            snapshot.data.forEach((doc){
               Company _company = Company.fromMap(doc.data, doc.documentID);
               searchCompanyResult.add(_company);
             });
+
             if(searchCompanyResult.length == 0){
               return Container(
                 child: Center(
