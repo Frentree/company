@@ -113,6 +113,9 @@ class CompanyMethod{
     //회사 컬렉션 생성
     await _repository.saveCompany(companyModel: companyModel);
 
+    await _repository.addGrade(_loginUser.companyCode, "최고관리자", 9);
+    await _repository.addGrade(_loginUser.companyCode, "앱 관리자", 8);
+
     _repository.saveCompanyUser(companyUserModel: _companyUser);
     _repository.updateUser(userModel: _loginUser);
 
