@@ -99,14 +99,16 @@ class CompanySetMainPage extends StatelessWidget {
                   ),
                   color: whiteColor,
                 ),
-                child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  initialRoute: "/UserTypeSelect",
-                  routes: {
-                    "/UserTypeSelect" : (context) => UserTypeSelectPage(),
-                    "/CompanyCreate" : (context) => CompanyCreatePage(),
-                    "/CompanyJoin" : (context) => CompanyJoinPage(),
-                  },
+                child: ClipRect(
+                  child: MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    initialRoute: "/UserTypeSelect",
+                    routes: {
+                      "/UserTypeSelect" : (context) => UserTypeSelectPage(),
+                      "/CompanyCreate" : (context) => CompanyCreatePage(),
+                      "/CompanyJoin" : (context) => CompanyJoinPage(),
+                    },
+                  ),
                 ),
               ),
             ],
