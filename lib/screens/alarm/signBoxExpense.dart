@@ -80,7 +80,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     ),
                   ),
                   Expanded(
-                    flex: 4,
+                    flex: 5,
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
@@ -93,7 +93,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     ),
                   ),
                   Expanded(
-                    flex: 3,
+                    flex: 2,
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
@@ -106,7 +106,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     ),
                   ),
                   Expanded(
-                    flex: 4,
+                    flex: 2,
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
@@ -144,7 +144,6 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       ),
                     ),
                   ),
-
                 ]
               )
             ),
