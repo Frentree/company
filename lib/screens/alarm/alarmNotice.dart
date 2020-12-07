@@ -117,29 +117,29 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                               ),
                               child: GestureDetector(
                                 child: Container(
-                                  height: customHeight(
-                                      context: context,
-                                      heightSize: 0.05
-                                  ),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: whiteColor,
-                                      border: Border.all(
-                                          color: whiteColor, width: 2)
-                                  ),
-                                  child: FutureBuilder(
-                                    future: storageReference.getDownloadURL(),
-                                    builder: (context, snapshot) {
-                                      if (!snapshot.hasData) {
-                                        return Icon(
-                                            Icons.person_outline
+                                    height: customHeight(
+                                        context: context,
+                                        heightSize: 0.05
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: whiteColor,
+                                        border: Border.all(
+                                            color: whiteColor, width: 2)
+                                    ),
+                                    child: FutureBuilder(
+                                      future: storageReference.getDownloadURL(),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return Icon(
+                                              Icons.person_outline
+                                          );
+                                        }
+                                        return Image.network(
+                                            snapshot.data
                                         );
-                                      }
-                                      return Image.network(
-                                          snapshot.data
-                                      );
-                                    },
-                                  )
+                                      },
+                                    )
                                 ),
                                 onTap: () {},
                               ),
@@ -159,8 +159,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                       widthSize: 0.72
                                   ),
                                   height: customHeight(
-                                    context: context,
-                                    heightSize: 0.03
+                                      context: context,
+                                      heightSize: 0.03
                                   ),
                                   child: Row(
                                     children: [
@@ -253,10 +253,10 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                               },
                                               itemBuilder: (BuildContext context) => [
                                                 getPopupItem(
-                                                  context: context,
-                                                  icons: Icons.edit,
-                                                  text: "수정하기",
-                                                  value: 1
+                                                    context: context,
+                                                    icons: Icons.edit,
+                                                    text: "수정하기",
+                                                    value: 1
                                                 ),
                                                 getPopupItem(
                                                     context: context,

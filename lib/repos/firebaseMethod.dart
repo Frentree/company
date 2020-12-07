@@ -262,6 +262,97 @@ class FirebaseMethods {
         .document(approvalModel.id)
         .updateData(approvalModel.toJson());
   }
+
+  Stream<QuerySnapshot> getGrade(String companyCode) {
+    return Firestore.instance
+        .collection("company")
+        .document(companyCode)
+        .collection("grade")
+        .orderBy("gradeID", descending: true)
+        .snapshots();
+  }
+
+  Future<void> deleteUser(String documentID, String companyCode, int level) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .document(documentID)
+        .updateData({
+      "level" : FieldValue.arrayRemove([level])
+    });
+  }
+
+  Future<void> addGrade(String companyCode, String gradeName, int gradeID) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(GRADE)
+        .add({
+      "gradeID" : gradeID,
+      "gradeName" : gradeName
+    });
+  }
+
+  Future<void> updateGradeName(String documentID, String gradeName, String companyCode) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(GRADE)
+        .document(documentID)
+        .updateData({
+      "gradeName" : gradeName
+    });
+  }
+
+  Future<void> deleteGrade(String documentID, String companyCode) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(GRADE)
+        .document(documentID)
+        .delete();
+  }
+
+  Stream<QuerySnapshot> getGreadeUserDetail(String companyCode, int level) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .where("level", arrayContains: level)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getGreadeUserAdd(String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .orderBy("name", descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getGreadeUserDelete(String companyCode, int level) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .where("level", arrayContains: level)
+        .snapshots();
+  }
+
+  Future<void> changeGradeUser(String companyCode, List<Map<String,dynamic>> user) async {
+    for(int i = 0; i < user.length; i++)
+      await firestore
+          .collection(COMPANY)
+          .document(companyCode)
+          .collection(USER)
+          .document(user[i]['mail'])
+          .updateData({
+        "level" : user[i]['level']
+      });
+    return null;
+  }
 }
 
 class FirestoreApi {
@@ -318,4 +409,5 @@ class FirestoreApi {
   Future<void> setDocument(Map data, String id) {
     return ref.document(id).setData(data);
   }
+
 }

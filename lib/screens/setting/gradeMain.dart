@@ -81,7 +81,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data, String compan
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: greyColor),
+            border: Border.all(color: grayColor),
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Row(

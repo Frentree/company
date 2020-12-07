@@ -46,7 +46,7 @@ List<Widget> getSearchNoticeDataList(List<DocumentSnapshot> documents, BuildCont
                 DateFormat('yyyy년 MM월 dd일 HH시 mm분')
                     .format(DateTime.parse(documents[index].data['noticeCreateDate'].toDate().toString()).add(Duration(hours: 9))) +
                     " 작성됨",
-                style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
+                style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
               ),
             ),
           ],
@@ -129,7 +129,7 @@ List<Widget> getSearchWorkDataList(List<DocumentSnapshot> documents, BuildContex
                 style: customStyle(
                     fontSize: 12,
                     fontWeightName: 'Regular',
-                    fontColor: greyColor
+                    fontColor: grayColor
                 ),
               ),
             ),
