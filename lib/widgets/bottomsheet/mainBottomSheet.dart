@@ -43,18 +43,6 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
         break;
     }
   }
-  FutureBuilder(
-    future: FirebaseRepository().userGrade(companyCode, mail),
-    builder: (context, snapshot) {
-      List<dynamic> grade = snapshot.data;
-
-      if(!grade.contains(9)){
-        return Text("");
-      } else {
-        return Text("");
-      }
-    },
-  );
   // 관리자 권한이 아닐 경우
     showModalBottomSheet(
         context: context,

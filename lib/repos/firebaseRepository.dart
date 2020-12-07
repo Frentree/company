@@ -151,6 +151,9 @@ class FirebaseRepository {
         companyCode: companyCode,
         managerMail: managerMail,
       );
+  // 프로필 이미지
+  Future<DocumentSnapshot> photoProfile(String companyCode, String mail) =>
+      _firebaseMethods.photoProfile(companyCode, mail);
 
   Stream<QuerySnapshot> getGrade(String companyCode) =>
       _firebaseMethods.getGrade(companyCode);
@@ -170,6 +173,10 @@ class FirebaseRepository {
   // 권한 삭제
   Future<void> deleteGrade(String documentID, String companyCode) =>
       _firebaseMethods.deleteGrade(documentID, companyCode);
+
+  // 권한 삭제시 유저 권한 없애기
+  Future<void> deleteUserGrade(String documentID, String companyCode, int level) =>
+      _firebaseMethods.deleteUserGrade(documentID, companyCode, level);
 
   // 등급 권한 유저 갖고오기
   Stream<QuerySnapshot> getGreadeUserDetail(String companyCode, int level) =>

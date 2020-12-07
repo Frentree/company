@@ -211,9 +211,10 @@ Widget _buildUserList(BuildContext context, GradeData grade, String companyCode)
                                 break;
                               case 2:
                                 getGradeDeleteDialog(
-                                    context: context,
-                                    companyCode: companyCode,
-                                    documentID: grade.reference.documentID,
+                                  context: context,
+                                  companyCode: companyCode,
+                                  documentID: grade.reference.documentID,
+                                  level: grade.gradeID,
                                 );
                                 break;
                               case 3:
@@ -221,18 +222,18 @@ Widget _buildUserList(BuildContext context, GradeData grade, String companyCode)
                                 break;
                               case 4:
                                 addGradeUserDialog(
-                                    context: context,
-                                    companyCode: companyCode,
-                                    documentID: grade.reference.documentID,
-                                    level: grade.gradeID
+                                  context: context,
+                                  companyCode: companyCode,
+                                  documentID: grade.reference.documentID,
+                                  level: grade.gradeID
                                 );
                                 break;
                               default:
                                 dropGradeUserDialog(
-                                    context: context,
-                                    companyCode: companyCode,
-                                    documentID: grade.reference.documentID,
-                                    level: grade.gradeID
+                                  context: context,
+                                  companyCode: companyCode,
+                                  documentID: grade.reference.documentID,
+                                  level: grade.gradeID
                                 );
                                 break;
                             }

@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/attendanceModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
 import 'package:companyplaylist/screens/setting/myInfomationCard.dart';
 import 'package:companyplaylist/screens/setting/myWork.dart';
@@ -40,16 +42,23 @@ class SettingMainPageState extends State<SettingMainPage>{
     _loginUser = _loginUserInfoProvider.getLoginUser();
 
     return Scaffold(
-      body: ListView(
+      body: FutureBuilder(
+        future: FirebaseRepository().userGrade(_loginUser.companyCode, _loginUser.mail),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return LinearProgressIndicator();
+          List<dynamic> grade = snapshot.data['level'];
+          return ListView(
             children: <Widget>[
+              (grade.contains(9) || grade.contains(8)) ?
               ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!
                 leading: Icon(Icons.person_outline),
                 title: Text('회사 정보',
-                style: customStyle(
-                  fontColor: Colors.green
-                ),),
+                  style: customStyle(
+                      fontColor: Colors.green
+                  ),),
                 children:[],
-              ),
+              ) : SizedBox(),
+              (grade.contains(9) || grade.contains(8)) ?
               ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!
                 leading: Icon(Icons.people_outline),
                 title: Text('사용자 관리',
@@ -92,7 +101,7 @@ class SettingMainPageState extends State<SettingMainPage>{
                     },
                   ),
                 ],
-              ),
+              ): SizedBox(),
               ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!
                 leading: Icon(Icons.person_outline),
                 title: Text('내 정보'),
@@ -232,8 +241,8 @@ class SettingMainPageState extends State<SettingMainPage>{
                     Text(
                       '0.01',
                       style: customStyle(
-                        fontSize: 12,
-                        fontColor: grayColor
+                          fontSize: 12,
+                          fontColor: grayColor
                       ),
                     ),
                   ],
@@ -248,7 +257,11 @@ class SettingMainPageState extends State<SettingMainPage>{
                 },
               ),
             ],
-          )
+          );
+
+
+        },
+      )
     );
   }
 }

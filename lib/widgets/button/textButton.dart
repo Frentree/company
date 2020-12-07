@@ -80,7 +80,6 @@ InkWell tabBtnWithUnderline({BuildContext context, double heightSize, double wid
   );
 }
 
-
 Container filterBtn({BuildContext context, double heightSize, double widthSize, String btnText, int tabIndexVariable, int tabOrder, Function tabAction, Color color}){
   return Container(
     padding: EdgeInsets.all(1),
