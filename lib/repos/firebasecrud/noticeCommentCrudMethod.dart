@@ -29,7 +29,7 @@ class NoticeCommentCrud {
 
   Future<List<NoticeCommentModel>> fetchNoticeComment() async{
     var result = await _firestoreApi.getDataCollection();
-    notice = result.documents.map((doc) => NoticeCommentModel.fromMap(doc.data, doc.documentID)).toList();
+    notice = result.documents.map((doc) => NoticeCommentModel.fromMap(doc.data(), doc.documentID)).toList();
 
     return notice;
   }
@@ -45,7 +45,7 @@ class NoticeCommentCrud {
 
   Future<NoticeCommentModel> getNoticeCommentDataToFirebaseById({String documentId}) async {
     var doc = await _firestoreApi.getDocumentById(documentId);
-    return NoticeCommentModel.fromMap(doc.data, doc.documentID);
+    return NoticeCommentModel.fromMap(doc.data(), doc.documentID);
   }
 
   Future<void> removeNoticeCommentDataToFirebase({String documentId}) async {

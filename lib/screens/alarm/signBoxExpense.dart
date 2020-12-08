@@ -197,7 +197,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                         itemBuilder: (context, index) {
                           dynamic _expenseData;
                           _expenseData = ExpenseModel.fromMap(
-                              _expense[index].data, _expense[index].documentID);
+                              _expense[index].data(), _expense[index].documentID);
                           return ExpenseCard(
                               context, user.companyCode, _expenseData);
                         }));

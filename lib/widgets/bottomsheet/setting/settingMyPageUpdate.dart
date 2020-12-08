@@ -40,7 +40,7 @@ SettingMyPageUpdate(BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             // 프로필 사진을 업로드할 경로와 파일명을 정의. 사용자의 uid를 이용하여 파일명의 중복 가능성 제거
-            StorageReference storageReference =
+            Reference storageReference =
             _firebaseStorage.ref().child("profile/${_loginUser.mail}");
 
             void _uploadImageToStorage(ImageSource source) async {
@@ -52,10 +52,11 @@ SettingMyPageUpdate(BuildContext context) {
               });
 
               // 파일 업로드
-              StorageUploadTask storageUploadTask = storageReference.putFile(image);
+              UploadTask storageUploadTask = storageReference.putFile(image);
 
               // 파일 업로드 완료까지 대기
-              await storageUploadTask.onComplete;
+              /// if 문으로 변경
+              //await storageUploadTask.onComplete;
 
               // 업로드한 사진의 URL 획득
               String downloadURL = await storageReference.getDownloadURL();

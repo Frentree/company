@@ -243,7 +243,7 @@ PODS:
     - Firebase/CoreOnly
     - FirebaseStorage (~> 3.9.0)
   - firebase_auth (0.0.1):
-    - Firebase/Auth (~> 6.0)
+    - Firebase/Auth (~> 6.3)
     - Firebase/Core
     - Flutter
   - firebase_core (0.0.1):
@@ -462,7 +462,7 @@ SPEC CHECKSUMS:
   cloud_firestore: 10fd4a09ebffc33efd64708106e2e7de701fe9ae
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Firebase: 210f41ca352067d83b1ba4fd2e7fb49a0c017397
-  firebase_auth: d99b993c1405096e66c58211b1cd956c23eed1c5
+  firebase_auth: 4ee3a54d3f09434c508c284a62f895a741a30637
   firebase_core: 335c02abd48672b7c83c683df833d0488a72e73e
   firebase_messaging: 21344b3b3a7d9d325d63a70e3750c0c798fe1e03
   firebase_storage: 22966fce4aa6e8848cbaa017df62107cee29f327
@@ -494,6 +494,6 @@ SPEC CHECKSUMS:
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
   wifi: d7d77c94109e36c4175d845f0a5964eadba71060
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: b494597a7d3f2e7b72c77fe6a92eed8697f3d041
 
 COCOAPODS: 1.9.1

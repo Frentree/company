@@ -16,7 +16,7 @@ class UserCrud {
 
   Future<List<User>> fetchUser() async{
     var result = await _firestoreApi.getDataCollection();
-    user = result.documents.map((doc) => User.fromMap(doc.data, doc.documentID)).toList();
+    user = result.documents.map((doc) => User.fromMap(doc.data(), doc.documentID)).toList();
 
     return user;
   }
@@ -27,7 +27,7 @@ class UserCrud {
 
   Future<User> getUserDataToFirebaseById({String documentId}) async {
     var doc = await _firestoreApi.getDocumentById(documentId);
-    return User.fromMap(doc.data, doc.documentID);
+    return User.fromMap(doc.data(), doc.documentID);
   }
 
   Future<void> removeUserDataToFirebase({String documentId}) async {

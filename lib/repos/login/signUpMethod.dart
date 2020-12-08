@@ -26,7 +26,7 @@ class SignUpMethod {
 
     FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-    StorageReference storageReference =
+    Reference storageReference =
     _firebaseStorage.ref().child("defaultImage/defaultImage.png");
 
     String ImageURL = await storageReference.getDownloadURL();

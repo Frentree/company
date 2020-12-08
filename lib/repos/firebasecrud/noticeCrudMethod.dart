@@ -29,14 +29,14 @@ class NoticeCrud {
 
   Future<List<NoticeModel>> fetchNotice() async{
     var result = await _firestoreApi.getDataCollection();
-    notice = result.documents.map((doc) => NoticeModel.fromMap(doc.data, doc.documentID)).toList();
+    notice = result.documents.map((doc) => NoticeModel.fromMap(doc.data(), doc.documentID)).toList();
 
     return notice;
   }
 
   Future<NoticeModel> getNoticeDataToFirebaseById({String documentId}) async {
     var doc = await _firestoreApi.getDocumentById(documentId);
-    return NoticeModel.fromMap(doc.data, doc.documentID);
+    return NoticeModel.fromMap(doc.data(), doc.documentID);
   }
 
   Stream<QuerySnapshot> fetchNoticeAsStream(){

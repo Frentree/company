@@ -19,7 +19,7 @@ class UserAttendanceCrud {
 
   Future<List<Attendance>> fetchUserAttendance() async{
     var result = await _firestoreApi.getDataCollection();
-    attendance = result.documents.map((doc) => Attendance.fromMap(doc.data, doc.documentID)).toList();
+    attendance = result.documents.map((doc) => Attendance.fromMap(doc.data(), doc.documentID)).toList();
 
     return attendance;
   }
@@ -30,7 +30,7 @@ class UserAttendanceCrud {
 
   Future<Attendance> getUserAttendanceDataToFirebaseById({String documentId}) async {
     var doc = await _firestoreApi.getDocumentById(documentId);
-    return Attendance.fromMap(doc.data, doc.documentID);
+    return Attendance.fromMap(doc.data(), doc.documentID);
   }
 
   Future<void> removeUserAttendanceDataToFirebase({String documentId}) async {

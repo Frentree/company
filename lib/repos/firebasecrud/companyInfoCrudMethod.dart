@@ -16,7 +16,7 @@ class CompanyInfoCrud {
 
   Future<List<Company>> fetchCompanyInfo() async{
     var result = await _firestoreApi.getDataCollection();
-    company = result.documents.map((doc) => Company.fromMap(doc.data, doc.documentID)).toList();
+    company = result.documents.map((doc) => Company.fromMap(doc.data(), doc.documentID)).toList();
 
     return company;
   }
@@ -27,7 +27,7 @@ class CompanyInfoCrud {
 
   Future<Company> getCompanyInfoDataToFirebaseById({String documentId}) async {
     var doc = await _firestoreApi.getDocumentById(documentId);
-    return Company.fromMap(doc.data, doc.documentID);
+    return Company.fromMap(doc.data(), doc.documentID);
   }
 
   Future<void> removeCompanyInfoDataToFirebase({String documentId}) async {

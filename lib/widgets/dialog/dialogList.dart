@@ -599,7 +599,7 @@ Future<void> addGradeDialog({BuildContext context, String companyCode}) {
 Widget _getGradeList(BuildContext context, List<DocumentSnapshot> snapshot, String companyCode) {
   List<int> gradeIdList = List();
   for(int i= 0; i < snapshot.length; i++){
-    gradeIdList.add(snapshot[i].data['gradeID']);
+    gradeIdList.add(snapshot[i].data()['gradeID']);
   }
 
   bool isAccountingChk = false;
