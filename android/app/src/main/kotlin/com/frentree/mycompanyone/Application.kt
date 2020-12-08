@@ -1,4 +1,4 @@
-package minji.companyplaylist
+package com.frentree.mycompanyone
 
 import io.flutter.app.FlutterApplication
 import io.flutter.plugin.common.PluginRegistry
