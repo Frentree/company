@@ -1,17 +1,17 @@
 //자동 로그인 여부를 판단하는 페이지 입니다.
-import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
 
 //Screen
-import 'package:companyplaylist/screens/login/companySetMain.dart';
+import 'package:MyCompany/screens/login/companySetMain.dart';
 
-import 'package:companyplaylist/screens/login/signUpMain.dart';
+import 'package:MyCompany/screens/login/signUpMain.dart';
 
-import 'package:companyplaylist/screens/home/homeMain.dart';
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/screens/home/homeMain.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 import 'home/waitingApproval.dart';
 

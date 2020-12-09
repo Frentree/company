@@ -1,14 +1,14 @@
 import 'dart:io';
-import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
-import 'package:companyplaylist/screens/splash.dart';
+import 'package:MyCompany/provider/screen/companyScreenChange.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
+import 'package:MyCompany/screens/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
-import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
+import 'package:MyCompany/provider/screen/loginScreenChange.dart';
+import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 

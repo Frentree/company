@@ -1,22 +1,22 @@
 //Flutter
-import 'package:companyplaylist/models/approvalModel.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/models/approvalModel.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
-import 'package:companyplaylist/repos/showSnackBarMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/crudRepository.dart';
+import 'package:MyCompany/repos/showSnackBarMethod.dart';
 
 //Model
-import 'package:companyplaylist/models/companyModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/models/companyUserModel.dart';
+import 'package:MyCompany/models/companyModel.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 
 import 'loginRepository.dart';
 

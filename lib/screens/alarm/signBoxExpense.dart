@@ -1,11 +1,11 @@
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/models/expenseModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/widgets/card/expenseCard.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/expenseModel.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/widgets/card/expenseCard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

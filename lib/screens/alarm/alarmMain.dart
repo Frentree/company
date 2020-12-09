@@ -1,15 +1,15 @@
 
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/models/attendanceModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
-import 'package:companyplaylist/screens/alarm/signBox.dart';
-import 'package:companyplaylist/screens/home/homeSchedule.dart';
-import 'package:companyplaylist/widgets/button/textButton.dart';
-import 'package:companyplaylist/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/screens/alarm/alarmNotice.dart';
+import 'package:MyCompany/screens/alarm/signBox.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
+import 'package:MyCompany/widgets/button/textButton.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';

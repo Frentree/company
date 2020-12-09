@@ -1,18 +1,18 @@
 //Flutter
-import 'package:companyplaylist/screens/login/companySearch.dart';
+import 'package:MyCompany/screens/login/companySearch.dart';
 import 'package:flutter/material.dart';
 import 'package:kopo/kopo.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
 //Repos
-import 'package:companyplaylist/repos/login/loginRepository.dart';
+import 'package:MyCompany/repos/login/loginRepository.dart';
 
 //Model
-import 'package:companyplaylist/models/companyModel.dart';
+import 'package:MyCompany/models/companyModel.dart';
 
 class CompanyJoinPage extends StatefulWidget {
   @override

@@ -1,14 +1,14 @@
 //내근 및 외근 스케줄을 입력하는 bottom sheet 입니다.
 
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
 //Theme
 
 //Src
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 
 
 dateSetBottomSheet(BuildContext context) async {

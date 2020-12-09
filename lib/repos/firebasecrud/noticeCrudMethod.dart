@@ -9,12 +9,12 @@
 * */
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/models/bigCategoryModel.dart';
-import 'package:companyplaylist/models/noticeModel.dart';
-import 'package:companyplaylist/models/workModel.dart';
+import 'package:MyCompany/models/bigCategoryModel.dart';
+import 'package:MyCompany/models/noticeModel.dart';
+import 'package:MyCompany/models/workModel.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebaseMethod.dart';
+import 'package:MyCompany/repos/firebaseMethod.dart';
 
 class NoticeCrud {
   FirestoreApi _firestoreApi;

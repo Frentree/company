@@ -1,20 +1,20 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/models/attendanceModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
-import 'package:companyplaylist/screens/setting/myWork.dart';
-import 'package:companyplaylist/widgets/bottomsheet/setting/settingUserAddDelete.dart';
-import 'package:companyplaylist/widgets/bottomsheet/setting/settingUserManager.dart';
-import 'package:companyplaylist/widgets/button/textButton.dart';
-import 'package:companyplaylist/widgets/card/settingInfomationCard.dart';
-import 'package:companyplaylist/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/alarm/alarmNotice.dart';
+import 'package:MyCompany/screens/setting/myWork.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingUserManager.dart';
+import 'package:MyCompany/widgets/button/textButton.dart';
+import 'package:MyCompany/widgets/card/settingInfomationCard.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,14 +73,15 @@ class SettingMainPageState extends State<SettingMainPage> {
                   ),
                   childrenPadding: EdgeInsets.only(left: 20),
                   children: [
-                    ListTile(
+                    /// 기능 미구현으로 인한 숨김 처리
+                    /*ListTile(
                       leading: Icon(Icons.account_tree_outlined),
                       title: Text('조직도'),
                       dense: true,
                       onTap: () {
                         NotImplementedFunction(context);
                       },
-                    ),
+                    ),*/
                     ListTile(
                       leading: Icon(Icons.person_add_alt_1_outlined),
                       title: Text('사용자 추가 요청/삭제'),
@@ -97,14 +98,15 @@ class SettingMainPageState extends State<SettingMainPage> {
                         SettingUserManager(context);
                       },
                     ),
-                    ListTile(
+                    /// 기능 미구현으로 인한 숨김 처리
+                    /*ListTile(
                       leading: Icon(Icons.list_alt_sharp),
                       title: Text('사용자별 근채/연차/급여 조회'),
                       dense: true,
                       onTap: () {
                         NotImplementedFunction(context);
                       },
-                    ),
+                    ),*/
                   ],
                 )
                     : SizedBox(),
@@ -116,7 +118,8 @@ class SettingMainPageState extends State<SettingMainPage> {
                     getMyInfomationCard(context: context, user: _loginUser),
                   ],
                 ),
-                ExpansionTile(
+                /// 기능 미구현으로 인한 숨김 처리
+                /*ExpansionTile(
                     leading: Icon(Icons.event_note_outlined),
                     childrenPadding: EdgeInsets.only(left: 30),
                     title: Text('내 근태/연차/급여 조회'),
@@ -145,8 +148,10 @@ class SettingMainPageState extends State<SettingMainPage> {
                           //movePage(context, "myWork", "2");
                         },
                       )
-                    ]),
-                ExpansionTile(
+                    ]),*/
+
+                /// 기능 미구현으로 인한 숨김 처리
+                /*ExpansionTile(
                   leading: Icon(Icons.notifications_none_outlined),
                   childrenPadding: EdgeInsets.only(left: 30),
                   title: Text('알림 설정'),
@@ -187,12 +192,16 @@ class SettingMainPageState extends State<SettingMainPage> {
                       ),
                     )
                   ],
-                ),
-                ExpansionTile(
+                ),*/
+
+                /// 기능 미구현으로 인한 숨김 처리
+                /*ExpansionTile(
                   leading: Icon(Icons.desktop_mac),
                   title: Text('화면'),
-                ),
-                ExpansionTile(
+                ),*/
+
+                /// 기능 미구현으로 인한 숨김 처리
+                /*ExpansionTile(
                   leading: Icon(Icons.help_outline_sharp),
                   title: Text('고객지원'),
                   children: <Widget>[
@@ -232,7 +241,22 @@ class SettingMainPageState extends State<SettingMainPage> {
                       },
                     )
                   ],
+                ),*/
+                ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('연락처'),
+                      Text(
+                        'pe.jeon87@frentree.com',
+                        style: customStyle(fontSize: 12, fontColor: grayColor),
+                      ),
+                    ],
+                  ),
                 ),
+
                 ListTile(
                   leading: Icon(Icons.info_outline),
                   title: Column(

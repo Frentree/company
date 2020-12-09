@@ -1,13 +1,13 @@
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/screens/work/workContent.dart';
-import 'package:companyplaylist/widgets/bottomsheet/expense/expenseMain.dart';
-import 'package:companyplaylist/widgets/bottomsheet/purchase/purchaseMain.dart';
-import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
-import 'package:companyplaylist/widgets/bottomsheet/work/workNotice.dart';
-import 'package:companyplaylist/widgets/bottomsheet/meeting/meetingMain.dart';
-import 'package:companyplaylist/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/work/workContent.dart';
+import 'package:MyCompany/widgets/bottomsheet/expense/expenseMain.dart';
+import 'package:MyCompany/widgets/bottomsheet/purchase/purchaseMain.dart';
+import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
+import 'package:MyCompany/widgets/bottomsheet/work/workNotice.dart';
+import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 
 MainBottomSheet({BuildContext context, String companyCode, String mail}) {
@@ -15,31 +15,33 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
   bool result = false;
   void _workBottomMove(int type) async {
     switch (type) {
-      case 0:
+      case 0: // 최근 일정에서 생성
         break;
-      case 1:
-      case 2: //내근 or 외근
+      case 1: // 내근 일정 생성
+      case 2: // 외근 일정 생성
         result = await workContent(context: context, type: type);
         if (result) {
           Navigator.of(context).pop();
         }
         break;
-      case 3:
+      case 3: // 회의 일정 생성
         result = await meetingMain(context: context);
         if (result) {
           Navigator.of(context).pop();
         }
         break;
-      case 4:
-      case 5:
+      case 4: // 개인 일정 생성
+      case 5: // 업무 요청 생성
         break;
-      case 6:
+      case 6: // 구매 품의 생성
         NotImplementedFunction(context);
         break;
-      case 7:
+      case 7: // 경비 품의 생성
         ExpenseMain(context);
         break;
-      case 9: // 공지사항
+      case 9: // 급여 명세 조회
+        break;
+      case 10: // 공지사항
         WorkNoticeBottomSheet(context, "", "", "");
         break;
       default:
@@ -65,7 +67,6 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                 else
                   return _isStaff = false;
               }
-
               _isStaffMethod(grade);
 
               return Container(
@@ -186,6 +187,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                           ),
                           onPressed: () {
                             NotImplementedFunction(context);
+                            //_workBottomMove(4);
                           },
                         ),*/
                       ],
@@ -206,6 +208,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                           ),
                           onPressed: () {
                             NotImplementedFunction(context);
+                            //_workBottomMove(5);
                           },
                         ),*/
 
@@ -249,7 +252,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                           ),
                           onPressed: () {
                             NotImplementedFunction(context);
-                            //_workBottomMove(7);
+                            //_workBottomMove(8);
                           },
                         ),*/
 
@@ -264,7 +267,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                             ),
                           ),
                           onPressed: () {
-                            _workBottomMove(2);
+                            _workBottomMove(9);
                           },
                         ),
 
@@ -278,7 +281,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                                 fontColor: mainColor),
                           ),
                           onPressed: () {
-                            _workBottomMove(9);
+                            _workBottomMove(10);
                           },
                         )
                       ],

@@ -1,15 +1,15 @@
 //Flutter
-import 'package:companyplaylist/consts/universalString.dart';
+import 'package:MyCompany/consts/universalString.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
 //Screen
-import 'package:companyplaylist/screens/login/login.dart';
-import 'package:companyplaylist/screens/login/signUp.dart';
+import 'package:MyCompany/screens/login/login.dart';
+import 'package:MyCompany/screens/login/signUp.dart';
 
 class SignUpMainPage extends StatelessWidget {
   @override

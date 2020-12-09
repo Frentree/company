@@ -1,17 +1,17 @@
 //Flutter
-import 'package:companyplaylist/models/approvalModel.dart';
-import 'package:companyplaylist/repos/setting/infomationUpdateMethod.dart';
+import 'package:MyCompany/models/approvalModel.dart';
+import 'package:MyCompany/repos/setting/infomationUpdateMethod.dart';
 import 'package:flutter/material.dart';
 
 //Repos
-import 'package:companyplaylist/repos/login/validationMethod.dart';
-import 'package:companyplaylist/repos/login/signUpMethod.dart';
-import 'package:companyplaylist/repos/login/signInMethod.dart';
-import 'package:companyplaylist/repos/login/companyMethod.dart';
+import 'package:MyCompany/repos/login/validationMethod.dart';
+import 'package:MyCompany/repos/login/signUpMethod.dart';
+import 'package:MyCompany/repos/login/signInMethod.dart';
+import 'package:MyCompany/repos/login/companyMethod.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/models/companyModel.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/models/companyModel.dart';
 
 class LoginRepository {
   ValidationMethod _validation = ValidationMethod();

@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
 
 //Repos
-import 'package:companyplaylist/repos/showSnackBarMethod.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:MyCompany/repos/showSnackBarMethod.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 class SignInMethod{
   FirebaseRepository _repository = FirebaseRepository();

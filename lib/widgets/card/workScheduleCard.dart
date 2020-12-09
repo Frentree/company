@@ -1,16 +1,16 @@
 //Flutter
-import 'package:companyplaylist/widgets/bottomsheet/work/workContent.dart';
+import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
-import 'package:companyplaylist/models/workModel.dart';
-import 'package:companyplaylist/utils/date/dateFormat.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:MyCompany/models/workModel.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;

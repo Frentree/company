@@ -4,23 +4,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
 //Widget
 import 'package:flutter/rendering.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
+import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
 
 
 //Repos
-import 'package:companyplaylist/repos/login/loginRepository.dart';
+import 'package:MyCompany/repos/login/loginRepository.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 class SignUpPage extends StatefulWidget {
   @override

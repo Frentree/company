@@ -1,4 +1,4 @@
-name: companyplaylist
+name: MyCompany
 description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
@@ -46,6 +46,7 @@ dependencies:
   firebase_auth: ^0.18.4+1
   firebase_messaging: ^6.0.16
   photo_view: ^0.10.3
+  flutter_launcher_icons:
 
   flutter_local_notifications: ^3.0.1+2
   flutter_masked_text: ^0.8.0
@@ -60,6 +61,11 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/launcher.png"
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +90,7 @@ flutter:
     - images/bannerImage.jpg
     - images/default.png
     - images/personal.png
+    - images/launcher.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

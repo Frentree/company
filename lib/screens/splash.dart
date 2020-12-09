@@ -1,16 +1,16 @@
 //Flutter
 import 'dart:async';
 
-import 'package:companyplaylist/consts/universalString.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/screens/auth.dart';
+import 'package:MyCompany/consts/universalString.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/auth.dart';
 
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/colorCode.dart';
 import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {

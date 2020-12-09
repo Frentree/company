@@ -1,14 +1,14 @@
 //Flutter
-import 'package:companyplaylist/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
 //Repos
-import 'package:companyplaylist/repos/login/loginRepository.dart';
+import 'package:MyCompany/repos/login/loginRepository.dart';
 
 class LoginPage extends StatefulWidget {
   @override
