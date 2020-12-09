@@ -138,8 +138,6 @@ class CompanyMethod{
     _loginUser.state = 0;
     _repository.updateUser(userModel: _loginUser);
 
-    String appManagerMail = await _repository.geAppManagerMail(companyCode: companyCode);
-
     Approval approvalModel = Approval(
       name: _loginUser.name,
       mail: _loginUser.mail,
@@ -149,7 +147,6 @@ class CompanyMethod{
 
     _repository.saveApproval(
       companyCode: companyCode,
-      appManagerMail: appManagerMail,
       approvalModel: approvalModel,
     );
 

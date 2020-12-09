@@ -110,19 +110,6 @@ class FirebaseMethods {
         .set(companyUserModel.toJson());
   }
 
-  Future<String> geAppManagerMail({String companyCode}) async {
-    QuerySnapshot querySnapshot = await firestore
-        .collection(COMPANY)
-        .doc(companyCode)
-        .collection(USER)
-        .where("level", arrayContains: 8)
-        .get();
-
-    String appManagerMail = querySnapshot.docs.first.id;
-
-    return appManagerMail;
-  }
-
   //회사 직원 관련
   Future<Map<String, String>> getColleague(
       {String loginUserMail, String companyCode}) async {
@@ -265,36 +252,28 @@ class FirebaseMethods {
   //알람 관련
   //사용자 승인
   Future<void> saveApproval(
-      {String companyCode,
-      String appManagerMail,
-      Approval approvalModel}) async {
+      {String companyCode, Approval approvalModel}) async {
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
-        .collection(USER)
-        .doc(appManagerMail)
         .collection(APPROVAL)
         .add(approvalModel.toJson());
   }
 
-  Stream<QuerySnapshot> getApproval({String companyCode, String managerMail}) {
+  Stream<QuerySnapshot> getApproval({String companyCode}) {
     return firestore
         .collection(COMPANY)
         .doc(companyCode)
-        .collection(USER)
-        .doc(managerMail)
         .collection(APPROVAL)
         .where("state", isEqualTo: 0)
         .snapshots();
   }
 
   Future<void> updateApproval(
-      {Approval approvalModel, String companyCode, String managerMail}) async {
+      {Approval approvalModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
-        .collection(USER)
-        .doc(managerMail)
         .collection(APPROVAL)
         .doc(approvalModel.id)
         .update(approvalModel.toJson());

@@ -76,7 +76,7 @@ class AttendanceCheck extends ChangeNotifier {
       today: _format.dateTimeToTimeStamp(today),
     );
     //출퇴근 데이터가 없을 경우
-    if (result.documents.length == 0) {
+    if (result.docs.length == 0) {
       _attendance = Attendance(
         mail: _loginUser.mail,
         name: _loginUser.name,
@@ -97,7 +97,7 @@ class AttendanceCheck extends ChangeNotifier {
         _attendance.attendTime = _format.dateTimeToTimeStamp(nowTime);
         _repository.updateAttendance(
             attendanceModel: _attendance,
-            documentId: newAttendance.documentID,
+            documentId: newAttendance.id,
             companyCode: _loginUser.companyCode);
         return _attendance;
       }
@@ -111,7 +111,7 @@ class AttendanceCheck extends ChangeNotifier {
     //출퇴근 데이터가 있을 경우
     else {
       _attendance = Attendance.fromMap(
-          result.documents.first.data(), result.docs.first.id);
+          result.docs.first.data(), result.docs.first.id);
       if(_attendance.status != 0){
         return _attendance;
       }
@@ -121,7 +121,7 @@ class AttendanceCheck extends ChangeNotifier {
           _attendance.attendTime = _format.dateTimeToTimeStamp(nowTime);
           _repository.updateAttendance(
               attendanceModel: _attendance,
-              documentId: result.documents.first.documentID,
+              documentId: result.docs.first.id,
               companyCode: _loginUser.companyCode);
           return _attendance;
         }

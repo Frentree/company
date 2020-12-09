@@ -157,7 +157,7 @@ class ApprovalPageState extends State<ApprovalPage> {
           StreamBuilder(
             stream: _repository.getApproval(
                 companyCode: _loginUser.companyCode,
-                managerMail: _loginUser.mail),
+                ),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return Center(
@@ -276,7 +276,6 @@ class ApprovalPageState extends State<ApprovalPage> {
                                         _APData.state = 1;
                                        await _repository.updateApproval(
                                           companyCode: _loginUser.companyCode,
-                                          managerMail: _loginUser.mail,
                                           approvalModel: _APData,
                                         );
                                        await _loginRepository.userApproval(approvalUserMail:  _APData.mail, context: context);
@@ -288,7 +287,6 @@ class ApprovalPageState extends State<ApprovalPage> {
                                         _APData.state = 2;
                                         await _repository.updateApproval(
                                           companyCode: _loginUser.companyCode,
-                                          managerMail: _loginUser.mail,
                                           approvalModel: _APData,
                                         );
                                         await _loginRepository.userRejection(approvalUserMail: _APData.mail, context: context);
