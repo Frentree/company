@@ -44,9 +44,6 @@ class FirebaseRepository {
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) =>
       _firebaseMethods.saveCompanyUser(companyUserModel: companyUserModel);
 
-  Future<String> geAppManagerMail({String companyCode}) =>
-      _firebaseMethods.geAppManagerMail(companyCode: companyCode);
-
   Future<void> saveWork({WorkModel workModel, String companyCode}) =>
       _firebaseMethods.saveWork(
         workModel: workModel,
@@ -134,22 +131,19 @@ class FirebaseRepository {
           Approval approvalModel}) =>
       _firebaseMethods.saveApproval(
         companyCode: companyCode,
-        appManagerMail: appManagerMail,
         approvalModel: approvalModel,
       );
 
-  Stream<QuerySnapshot> getApproval({String companyCode, String managerMail}) =>
+  Stream<QuerySnapshot> getApproval({String companyCode}) =>
       _firebaseMethods.getApproval(
         companyCode: companyCode,
-        managerMail: managerMail,
       );
 
   Future<void> updateApproval(
-          {Approval approvalModel, String companyCode, String managerMail}) =>
+          {Approval approvalModel, String companyCode}) =>
       _firebaseMethods.updateApproval(
         approvalModel: approvalModel,
         companyCode: companyCode,
-        managerMail: managerMail,
       );
   // 프로필 이미지
   Future<DocumentSnapshot> photoProfile(String companyCode, String mail) =>
