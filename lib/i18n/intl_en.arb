@@ -1,0 +1,33 @@
+{
+  "@@last_modified": "2020-12-09T18:35:20.249730",
+  "company": "company",
+  "@company": {
+    "description": "company message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "companyInfomation": "Company Infomation",
+  "@companyInfomation": {
+    "description": "companyInfomation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userManager": "User Manager",
+  "@userManager": {
+    "description": "userManager message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myInfomation": "My Infomation",
+  "@myInfomation": {
+    "description": "myInfomation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "logout message",
+    "type": "text",
+    "placeholders": {}
+  }
+}

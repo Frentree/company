@@ -1,0 +1,33 @@
+{
+  "@@last_modified": "2020-12-09T18:35:20.249730",
+  "company": "회사",
+  "@company": {
+    "description": "company message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "companyInfomation": "회사 정보",
+  "@companyInfomation": {
+    "description": "companyInfomation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userManager": "유저 관리",
+  "@userManager": {
+    "description": "userManager message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myInfomation": "내 정보",
+  "@myInfomation": {
+    "description": "myInfomation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "로그아웃",
+  "@logout": {
+    "description": "logout message",
+    "type": "text",
+    "placeholders": {}
+  }
+}
