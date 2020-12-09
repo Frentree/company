@@ -111,7 +111,7 @@ class AttendanceCheck extends ChangeNotifier {
     //출퇴근 데이터가 있을 경우
     else {
       _attendance = Attendance.fromMap(
-          result.documents.first.data, result.documents.first.documentID);
+          result.documents.first.data(), result.docs.first.id);
       if(_attendance.status != 0){
         return _attendance;
       }

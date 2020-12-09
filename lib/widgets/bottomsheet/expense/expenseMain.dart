@@ -32,7 +32,7 @@ ExpenseMain(BuildContext context) {
       Provider.of<LoginUserInfoProvider>(context, listen: false);
   User user = _loginUserInfoProvider.getLoginUser();
 
-  StorageReference storageReference = _firebaseStorage.ref().child(
+  Reference storageReference = _firebaseStorage.ref().child(
       "expenses/${user.companyCode}/${user.mail}/${DateTime.now().toString()}");
 
   TextEditingController _detailController = TextEditingController();
@@ -65,10 +65,10 @@ ExpenseMain(BuildContext context) {
     if (image == null) return;
 
     // 파일 업로드
-    StorageUploadTask storageUploadTask = storageReference.putFile(image);
+    UploadTask storageUploadTask = storageReference.putFile(image);
 
     // 파일 업로드 완료까지 대기
-    await storageUploadTask.onComplete;
+    await storageUploadTask;
 
     // 업로드한 사진의 URL 획득
     _downloadUrl = await storageReference.getDownloadURL();

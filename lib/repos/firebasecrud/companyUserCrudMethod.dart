@@ -20,7 +20,7 @@ class CompanyUserCrud {
   Future<List<CompanyUser>> fetchCompanyUser() async {
     var result = await _firestoreApi.getDataCollection();
     user = result.documents
-        .map((doc) => CompanyUser.fromMap(doc.data, doc.documentID))
+        .map((doc) => CompanyUser.fromMap(doc.data(), doc.documentID))
         .toList();
 
     return user;
@@ -33,7 +33,7 @@ class CompanyUserCrud {
   Future<CompanyUser> getCompanyUserDataToFirebaseById(
       {String documentId}) async {
     var doc = await _firestoreApi.getDocumentById(documentId);
-    return CompanyUser.fromMap(doc.data, doc.documentID);
+    return CompanyUser.fromMap(doc.data(), doc.documentID);
   }
 
   Future<void> removeCompanyUserDataToFirebase({String documentId}) async {

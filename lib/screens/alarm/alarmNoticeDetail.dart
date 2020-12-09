@@ -112,12 +112,12 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                       color: whiteColor,
                       border: Border.all(color: whiteColor, width: 2)),
                   child: FutureBuilder(
-                    future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[i].data['commentsUser']['mail']),
+                    future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[i].data()['commentsUser']['mail']),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Icon(Icons.person_outline);
                       }
-                      return Image.network(snapshot.data['profilePhoto']);
+                      return Image.network(snapshot.data()['profilePhoto']);
                     },
                   ),
                 ),
@@ -136,7 +136,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      documents[i].data['commentsUser']['name'].toString(),
+                      documents[i].data()['commentsUser']['name'].toString(),
                       style: customStyle(
                         fontColor: blackColor,
                         fontWeightName: 'Bold',
@@ -144,7 +144,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                       ),
                     ),
                     Text(
-                      documents[i].data['comments'].toString(),
+                      documents[i].data()['comments'].toString(),
                       style: customStyle(
                         fontColor: blackColor,
                         fontWeightName: 'Regular',
@@ -154,7 +154,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                     Row(
                       children: [
                         Text(
-                          Format().timeStampToDateTimeString(documents[i].data['createDate']),
+                          Format().timeStampToDateTimeString(documents[i].data()['createDate']),
                           style:
                           customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                         ),
@@ -183,7 +183,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                       crudType = 1;
                                       _commentId = documentID;
                                       print("_commentId >>> " + _commentId);
-                                      commnetUser = documents[i].data['commentsUser']['name'];
+                                      commnetUser = documents[i].data()['commentsUser']['name'];
                                       _noticeComment.text = commnetUser + " ";
                                       _commnetFocusNode.requestFocus();
                                     });
@@ -193,7 +193,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                               Expanded(
                                 flex: 4,
                                 child: Visibility(
-                                  visible: documents[i].data['commentsUser']['mail'].toString() == _loginUser.mail,
+                                  visible: documents[i].data()['commentsUser']['mail'].toString() == _loginUser.mail,
                                   child: Row(
                                     children: [
                                       /*Expanded(
@@ -211,7 +211,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                               crudType = 3;
                                               _commentId = documents[i].documentID;
                                               print("_commentId >>> " + _commentId);
-                                              _noticeComment.text = documents[i].data['comments'].toString();
+                                              _noticeComment.text = documents[i].data()['comments'].toString();
                                               _commnetFocusNode.requestFocus();
                                             });
                                           },
@@ -360,7 +360,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                     if (!snapshot.hasData) {
                       return Icon(Icons.person_outline);
                     }
-                    return Image.network(snapshot.data['profilePhoto']);
+                    return Image.network(snapshot.data()['profilePhoto']);
                   },
                 )
               ),
@@ -423,7 +423,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                           if (!snapshot.hasData) {
                                             return Icon(Icons.person_outline);
                                           }
-                                          return Image.network(snapshot.data['profilePhoto']);
+                                          return Image.network(snapshot.data()['profilePhoto']);
                                         },
                                       ),
                                     ),
@@ -517,12 +517,12 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       color: whiteColor,
                                                       border: Border.all(color: whiteColor, width: 2)),
                                                   child: FutureBuilder(
-                                                    future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data['createUser']['mail']),
+                                                    future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data()['createUser']['mail']),
                                                     builder: (context, snapshot) {
                                                       if (!snapshot.hasData) {
                                                         return Icon(Icons.person_outline);
                                                       }
-                                                      return Image.network(snapshot.data['profilePhoto']);
+                                                      return Image.network(snapshot.data()['profilePhoto']);
                                                     },
                                                   ),
                                                 ),
@@ -535,7 +535,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    documents[index].data['createUser']['name'].toString(),
+                                                    documents[index].data()['createUser']['name'].toString(),
                                                     style: customStyle(
                                                       fontColor: blackColor,
                                                       fontWeightName: 'Bold',
@@ -543,7 +543,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    documents[index].data['comment'].toString(),
+                                                    documents[index].data()['comment'].toString(),
                                                     style: customStyle(
                                                       fontColor: blackColor,
                                                       fontWeightName: 'Regular',
@@ -553,7 +553,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        Format().timeStampToDateTimeString(documents[index].data['createDate']),
+                                                        Format().timeStampToDateTimeString(documents[index].data()['createDate']),
                                                         style: customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                                                       ),
                                                       Container(
@@ -579,7 +579,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                     crudType = 1;
                                                                     _commentId = documents[index].documentID;
                                                                     print("_commentId >>> " + _commentId);
-                                                                    commnetUser = documents[index].data['createUser']['name'];
+                                                                    commnetUser = documents[index].data()['createUser']['name'];
                                                                     _noticeComment.text = commnetUser + " ";
                                                                     _commnetFocusNode.requestFocus();
                                                                   });
@@ -589,7 +589,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                             Expanded(
                                                               flex: 4,
                                                               child: Visibility(
-                                                                visible: documents[index].data['createUser']['mail'].toString() == _loginUser.mail,
+                                                                visible: documents[index].data()['createUser']['mail'].toString() == _loginUser.mail,
                                                                 child: Row(
                                                                   children: [
                                                                     Expanded(
@@ -609,7 +609,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                             crudType = 2;
                                                                             _commentId = documents[index].documentID;
                                                                             print("_commentId >>> " + _commentId);
-                                                                            _noticeComment.text = documents[index].data['comment'].toString();
+                                                                            _noticeComment.text = documents[index].data()['comment'].toString();
                                                                             _commnetFocusNode.requestFocus();
                                                                           });
                                                                         },

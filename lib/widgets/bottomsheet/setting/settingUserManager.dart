@@ -132,5 +132,5 @@ class GradeData {
         gradeName = map['gradeName'],
         gradeUser = map['gradeUser'];
 
-  GradeData.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap(snapshot.data, reference: snapshot.reference);
+  GradeData.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap(snapshot.data(), reference: snapshot.reference);
 }

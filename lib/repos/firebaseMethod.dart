@@ -13,7 +13,7 @@ import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseMethods {
-  static final Firestore firestore = Firestore.instance;
+  static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // 경비 청구 항목 저장 메서드
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) async {
@@ -52,7 +52,7 @@ class FirebaseMethods {
 
   Future<User> getUser({String userMail}) async {
     var doc = await firestore.collection(USER).document(userMail).get();
-    return User.fromMap(doc.data, doc.documentID);
+    return User.fromMap(doc.data(), doc.documentID);
   }
 
   Future<void> updateUser({User userModel}) async {
@@ -86,9 +86,9 @@ class FirebaseMethods {
         result.add(element);
       }
       else{
-        int firstIndex = element.data["companySearch"].indexOf(findString[0]);
+        int firstIndex = element.data()["companySearch"].indexOf(findString[0]);
         for (int i = 1; i < findString.length; i++) {
-          if (element.data["companySearch"][firstIndex + i] != findString[i]) {
+          if (element.data()["companySearch"][firstIndex + i] != findString[i]) {
             break;
           } else {
             if (i == (findString.length - 1)) {
@@ -135,7 +135,7 @@ class FirebaseMethods {
         .getDocuments();
     querySnapshot.documents.forEach((element) {
       if (element.documentID != loginUserMail) {
-        colleague[element.documentID] = element.data["name"];
+        colleague[element.documentID] = element.data()["name"];
       }
     });
 

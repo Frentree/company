@@ -80,7 +80,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
             itemBuilder: (context, index) {
               /*String _createDate = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
                   DateTime.parse(
-                      documents[index].data['noticeCreateDate'].toDate().toString()
+                      documents[index].data()['noticeCreateDate'].toDate().toString()
                   ).add(Duration(hours: 9))
               );*/
 
@@ -127,12 +127,12 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                             color: whiteColor, width: 2)
                                     ),
                                     child: FutureBuilder(
-                                      future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data['noticeCreateUser']['mail']),
+                                      future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data()['noticeCreateUser']['mail']),
                                       builder: (context, snapshot) {
                                         if (!snapshot.hasData) {
                                           return Icon(Icons.person_outline);
                                         }
-                                        return Image.network(snapshot.data['profilePhoto']);
+                                        return Image.network(snapshot.data()['profilePhoto']);
                                       },
                                     ),
                                 ),
@@ -162,7 +162,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                       Expanded(
                                         flex: 8,
                                         child: Text(
-                                          documents[index].data['noticeTitle'].toString(),
+                                          documents[index].data()['noticeTitle'].toString(),
                                           /*"6월 10일 월간회의 및 회식 공지",*/
                                           style: customStyle(
                                               fontSize: 15,
@@ -176,7 +176,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         child: Container(
                                           alignment: Alignment.topRight,
                                           child: Visibility(
-                                            visible: documents[index].data['noticeCreateUser']['mail'] == _loginUser.mail,
+                                            visible: documents[index].data()['noticeCreateUser']['mail'] == _loginUser.mail,
                                             child: PopupMenuButton(
                                               icon: Icon(
                                                   Icons.more_horiz
@@ -185,8 +185,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                 if(value == 1){  // 수정하기 버튼 클릭시
                                                   WorkNoticeBottomSheet(context,
                                                       documents[index].documentID,
-                                                      documents[index].data['noticeTitle'],
-                                                      documents[index].data['noticeContent']
+                                                      documents[index].data()['noticeTitle'],
+                                                      documents[index].data()['noticeContent']
                                                   );
                                                 } else if(value == 2) { // 삭제 버튼 클릭시
                                                   showDialog(
@@ -268,7 +268,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   ),
                                 ),
                                 Text(
-                                _format.timeStampToDateTimeString(documents[index].data['noticeCreateDate']).toString(),
+                                _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
                                   style: customStyle(
                                       fontSize: 12,
                                       fontWeightName: 'Regular',
@@ -290,7 +290,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                       ),
                                       padding:  const EdgeInsets.all(0.2),
                                       child: /*Text(
-                                        documents[index].data['noticeContent'].toString(),
+                                        documents[index].data()['noticeContent'].toString(),
                                         maxLines: 3,
                                         style: customStyle(
                                             fontSize: 13,
@@ -300,7 +300,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                       ),*/
                                       LayoutBuilder(
                                         builder: (context, size) {
-                                          final span = TextSpan(text: documents[index].data['noticeContent'].toString(), style: customStyle(
+                                          final span = TextSpan(text: documents[index].data()['noticeContent'].toString(), style: customStyle(
                                               fontSize: 13,
                                               fontWeightName: 'Medium',
                                               fontColor: mainColor
@@ -317,7 +317,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  documents[index].data['noticeContent'].toString(),
+                                                  documents[index].data()['noticeContent'].toString(),
                                                   maxLines: 3,
                                                   style: customStyle(
                                                       fontSize: 13,
@@ -341,10 +341,10 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                         MaterialPageRoute(builder: (context) =>
                                                         AlarmNoticeDetailPage(
                                                           noticeUid: documents[index].documentID,
-                                                          noticeTitle: documents[index].data['noticeTitle'].toString(),
-                                                          noticeContent: documents[index].data['noticeContent'].toString(),
-                                                          noticeCreateUser: documents[index].data['noticeCreateUser']['mail'].toString(),
-                                                          noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data['noticeCreateDate']).toString(),
+                                                          noticeTitle: documents[index].data()['noticeTitle'].toString(),
+                                                          noticeContent: documents[index].data()['noticeContent'].toString(),
+                                                          noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
+                                                          noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
                                                         )
                                                         )
                                                     );
@@ -353,7 +353,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                               ],
                                             );
                                           } else {
-                                            return Text(documents[index].data['noticeContent'].toString(), style: customStyle(
+                                            return Text(documents[index].data()['noticeContent'].toString(), style: customStyle(
                                                 fontSize: 13,
                                                 fontWeightName: 'Medium',
                                                 fontColor: mainColor
@@ -367,7 +367,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis, // TextOverflow.clip // TextOverflow.fade
                                         text: TextSpan(
-                                          text: documents[index].data['noticeContent'].toString(),
+                                          text: documents[index].data()['noticeContent'].toString(),
                                           style: customStyle(
                                               fontSize: 13,
                                               fontWeightName: 'Medium',
@@ -447,17 +447,17 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   context,
                                   MaterialPageRoute(builder: (context) =>
                                   /*AlarmNoticeCommentPage(
-                                      noticeUid: documents[index].data['noticeUid'].toString(),
-                                      noticeTitle: documents[index].data['noticeTitle'].toString(),
-                                      noticeContent: documents[index].data['noticeContent'].toString(),
+                                      noticeUid: documents[index].data()['noticeUid'].toString(),
+                                      noticeTitle: documents[index].data()['noticeTitle'].toString(),
+                                      noticeContent: documents[index].data()['noticeContent'].toString(),
                                       noticeCreateDate: _createDate,
                                     )*/
                                   AlarmNoticeDetailPage(
                                     noticeUid: documents[index].documentID,
-                                    noticeTitle: documents[index].data['noticeTitle'].toString(),
-                                    noticeContent: documents[index].data['noticeContent'].toString(),
-                                    noticeCreateUser: documents[index].data['noticeCreateUser']['mail'].toString(),
-                                    noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data['noticeCreateDate']).toString(),
+                                    noticeTitle: documents[index].data()['noticeTitle'].toString(),
+                                    noticeContent: documents[index].data()['noticeContent'].toString(),
+                                    noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
+                                    noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
                                   )
                                   )
                               ),

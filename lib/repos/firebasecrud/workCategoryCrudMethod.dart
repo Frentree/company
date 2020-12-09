@@ -28,7 +28,7 @@ class WorkCategoryCrud {
 
   Future<List<bigCategoryModel>> fetchWorkCategory () async{
     var result = await _firestoreApi.getDataCollection();
-    work = result.documents.map((doc) => bigCategoryModel.fromMap(doc.data, doc.documentID)).toList();
+    work = result.documents.map((doc) => bigCategoryModel.fromMap(doc.data(), doc.documentID)).toList();
 
     return work;
   }

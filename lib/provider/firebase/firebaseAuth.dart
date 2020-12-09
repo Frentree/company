@@ -11,10 +11,11 @@ class FirebaseAuthProvider with ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   //로그인한 사용자
-  FirebaseUser _user;
+  User _user;
 
   //유저 데이터 업데이트
-  UserUpdateInfo updateInfo = UserUpdateInfo();
+  //UserUpdateInfo updateInfo = UserUpdateInfo();
+
 
   //폰 인증 여부 변수
   bool _isPhoneVerify = false;
@@ -26,12 +27,12 @@ class FirebaseAuthProvider with ChangeNotifier {
   String _lastFirebaseResponse = "";
 
   //로그인한 사용자 가져오기
-  FirebaseUser getUser() {
+  User getUser() {
     return _user;
   }
 
   //로그인한 사용자 저장
-  void setUer({FirebaseUser user}){
+  void setUer({User user}){
     _user = user;
     notifyListeners();
   }
@@ -75,14 +76,14 @@ class FirebaseAuthProvider with ChangeNotifier {
   //이메일로 회원 가입
   Future<bool> signUpWithEmail({String mail, String password, String name}) async {
     try {
-      AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: mail,
           password: password
       );
 
       if(result.user != null) {
-        updateInfo.displayName = name;
-        result.user.updateProfile(updateInfo);
+        //updateInfo.displayName = name;
+        result.user.updateProfile();
         return true;
       }
 
@@ -96,7 +97,9 @@ class FirebaseAuthProvider with ChangeNotifier {
 
   //이메일로 로그인
   Future<bool> singInWithEmail({String mail, String password}) async {
+    debugPrint("signInWithEmail has been executed");
     try{
+      debugPrint("try initiated");
       var result = await _firebaseAuth.signInWithEmailAndPassword(
           email: mail,
           password: password
@@ -115,7 +118,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   //핸드폰 번호 인증
   Future<bool> verifyPhone({String phoneNumber}) async {
     //핸드폰 번호 인증이 실패했을 때
-    final PhoneVerificationFailed verificationFailed = (AuthException authException){
+    final PhoneVerificationFailed verificationFailed = (FirebaseAuthException authException){
       setLastFirebaseMessage(message: authException.message);
       return false;
     };
@@ -152,7 +155,7 @@ class FirebaseAuthProvider with ChangeNotifier {
   Future<bool> isVerifySuccess({String smsCode}) async {
     AuthCredential authCredential = await PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: smsCode);
     try {
-      AuthResult result = await _firebaseAuth.signInWithCredential(authCredential);
+      UserCredential result = await _firebaseAuth.signInWithCredential(authCredential);
       if(result != null){
         return true;
       }

@@ -1,4 +1,4 @@
-package minji.companyplaylist
+package com.frentree.mycompanyone
 
 import io.flutter.embedding.android.FlutterActivity
 

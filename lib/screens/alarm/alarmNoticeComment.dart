@@ -80,7 +80,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      documents[i].data['commentsUser']['name'].toString(),
+                      documents[i].data()['commentsUser']['name'].toString(),
                       style: customStyle(
                         fontColor: blackColor,
                         fontWeightName: 'Bold',
@@ -89,13 +89,13 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                     ),
                     Text(
                       DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                          DateTime.parse(documents[i].data['createDate'].toDate().toString())
+                          DateTime.parse(documents[i].data()['createDate'].toDate().toString())
                               .add(Duration(hours: 9))),
                       style:
                       customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: grayColor),
                     ),
                     Text(
-                      documents[i].data['comments'].toString(),
+                      documents[i].data()['comments'].toString(),
                       style: customStyle(
                         fontColor: blackColor,
                         fontWeightName: 'Regular',
@@ -323,7 +323,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                documents[index].data['createUser']['name'].toString(),
+                                                documents[index].data()['createUser']['name'].toString(),
                                                 style: customStyle(
                                                   fontColor: blackColor,
                                                   fontWeightName: 'Bold',
@@ -331,7 +331,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                 ),
                                               ),
                                               Text(
-                                                documents[index].data['comment'].toString(),
+                                                documents[index].data()['comment'].toString(),
                                                 style: customStyle(
                                                   fontColor: blackColor,
                                                   fontWeightName: 'Regular',
@@ -343,7 +343,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                   Text(
                                                     DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
                                                         DateTime.parse(
-                                                            documents[index].data['createDate'].toDate().toString()).add(Duration(hours: 9)
+                                                            documents[index].data()['createDate'].toDate().toString()).add(Duration(hours: 9)
                                                         )
                                                     ),
                                                     style: customStyle(
@@ -365,7 +365,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                       onTap: (){
                                                         _commentId = documents[index].documentID;
                                                         print("_commentId >>> " + _commentId);
-                                                        _noticeComment.text = documents[index].data['createUser']['name'].toString() + " ";
+                                                        _noticeComment.text = documents[index].data()['createUser']['name'].toString() + " ";
                                                         _commnetFocusNode.requestFocus();
                                                       },
                                                     ),
@@ -457,7 +457,7 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                                         children: [
                                                                           Text(
-                                                                            documents[index].data['commentsUser']['name'].toString(),
+                                                                            documents[index].data()['commentsUser']['name'].toString(),
                                                                             style: customStyle(
                                                                               fontColor: blackColor,
                                                                               fontWeightName: 'Bold',
@@ -466,13 +466,13 @@ class AlarmNoticeCommentPage extends StatelessWidget {
                                                                           ),
                                                                           Text(
                                                                             DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                                                                                DateTime.parse(documents[index].data['createDate'].toDate().toString())
+                                                                                DateTime.parse(documents[index].data()['createDate'].toDate().toString())
                                                                                     .add(Duration(hours: 9))),
                                                                             style:
                                                                             customStyle(fontSize: 12, fontWeightName: 'Regular', fontColor: greyColor),
                                                                           ),
                                                                           Text(
-                                                                            documents[index].data['comments'].toString(),
+                                                                            documents[index].data()['comments'].toString(),
                                                                             style: customStyle(
                                                                               fontColor: blackColor,
                                                                               fontWeightName: 'Regular',

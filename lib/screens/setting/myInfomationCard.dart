@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 Widget getMyInfomationCard({BuildContext context, User user}){
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  StorageReference storageReference =
+  Reference storageReference =
   _firebaseStorage.ref().child("profile/${user.mail}");
   return Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
