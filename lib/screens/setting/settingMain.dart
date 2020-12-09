@@ -9,10 +9,10 @@ import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/screens/alarm/alarmNotice.dart';
-import 'package:companyplaylist/screens/setting/myInfomationCard.dart';
 import 'package:companyplaylist/screens/setting/myWork.dart';
 import 'package:companyplaylist/widgets/bottomsheet/setting/settingUserManager.dart';
 import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:companyplaylist/widgets/card/settingInfomationCard.dart';
 import 'package:companyplaylist/widgets/notImplementedPopup.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,7 +56,7 @@ class SettingMainPageState extends State<SettingMainPage>{
                   style: customStyle(
                       fontColor: Colors.green
                   ),),
-                children:[],
+                children:[getCompanyInfomationCard(context: context, user: _loginUser)],
               ) : SizedBox(),
               (grade.contains(9) || grade.contains(8)) ?
               ExpansionTile(                           // 2. 리스트 항목 추가하면 끝!

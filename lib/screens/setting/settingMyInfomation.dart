@@ -6,12 +6,12 @@ import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SettingMyPage extends StatefulWidget {
+class SettingMyInfo extends StatefulWidget {
   @override
-  SettingMyPageState createState() => SettingMyPageState();
+  SettingMyInfoState createState() => SettingMyInfoState();
 }
 
-class SettingMyPageState extends State<SettingMyPage> {
+class SettingMyInfoState extends State<SettingMyInfo> {
   User _loginUser;
 
   @override
