@@ -1,10 +1,10 @@
 //Flutter
-import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:MyCompany/consts/colorCode.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
 import 'package:flutter/services.dart';
 
 TextFormField textFormField(

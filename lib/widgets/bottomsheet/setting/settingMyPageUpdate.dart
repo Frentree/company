@@ -1,17 +1,17 @@
 import 'dart:io';
 
-import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/repos/login/loginRepository.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

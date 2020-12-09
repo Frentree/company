@@ -1,25 +1,25 @@
 //Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/models/bigCategoryModel.dart';
-import 'package:companyplaylist/models/noticeCommentModel.dart';
-import 'package:companyplaylist/models/noticeModel.dart';
-import 'package:companyplaylist/models/workModel.dart';
-import 'package:companyplaylist/repos/firebasecrud/companyWorkCrudMethod.dart';
-import 'package:companyplaylist/repos/firebasecrud/noticeCommentCrudMethod.dart';
-import 'package:companyplaylist/repos/firebasecrud/noticeCrudMethod.dart';
+import 'package:MyCompany/models/bigCategoryModel.dart';
+import 'package:MyCompany/models/noticeCommentModel.dart';
+import 'package:MyCompany/models/noticeModel.dart';
+import 'package:MyCompany/models/workModel.dart';
+import 'package:MyCompany/repos/firebasecrud/companyWorkCrudMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/noticeCommentCrudMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/noticeCrudMethod.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebasecrud/userCrudMethod.dart';
-import 'package:companyplaylist/repos/firebasecrud/companyInfoCrudMethod.dart';
-import 'package:companyplaylist/repos/firebasecrud/companyUserCrudMethod.dart';
-import 'package:companyplaylist/repos/firebasecrud/attendanceCrudMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/userCrudMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/companyInfoCrudMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/companyUserCrudMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/attendanceCrudMethod.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/models/companyUserModel.dart';
-import 'package:companyplaylist/models/companyModel.dart';
-import 'package:companyplaylist/models/attendanceModel.dart';
-import 'package:companyplaylist/repos/firebasecrud/workCategoryCrudMethod.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
+import 'package:MyCompany/models/companyModel.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
+import 'package:MyCompany/repos/firebasecrud/workCategoryCrudMethod.dart';
 
 
 

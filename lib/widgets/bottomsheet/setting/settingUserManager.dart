@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/screens/setting/gradeMain.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/screens/setting/gradeMain.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

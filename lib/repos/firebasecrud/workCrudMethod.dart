@@ -2,10 +2,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebaseMethod.dart';
+import 'package:MyCompany/repos/firebaseMethod.dart';
 
 //Model
-import 'package:companyplaylist/models/attendanceModel.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
 
 class UserAttendanceCrud {
   String companyCode;

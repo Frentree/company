@@ -1,7 +1,7 @@
 //내근 및 외근 스케줄을 입력하는 bottom sheet 입니다.
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:intl/intl.dart';

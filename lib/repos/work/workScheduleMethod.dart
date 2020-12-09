@@ -11,17 +11,17 @@
 
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/models/bigCategoryModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/models/workModel.dart';
+import 'package:MyCompany/models/bigCategoryModel.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/models/workModel.dart';
 import 'package:flutter/material.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
+import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
+import 'package:MyCompany/repos/firebasecrud/crudRepository.dart';
 
 
 class WorkScheduleMethod{

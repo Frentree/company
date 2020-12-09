@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/repos/login/loginRepository.dart';
-import 'package:companyplaylist/widgets/bottomsheet/setting/settingMyPageUpdate.dart';
-import 'package:companyplaylist/widgets/form/textFormField.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/repos/login/loginRepository.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingMyPageUpdate.dart';
+import 'package:MyCompany/widgets/form/textFormField.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 

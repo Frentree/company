@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
+import 'package:MyCompany/consts/colorCode.dart';
 
 
 void showLastFirebaseMessage({BuildContext context, String lastFirebaseMessage}){

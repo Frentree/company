@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
+import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
 
 //Repos
-import 'package:companyplaylist/repos/showSnackBarMethod.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:MyCompany/repos/showSnackBarMethod.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 
 class SignUpMethod {
   Future<void> signUpWithFirebaseAuth(
