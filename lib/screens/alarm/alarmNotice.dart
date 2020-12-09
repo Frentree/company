@@ -127,7 +127,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                             color: whiteColor, width: 2)
                                     ),
                                     child: FutureBuilder(
-                                      future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data['noticeCreateUser']['mail']),
+                                      future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data()['noticeCreateUser']['mail']),
                                       builder: (context, snapshot) {
                                         if (!snapshot.hasData) {
                                           return Icon(Icons.person_outline);
@@ -162,7 +162,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                       Expanded(
                                         flex: 8,
                                         child: Text(
-                                          documents[index].data['noticeTitle'].toString(),
+                                          documents[index].data()['noticeTitle'].toString(),
                                           /*"6월 10일 월간회의 및 회식 공지",*/
                                           style: customStyle(
                                               fontSize: 15,
@@ -176,7 +176,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         child: Container(
                                           alignment: Alignment.topRight,
                                           child: Visibility(
-                                            visible: documents[index].data['noticeCreateUser']['mail'] == _loginUser.mail,
+                                            visible: documents[index].data()['noticeCreateUser']['mail'] == _loginUser.mail,
                                             child: PopupMenuButton(
                                               icon: Icon(
                                                   Icons.more_horiz
@@ -454,10 +454,10 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                     )*/
                                   AlarmNoticeDetailPage(
                                     noticeUid: documents[index].documentID,
-                                    noticeTitle: documents[index].data['noticeTitle'].toString(),
-                                    noticeContent: documents[index].data['noticeContent'].toString(),
-                                    noticeCreateUser: documents[index].data['noticeCreateUser']['mail'].toString(),
-                                    noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data['noticeCreateDate']).toString(),
+                                    noticeTitle: documents[index].data()['noticeTitle'].toString(),
+                                    noticeContent: documents[index].data()['noticeContent'].toString(),
+                                    noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
+                                    noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
                                   )
                                   )
                               ),
