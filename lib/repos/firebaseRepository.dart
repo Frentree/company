@@ -146,6 +146,7 @@ class FirebaseRepository {
       _firebaseMethods.getCompanyInfo(
         companyCode: companyCode,
       );
+
   Stream<DocumentSnapshot> getCompanyInfos({String companyCode}) =>
     _firebaseMethods.getCompanyInfos(companyCode);
 

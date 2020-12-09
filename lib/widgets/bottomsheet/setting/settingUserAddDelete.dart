@@ -2,6 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
+<<<<<<< HEAD
+=======
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+>>>>>>> minji
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
