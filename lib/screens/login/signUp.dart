@@ -83,7 +83,6 @@ class SignUpPageState extends State<SignUpPage> {
     _certificationNumberTexCon.forEach((element) {
       element.dispose();
     });
-    FocusScope.of(context).unfocus();
     super.dispose();
   }
 
