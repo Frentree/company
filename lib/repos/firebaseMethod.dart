@@ -46,13 +46,13 @@ class FirebaseMethods {
   Future<void> saveUser({User userModel}) async {
     return await firestore
         .collection(USER)
-        .document(userModel.mail)
-        .setData(userModel.toJson());
+        .doc(userModel.mail)
+        .set(userModel.toJson());
   }
 
   Future<User> getUser({String userMail}) async {
-    var doc = await firestore.collection(USER).document(userMail).get();
-    return User.fromMap(doc.data(), doc.documentID);
+    var doc = await firestore.collection(USER).doc(userMail).get();
+    return User.fromMap(doc.data(), doc.id);
   }
 
   Future<void> updateUser({User userModel}) async {
@@ -61,16 +61,16 @@ class FirebaseMethods {
 
     return await firestore
         .collection(USER)
-        .document(userModel.mail)
-        .updateData(userModel.toJson());
+        .doc(userModel.mail)
+        .update(userModel.toJson());
   }
 
   //회사데이터 관련
   Future<void> saveCompany({Company companyModel}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyModel.companyCode)
-        .setData(companyModel.toJson());
+        .doc(companyModel.companyCode)
+        .set(companyModel.toJson());
   }
 
   Future<List<DocumentSnapshot>> getCompany({String companyName}) async {
@@ -79,9 +79,9 @@ class FirebaseMethods {
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
         .where("companySearch", arrayContains: findString[0])
-        .getDocuments();
+        .get();
 
-    querySnapshot.documents.forEach((element) {
+    querySnapshot.docs.forEach((element) {
       if(findString.length == 1){
         result.add(element);
       }
@@ -104,21 +104,21 @@ class FirebaseMethods {
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyUserModel.user.companyCode)
+        .doc(companyUserModel.user.companyCode)
         .collection(USER)
-        .document(companyUserModel.user.mail)
-        .setData(companyUserModel.toJson());
+        .doc(companyUserModel.user.mail)
+        .set(companyUserModel.toJson());
   }
 
   Future<String> geAppManagerMail({String companyCode}) async {
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
         .where("level", arrayContains: 8)
-        .getDocuments();
+        .get();
 
-    String appManagerMail = querySnapshot.documents.first.documentID;
+    String appManagerMail = querySnapshot.docs.first.id;
 
     return appManagerMail;
   }
@@ -129,13 +129,13 @@ class FirebaseMethods {
     Map<String, String> colleague = {};
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
         .orderBy("name")
-        .getDocuments();
-    querySnapshot.documents.forEach((element) {
-      if (element.documentID != loginUserMail) {
-        colleague[element.documentID] = element.data()["name"];
+        .get();
+    querySnapshot.docs.forEach((element) {
+      if (element.id != loginUserMail) {
+        colleague[element.id] = element.data()["name"];
       }
     });
 
@@ -146,7 +146,7 @@ class FirebaseMethods {
   Future<void> saveWork({WorkModel workModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
         .add(workModel.toJson());
   }
@@ -154,18 +154,18 @@ class FirebaseMethods {
   Future<void> updateWork({WorkModel workModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
-        .document(workModel.id)
-        .updateData(workModel.toJson());
+        .doc(workModel.id)
+        .update(workModel.toJson());
   }
 
   Future<void> deleteWork({String documentID, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
-        .document(documentID)
+        .doc(documentID)
         .delete();
   }
 
@@ -174,7 +174,7 @@ class FirebaseMethods {
       {MeetingModel meetingModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
         .add(meetingModel.toJson());
   }
@@ -183,7 +183,7 @@ class FirebaseMethods {
       {MeetingModel meetingModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
         .document(meetingModel.id)
         .updateData(meetingModel.toJson());
@@ -192,9 +192,9 @@ class FirebaseMethods {
   Future<void> deleteMeeting({String documentID, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
-        .document(documentID)
+        .doc(documentID)
         .delete();
   }
 
@@ -202,7 +202,7 @@ class FirebaseMethods {
   Stream<QuerySnapshot> getCompanyWork({String companyCode}) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
         .snapshots();
   }
@@ -211,7 +211,7 @@ class FirebaseMethods {
       {String companyCode, Timestamp selectedDate}) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
         .where("startDate", isEqualTo: selectedDate)
         .orderBy("startTime")
@@ -222,7 +222,7 @@ class FirebaseMethods {
       {String companyCode, List<Timestamp> selectedWeek}) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(WORK)
         .where("startDate", whereIn: selectedWeek)
         .orderBy("startTime")
@@ -234,7 +234,7 @@ class FirebaseMethods {
       {Attendance attendanceModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(ATTENDANCE)
         .add(attendanceModel.toJson());
   }
@@ -243,11 +243,11 @@ class FirebaseMethods {
       {String companyCode, String loginUserMail, Timestamp today}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(ATTENDANCE)
         .where("mail", isEqualTo: loginUserMail)
         .where("createDate", isEqualTo: today)
-        .getDocuments();
+        .get();
   }
 
   Future<void> updateAttendance(
@@ -256,10 +256,10 @@ class FirebaseMethods {
       String companyCode}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(ATTENDANCE)
-        .document(documentId)
-        .updateData(attendanceModel.toJson());
+        .doc(documentId)
+        .update(attendanceModel.toJson());
   }
 
   //알람 관련
@@ -270,9 +270,9 @@ class FirebaseMethods {
       Approval approvalModel}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
-        .document(appManagerMail)
+        .doc(appManagerMail)
         .collection(APPROVAL)
         .add(approvalModel.toJson());
   }
@@ -280,9 +280,9 @@ class FirebaseMethods {
   Stream<QuerySnapshot> getApproval({String companyCode, String managerMail}) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
-        .document(managerMail)
+        .doc(managerMail)
         .collection(APPROVAL)
         .where("state", isEqualTo: 0)
         .snapshots();
@@ -292,12 +292,12 @@ class FirebaseMethods {
       {Approval approvalModel, String companyCode, String managerMail}) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
-        .document(managerMail)
+        .doc(managerMail)
         .collection(APPROVAL)
-        .document(approvalModel.id)
-        .updateData(approvalModel.toJson());
+        .doc(approvalModel.id)
+        .update(approvalModel.toJson());
   }
 
   Future<DocumentSnapshot> getCompanyInfo({String companyCode}) {
@@ -450,7 +450,7 @@ class FirebaseMethods {
 }
 
 class FirestoreApi {
-  final Firestore _db = Firestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   String path;
   String secondPath;
   String thirdPath;

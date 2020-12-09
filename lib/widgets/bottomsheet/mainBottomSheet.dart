@@ -273,16 +273,19 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                               _workBottomMove(2);
                             },
                           ),
-                          Chip(
-                              backgroundColor: chipColorBlue,
-                              label: Text(
-                                "회의 일정",
-                                style: customStyle(
-                                    fontSize: 14,
-                                    fontWeightName:'Regular',
-                                    fontColor: mainColor
-                                ),
-                              )
+                          ActionChip(
+                            backgroundColor: chipColorBlue,
+                            label: Text(
+                              "회의 일정",
+                              style: customStyle(
+                                  fontSize: 14,
+                                  fontWeightName:'Regular',
+                                  fontColor: mainColor
+                              ),
+                            ),
+                            onPressed: (){
+                              _workBottomMove(3);
+                            },
                           ),
                           Chip(
                               backgroundColor: chipColorBlue,

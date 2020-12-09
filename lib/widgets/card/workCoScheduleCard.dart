@@ -22,13 +22,14 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
   List<Padding> columnChildRow = [];
 
   workData.forEach((element) {
+    var elementData = element.data();
     columnChildRow.add(
       Padding(
         padding: EdgeInsets.symmetric(vertical: 8),
         child: Row(
           children: [
             Text(
-              _format.timeToString(element.data["startTime"]),
+              _format.timeToString(elementData["startTime"]),
               style: customStyle(
                 fontSize: timeFontSize,
                 fontWeightName: "Regular",
@@ -46,7 +47,7 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
               height: customHeight(context: context, heightSize: 0.03),
               alignment: Alignment.center,
               child: Text(
-                element.data["type"],
+                elementData["type"],
                 style: customStyle(
                     fontSize: typeFontSize,
                     fontWeightName: "Regular",
@@ -57,11 +58,11 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
               width: customWidth(context: context, widthSize: widthDistance),
             ),
             Container(
-              width: element.data["type"] == "외근"
+              width: elementData["type"] == "외근"
                   ? customWidth(context: context, widthSize: 0.3)
                   : customWidth(context: context, widthSize: 0.45),
               child: Text(
-                element.data["title"],
+                elementData["title"],
                 style: customStyle(
                   fontSize: titleFontSize,
                   fontWeightName: "Medium",
@@ -70,13 +71,13 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
               ),
             ),
             Visibility(
-              visible: element.data["type"] == "외근",
+              visible: elementData["type"] == "외근",
               child: Container(
                 width: customWidth(context: context, widthSize: 0.15),
                 child: Text(
-                    element.data["location"] == ""
+                    elementData["location"] == ""
                         ? ""
-                        : "[${element.data["location"]}]",
+                        : "[${elementData["location"]}]",
                     style: customStyle(
                         fontSize: titleFontSize,
                         fontWeightName: "Medium",

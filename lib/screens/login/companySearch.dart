@@ -49,11 +49,16 @@ class CompanySearchPageState extends State<CompanySearchPage> {
             border: InputBorder.none,
           ),
           onFieldSubmitted: ((value) {
-            Future<List<DocumentSnapshot>> result =
-                _repository.getCompany(companyName: _companyNameCon.text);
-            setState(() {
-              searchResults = result;
-            });
+            if(value == ""){
+              searchResults = null;
+            }
+            else{
+              Future<List<DocumentSnapshot>> result =
+              _repository.getCompany(companyName: _companyNameCon.text);
+              setState(() {
+                searchResults = result;
+              });
+            }
           }),
         ),
         iconTheme: IconThemeData().copyWith(color: Colors.black),
@@ -102,11 +107,11 @@ class CompanySearchPageState extends State<CompanySearchPage> {
             }
             List<Company> searchCompanyResult = [];
             snapshot.data.forEach((doc){
-              Company _company = Company.fromMap(doc.data, doc.documentID);
+              Company _company = Company.fromMap(doc.data(), doc.documentID);
               searchCompanyResult.add(_company);
             });
 
-            if(searchCompanyResult.length == 0){
+            if(_companyNameCon.text == "" || searchCompanyResult.length == 0){
               return Container(
                 child: Center(
                   child: Column(

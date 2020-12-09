@@ -146,6 +146,10 @@ class HomeMainPageState extends State<HomeMainPage> {
         ],
       ),
       body: Container(
+        height: heightRatio(
+          context: context,
+          heightRatio: 0.85,
+        ),
         width: customWidth(context: context, widthSize: 1),
         padding: EdgeInsets.only(
             left: customWidth(
