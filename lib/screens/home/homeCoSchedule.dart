@@ -142,18 +142,20 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                   });
 
                   snapshot.data.documents.forEach((element){
-                    if(element.data["type"] == "내근" || element.data["type"] == "외근"){
-                      companyWorkData[element.data["createUid"]].add(element);
+                    var elementData = element.data();
+                    if(elementData["type"] == "내근" || elementData["type"] == "외근"){
+                      companyWorkData[elementData["createUid"]].add(element);
                     }
 
-                    else if(element.data["type"] == "미팅"){
-                      companyWorkData[element.data["createUid"]].add(element);
-                      if(element.data["attendees"] != null){
-                        element.data["attendees"].keys.forEach((key){
+                    else if(elementData["type"] == "미팅"){
+                      companyWorkData[elementData["createUid"]].add(element);
+                      if(elementData["attendees"] != null){
+                        elementData["attendees"].keys.forEach((key){
                           companyWorkData[key].add(element);
                         });
                       }
                     }
+
                   });
 
                   List<TableRow> childRow = [];
@@ -234,13 +236,14 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                         });
 
                         snapshot.data.documents.forEach((element){
-                          if(element.data["createUid"] != _loginUser.mail) {
-                            companyWorkData[element.data["createUid"]].add(element);
+                          var elementData = element.data();
+                          if(elementData["createUid"] != _loginUser.mail) {
+                            companyWorkData[elementData["createUid"]].add(element);
                           }
                           else{
-                            if(element.data["type"] == "미팅"){
-                              if(element.data["attendees"] != null){
-                                element.data["attendees"].keys.forEach((key){
+                            if(elementData["type"] == "미팅"){
+                              if(elementData["attendees"] != null){
+                                elementData["attendees"].keys.forEach((key){
                                   if(companyWorkData.keys.contains(key)){
                                     companyWorkData[key].add(element);
                                   }

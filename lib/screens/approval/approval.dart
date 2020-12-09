@@ -94,9 +94,10 @@ class ApprovalPageState extends State<ApprovalPage> {
               _events = {};
               if (snapshot.hasData) {
                 snapshot.data.documents.forEach((element) {
-                  if (element.data["createUid"] == _loginUser.mail ||
-                      element.data["attendees"] != null &&
-                          element.data["attendees"].keys
+                  print("type : ===> ${element.data()["createUid"]}");
+                  if (element.data()["createUid"] == _loginUser.mail ||
+                      element.data()["attendees"] != null &&
+                          element.data()["attendees"].keys
                               .contains(_loginUser.mail)) {
                     DateTime _startDate =
                         _format.timeStampToDateTime(element.data["startDate"]);
@@ -204,7 +205,7 @@ class ApprovalPageState extends State<ApprovalPage> {
                     itemBuilder: (context, index) {
                       Approval _APData;
                       _APData = Approval.fromMap(
-                          _approvalData[index].data,
+                          _approvalData[index].data(),
                           _approvalData[index].documentID);
                       return Card(
                         shape: RoundedRectangleBorder(

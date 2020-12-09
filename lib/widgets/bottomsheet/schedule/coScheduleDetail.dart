@@ -81,11 +81,11 @@ coScheduleDetail(
                   itemCount: scheduleData.length,
                   itemBuilder: (context, index){
                     dynamic _data;
-                    if(scheduleData[index].data["type"] == "내근" || scheduleData[index].data["type"] == "외근"){
-                      _data = WorkModel.fromMap(scheduleData[index].data, scheduleData[index].documentID);
+                    if(scheduleData[index].data()["type"] == "내근" || scheduleData[index].data()["type"] == "외근"){
+                      _data = WorkModel.fromMap(scheduleData[index].data(), scheduleData[index].documentID);
                     }
-                    else if(scheduleData[index].data["type"] == "미팅"){
-                      _data = MeetingModel.fromMap(scheduleData[index].data, scheduleData[index].documentID);
+                    else if(scheduleData[index].data()["type"] == "미팅"){
+                      _data = MeetingModel.fromMap(scheduleData[index].data(), scheduleData[index].documentID);
                     }
 
                     switch(_data.type){

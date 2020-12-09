@@ -91,12 +91,13 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               _events = {};
               if (snapshot.hasData) {
                 snapshot.data.documents.forEach((element) {
-                  if (element.data["createUid"] == _loginUser.mail ||
-                      element.data["attendees"] != null &&
-                          element.data["attendees"].keys
+                  var elementData = element.data();
+                  if (elementData["createUid"] == _loginUser.mail ||
+                      elementData["attendees"] != null &&
+                          elementData["attendees"].keys
                               .contains(_loginUser.mail)) {
                     DateTime _startDate =
-                        _format.timeStampToDateTime(element.data["startDate"]);
+                        _format.timeStampToDateTime(elementData["startDate"]);
                     if (_events[_startDate] == null) {
                       _events.addAll({_startDate: []});
                     }
@@ -162,9 +163,10 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
               var _companyWork = [];
               snapshot.data.documents.forEach((element) {
-                if (element.data["createUid"] == _loginUser.mail ||
-                    (element.data["attendees"] != null &&
-                        element.data["attendees"].keys
+                var elementData = element.data();
+                if (elementData["createUid"] == _loginUser.mail ||
+                    (elementData["attendees"] != null &&
+                    elementData["attendees"].keys
                             .contains(_loginUser.mail))) {
                   _companyWork.add(element);
                 }
@@ -217,14 +219,14 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                     itemCount: _companyWork.length,
                     itemBuilder: (context, index) {
                       dynamic _companyData;
-                      if (_companyWork[index].data["type"] == "내근" ||
-                          _companyWork[index].data["type"] == "외근") {
+                      if (_companyWork[index].data()["type"] == "내근" ||
+                          _companyWork[index].data()["type"] == "외근") {
                         _companyData = WorkModel.fromMap(
-                            _companyWork[index].data,
+                            _companyWork[index].data(),
                             _companyWork[index].documentID);
-                      } else if (_companyWork[index].data["type"] == "미팅") {
+                      } else if (_companyWork[index].data()["type"] == "미팅") {
                         _companyData = MeetingModel.fromMap(
-                            _companyWork[index].data,
+                            _companyWork[index].data(),
                             _companyWork[index].documentID);
                       }
 

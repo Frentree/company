@@ -33,11 +33,12 @@ List<Map<int, List<dynamic>>> dataFetch(List<dynamic> companyWork) {
     });
 
     companyWork.forEach((element) {
-      if (element.data["type"] != "내근") {
+      var elementData = element.data();
+      if (elementData["type"] != "내근") {
         int week =
-            _format.timeStampToDateTime(element.data["startDate"]).weekday;
+            _format.timeStampToDateTime(elementData["startDate"]).weekday;
         if ((week - 1) == i) {
-          timeMap[element.data["timeSlot"]].add(element);
+          timeMap[elementData["timeSlot"]].add(element);
         }
       }
     });
@@ -53,7 +54,8 @@ List<List<dynamic>> scheduleDataFetch(List<dynamic> companyWork) {
     scheduleData.add([]);
   }
   companyWork.forEach((element) {
-    int week = _format.timeStampToDateTime(element.data["startDate"]).weekday;
+    var elementData = element.data();
+    int week = _format.timeStampToDateTime(elementData["startDate"]).weekday;
     scheduleData[week-1].add(element);
   });
 
@@ -124,14 +126,14 @@ Container workChip({BuildContext context, dynamic companyWork, int count}) {
               customHeight(context: context, heightSize: workChipHeightSize),
           decoration: BoxDecoration(
               //borderRadius: BorderRadius.circular(8),
-              color: companyWork.data["type"] == "미팅"
+              color: companyWork.data()["type"] == "미팅"
                   ? blueColor
-                  : companyWork.data["type"] == "외근"
+                  : companyWork.data()["type"] == "외근"
                       ? workTypeOut
                       : workTypeRest),
           child: Center(
             child: Text(
-              companyWork.data["type"],
+              companyWork.data()["type"],
               style: customStyle(
                   fontColor: whiteColor,
                   fontWeightName: "Regular",

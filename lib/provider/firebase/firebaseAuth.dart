@@ -117,24 +117,38 @@ class FirebaseAuthProvider with ChangeNotifier {
 
   //핸드폰 번호 인증
   Future<bool> verifyPhone({String phoneNumber}) async {
+    print("min");
     //핸드폰 번호 인증이 실패했을 때
     final PhoneVerificationFailed verificationFailed = (FirebaseAuthException authException){
+      print("인증 실패");
       setLastFirebaseMessage(message: authException.message);
       return false;
     };
 
+    final PhoneVerificationCompleted verificationCompleted =(PhoneAuthCredential credential){
+      return true;
+    };
+
     //인증번호 전송
     final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
+      print("코드 전송");
       verificationId = verId;
       _isPhoneVerify =  true;
       notifyListeners();
+    };
+
+    final PhoneCodeAutoRetrievalTimeout phoneCodeAutoRetrievalTimeout = (String verId) {
+      setLastFirebaseMessage(message: "코드 전송에 실패했습니다.");
+      return false;
     };
 
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: "+82" + phoneNumber,
       timeout: Duration(seconds: 30),
       verificationFailed:verificationFailed,
+      verificationCompleted: verificationCompleted,
       codeSent: smsSent,
+      codeAutoRetrievalTimeout: phoneCodeAutoRetrievalTimeout,
     );
 
     return true;
@@ -153,7 +167,7 @@ class FirebaseAuthProvider with ChangeNotifier {
 
   //인증번호 인증
   Future<bool> isVerifySuccess({String smsCode}) async {
-    AuthCredential authCredential = await PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: smsCode);
+    AuthCredential authCredential = await PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
     try {
       UserCredential result = await _firebaseAuth.signInWithCredential(authCredential);
       if(result != null){
