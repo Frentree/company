@@ -146,6 +146,8 @@ class FirebaseRepository {
       _firebaseMethods.getCompanyInfo(
         companyCode: companyCode,
       );
+  Stream<DocumentSnapshot> getCompanyInfos({String companyCode}) =>
+    _firebaseMethods.getCompanyInfos(companyCode);
 
   Future<void> updateApproval(
           {Approval approvalModel, String companyCode}) =>
@@ -153,6 +155,9 @@ class FirebaseRepository {
         approvalModel: approvalModel,
         companyCode: companyCode,
       );
+
+  Future<void> updateCompany({String companyCode, String companyName, String companyNo, String companyAddr, String companyPhone, String companyWeb, String url}) =>
+      _firebaseMethods.updateCompany(companyCode, companyName, companyNo, companyAddr, companyPhone, companyWeb, url);
 
   // 프로필 이미지 갖고오기
   Future<DocumentSnapshot> photoProfile(String companyCode, String mail) =>

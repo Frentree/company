@@ -1,5 +1,5 @@
-import 'dart:io';
 
+<<<<<<< HEAD
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -28,21 +28,18 @@ class SettingMainPage extends StatefulWidget {
 class SettingMainPageState extends State<SettingMainPage> {
   int tabIndex = 0;
   User _loginUser;
-  Attendance _attendance = Attendance();
   bool co_worker_alert = true;
   bool approval_alert = false;
   bool commute_alert = true;
   bool notice_alert = false;
   bool doNotDisturb_alert = true;
 
-  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider =
     Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-
+    print("aaaaa" + word.companyInfomation());
     return Scaffold(
         body: FutureBuilder(
           future: FirebaseRepository()
@@ -57,10 +54,10 @@ class SettingMainPageState extends State<SettingMainPage> {
                   // 2. 리스트 항목 추가하면 끝!
                   leading: Icon(Icons.person_outline),
                   title: Text(
-                    '회사 정보',
+                    word.companyInfomation(),
                     style: customStyle(fontColor: Colors.green),
                   ),
-                  children: [],
+                  children: [getCompanyInfomationCard(context: context, user: _loginUser)],
                 )
                     : SizedBox(),
                 (grade.contains(9) || grade.contains(8))
@@ -68,7 +65,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                   // 2. 리스트 항목 추가하면 끝!
                   leading: Icon(Icons.people_outline),
                   title: Text(
-                    '사용자 관리',
+                    word.userManager(),
                     style: customStyle(fontColor: Colors.green),
                   ),
                   childrenPadding: EdgeInsets.only(left: 20),
@@ -113,7 +110,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                 ExpansionTile(
                   // 2. 리스트 항목 추가하면 끝!
                   leading: Icon(Icons.person_outline),
-                  title: Text('내 정보'),
+                  title: Text(word.myInfomation()),
                   children: [
                     getMyInfomationCard(context: context, user: _loginUser),
                   ],
@@ -274,7 +271,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                 ),
                 ListTile(
                   leading: Icon(Icons.logout),
-                  title: Text('로그 아웃'),
+                  title: Text(word.logout()),
                   onTap: () {
                     _loginUserInfoProvider.logoutUesr();
                   },
