@@ -20,7 +20,7 @@ class FirebaseRepository {
       _firebaseMethods.saveExpense(expenseModel);
 
   Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
-      _firebaseMethods.getExpense(companyCode, uid);
+    _firebaseMethods.getExpense(companyCode, uid);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
         userModel: userModel,
@@ -44,19 +44,8 @@ class FirebaseRepository {
         companyName: companyName,
       );
 
-  Future<List<DocumentSnapshot>> searchCompanyUser(
-          {String companyUserName, String companyCode, String loginUserMail}) =>
-      _firebaseMethods.searchCompanyUser(
-        companyCode: companyCode,
-        companyUserName: companyUserName,
-        loginUserMail: loginUserMail,
-      );
-
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) =>
       _firebaseMethods.saveCompanyUser(companyUserModel: companyUserModel);
-
-  Future<void> deleteCompanyUser({String companyCode, CompanyUser companyUserModel}) =>
-      _firebaseMethods.deleteCompanyUser(companyCode: companyCode, companyUserModel: companyUserModel);
 
   Future<void> saveWork({WorkModel workModel, String companyCode}) =>
       _firebaseMethods.saveWork(
@@ -119,11 +108,10 @@ class FirebaseRepository {
           loginUserMail: loginUserMail, companyCode: companyCode);
 
   Future<DocumentReference> saveAttendance(
-          {Attendance attendanceModel, String companyCode}) =>
-      _firebaseMethods.saveAttendance(
-        attendanceModel: attendanceModel,
-        companyCode: companyCode,
-      );
+      {Attendance attendanceModel, String companyCode}) => _firebaseMethods.saveAttendance(
+    attendanceModel: attendanceModel,
+    companyCode: companyCode,
+  );
 
   Future<QuerySnapshot> getMyTodayAttendance(
           {String companyCode, String loginUserMail, Timestamp today}) =>
@@ -134,14 +122,11 @@ class FirebaseRepository {
       );
 
   Future<void> updateAttendance(
-          {Attendance attendanceModel,
-          String documentId,
-          String companyCode}) =>
-      _firebaseMethods.updateAttendance(
-        attendanceModel: attendanceModel,
-        documentId: documentId,
-        companyCode: companyCode,
-      );
+      {Attendance attendanceModel, String documentId ,String companyCode}) => _firebaseMethods.updateAttendance(
+    attendanceModel: attendanceModel,
+    documentId: documentId,
+    companyCode: companyCode,
+  );
 
   Future<void> saveApproval(
           {String companyCode,
@@ -162,7 +147,8 @@ class FirebaseRepository {
         companyCode: companyCode,
       );
 
-  Future<void> updateApproval({Approval approvalModel, String companyCode}) =>
+  Future<void> updateApproval(
+          {Approval approvalModel, String companyCode}) =>
       _firebaseMethods.updateApproval(
         approvalModel: approvalModel,
         companyCode: companyCode,
@@ -173,8 +159,7 @@ class FirebaseRepository {
       _firebaseMethods.photoProfile(companyCode, mail);
 
   // 프로필 이미지 변경
-  Future<void> updatePhotoProfile(
-          {String companyCode, String mail, String url}) =>
+  Future<void> updatePhotoProfile({String companyCode, String mail, String url}) =>
       _firebaseMethods.updatePhotoProfile(companyCode, mail, url);
 
   // 프로필 핸드폰번호 변경
@@ -193,8 +178,7 @@ class FirebaseRepository {
   Future<void> addGrade(String companyCode, String gradeName, int gradeID) =>
       _firebaseMethods.addGrade(companyCode, gradeName, gradeID);
 
-  Future<void> updateGradeName(
-          String documentID, String gradeName, String companyCode) =>
+  Future<void> updateGradeName(String documentID, String gradeName, String companyCode) =>
       _firebaseMethods.updateGradeName(documentID, gradeName, companyCode);
 
   // 권한 삭제
@@ -202,8 +186,7 @@ class FirebaseRepository {
       _firebaseMethods.deleteGrade(documentID, companyCode);
 
   // 권한 삭제시 유저 권한 없애기
-  Future<void> deleteUserGrade(
-          String documentID, String companyCode, int level) =>
+  Future<void> deleteUserGrade(String documentID, String companyCode, int level) =>
       _firebaseMethods.deleteUserGrade(documentID, companyCode, level);
 
   // 등급 권한 유저 갖고오기
@@ -219,13 +202,11 @@ class FirebaseRepository {
       _firebaseMethods.getGreadeUserDelete(companyCode, level);
 
   // 권한 - 사용자 추가
-  Future<void> addGradeUser(
-          String companyCode, List<Map<String, dynamic>> user) =>
+  Future<void> addGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
       _firebaseMethods.addGradeUser(companyCode, user);
 
   // 권한 - 사용자 추가
-  Future<void> deleteGradeUser(
-          String companyCode, List<Map<String, dynamic>> user) =>
+  Future<void> deleteGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
       _firebaseMethods.deleteGradeUser(companyCode, user);
 
   // 공지사항 - 추가
@@ -241,67 +222,34 @@ class FirebaseRepository {
       _firebaseMethods.getNoticeList(companyCode);
 
   // 공지사항 - 댓글
-  Stream<QuerySnapshot> getNoticeCommentList(
-          {String companyCode, String documentID}) =>
+  Stream<QuerySnapshot> getNoticeCommentList({String companyCode, String documentID}) =>
       _firebaseMethods.getNoticeCommentList(companyCode, documentID);
 
   // 공지사항 - 대댓글
-  Stream<QuerySnapshot> getNoticeCommentsList(
-          {String companyCode,
-          String noticeDocumentID,
-          String commntDocumentID}) =>
-      _firebaseMethods.getNoticeCommentsList(
-          companyCode, noticeDocumentID, commntDocumentID);
+  Stream<QuerySnapshot> getNoticeCommentsList({String companyCode, String noticeDocumentID, String commntDocumentID}) =>
+      _firebaseMethods.getNoticeCommentsList(companyCode, noticeDocumentID, commntDocumentID);
 
   // 공지사항 - 댓글 추가
-  Future<void> addNoticeComment(
-          {String companyCode,
-          String noticeDocumentID,
-          CommentModel comment}) =>
+  Future<void> addNoticeComment({String companyCode, String noticeDocumentID, CommentModel comment}) =>
       _firebaseMethods.addNoticeComment(companyCode, noticeDocumentID, comment);
 
   // 공지사항 - 댓글 수정
-  Future<void> updateNoticeComment(
-          {String companyCode,
-          String noticeDocumentID,
-          String commntDocumentID,
-          String comment}) =>
-      _firebaseMethods.updateNoticeComment(
-          companyCode, noticeDocumentID, commntDocumentID, comment);
+  Future<void> updateNoticeComment({String companyCode, String noticeDocumentID, String commntDocumentID, String comment}) =>
+      _firebaseMethods.updateNoticeComment(companyCode, noticeDocumentID, commntDocumentID, comment);
 
   // 공지사항 - 댓글 삭제
-  Future<void> deleteNoticeComment(
-          {String companyCode,
-          String noticeDocumentID,
-          String commntDocumentID}) =>
-      _firebaseMethods.deleteNoticeComment(
-          companyCode, noticeDocumentID, commntDocumentID);
+  Future<void> deleteNoticeComment({String companyCode, String noticeDocumentID, String commntDocumentID}) =>
+      _firebaseMethods.deleteNoticeComment(companyCode, noticeDocumentID, commntDocumentID);
 
   // 공지사항 - 대댓글 추가
-  Future<void> addNoticeComments(
-          {String companyCode,
-          String noticeDocumentID,
-          String commntDocumentID,
-          CommentListModel comment}) =>
-      _firebaseMethods.addNoticeComments(
-          companyCode, noticeDocumentID, commntDocumentID, comment);
+  Future<void> addNoticeComments({String companyCode, String noticeDocumentID, String commntDocumentID, CommentListModel comment}) =>
+      _firebaseMethods.addNoticeComments(companyCode, noticeDocumentID, commntDocumentID, comment);
 
   // 공지사항 - 대댓글 수정
-  Future<void> updateNoticeComments(
-          {String companyCode,
-          String noticeDocumentID,
-          String commntDocumentID,
-          String commntsDocumentID,
-          String comment}) =>
-      _firebaseMethods.updateNoticeComments(companyCode, noticeDocumentID,
-          commntDocumentID, commntsDocumentID, comment);
+  Future<void> updateNoticeComments({String companyCode, String noticeDocumentID, String commntDocumentID, String commntsDocumentID, String comment}) =>
+      _firebaseMethods.updateNoticeComments(companyCode, noticeDocumentID, commntDocumentID, commntsDocumentID, comment);
 
   // 공지사항 - 대댓글 삭제
-  Future<void> deleteNoticeComments(
-          {String companyCode,
-          String noticeDocumentID,
-          String commntDocumentID,
-          String commntsDocumentID}) =>
-      _firebaseMethods.deleteNoticeComments(
-          companyCode, noticeDocumentID, commntDocumentID, commntsDocumentID);
+  Future<void> deleteNoticeComments({String companyCode, String noticeDocumentID, String commntDocumentID, String commntsDocumentID}) =>
+      _firebaseMethods.deleteNoticeComments(companyCode, noticeDocumentID, commntDocumentID, commntsDocumentID);
 }

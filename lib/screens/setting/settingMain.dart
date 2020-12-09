@@ -86,7 +86,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                       title: Text('사용자 추가 요청/삭제'),
                       dense: true,
                       onTap: () {
-                        settingUserAddDelete(context);
+                        SettingUserAddDelete(context);
                       },
                     ),
                     ListTile(

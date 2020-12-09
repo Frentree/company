@@ -75,8 +75,4 @@ class LoginRepository {
   Future<void> userRejection({BuildContext context, String approvalUserMail}) =>
       _companyMethod.userRejection(
           context: context, approvalUserMail: approvalUserMail);
-
-  Future<void> userLeave({BuildContext context, String leaveUserMail}) => _companyMethod.userLeave(
-    context: context, leaveUserMail: leaveUserMail,
-  );
 }
