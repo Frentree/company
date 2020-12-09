@@ -1,5 +1,5 @@
 
-<<<<<<< HEAD
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';

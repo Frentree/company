@@ -8,7 +8,7 @@ const double buttonFont = 15;
 const double pageNameSizeH = 0.06;
 
 //페이지 이름과 로그인 정보 입력란 사이 간격
-const double distance1H = 0.03;
+const double distance1H = 0.05;
 
 //로그인 정보 입력 공간
 const double loginInfoSizeH = 0.24;
