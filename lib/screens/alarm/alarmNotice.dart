@@ -31,9 +31,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
   int i = 0;
   LoginUserInfoProvider _loginUserInfoProvider;
 
-  final Firestore _db = Firestore.instance;
   Format _format = Format();
-  Stream stream;
 
   User _loginUser;
 
@@ -59,15 +57,9 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
 
-    stream =  _db
-        .collection("company")
-        .document(_loginUser.companyCode)
-        .collection("notice")
-        .orderBy("noticeCreateDate", descending: true)
-        .snapshots();
 
     return StreamBuilder(
-        stream: stream,
+        stream: FirebaseRepository().getNoticeList(companyCode: _loginUser.companyCode),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Text("");
@@ -78,12 +70,6 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
           return ListView.builder(
             itemCount: documents.length,
             itemBuilder: (context, index) {
-              /*String _createDate = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
-                  DateTime.parse(
-                      documents[index].data()['noticeCreateDate'].toDate().toString()
-                  ).add(Duration(hours: 9))
-              );*/
-
               return Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -132,7 +118,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         if (!snapshot.hasData) {
                                           return Icon(Icons.person_outline);
                                         }
-                                        return Image.network(snapshot.data()['profilePhoto']);
+                                        return Image.network(snapshot.data['profilePhoto']);
                                       },
                                     ),
                                 ),
@@ -221,9 +207,10 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                             ),
                                                             onPressed: () {
                                                               setState(() {
-                                                                _db.collection("company")
-                                                                    .document(_loginUser.companyCode)
-                                                                    .collection("notice").document(documents[index].documentID).delete();
+                                                                FirebaseRepository().deleteNotice(
+                                                                  companyCode: _loginUser.companyCode,
+                                                                  documentID: documents[index].documentID
+                                                                );
                                                               });
                                                               Navigator.pop(context);
                                                             },
@@ -289,16 +276,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                         widthSize: 0.7,
                                       ),
                                       padding:  const EdgeInsets.all(0.2),
-                                      child: /*Text(
-                                        documents[index].data()['noticeContent'].toString(),
-                                        maxLines: 3,
-                                        style: customStyle(
-                                            fontSize: 13,
-                                            fontWeightName: 'Medium',
-                                            fontColor: mainColor
-                                        ),
-                                      ),*/
-                                      LayoutBuilder(
+                                      child: LayoutBuilder(
                                         builder: (context, size) {
                                           final span = TextSpan(text: documents[index].data()['noticeContent'].toString(), style: customStyle(
                                               fontSize: 13,
@@ -363,27 +341,6 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
 
                                         },
                                       ),
-                                      /*RichText(
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis, // TextOverflow.clip // TextOverflow.fade
-                                        text: TextSpan(
-                                          text: documents[index].data()['noticeContent'].toString(),
-                                          style: customStyle(
-                                              fontSize: 13,
-                                              fontWeightName: 'Medium',
-                                              fontColor: mainColor
-                                          ),
-                                          children: <TextSpan>[
-                                            TextSpan(text: '더보기',
-                                              style: customStyle(
-                                                fontSize: 13,
-                                                fontWeightName: 'Medium',
-                                                fontColor: blueColor
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),*/
                                     ),
                                   ],
                                 ),

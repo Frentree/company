@@ -7,12 +7,10 @@ import 'package:companyplaylist/models/commentModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AlarmNoticeDetailPage extends StatefulWidget {
@@ -62,8 +60,6 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
 
   TextEditingController _noticeComment = TextEditingController();
 
-  final Firestore _db = Firestore.instance;
-  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   String _commentId = "";
 
   // 댓글 달릴 유저명
@@ -73,8 +69,8 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   int crudType = 0;
 
   CommentModel _commnetModel;
-  CommentListModel _commentList;
 
+  CommentListModel _commentList;
   // 댓글 높이
   double commentHeight = 0.76;
 
@@ -117,7 +113,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                       if (!snapshot.hasData) {
                         return Icon(Icons.person_outline);
                       }
-                      return Image.network(snapshot.data()['profilePhoto']);
+                      return Image.network(snapshot.data['profilePhoto']);
                     },
                   ),
                 ),
@@ -196,27 +192,6 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                   visible: documents[i].data()['commentsUser']['mail'].toString() == _loginUser.mail,
                                   child: Row(
                                     children: [
-                                      /*Expanded(
-                                        flex: 1,
-                                        child: InkWell(
-                                          child: Text("수정",
-                                            style: customStyle(
-                                                fontColor: blueColor,
-                                                fontSize: 11,
-                                                fontWeightName: 'Bold'
-                                            ),
-                                          ),
-                                          onTap: (){
-                                            setState(() {
-                                              crudType = 3;
-                                              _commentId = documents[i].documentID;
-                                              print("_commentId >>> " + _commentId);
-                                              _noticeComment.text = documents[i].data()['comments'].toString();
-                                              _commnetFocusNode.requestFocus();
-                                            });
-                                          },
-                                        ),
-                                      ),*/
                                       Expanded(
                                         flex: 1,
                                         child: InkWell(
@@ -261,12 +236,12 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       onPressed: () {
                                                         setState(() {
                                                           _commentId = documents[i].documentID;
-                                                          _db.collection("company")
-                                                              .document(_loginUser.companyCode)
-                                                              .collection("notice")
-                                                              .document(noticeUid)
-                                                              .collection("comment").document(documentID)
-                                                              .collection("comments").document(_commentId).delete();
+                                                          FirebaseRepository().deleteNoticeComments(
+                                                              companyCode : _loginUser.companyCode,
+                                                              noticeDocumentID : noticeUid,
+                                                              commntDocumentID : documentID,
+                                                              commntsDocumentID : _commentId
+                                                          );
                                                         });
                                                         Navigator.pop(context);
                                                       },
@@ -360,12 +335,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                     if (!snapshot.hasData) {
                       return Icon(Icons.person_outline);
                     }
-                    return Image.network(snapshot.data()['profilePhoto']);
+                    return Image.network(snapshot.data['profilePhoto']);
                   },
                 )
               ),
               onTap: () {
-                _loginUserInfoProvider.logoutUesr();
               },
             ),
           ),
@@ -423,7 +397,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                           if (!snapshot.hasData) {
                                             return Icon(Icons.person_outline);
                                           }
-                                          return Image.network(snapshot.data()['profilePhoto']);
+                                          return Image.network(snapshot.data['profilePhoto']);
                                         },
                                       ),
                                     ),
@@ -473,14 +447,10 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                             height: customHeight(context: context, heightSize: 0.02),
                           ),
                           StreamBuilder(
-                            stream: _db
-                                .collection("company")
-                                .document(_loginUser.companyCode)
-                                .collection("notice")
-                                .document(noticeUid)
-                                .collection("comment")
-                                .orderBy("createDate", descending: false)
-                                .snapshots(),
+                            stream: FirebaseRepository().getNoticeCommentList(
+                              companyCode: _loginUser.companyCode,
+                              documentID: noticeUid
+                            ),
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) {
                                 return CircularProgressIndicator();
@@ -522,7 +492,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       if (!snapshot.hasData) {
                                                         return Icon(Icons.person_outline);
                                                       }
-                                                      return Image.network(snapshot.data()['profilePhoto']);
+                                                      return Image.network(snapshot.data['profilePhoto']);
                                                     },
                                                   ),
                                                 ),
@@ -656,14 +626,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                                     onPressed: () {
                                                                                       setState(() {
                                                                                         _commentId = documents[index].documentID;
-                                                                                        _db
-                                                                                            .collection("company")
-                                                                                            .document(_loginUser.companyCode)
-                                                                                            .collection("notice")
-                                                                                            .document(noticeUid)
-                                                                                            .collection("comment")
-                                                                                            .document(_commentId)
-                                                                                            .delete();
+                                                                                        FirebaseRepository().deleteNoticeComment(
+                                                                                            companyCode : _loginUser.companyCode,
+                                                                                            noticeDocumentID : noticeUid,
+                                                                                            commntDocumentID : _commentId,
+                                                                                        );
                                                                                         _commentId = "";
                                                                                         Navigator.pop(context);
                                                                                       });
@@ -700,16 +667,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                             ],
                                           ),
                                           StreamBuilder(
-                                              stream: _db
-                                                  .collection("company")
-                                                  .document(_loginUser.companyCode)
-                                                  .collection("notice")
-                                                  .document(noticeUid)
-                                                  .collection("comment")
-                                                  .document(documents[index].documentID)
-                                                  .collection("comments")
-                                                  .orderBy("createDate", descending: false)
-                                                  .snapshots(),
+                                              stream: FirebaseRepository().getNoticeCommentsList(
+                                                companyCode: _loginUser.companyCode,
+                                                noticeDocumentID: noticeUid,
+                                                commntDocumentID: documents[index].documentID
+                                              ),
                                               builder: (context, snapshot) {
                                                 if (!snapshot.hasData) {
                                                   return CircularProgressIndicator();
@@ -869,15 +831,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                     createUser: _commentMap,
                                                     createDate: Timestamp.now(),
                                                   );
-
-                                                  _db.collection("company")
-                                                      .document(_loginUser.companyCode)
-                                                      .collection("notice")
-                                                      .document(noticeUid)
-                                                      .collection("comment")
-                                                      .add(_commnetModel.toJson());
-
-
+                                                  FirebaseRepository().addNoticeComment(
+                                                      companyCode: _loginUser.companyCode,
+                                                      noticeDocumentID: noticeUid,
+                                                      comment: _commnetModel
+                                                  );
                                                 } else {
                                                   print("답글 선택 ====> " + _commentId);
 
@@ -887,34 +845,23 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       createDate: Timestamp.now(),
                                                       commentsUser: _commentMap,
                                                     );
-
-                                                    _db
-                                                        .collection("company")
-                                                        .document(_loginUser.companyCode)
-                                                        .collection("notice")
-                                                        .document(noticeUid)
-                                                        .collection("comment")
-                                                        .document(_commentId)
-                                                        .collection("comments")
-                                                        .add(_commentList.toJson());
+                                                    FirebaseRepository().addNoticeComments(
+                                                      companyCode: _loginUser.companyCode,
+                                                      noticeDocumentID: noticeUid,
+                                                      commntDocumentID: _commentId,
+                                                      comment: _commentList
+                                                    );
                                                   } else if(crudType == 2) { // 수정 클릭시
                                                     _commentList = CommentListModel(
                                                       comments: _noticeComment.text,
                                                       updateDate: Timestamp.now(),
                                                       commentsUser: _commentMap,
                                                     );
-
-                                                    _db
-                                                        .collection("company")
-                                                        .document(_loginUser.companyCode)
-                                                        .collection("notice")
-                                                        .document(noticeUid)
-                                                        .collection("comment")
-                                                        .document(_commentId).updateData(
-                                                      <String, dynamic>{
-                                                        'comment': _noticeComment.text,
-                                                        'updateDate': Timestamp.now(),
-                                                      },
+                                                    FirebaseRepository().updateNoticeComment(
+                                                      companyCode: _loginUser.companyCode,
+                                                      noticeDocumentID: noticeUid,
+                                                      commntDocumentID: _commentId,
+                                                      comment: _noticeComment.text,
                                                     );
                                                   } else if(crudType == 3) { // 대댓글 수정
 
