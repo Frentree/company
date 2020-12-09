@@ -48,7 +48,7 @@ SettingUserAddDelete(BuildContext context) {
                   color: Colors.blue,
                   height: heightRatio(
                     context: context,
-                    heightRatio: 0.08,
+                    heightRatio: 0.095,
                   ),
                   child: Row(
                     children: [
@@ -91,6 +91,20 @@ SettingUserAddDelete(BuildContext context) {
                         ),
                       )
                     ],
+                  ),
+                ),
+                Container(
+                  color: Colors.red,
+                  height: heightRatio(
+                    context: context,
+                    heightRatio: 0.4,
+                  ),
+                ),
+                Container(
+                  color: Colors.teal,
+                  height: heightRatio(
+                    context: context,
+                    heightRatio: 0.3,
                   ),
                 ),
               ],

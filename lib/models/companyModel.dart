@@ -2,6 +2,10 @@
 회사명 <companyName>
 회사코드 <companyCode>
 회사주소 <companyAddr>
+회사전화번호 <companyPhoneNumber>
+사업자번호 <businessNumber>
+회사로고<companyLogo>
+회사홈페이지<companyLink>
 <추가예정>
 */
 
@@ -10,6 +14,10 @@ class Company {
   String companyName;
   String companyCode;
   String companyAddr;
+  String companyPhoneNumber;
+  String businessNumber;
+  String companyLogo;
+  String companyLink;
   List<dynamic> companySearch;
 
   Company({
@@ -17,6 +25,10 @@ class Company {
     this.companyName,
     this.companyCode,
     this.companyAddr,
+    this.companyPhoneNumber,
+    this.businessNumber,
+    this.companyLogo,
+    this.companyLink,
     this.companySearch,
   });
 
@@ -25,6 +37,10 @@ class Company {
         companyName = snapshot["companyName"] ?? "",
         companyCode = snapshot["companyCode"] ?? "",
         companyAddr = snapshot["companyAddr"] ?? "",
+        companyPhoneNumber = snapshot["companyPhoneNumber"] ?? "",
+        businessNumber = snapshot["businessNumber"] ?? "",
+        companyLogo = snapshot["companyLogo"] ?? "",
+        companyLink = snapshot["companyLink"] ?? "",
         companySearch = snapshot["companySearch"] ?? [];
 
   toJson() {
@@ -32,6 +48,10 @@ class Company {
       "companyName": companyName,
       "companyCode": companyCode,
       "companyAddr": companyAddr,
+      "companyPhoneNumber": companyPhoneNumber,
+      "businessNumber": businessNumber,
+      "companyLogo": companyLogo,
+      "companyLink": companyLink,
       "companySearch": companySearch,
     };
   }
