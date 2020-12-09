@@ -49,10 +49,9 @@ class HomeMainPageState extends State<HomeMainPage> {
   void _pageChange(int pageIndex) {
     if (pageIndex == 2) {
       MainBottomSheet(
-          context : context,
+          context: context,
           companyCode: _loginUser.companyCode,
-          mail: _loginUser.mail
-      );
+          mail: _loginUser.mail);
     } else {
       setState(() {
         print(pageIndex);
@@ -84,27 +83,25 @@ class HomeMainPageState extends State<HomeMainPage> {
                 return Row(
                   children: <Widget>[
                     IconButton(
-                        icon: Icon(
-                          Icons.power_settings_new,
-                          size:
-                              customHeight(context: context, heightSize: 0.04),
-                          color: Colors.white,
-                        ),
-                        onPressed:
-                            /*_attendance.status == 0 ? () async {
-                          await _attendanceCheckProvider.manualOnWork(
-                              context: context);
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => ApprovalPage()));
-                        } : _attendance.status != 3 ? () async {
-                          await _attendanceCheckProvider.manualOffWork(
-                              context: context);
-                        } : null,*/
-                            () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ApprovalPage()));
-                        }),
+                      icon: Icon(
+                        Icons.power_settings_new,
+                        size: customHeight(context: context, heightSize: 0.04),
+                        color: Colors.white,
+                      ),
+                      onPressed: _attendance.status == 0
+                          ? () async {
+                              await _attendanceCheckProvider.manualOnWork(
+                                context: context,
+                              );
+                            }
+                          : _attendance.status != 3
+                              ? () async {
+                                  await _attendanceCheckProvider.manualOffWork(
+                                    context: context,
+                                  );
+                                }
+                              : null,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Text(
@@ -129,7 +126,8 @@ class HomeMainPageState extends State<HomeMainPage> {
                     color: whiteColor,
                     border: Border.all(color: whiteColor, width: 2)),
                 child: FutureBuilder(
-                  future: FirebaseRepository().photoProfile(_loginUser.companyCode, _loginUser.mail),
+                  future: FirebaseRepository()
+                      .photoProfile(_loginUser.companyCode, _loginUser.mail),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Icon(Icons.person_outline);

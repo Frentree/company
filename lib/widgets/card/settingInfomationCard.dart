@@ -247,22 +247,23 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
                 Stack(
                   children: [
                     Container(
+                      color: mainColor,
                       width: customWidth(
                         context: context,
                         widthSize: 0.2
                       ),
-                      
-                      child: Container(
+                      child: Center(
                         child: Container(
-                          color: whiteColor,
-                          alignment: Alignment.center,
-                          width: customWidth(
-                              context: context,
-                              widthSize: 0.1
-                          ),
-                          child: Image.network(
-                              snapshot.data['companyPhoto'] != null ? snapshot.data['companyPhoto'] : "null"
-                          ),
+                            color: whiteColor,
+                            alignment: Alignment.center,
+                            width: customWidth(
+                                context: context,
+                                widthSize: 0.2
+                            ),
+                            child: Image.network(
+                                snapshot.data['companyPhoto'] != "" ? snapshot.data['companyPhoto'] :
+                                "https://firebasestorage.googleapis.com/v0/b/app-dev-c912f.appspot.com/o/defaultImage%2Fnoimage.png?alt=media&token=c447305b-d623-444e-a163-fc1b3e393699"
+                            ),
                         ),
                       ),
                     )
@@ -337,7 +338,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
                 ),
                 Expanded(
                   child: Text(
-                    snapshot.data["companyNo"] != null ? snapshot.data["companyNo"] : "",
+                    snapshot.data["companyNo"],
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,
@@ -399,7 +400,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
                 ),
                 Expanded(
                   child: Text(
-                    snapshot.data["companyPhone"] != null ? snapshot.data["companyPhone"] : "",
+                    snapshot.data["companyPhone"],
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,
@@ -430,7 +431,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
                 ),
                 Expanded(
                   child: Text(
-                    snapshot.data["webAddr"] != null ? snapshot.data["webAddr"] : "",
+                    snapshot.data["companyWeb"],
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,

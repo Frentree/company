@@ -41,7 +41,7 @@ class WaitingApprovalPage extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               child: Text(
-                "앱 종료",
+                "로그인 화면으로 이동",
                 style: customStyle(
                         fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
               ),

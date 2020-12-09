@@ -75,17 +75,23 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: _mailTextCon,
-                      decoration: InputDecoration(
-                        hintText: "이메일",
-                        hintStyle: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: textFieldUnderLine,
+                    SizedBox(
+                      height: heightRatio(
+                        context: context,
+                        heightRatio: 0.04
+                      ),
+                      child: TextFormField(
+                        controller: _mailTextCon,
+                        decoration: InputDecoration(
+                          hintText: "이메일",
+                          hintStyle: customStyle(
+                            fontWeightName: "Regular",
+                            fontColor: mainColor,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: textFieldUnderLine,
+                            ),
                           ),
                         ),
                       ),
