@@ -94,13 +94,14 @@ class ApprovalPageState extends State<ApprovalPage> {
               _events = {};
               if (snapshot.hasData) {
                 snapshot.data.documents.forEach((element) {
-                  print("type : ===> ${element.data()["createUid"]}");
-                  if (element.data()["createUid"] == _loginUser.mail ||
-                      element.data()["attendees"] != null &&
-                          element.data()["attendees"].keys
+                  var elementData = element.data();
+                  print("type : ===> ${elementData["createUid"]}");
+                  if (elementData["createUid"] == _loginUser.mail ||
+                      elementData["attendees"] != null &&
+                          elementData["attendees"].keys
                               .contains(_loginUser.mail)) {
                     DateTime _startDate =
-                        _format.timeStampToDateTime(element.data["startDate"]);
+                        _format.timeStampToDateTime(elementData["startDate"]);
                     if (_events[_startDate] == null) {
                       _events.addAll({_startDate: []});
                     }
