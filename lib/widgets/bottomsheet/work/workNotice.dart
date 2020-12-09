@@ -7,6 +7,7 @@ import 'package:companyplaylist/consts/widgetSize.dart';
 import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
 import 'package:companyplaylist/utils/search/searchFormat.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,6 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
   User _loginUser;
 
   Map<String, String> _noticeUser = Map();
-
-
-  CrudRepository _crudRepository;
   NoticeModel _notice;
 
   if(noticeDocumentID != "") {
@@ -45,8 +43,6 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                 Provider.of<LoginUserInfoProvider>(context);
             _loginUser = _loginUserInfoProvider.getLoginUser();
             _noticeUser.addAll({"mail": _loginUser.mail, "name": _loginUser.name});
-            _crudRepository =
-                CrudRepository.noticeAttendance(companyCode: _loginUser.companyCode);
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Listener(
@@ -119,8 +115,9 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                                         caseSearch: SearchFormat.setSearchParam(_noticeTitle.text),
                                         //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
                                       );
-                                      _crudRepository.addNoticeDataToFirebase(
-                                          dataModel: _notice);
+                                      FirebaseRepository().addNotice(
+                                        companyCode: _loginUser.companyCode,
+                                        notice: _notice);
                                     } else {
                                       Firestore.instance.collection('company')
                                           .document(_loginUser.companyCode)
