@@ -1,4 +1,5 @@
 //Flutter
+import 'package:companyplaylist/consts/screenSize/signUpMain.dart';
 import 'package:companyplaylist/consts/universalString.dart';
 import 'package:flutter/material.dart';
 
@@ -29,45 +30,46 @@ class SignUpMainPage extends StatelessWidget {
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: 0.06,
+                      heightRatio: distance1H,
                     ),
                   ),
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: 0.07,
+                      heightRatio: appNameSizeH,
                     ),
-                    width: widthRatio(context: context, widthRatio: 0.6),
-                    child: font(
-                      text: APP_NAME,
-                      textStyle: customStyle(
+                    child: Text(
+                      APP_NAME,
+                      style: customStyle(
                         fontWeightName: "Medium",
                         fontColor: whiteColor,
+                        fontSize: appNameFont,
                       ),
                     ),
                   ),
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: 0.03,
+                      heightRatio: distance2H,
                     ),
                   ),
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: 0.03,
+                      heightRatio: appVersionSizeH,
                     ),
-                    width: widthRatio(context: context, widthRatio: 1),
+                    width: widthRatio(context: context, widthRatio: appVersionSizeW),
                     child: Padding(
                       padding: EdgeInsets.only(
-                        left: widthRatio(context: context, widthRatio: 0.6),
-                        right: widthRatio(context: context, widthRatio: 0.1),
+                        left: widthRatio(context: context, widthRatio: appVersionPaddingL),
+                        right: widthRatio(context: context, widthRatio: appVersionPaddingR),
                       ),
-                      child: font(
-                        text: "Release " + APP_VERSION,
-                        textStyle: customStyle(
+                      child: Text(
+                        "Relase " + APP_VERSION,
+                        style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: whiteColor,
+                          fontSize: appVersionFont,
                         ),
                       ),
                     ),
@@ -75,7 +77,7 @@ class SignUpMainPage extends StatelessWidget {
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: 0.06,
+                      heightRatio: distance3H,
                     ),
                   ),
                 ],
@@ -83,15 +85,15 @@ class SignUpMainPage extends StatelessWidget {
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.75,
+                  heightRatio: childSizeH,
                 ),
                 width: widthRatio(
                   context: context,
-                  widthRatio: 1,
+                  widthRatio: childSizeW,
                 ),
                 padding: EdgeInsets.symmetric(
-                  horizontal: widthRatio(context: context, widthRatio: 0.1),
-                  vertical: heightRatio(context: context, heightRatio: 0.025),
+                  horizontal: widthRatio(context: context, widthRatio: childPaddingLR),
+                  vertical: heightRatio(context: context, heightRatio: childPaddingUD),
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
