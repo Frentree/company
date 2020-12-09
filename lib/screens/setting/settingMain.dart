@@ -1,24 +1,19 @@
 
-<<<<<<< HEAD
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/screens/alarm/alarmNotice.dart';
 import 'package:MyCompany/screens/setting/myWork.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserManager.dart';
-import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:MyCompany/widgets/card/settingInfomationCard.dart';
-import 'package:MyCompany/widgets/notImplementedPopup.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+final word = Words();
 
 class SettingMainPage extends StatefulWidget {
   @override
@@ -54,7 +49,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                   // 2. 리스트 항목 추가하면 끝!
                   leading: Icon(Icons.person_outline),
                   title: Text(
-                    word.companyInfomation(),
+                    word.companyInfomation(), // 회사 정보
                     style: customStyle(fontColor: Colors.green),
                   ),
                   children: [getCompanyInfomationCard(context: context, user: _loginUser)],

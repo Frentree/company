@@ -328,11 +328,18 @@ class FirebaseMethods {
     return firestore.collection(COMPANY).document(companyCode).get();
   }
 
+  Stream<DocumentSnapshot> getCompanyInfos(String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .snapshots();
+  }
+
   Future<DocumentSnapshot> photoProfile(String companyCode, String mail) async {
     return await firestore
-        .collection("company")
+        .collection(COMPANY)
         .document(companyCode)
-        .collection("user")
+        .collection(USER)
         .document(mail)
         .get();
   }
@@ -350,6 +357,20 @@ class FirebaseMethods {
 
     return firestore.collection(USER).document(mail).update({
       "profilePhoto": url,
+    });
+  }
+
+  Future<void> updateCompany(String companyCode, String companyName, String companyNo, String companyAddr, String companyPhone, String companyWeb, String url) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .update({
+      "companyName" : companyName,
+      "comapnyNo" : companyNo,
+      "companyAddr" : companyAddr,
+      "companyPhone" : companyPhone,
+      "companyWeb" : companyWeb,
+      "companyPhoto" : url,
     });
   }
 
