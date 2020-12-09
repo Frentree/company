@@ -129,6 +129,7 @@ class CompanyMethod{
 
   //회사 가입
   Future<void> joinCompanyUser({BuildContext context, String companyCode}) async {
+    Format _format = Format();
     FirebaseRepository _repository = FirebaseRepository();
 
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
@@ -142,7 +143,8 @@ class CompanyMethod{
       name: _loginUser.name,
       mail: _loginUser.mail,
       birthday: _loginUser.birthday,
-      phone: _loginUser.phone
+      phone: _loginUser.phone,
+      requestDate: _format.dateTimeToTimeStamp(DateTime.now()),
     );
 
     _repository.saveApproval(
@@ -177,6 +179,17 @@ class CompanyMethod{
     User approvalUser = await _repository.getUser(userMail: approvalUserMail);
 
     approvalUser.state = 2;
+    approvalUser.companyCode = "";
+
+    _repository.updateUser(userModel: approvalUser);
+  }
+
+  Future<void> userLeave({BuildContext context, String leaveUserMail}) async {
+    FirebaseRepository _repository = FirebaseRepository();
+
+    User approvalUser = await _repository.getUser(userMail: leaveUserMail);
+
+    approvalUser.state = 4;
     approvalUser.companyCode = "";
 
     _repository.updateUser(userModel: approvalUser);
