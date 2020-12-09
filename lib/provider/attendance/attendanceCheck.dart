@@ -3,8 +3,10 @@ import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:ios_network_info/ios_network_info.dart';
 import 'package:wifi/wifi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 //Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,7 +64,15 @@ class AttendanceCheck extends ChangeNotifier {
     }
 
     //연결된 wifi 이름 저장
-    String connectWifiName = await Wifi.ssid;
+    Future<String> connectWifiName () async {
+
+      switch (foundation.defaultTargetPlatform) {
+        case foundation.TargetPlatform.iOS:
+          return await IosNetworkInfo.ssid;
+        case foundation.TargetPlatform.android:
+          return await Wifi.ssid;
+      }
+    }
 
     //날짜
     DateTime today = DateTime(
