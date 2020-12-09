@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:companyplaylist/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,7 +27,6 @@ SettingMyPageUpdate(BuildContext context) {
   TextEditingController _passwordNewConfirmTextCon = TextEditingController();
   TextEditingController _phoneEdit = TextEditingController();
 
-  final Firestore _db = Firestore.instance;
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   showModalBottomSheet(
@@ -61,19 +61,11 @@ SettingMyPageUpdate(BuildContext context) {
               // 업로드한 사진의 URL 획득
               String downloadURL = await storageReference.getDownloadURL();
 
-              _db.collection("company")
-                  .document(_loginUser.companyCode)
-                  .collection("user")
-                  .document(_loginUser.mail)
-                  .updateData({
-                "profilePhoto" : downloadURL
-              });
-
-              _db.collection("user")
-                  .document(_loginUser.mail)
-                  .updateData({
-                "profilePhoto" : downloadURL
-              });
+              FirebaseRepository().updatePhotoProfile(
+                companyCode: _loginUser.companyCode,
+                mail: _loginUser.mail,
+                url: downloadURL
+              );
 
               // 업로드된 사진의 URL을 페이지에 반영
               setState(() {
@@ -640,17 +632,11 @@ SettingMyPageUpdate(BuildContext context) {
                                                       fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
-                                                  _db.collection("company")
-                                                      .document(_loginUser.companyCode)
-                                                      .collection("user")
-                                                      .document(_loginUser.mail).updateData({
-                                                    "phone": _phoneEdit.text
-                                                  });
-
-                                                  _db.collection("user")
-                                                      .document(_loginUser.mail).updateData({
-                                                    "phone": _phoneEdit.text
-                                                  });
+                                                  FirebaseRepository().updatePhone(
+                                                    companyCode: _loginUser.companyCode,
+                                                    mail: _loginUser.mail,
+                                                    phone: _phoneEdit.text
+                                                  );
                                                   setState((){
                                                     _loginUser.phone = _phoneEdit.text;
                                                     _loginUserInfoProvider.setLoginUser(_loginUser);

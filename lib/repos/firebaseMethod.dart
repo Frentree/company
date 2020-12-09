@@ -3,10 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:companyplaylist/consts/universalString.dart';
 import 'package:companyplaylist/models/approvalModel.dart';
 import 'package:companyplaylist/models/attendanceModel.dart';
+import 'package:companyplaylist/models/commentListModel.dart';
+import 'package:companyplaylist/models/commentModel.dart';
 import 'package:companyplaylist/models/companyModel.dart';
 import 'package:companyplaylist/models/companyUserModel.dart';
 import 'package:companyplaylist/models/expenseModel.dart';
 import 'package:companyplaylist/models/meetingModel.dart';
+import 'package:companyplaylist/models/noticeModel.dart';
 import 'package:companyplaylist/models/workModel.dart';
 import 'package:companyplaylist/models/userModel.dart';
 import 'package:companyplaylist/utils/date/dateFormat.dart';
@@ -295,6 +298,42 @@ class FirebaseMethods {
         .get();
   }
 
+  Future<void> updatePhotoProfile(String companyCode, String mail, String url) async {
+    await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .document(mail)
+        .update({
+          "profilePhoto" : url,
+        });
+
+    return firestore
+        .collection(USER)
+        .document(mail)
+        .update({
+          "profilePhoto" : url,
+        });
+  }
+
+  Future<void> updatePhone(String companyCode, String mail, String phone) async {
+    await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .document(mail)
+        .update({
+      "phone" : phone,
+    });
+
+    return firestore
+        .collection(USER)
+        .document(mail)
+        .update({
+      "phone" : phone,
+    });
+  }
+
   Future<DocumentSnapshot> userGrade(String companyCode, String mail) async {
     return await firestore
         .collection(COMPANY)
@@ -362,7 +401,7 @@ class FirebaseMethods {
         .collection(USER)
         .where("level", arrayContains: level)
         .getDocuments().then((value) {
-      value.documents.forEach((element) {
+        value.documents.forEach((element) {
         element.reference.updateData({
           "level" : FieldValue.arrayRemove([level])
         });
@@ -426,6 +465,134 @@ class FirebaseMethods {
     }
     return null;
   }
+
+  Future<void> addNotice(String companyCode, NoticeModel notice) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .add(notice.toJson());
+  }
+
+  Future<void> deleteNotice(String companyCode, String documentID) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(documentID)
+        .delete();
+  }
+
+  Stream<QuerySnapshot> getNoticeList(String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .orderBy("noticeCreateDate", descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getNoticeCommentList(String companyCode, String documentID) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(documentID)
+        .collection(COMMENT)
+        .orderBy("createDate", descending: false)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getNoticeCommentsList(String companyCode, String noticeDocumentID, String commntDocumentID) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(noticeDocumentID)
+        .collection(COMMENT)
+        .document(commntDocumentID)
+        .collection(COMMENTS)
+        .orderBy("createDate", descending: false)
+        .snapshots();
+  }
+
+  Future<void> addNoticeComment(String companyCode, String noticeDocumentID, CommentModel comment) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(noticeDocumentID)
+        .collection(COMMENT)
+        .add(comment.toJson());
+  }
+
+  Future<void> updateNoticeComment(String companyCode, String noticeDocumentID, String commntDocumentID, String comment) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(noticeDocumentID)
+        .collection(COMMENT)
+        .document(commntDocumentID)
+        .update({
+          "comment" : comment,
+          "updateDate" : Timestamp.now(),
+        });
+  }
+
+  Future<void> deleteNoticeComment(String companyCode, String noticeDocumentID, String commntDocumentID) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(noticeDocumentID)
+        .collection(COMMENT)
+        .document(commntDocumentID)
+        .delete();
+  }
+
+  Future<void> addNoticeComments(String companyCode, String noticeDocumentID, String commntDocumentID, CommentListModel comment) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(noticeDocumentID)
+        .collection(COMMENT)
+        .document(commntDocumentID)
+        .collection(COMMENTS)
+        .add(comment.toJson());
+  }
+
+  Future<void> updateNoticeComments(String companyCode, String noticeDocumentID, String commntDocumentID, String commntsDocumentID, String comment) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(noticeDocumentID)
+        .collection(COMMENT)
+        .document(commntDocumentID)
+        .collection(COMMENTS)
+        .document(commntsDocumentID)
+        .update({
+          "comment" : comment,
+          "updateDate" : Timestamp.now(),
+        });
+  }
+
+  Future<void> deleteNoticeComments(String companyCode, String noticeDocumentID, String commntDocumentID, String commntsDocumentID) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(NOTICE)
+        .document(noticeDocumentID)
+        .collection(COMMENT)
+        .document(commntDocumentID)
+        .collection(COMMENTS)
+        .document(commntsDocumentID)
+        .delete();
+  }
+
+
 }
 
 class FirestoreApi {
