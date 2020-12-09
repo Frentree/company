@@ -144,6 +144,11 @@ class FirebaseRepository {
         managerMail: managerMail,
       );
 
+  Future<DocumentSnapshot> getCompanyInfo({String companyCode}) =>
+      _firebaseMethods.getCompanyInfo(
+        companyCode: companyCode,
+      );
+
   Future<void> updateApproval(
           {Approval approvalModel, String companyCode, String managerMail}) =>
       _firebaseMethods.updateApproval(

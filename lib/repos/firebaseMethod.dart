@@ -300,6 +300,13 @@ class FirebaseMethods {
         .updateData(approvalModel.toJson());
   }
 
+  Future<DocumentSnapshot> getCompanyInfo({String companyCode}) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .get();
+  }
+
   Future<DocumentSnapshot> photoProfile(String companyCode, String mail) async {
     return await firestore
         .collection("company")
