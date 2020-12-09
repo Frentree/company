@@ -8,13 +8,13 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
-import 'package:MyCompany/screens/setting/gradeMain.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:MyCompany/consts/font.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 settingUserAddDelete(BuildContext context) {
   Format _format = Format();
@@ -50,12 +50,9 @@ settingUserAddDelete(BuildContext context) {
                 bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
               child: Container(
-                height: heightRatio(context: context, heightRatio: 0.895),
+                height: 90.0.h,
                 padding: EdgeInsets.symmetric(
-                  horizontal: widthRatio(
-                    context: context,
-                    widthRatio: 0.02,
-                  ),
+                  horizontal: 2.0.w,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -66,17 +63,14 @@ settingUserAddDelete(BuildContext context) {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 1.0.h),
                     ),
                     Container(
-                      height: heightRatio(
-                        context: context,
-                        heightRatio: 0.075,
-                      ),
+                      height: 7.0.h,
                       child: Row(
                         children: [
                           Container(
-                            width: widthRatio(context: context, widthRatio: 0.1),
+                            width: 10.0.w,
                             child: Center(
                               child: IconButton(
                                 icon: Icon(
@@ -89,23 +83,25 @@ settingUserAddDelete(BuildContext context) {
                             ),
                           ),
                           Container(
-                            width: widthRatio(context: context, widthRatio: 0.1),
+                            width: 15.0.w,
                             child: Center(
-                                child: Icon(Icons.person_add_alt_1_outlined)),
+                                child: Icon(Icons.person_add_alt_1_outlined, size: 8.0.w,)),
                           ),
                           Container(
-                            width: widthRatio(context: context, widthRatio: 0.4),
-                            child: font(text: "사용자 추가 요청/삭제"),
+                            width: 50.0.w,
+                            child: Text(
+                                "사용자 추가 요청/삭제",
+                              style: customStyle(
+                                fontSize: 14.0.sp
+                              ),
+                            )
                           )
                         ],
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: widthRatio(
-                          context: context,
-                          widthRatio: 0.02,
-                        ),
+                        horizontal: 2.0.w,
                       ),
                       child: Column(
                         children: [
@@ -130,52 +126,42 @@ settingUserAddDelete(BuildContext context) {
                               return Column(
                                 children: [
                                   Container(
-                                    height: heightRatio(
-                                      context: context,
-                                      heightRatio: 0.38,
-                                    ),
+                                    height: 38.0.h,
                                     child: Column(
                                       children: [
                                         Container(
-                                          height: heightRatio(
-                                            context: context,
-                                            heightRatio: 0.05,
-                                          ),
+                                          height: 5.0.h,
                                           child: Row(
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: widthRatio(
-                                                    context: context,
-                                                    widthRatio: 0.3),
-                                                child: font(text: "사용자 추가 요청"),
+                                                width: 30.0.w,
+                                                child: Text(
+                                                  "사용자 추가 요청",
+                                                  style: customStyle(
+                                                    fontSize: 12.0.sp,
+                                                  ),
+                                                ),
                                               ),
                                               Container(
-                                                width: widthRatio(
-                                                    context: context,
-                                                    widthRatio: 0.3),
+                                                width: 30.0.w,
                                                 child: Center(
                                                   child: Container(
-                                                    width: widthRatio(
-                                                        context: context,
-                                                        widthRatio: 0.15),
-                                                    height: heightRatio(
-                                                      context: context,
-                                                      heightRatio: 0.03,
-                                                    ),
+                                                    width: 15.0.w,
+                                                    height: 4.0.h,
                                                     decoration: BoxDecoration(
                                                         color: blueColor,
                                                         borderRadius:
-                                                        BorderRadius.circular(
-                                                            12)),
-                                                    child: font(
-                                                      text:
-                                                      "${_approvalData.length} 건",
-                                                      textStyle: customStyle(
-                                                        fontColor: whiteColor,
+                                                        BorderRadius.circular(12.0.w)),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "${_approvalData.length} 건",
+                                                        style: customStyle(
+                                                            fontSize: 12.0.sp,
+                                                        ),
                                                       ),
-                                                    ),
+                                                    )
                                                   ),
                                                 ),
                                               ),
@@ -183,18 +169,15 @@ settingUserAddDelete(BuildContext context) {
                                           ),
                                         ),
                                         Container(
-                                          height: heightRatio(
-                                            context: context,
-                                            heightRatio: 0.33,),
+                                          height: 30.0.h,
                                           child: _approvalData.length == 0
                                               ? Center(
-                                            child: Container(
-                                              width: widthRatio(
-                                                  context: context,
-                                                  widthRatio: 0.5),
-                                              child: font(
-                                                  text: "승인할 데이터가 없습니다."),
-                                            ),
+                                            child: Text(
+                                              "승인할 데이터가 없습니다.",
+                                              style: customStyle(
+                                                fontSize: 13.0.sp
+                                              ),
+                                            )
                                           )
                                               : ListView.separated(
                                             itemCount: _approvalData.length,
@@ -207,9 +190,7 @@ settingUserAddDelete(BuildContext context) {
                                               );
                                               return GestureDetector(
                                                 child: Container(
-                                                  height: heightRatio(
-                                                      context: context,
-                                                      heightRatio: 0.1),
+                                                  height: 10.0.h,
                                                   child: Column(
                                                     mainAxisAlignment:
                                                     MainAxisAlignment
@@ -219,25 +200,18 @@ settingUserAddDelete(BuildContext context) {
                                                         .start,
                                                     children: [
                                                       Container(
-                                                        height: heightRatio(
-                                                            context: context,
-                                                            heightRatio:
-                                                            0.06),
+                                                        height: 6.0.h,
                                                         child: Text(
                                                           "[${_approval.name}] 님의 사용자 추가 요청",
                                                           style: customStyle(
-                                                            fontSize: 18,
+                                                            fontSize: 15.0.sp,
                                                             fontColor:
                                                             grayColor,
                                                           ),
                                                         ),
                                                       ),
                                                       Container(
-                                                          height: heightRatio(
-                                                              context:
-                                                              context,
-                                                              heightRatio:
-                                                              0.04),
+                                                          height: 4.0.h,
                                                           child: Row(
                                                             mainAxisAlignment:
                                                             MainAxisAlignment
@@ -248,7 +222,7 @@ settingUserAddDelete(BuildContext context) {
                                                                 style:
                                                                 customStyle(
                                                                   fontSize:
-                                                                  13,
+                                                                  13.0.sp,
                                                                   fontColor:
                                                                   grayColor,
                                                                 ),
@@ -266,86 +240,71 @@ settingUserAddDelete(BuildContext context) {
                                                           title: Text(
                                                             "[${_approval.name}] 님의 사용자 추가 요청",
                                                             style: customStyle(
-                                                              fontSize: 18,
+                                                              fontSize: 15.0.sp,
                                                             ),
                                                           ),
                                                           children: [
                                                             Padding(
                                                               padding: EdgeInsets.symmetric(
-                                                                vertical: heightRatio(
-                                                                  context: context,
-                                                                  heightRatio: 0.01,
-                                                                ),
-                                                                horizontal: widthRatio(
-                                                                  context: context,
-                                                                  widthRatio: 0.05,
-                                                                ),
+                                                                vertical: 1.0.h,
+                                                                horizontal: 8.0.w
                                                               ),
                                                               child: Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text(
-                                                                      "이름 : ${_approval.name}"
+                                                                      "이름 : ${_approval.name}",
+                                                                    style: customStyle(
+                                                                      fontSize: 12.0.sp,
+                                                                    ),
                                                                   ),
                                                                   Container(
-                                                                    height: heightRatio(
-                                                                      context: context,
-                                                                      heightRatio: 0.01,
-                                                                    ),
+                                                                    height: 1.5.h
                                                                   ),
                                                                   Text(
-                                                                      "이메일 : ${_approval.mail}"
+                                                                      "이메일 : ${_approval.mail}",
+                                                                    style: customStyle(
+                                                                      fontSize: 12.0.sp,
+                                                                    ),
                                                                   ),
                                                                   Container(
-                                                                    height: heightRatio(
-                                                                      context: context,
-                                                                      heightRatio: 0.01,
-                                                                    ),
+                                                                    height:1.5.h
                                                                   ),
                                                                   Text(
-                                                                      "생년월일 : ${_approval.birthday}"
+                                                                      "생년월일 : ${_approval.birthday}",
+                                                                    style: customStyle(
+                                                                      fontSize: 12.0.sp,
+                                                                    ),
                                                                   ),
                                                                   Container(
-                                                                    height: heightRatio(
-                                                                      context: context,
-                                                                      heightRatio: 0.01,
-                                                                    ),
+                                                                    height: 1.5.h,
                                                                   ),
                                                                   Text(
-                                                                      "전화번호 : ${_approval.phone}"
+                                                                      "전화번호 : ${_approval.phone}",
+                                                                    style: customStyle(
+                                                                      fontSize: 12.0.sp,
+                                                                    ),
                                                                   ),
                                                                   Container(
-                                                                    height: heightRatio(
-                                                                      context: context,
-                                                                      heightRatio: 0.01,
-                                                                    ),
+                                                                    height: 1.5.h,
                                                                   ),
                                                                   Text(
-                                                                      "요청일자 : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}"
-                                                                  ),
-                                                                  Container(
-                                                                    height: heightRatio(
-                                                                      context: context,
-                                                                      heightRatio: 0.02,
+                                                                      "요청일 : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
+                                                                    style: customStyle(
+                                                                      fontSize: 12.0.sp,
                                                                     ),
                                                                   ),
                                                                   Container(
-                                                                    height: heightRatio(
-                                                                      context: context,
-                                                                      heightRatio: 0.04,
-                                                                    ),
-                                                                    width: widthRatio(
-                                                                      context: context,
-                                                                      widthRatio: 1,
-                                                                    ),
+                                                                    height: 3.0.h,
+                                                                  ),
+                                                                  Container(
+                                                                    height: 4.0.h,
+                                                                    width: 100.0.w,
                                                                     child: Row(
                                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                                       children: [
                                                                         Container(
-                                                                          width: widthRatio(
-                                                                            context: context,
-                                                                            widthRatio: 0.2,
-                                                                          ),
+                                                                          width: 20.0.w,
                                                                           child: RaisedButton(
                                                                             elevation: 0.0,
                                                                             color: blueColor,
@@ -353,6 +312,7 @@ settingUserAddDelete(BuildContext context) {
                                                                               "승낙",
                                                                               style: customStyle(
                                                                                 fontColor: whiteColor,
+                                                                                fontSize: 12.0.sp,
                                                                               ),
                                                                             ),
                                                                             shape: RoundedRectangleBorder(
@@ -373,16 +333,10 @@ settingUserAddDelete(BuildContext context) {
                                                                           ),
                                                                         ),
                                                                         Container(
-                                                                          width: widthRatio(
-                                                                            context: context,
-                                                                            widthRatio: 0.1,
-                                                                          ),
+                                                                          width: 10.0.w,
                                                                         ),
                                                                         Container(
-                                                                          width: widthRatio(
-                                                                            context: context,
-                                                                            widthRatio: 0.2,
-                                                                          ),
+                                                                          width: 20.0.w,
                                                                           child: RaisedButton(
                                                                             elevation: 0.0,
                                                                             color: blueColor,
@@ -390,6 +344,7 @@ settingUserAddDelete(BuildContext context) {
                                                                               "거절",
                                                                               style: customStyle(
                                                                                 fontColor: whiteColor,
+                                                                                fontSize: 12.0.sp,
                                                                               ),
                                                                             ),
                                                                             shape: RoundedRectangleBorder(
@@ -437,10 +392,7 @@ settingUserAddDelete(BuildContext context) {
                             thickness: 1,
                           ),
                           Container(
-                            height: heightRatio(
-                              context: context,
-                              heightRatio: 0.38,
-                            ),
+                            height: 38.0.h,
                             width: widthRatio(
                               context: context,
                               widthRatio: 1,
@@ -449,28 +401,23 @@ settingUserAddDelete(BuildContext context) {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  height: heightRatio(
-                                    context: context,
-                                    heightRatio: 0.05,
-                                  ),
+                                  height: 5.0.h,
                                   child: Container(
-                                    width: widthRatio(
-                                        context: context, widthRatio: 0.35),
-                                    child: font(text: "사용자 삭제(퇴사자)"),
+                                    width: 35.0.w,
+                                    child: Text(
+                                      "사용자 삭제(퇴사자)",
+                                      style: customStyle(
+                                        fontSize: 12.0.sp,
+                                      ),
+                                    )
                                   ),
                                 ),
                                 Container(
-                                  height: heightRatio(
-                                    context: context,
-                                    heightRatio: 0.33,
-                                  ),
+                                  height: 33.0.h,
                                   child: Column(
                                     children: [
                                       Container(
-                                        height: heightRatio(
-                                            context: context,
-                                            heightRatio: 0.06
-                                        ),
+                                        height: 8.0.h,
                                         child: TextFormField(
                                           controller: _retireeNameCon,
                                           decoration: InputDecoration(
@@ -495,7 +442,7 @@ settingUserAddDelete(BuildContext context) {
                                             hintText: "삭제할 직원 이름을 입력하세요",
                                             hintStyle: TextStyle(
                                                 fontFamily: "NotoSansKR",
-                                              fontSize: 13,
+                                              fontSize: 11.0.sp
                                             ),
                                           ),
                                           onFieldSubmitted: ((value){
@@ -516,10 +463,7 @@ settingUserAddDelete(BuildContext context) {
                                         ),
                                       ),
                                       Container(
-                                        height: heightRatio(
-                                            context: context,
-                                            heightRatio: 0.01
-                                        ),
+                                        height: 1.0.h,
                                       ),
                                       searchResults == null ? Container() : Expanded(
                                         child: FutureBuilder(
@@ -531,7 +475,6 @@ settingUserAddDelete(BuildContext context) {
                                               );
                                             }
                                             List<CompanyUser> searchCompanyUserResult = [];
-                                            print("데이터 ${snapshot.data}");
                                             snapshot.data.forEach((doc){
                                               print(doc.data());
                                               CompanyUser _companyUser = CompanyUser.fromMap(doc.data(), doc.documentID);
@@ -540,7 +483,9 @@ settingUserAddDelete(BuildContext context) {
                                             if(searchCompanyUserResult.length == 0){
                                               return Container(
                                                 child: Center(
-                                                  child: Text("검색 결과 없음"),
+                                                  child: Text("검색 결과 없음",style: customStyle(
+                                                      fontSize: 13.0.sp
+                                                  ),),
                                                 ),
                                               );
                                             }
@@ -550,17 +495,11 @@ settingUserAddDelete(BuildContext context) {
                                               itemBuilder: (context, index){
                                                 return GestureDetector(
                                                   child: Container(
-                                                    height: heightRatio(
-                                                        context: context,
-                                                        heightRatio: 0.05
-                                                    ),
+                                                    height: 5.0.h,
                                                     child: Row(
                                                       children: [
                                                         Container(
-                                                          width: widthRatio(
-                                                            context: context,
-                                                            widthRatio: 0.1,
-                                                          ),
+                                                          width: 10.0.w,
                                                           child: CircleAvatar(
                                                             backgroundImage: NetworkImage(
                                                               searchCompanyUserResult[index].profilePhoto,
@@ -568,16 +507,13 @@ settingUserAddDelete(BuildContext context) {
                                                           ),
                                                         ),
                                                         Container(
-                                                          width: widthRatio(
-                                                            context: context,
-                                                            widthRatio: 0.05,
-                                                          ),
+                                                          width: 5.0.w,
                                                         ),
                                                         Container(
                                                           child: Text(
                                                             searchCompanyUserResult[index].name,
                                                             style: customStyle(
-                                                                fontSize: 20
+                                                                fontSize: 20.0.sp,
                                                             ),
                                                           ),
                                                         )
@@ -592,83 +528,65 @@ settingUserAddDelete(BuildContext context) {
                                                             title: Text(
                                                               "[${searchCompanyUserResult[index].name}] 님의 퇴사 처리",
                                                               style: customStyle(
-                                                                fontSize: 18,
+                                                                fontSize: 15.0.sp,
                                                               ),
                                                             ),
                                                             children: [
                                                               Padding(
                                                                 padding: EdgeInsets.symmetric(
-                                                                  vertical: heightRatio(
-                                                                    context: context,
-                                                                    heightRatio: 0.01,
-                                                                  ),
-                                                                  horizontal: widthRatio(
-                                                                    context: context,
-                                                                    widthRatio: 0.05,
-                                                                  ),
+                                                                    vertical: 1.0.h,
+                                                                    horizontal: 8.0.w
                                                                 ),
                                                                 child: Column(
                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
                                                                     Text(
-                                                                        "이름 : ${searchCompanyUserResult[index].name}"
+                                                                        "이름 : ${searchCompanyUserResult[index].name}",
+                                                                      style: customStyle(
+                                                                        fontSize: 12.0.sp,
+                                                                      ),
                                                                     ),
                                                                     Container(
-                                                                      height: heightRatio(
-                                                                        context: context,
-                                                                        heightRatio: 0.01,
-                                                                      ),
+                                                                        height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                        "이메일 : ${searchCompanyUserResult[index].mail}"
+                                                                        "이메일 : ${searchCompanyUserResult[index].mail}",
+                                                                      style: customStyle(
+                                                                        fontSize: 12.0.sp,
+                                                                      ),
                                                                     ),
                                                                     Container(
-                                                                      height: heightRatio(
-                                                                        context: context,
-                                                                        heightRatio: 0.01,
-                                                                      ),
+                                                                        height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                        "생년월일 : ${searchCompanyUserResult[index].birthday}"
+                                                                        "생년월일 : ${searchCompanyUserResult[index].birthday}",
+                                                                      style: customStyle(
+                                                                        fontSize: 12.0.sp,
+                                                                      ),
                                                                     ),
                                                                     Container(
-                                                                      height: heightRatio(
-                                                                        context: context,
-                                                                        heightRatio: 0.01,
-                                                                      ),
+                                                                        height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                        "전화번호 : ${searchCompanyUserResult[index].phone}"
-                                                                    ),
-                                                                    Container(
-                                                                      height: heightRatio(
-                                                                        context: context,
-                                                                        heightRatio: 0.01,
+                                                                        "전화번호 : ${searchCompanyUserResult[index].phone}",
+                                                                      style: customStyle(
+                                                                        fontSize: 12.0.sp,
                                                                       ),
                                                                     ),
                                                                     Container(
-                                                                      height: heightRatio(
-                                                                        context: context,
-                                                                        heightRatio: 0.02,
-                                                                      ),
+                                                                        height: 1.5.h
                                                                     ),
                                                                     Container(
-                                                                      height: heightRatio(
-                                                                        context: context,
-                                                                        heightRatio: 0.04,
-                                                                      ),
-                                                                      width: widthRatio(
-                                                                        context: context,
-                                                                        widthRatio: 1,
-                                                                      ),
+                                                                      height: 3.0.h,
+                                                                    ),
+                                                                    Container(
+                                                                      height: 4.0.h,
+                                                                      width: 100.0.w,
                                                                       child: Row(
                                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                                         children: [
                                                                           Container(
-                                                                            width: widthRatio(
-                                                                              context: context,
-                                                                              widthRatio: 0.2,
-                                                                            ),
+                                                                            width: 20.0.w,
                                                                             child: RaisedButton(
                                                                               elevation: 0.0,
                                                                               color: blueColor,
@@ -676,6 +594,7 @@ settingUserAddDelete(BuildContext context) {
                                                                                 "퇴사",
                                                                                 style: customStyle(
                                                                                   fontColor: whiteColor,
+                                                                                  fontSize: 12.0.sp,
                                                                                 ),
                                                                               ),
                                                                               shape: RoundedRectangleBorder(
@@ -700,16 +619,10 @@ settingUserAddDelete(BuildContext context) {
                                                                             ),
                                                                           ),
                                                                           Container(
-                                                                            width: widthRatio(
-                                                                              context: context,
-                                                                              widthRatio: 0.1,
-                                                                            ),
+                                                                            width: 10.0.w,
                                                                           ),
                                                                           Container(
-                                                                            width: widthRatio(
-                                                                              context: context,
-                                                                              widthRatio: 0.2,
-                                                                            ),
+                                                                            width: 20.0.w,
                                                                             child: RaisedButton(
                                                                               elevation: 0.0,
                                                                               color: blueColor,
@@ -717,6 +630,7 @@ settingUserAddDelete(BuildContext context) {
                                                                                 "취소",
                                                                                 style: customStyle(
                                                                                   fontColor: whiteColor,
+                                                                                  fontSize: 12.0.sp,
                                                                                 ),
                                                                               ),
                                                                               shape: RoundedRectangleBorder(
