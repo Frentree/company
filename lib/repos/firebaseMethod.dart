@@ -303,11 +303,18 @@ class FirebaseMethods {
         .update(approvalModel.toJson());
   }
 
-  Future<DocumentSnapshot> getCompanyInfo({String companyCode}) {
-    return firestore
+  Future<DocumentSnapshot> getCompanyInfo({String companyCode}) async {
+    return await firestore
         .collection(COMPANY)
         .document(companyCode)
         .get();
+  }
+
+  Stream<DocumentSnapshot> getCompanyInfos(String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .snapshots();
   }
 
   Future<DocumentSnapshot> photoProfile(String companyCode, String mail) async {
@@ -329,12 +336,26 @@ class FirebaseMethods {
           "profilePhoto" : url,
         });
 
-    return firestore
+    return await firestore
         .collection(USER)
         .document(mail)
         .update({
           "profilePhoto" : url,
         });
+  }
+
+  Future<void> updateCompany(String companyCode, String companyName, String companyNo, String companyAddr, String companyPhone, String companyWeb, String url) async {
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .update({
+      "companyName" : companyName,
+      "comapnyNo" : companyNo,
+      "companyAddr" : companyAddr,
+      "companyPhone" : companyPhone,
+      "companyWeb" : companyWeb,
+      "companyPhoto" : url,
+    });
   }
 
   Future<void> updatePhone(String companyCode, String mail, String phone) async {

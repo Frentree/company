@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:companyplaylist/i18n/app_localizations.dart';
 import 'package:companyplaylist/provider/screen/companyScreenChange.dart';
 import 'package:companyplaylist/provider/user/loginUserInfo.dart';
 import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         localizationsDelegates: [
           // ... app-specific localization delegate[s] here
+          AppLocalizationDelegate(),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           DefaultCupertinoLocalizations.delegate,

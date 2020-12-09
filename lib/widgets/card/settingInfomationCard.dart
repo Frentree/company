@@ -232,42 +232,38 @@ Widget getMyInfomationCard({BuildContext context, User user}){
 
 // 회사 정보
 Widget getCompanyInfomationCard({BuildContext context, User user}){
+  String imageUrl = "";
   return Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-    child: FutureBuilder(
-      future: FirebaseRepository().getCompanyInfo(companyCode: user.companyCode),
+    child: StreamBuilder(
+      stream: FirebaseRepository().getCompanyInfos(companyCode: user.companyCode),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox();
-
+        imageUrl = snapshot.data['companyPhoto'] != "" ? snapshot.data['companyPhoto'] :
+        "https://firebasestorage.googleapis.com/v0/b/app-dev-c912f.appspot.com/o/defaultImage%2Fnoimage.png?alt=media&token=c447305b-d623-444e-a163-fc1b3e393699";
         return Column(
           children: [
             Row(
               children: [
-
-                Stack(
-                  children: [
-                    Container(
-                      color: mainColor,
+                Container(
+                  color: mainColor,
+                  width: customWidth(
+                      context: context,
+                      widthSize: 0.2
+                  ),
+                  child: Center(
+                    child: Container(
+                      color: whiteColor,
+                      alignment: Alignment.center,
                       width: customWidth(
-                        context: context,
-                        widthSize: 0.2
+                          context: context,
+                          widthSize: 0.2
                       ),
-                      child: Center(
-                        child: Container(
-                            color: whiteColor,
-                            alignment: Alignment.center,
-                            width: customWidth(
-                                context: context,
-                                widthSize: 0.2
-                            ),
-                            child: Image.network(
-                                snapshot.data['companyPhoto'] != "" ? snapshot.data['companyPhoto'] :
-                                "https://firebasestorage.googleapis.com/v0/b/app-dev-c912f.appspot.com/o/defaultImage%2Fnoimage.png?alt=media&token=c447305b-d623-444e-a163-fc1b3e393699"
-                            ),
-                        ),
+                      child: Image.network(
+                          imageUrl
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
                 Expanded(child: Padding(padding: EdgeInsets.only(left: 10))),
 
@@ -282,7 +278,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
                     ),
                   ),
                   onPressed: () {
-                    SettingMyPageUpdate(context);
+                    SettingCompanyPageUpdate(context, imageUrl);
                   },
                 ),
 
@@ -328,7 +324,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
               children: [
                 Expanded(
                   child: Text(
-                    "사업자 no",
+                    "사업자 번호",
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,
