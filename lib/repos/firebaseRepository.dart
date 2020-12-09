@@ -20,28 +20,39 @@ class FirebaseRepository {
       _firebaseMethods.saveExpense(expenseModel);
 
   Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
-    _firebaseMethods.getExpense(companyCode, uid);
+      _firebaseMethods.getExpense(companyCode, uid);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
-        userModel: userModel,
-      );
+    userModel: userModel,
+  );
 
   Future<User> getUser({String userMail}) => _firebaseMethods.getUser(
-        userMail: userMail,
-      );
+    userMail: userMail,
+  );
 
   Future<void> updateUser({User userModel}) => _firebaseMethods.updateUser(
-        userModel: userModel,
-      );
+    userModel: userModel,
+  );
 
   Future<void> saveCompany({Company companyModel}) =>
       _firebaseMethods.saveCompany(
         companyModel: companyModel,
       );
 
+  Future<void> deleteCompanyUser({String companyCode, CompanyUser companyUserModel}) =>
+      _firebaseMethods.deleteCompanyUser(companyCode: companyCode, companyUserModel: companyUserModel);
+
   Future<List<DocumentSnapshot>> getCompany({String companyName}) =>
       _firebaseMethods.getCompany(
         companyName: companyName,
+      );
+
+  Future<List<DocumentSnapshot>> searchCompanyUser(
+      {String companyUserName, String companyCode, String loginUserMail}) =>
+      _firebaseMethods.searchCompanyUser(
+        companyCode: companyCode,
+        companyUserName: companyUserName,
+        loginUserMail: loginUserMail,
       );
 
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) =>
@@ -89,21 +100,21 @@ class FirebaseRepository {
       );
 
   Stream<QuerySnapshot> getSelectedDateCompanyWork(
-          {String companyCode, Timestamp selectedDate}) =>
+      {String companyCode, Timestamp selectedDate}) =>
       _firebaseMethods.getSelectedDateCompanyWork(
         companyCode: companyCode,
         selectedDate: selectedDate,
       );
 
   Stream<QuerySnapshot> getSelectedWeekCompanyWork(
-          {String companyCode, List<Timestamp> selectedWeek}) =>
+      {String companyCode, List<Timestamp> selectedWeek}) =>
       _firebaseMethods.getSelectedWeekCompanyWork(
         companyCode: companyCode,
         selectedWeek: selectedWeek,
       );
 
   Future<Map<String, String>> getColleague(
-          {String loginUserMail, String companyCode}) =>
+      {String loginUserMail, String companyCode}) =>
       _firebaseMethods.getColleague(
           loginUserMail: loginUserMail, companyCode: companyCode);
 
@@ -114,7 +125,7 @@ class FirebaseRepository {
   );
 
   Future<QuerySnapshot> getMyTodayAttendance(
-          {String companyCode, String loginUserMail, Timestamp today}) =>
+      {String companyCode, String loginUserMail, Timestamp today}) =>
       _firebaseMethods.getMyTodayAttendance(
         companyCode: companyCode,
         loginUserMail: loginUserMail,
@@ -129,9 +140,9 @@ class FirebaseRepository {
   );
 
   Future<void> saveApproval(
-          {String companyCode,
-          String appManagerMail,
-          Approval approvalModel}) =>
+      {String companyCode,
+        String appManagerMail,
+        Approval approvalModel}) =>
       _firebaseMethods.saveApproval(
         companyCode: companyCode,
         approvalModel: approvalModel,
@@ -148,10 +159,10 @@ class FirebaseRepository {
       );
 
   Stream<DocumentSnapshot> getCompanyInfos({String companyCode}) =>
-    _firebaseMethods.getCompanyInfos(companyCode);
+      _firebaseMethods.getCompanyInfos(companyCode);
 
   Future<void> updateApproval(
-          {Approval approvalModel, String companyCode}) =>
+      {Approval approvalModel, String companyCode}) =>
       _firebaseMethods.updateApproval(
         approvalModel: approvalModel,
         companyCode: companyCode,

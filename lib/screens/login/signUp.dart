@@ -52,7 +52,7 @@ class SignUpPageState extends State<SignUpPage> {
   User _newUser = User();
 
   //
-  bool isPhoneVerify = false;
+  bool isPhoneVerify = true/*false*/;
 
   //폼 유효성 여부 확인을 위한 List
   List<bool> isFormValidation = [false, false, false, false, false, false];
@@ -299,7 +299,7 @@ class SignUpPageState extends State<SignUpPage> {
                       child: TextFormField(
                         controller: _phoneNumberTextCon,
                         decoration: InputDecoration(
-                          hintText: "핸드폰번호(010-2226-9930/인증번호 : 123456)",
+                          hintText: "핸드폰번호",
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
@@ -332,7 +332,7 @@ class SignUpPageState extends State<SignUpPage> {
                         heightRatio: 0.025,
                       ),
                     ),
-                    Container(
+                    /*Container(
                       height: heightRatio(
                         context: context,
                         heightRatio: 0.06,
@@ -372,13 +372,13 @@ class SignUpPageState extends State<SignUpPage> {
                           });
                         } : null,
                       ),
-                    ),
+                    ),*/
 
                     Container(
                       height: heightRatio(context: context, heightRatio: 0.025),
                     ),
 
-                    Visibility(
+                    /*Visibility(
                       visible: isPhoneVerify,
                       child: Container(
                         height: heightRatio(context: context, heightRatio: 0.125),
@@ -572,7 +572,7 @@ class SignUpPageState extends State<SignUpPage> {
                           ],
                         ),
                       ),
-                    ),
+                    ),*/
                     Container(
                       height: heightRatio(
                         context: context,
@@ -610,10 +610,10 @@ class SignUpPageState extends State<SignUpPage> {
                             fontColor: whiteColor,
                           ),
                         ),
-                        onPressed: !(isFormValidation.contains(false) || _smsCode.contains("")) ? () async {
+                        onPressed: !(isFormValidation.contains(false) /*|| _smsCode.contains("")*/) ? () async {
                           await _loginRepository.signUpWithFirebaseAuth(
                             context: context,
-                            smsCode: _smsCode.join(),
+                            /*smsCode: _smsCode.join(),*/
                             password: _passwordTextCon.text,
                             user: _newUser,
                           );

@@ -1,9 +1,5 @@
 
-<<<<<<< HEAD
-=======
-
 import 'package:cloud_firestore/cloud_firestore.dart';
->>>>>>> minji
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/models/userModel.dart';
