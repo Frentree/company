@@ -10,9 +10,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 Widget getMyInfomationCard({BuildContext context, User user}){
-  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  StorageReference storageReference =
-  _firebaseStorage.ref().child("profile/${user.mail}");
   return Padding(
     padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
     child: Column(
@@ -49,7 +46,6 @@ Widget getMyInfomationCard({BuildContext context, User user}){
                             Icons.person_outline
                         );
                       }
-
                       return Image.network(
                           snapshot.data['profilePhoto']
                       );
