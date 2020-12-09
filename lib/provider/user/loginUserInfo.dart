@@ -1,13 +1,13 @@
 //Flutter
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 class LoginUserInfoProvider with ChangeNotifier{
   User _loginUser;

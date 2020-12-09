@@ -1,16 +1,15 @@
 //Flutter
-import 'package:companyplaylist/consts/screenSize/signUpMain.dart';
-import 'package:companyplaylist/consts/universalString.dart';
+import 'package:MyCompany/consts/universalString.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
 //Screen
-import 'package:companyplaylist/screens/login/login.dart';
-import 'package:companyplaylist/screens/login/signUp.dart';
+import 'package:MyCompany/screens/login/login.dart';
+import 'package:MyCompany/screens/login/signUp.dart';
 
 class SignUpMainPage extends StatelessWidget {
   @override
@@ -30,46 +29,45 @@ class SignUpMainPage extends StatelessWidget {
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: distance1H,
+                      heightRatio: 0.06,
                     ),
                   ),
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: appNameSizeH,
+                      heightRatio: 0.07,
                     ),
-                    child: Text(
-                      APP_NAME,
-                      style: customStyle(
+                    width: widthRatio(context: context, widthRatio: 0.6),
+                    child: font(
+                      text: APP_NAME,
+                      textStyle: customStyle(
                         fontWeightName: "Medium",
                         fontColor: whiteColor,
-                        fontSize: appNameFont,
                       ),
                     ),
                   ),
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: distance2H,
+                      heightRatio: 0.03,
                     ),
                   ),
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: appVersionSizeH,
+                      heightRatio: 0.03,
                     ),
-                    width: widthRatio(context: context, widthRatio: appVersionSizeW),
+                    width: widthRatio(context: context, widthRatio: 1),
                     child: Padding(
                       padding: EdgeInsets.only(
-                        left: widthRatio(context: context, widthRatio: appVersionPaddingL),
-                        right: widthRatio(context: context, widthRatio: appVersionPaddingR),
+                        left: widthRatio(context: context, widthRatio: 0.6),
+                        right: widthRatio(context: context, widthRatio: 0.1),
                       ),
-                      child: Text(
-                        "Relase " + APP_VERSION,
-                        style: customStyle(
+                      child: font(
+                        text: "Release " + APP_VERSION,
+                        textStyle: customStyle(
                           fontWeightName: "Regular",
                           fontColor: whiteColor,
-                          fontSize: appVersionFont,
                         ),
                       ),
                     ),
@@ -77,7 +75,7 @@ class SignUpMainPage extends StatelessWidget {
                   Container(
                     height: heightRatio(
                       context: context,
-                      heightRatio: distance3H,
+                      heightRatio: 0.06,
                     ),
                   ),
                 ],
@@ -85,15 +83,15 @@ class SignUpMainPage extends StatelessWidget {
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: childSizeH,
+                  heightRatio: 0.75,
                 ),
                 width: widthRatio(
                   context: context,
-                  widthRatio: childSizeW,
+                  widthRatio: 1,
                 ),
                 padding: EdgeInsets.symmetric(
-                  horizontal: widthRatio(context: context, widthRatio: childPaddingLR),
-                  vertical: heightRatio(context: context, heightRatio: childPaddingUD),
+                  horizontal: widthRatio(context: context, widthRatio: 0.1),
+                  vertical: heightRatio(context: context, heightRatio: 0.025),
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(

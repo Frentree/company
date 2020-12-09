@@ -2,10 +2,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebaseMethod.dart';
+import 'package:MyCompany/repos/firebaseMethod.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 
 

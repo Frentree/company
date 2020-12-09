@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 

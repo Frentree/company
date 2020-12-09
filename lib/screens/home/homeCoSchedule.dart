@@ -1,31 +1,31 @@
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/widgets/bottomsheet/schedule/coScheduleDetail.dart';
-import 'package:companyplaylist/widgets/notImplementedPopup.dart';
-import 'package:companyplaylist/widgets/table/workDetailTable.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/widgets/table/workDetailTable.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/repos/tableCalendar/table_calendar.dart';
+import 'package:MyCompany/repos/tableCalendar/table_calendar.dart';
 
 //Model
-import 'package:companyplaylist/models/workModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/workModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
 
 //Util
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 
 //Widget
-import 'package:companyplaylist/widgets/button/textButton.dart';
-import 'package:companyplaylist/widgets/card/workCoScheduleCard.dart';
+import 'package:MyCompany/widgets/button/textButton.dart';
+import 'package:MyCompany/widgets/card/workCoScheduleCard.dart';
 
 import '../../models/workModel.dart';
 

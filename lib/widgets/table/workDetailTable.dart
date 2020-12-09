@@ -1,18 +1,18 @@
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/widgets/bottomsheet/schedule/coScheduleDetail.dart';
-import 'package:companyplaylist/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
 
 //Model
-import 'package:companyplaylist/models/workModel.dart';
+import 'package:MyCompany/models/workModel.dart';
 
 //Util
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 
 import '../../models/workModel.dart';
 

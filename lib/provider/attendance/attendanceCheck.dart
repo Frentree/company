@@ -1,8 +1,8 @@
 //Flutter
-import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:ios_network_info/ios_network_info.dart';
 import 'package:wifi/wifi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,14 +12,14 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Model
-import 'package:companyplaylist/models/attendanceModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 //Utils
-import 'package:companyplaylist/utils/date/dateFormat.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 
 //Widget
-import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:MyCompany/widgets/button/textButton.dart';
 
 class AttendanceCheck extends ChangeNotifier {
   Format _format = Format();

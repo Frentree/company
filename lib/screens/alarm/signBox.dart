@@ -1,7 +1,7 @@
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/screens/alarm/signBoxExpense.dart';
-import 'package:companyplaylist/screens/alarm/signBoxPurchase.dart';
-import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/screens/alarm/signBoxExpense.dart';
+import 'package:MyCompany/screens/alarm/signBoxPurchase.dart';
+import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:flutter/material.dart';
 
 class SignBox extends StatefulWidget {

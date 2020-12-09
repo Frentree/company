@@ -1,14 +1,14 @@
 //Flutter
-import 'package:companyplaylist/consts/universalString.dart';
-import 'package:companyplaylist/screens/login/companyCreate.dart';
-import 'package:companyplaylist/screens/login/companyJoin.dart';
-import 'package:companyplaylist/screens/login/userTypeSelect.dart';
+import 'package:MyCompany/consts/universalString.dart';
+import 'package:MyCompany/screens/login/companyCreate.dart';
+import 'package:MyCompany/screens/login/companyJoin.dart';
+import 'package:MyCompany/screens/login/userTypeSelect.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
 class CompanySetMainPage extends StatelessWidget {
   @override

@@ -1,24 +1,24 @@
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/models/attendanceModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
-import 'package:companyplaylist/provider/attendance/attendanceCheck.dart';
-import 'package:companyplaylist/provider/user/loginUserInfo.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
-import 'package:companyplaylist/screens/alarm/alarmMain.dart';
-import 'package:companyplaylist/screens/approval/approval.dart';
-import 'package:companyplaylist/screens/search/searchMain.dart';
-import 'package:companyplaylist/screens/setting/settingMain.dart';
-import 'package:companyplaylist/widgets/bottomsheet/mainBottomSheet.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
+import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/alarm/alarmMain.dart';
+import 'package:MyCompany/screens/approval/approval.dart';
+import 'package:MyCompany/screens/search/searchMain.dart';
+import 'package:MyCompany/screens/setting/settingMain.dart';
+import 'package:MyCompany/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 
 //Screen
-import 'package:companyplaylist/screens/home/homeScheduleMain.dart';
+import 'package:MyCompany/screens/home/homeScheduleMain.dart';
 import 'package:provider/provider.dart';
 
 class HomeMainPage extends StatefulWidget {
@@ -30,14 +30,15 @@ class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
   List<Widget> _page = [
     HomeScheduleMainPage(),
-    SearchMainPage(),
+    /// 기능 미구현으로 인한 숨김 처리
+    //SearchMainPage(),
     null,
     AlarmMainPage(),
     SettingMainPage()
   ];
 
   //현재 페이지 인덱스
-  int _currentPateIndex = 0;
+  int _currentPageIndex = 0;
 
   Attendance _attendance = Attendance();
 
@@ -47,7 +48,7 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   //페이지 이동
   void _pageChange(int pageIndex) {
-    if (pageIndex == 2) {
+    if (pageIndex == 1) {
       MainBottomSheet(
           context: context,
           companyCode: _loginUser.companyCode,
@@ -55,7 +56,7 @@ class HomeMainPageState extends State<HomeMainPage> {
     } else {
       setState(() {
         print(pageIndex);
-        _currentPateIndex = pageIndex;
+        _currentPageIndex = pageIndex;
       });
     }
   }
@@ -169,7 +170,7 @@ class HomeMainPageState extends State<HomeMainPage> {
             ),
             Expanded(
               flex: 11,
-              child: _page[_currentPateIndex],
+              child: _page[_currentPageIndex],
             ),
           ],
         ),
@@ -183,38 +184,76 @@ class HomeMainPageState extends State<HomeMainPage> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         onTap: _pageChange,
-        currentIndex: _currentPateIndex,
+        currentIndex: _currentPageIndex,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.calendar_today,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.04,
-                ),
-              ),
+              icon: (_currentPageIndex == 0)
+                  ? Icon(
+                      Icons.calendar_today,
+                      size: customHeight(
+                        context: context,
+                        heightSize: 0.05,
+                      ),
+                color: blueColor,
+                    )
+                  : Icon(
+                      Icons.calendar_today,
+                      size: customHeight(
+                        context: context,
+                        heightSize: 0.04,
+                      ),
+                    ),
               title: Text("Schedule")),
+
+          /// 기능 미구현으로 인한 숨김 처리
+          /*BottomNavigationBarItem(
+          icon: (_currentPateIndex == 0)
+                  ? Icon(
+                      Icons.search,
+                      size: customHeight(
+                        context: context,
+                        heightSize: 0.06,
+                      ),
+                color: blueColor,
+                    )
+                  : Icon(
+                      Icons.search,
+                      size: customHeight(
+                        context: context,
+                        heightSize: 0.04,
+                      ),
+                    ),
+              =
+              title: Text("Search")),*/
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.04,
-                ),
-              ),
-              title: Text("Search")),
-          BottomNavigationBarItem(
-              icon: Icon(
+              icon: (_currentPageIndex == 1)
+                  ? Icon(
                 Icons.add_circle_outline,
                 size: customHeight(
                   context: context,
-                  heightSize: 0.06,
+                  heightSize: 0.05,
                 ),
                 color: blueColor,
+              )
+                  : Icon(
+                Icons.add_circle_outline,
+                size: customHeight(
+                  context: context,
+                  heightSize: 0.04,
+                ),
               ),
               title: Text("Create")),
           BottomNavigationBarItem(
-              icon: Icon(
+              icon: (_currentPageIndex == 2)
+                  ? Icon(
+                Icons.notifications_none,
+                size: customHeight(
+                  context: context,
+                  heightSize: 0.05,
+                ),
+                color: blueColor,
+              )
+                  : Icon(
                 Icons.notifications_none,
                 size: customHeight(
                   context: context,
@@ -223,7 +262,16 @@ class HomeMainPageState extends State<HomeMainPage> {
               ),
               title: Text("Push")),
           BottomNavigationBarItem(
-              icon: Icon(
+              icon: (_currentPageIndex == 3)
+                  ? Icon(
+                Icons.menu,
+                size: customHeight(
+                  context: context,
+                  heightSize: 0.05,
+                ),
+                color: blueColor,
+              )
+                  : Icon(
                 Icons.menu,
                 size: customHeight(
                   context: context,

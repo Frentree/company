@@ -1,8 +1,8 @@
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
-import 'package:companyplaylist/widgets/button/textButton.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/provider/screen/loginScreenChange.dart';
+import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

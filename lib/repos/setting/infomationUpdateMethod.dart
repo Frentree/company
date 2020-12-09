@@ -1,20 +1,20 @@
 //Flutter
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/repos/login/loginRepository.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:flutter/material.dart';
 
 //Provider
 import 'package:provider/provider.dart';
-import 'package:companyplaylist/provider/firebase/firebaseAuth.dart';
-import 'package:companyplaylist/provider/screen/loginScreenChange.dart';
+import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
+import 'package:MyCompany/provider/screen/loginScreenChange.dart';
 
 //Repos
-import 'package:companyplaylist/repos/firebasecrud/crudRepository.dart';
-import 'package:companyplaylist/repos/showSnackBarMethod.dart';
+import 'package:MyCompany/repos/firebasecrud/crudRepository.dart';
+import 'package:MyCompany/repos/showSnackBarMethod.dart';
 
 //Model
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 
 class myInfomationMethod{
   Future<bool> InfomationConfirmWithFirebaseAuth({BuildContext context, String mail, String password, String name}) async {

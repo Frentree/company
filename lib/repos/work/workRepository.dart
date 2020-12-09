@@ -1,10 +1,10 @@
 /*
 //Flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/models/bigCategoryModel.dart';
-import 'package:companyplaylist/models/userModel.dart';
+import 'package:MyCompany/models/bigCategoryModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 import 'package:flutter/material.dart';
-import 'package:companyplaylist/repos/work/workScheduleMethod.dart';
+import 'package:MyCompany/repos/work/workScheduleMethod.dart';
 
 class WorkRepository{
   WorkScheduleMethod _workScheduleMethod = WorkScheduleMethod();

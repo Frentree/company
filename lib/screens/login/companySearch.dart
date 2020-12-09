@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/consts/colorCode.dart';
-import 'package:companyplaylist/consts/font.dart';
-import 'package:companyplaylist/consts/widgetSize.dart';
-import 'package:companyplaylist/models/companyModel.dart';
-import 'package:companyplaylist/repos/firebaseRepository.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/companyModel.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:flutter/material.dart';
 
 class CompanySearchPage extends StatefulWidget {

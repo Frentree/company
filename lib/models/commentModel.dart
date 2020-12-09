@@ -8,7 +8,7 @@
 *
 */
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:companyplaylist/models/commentListModel.dart';
+import 'package:MyCompany/models/commentListModel.dart';
 
 class CommentModel {
   String commentid;
