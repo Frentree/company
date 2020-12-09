@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:companyplaylist/consts/colorCode.dart';
 import 'package:companyplaylist/consts/font.dart';
 import 'package:companyplaylist/consts/widgetSize.dart';
+import 'package:companyplaylist/consts/screenSize/login.dart';
 
 //Repos
 import 'package:companyplaylist/repos/login/loginRepository.dart';
@@ -52,46 +53,42 @@ class LoginPageState extends State<LoginPage> {
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.06,
+                  heightRatio: pageNameSizeH,
                 ),
-                child: font(
-                  text: "로그인",
-                  textStyle: customStyle(
+                child: Text(
+                  "로그인",
+                  style: customStyle(
                     fontWeightName: "Medium",
                     fontColor: blueColor,
+                    fontSize: pageNameFont,
                   ),
                 ),
               ),
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.03,
+                  heightRatio: distance1H,
                 ),
               ),
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.24,
+                  heightRatio: loginInfoSizeH,
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: heightRatio(
-                        context: context,
-                        heightRatio: 0.04
-                      ),
-                      child: TextFormField(
-                        controller: _mailTextCon,
-                        decoration: InputDecoration(
-                          hintText: "이메일",
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: textFieldUnderLine,
-                            ),
+                    TextFormField(
+                      controller: _mailTextCon,
+                      decoration: InputDecoration(
+                        hintText: "이메일",
+                        hintStyle: customStyle(
+                          fontWeightName: "Regular",
+                          fontColor: mainColor,
+                            fontSize: hintTextFont,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: textFieldUnderLine,
                           ),
                         ),
                       ),
@@ -102,6 +99,7 @@ class LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         hintText: "비밀번호",
                         hintStyle: customStyle(
+                          fontSize: hintTextFont,
                           fontWeightName: "Regular",
                           fontColor: mainColor,
                         ),
@@ -118,17 +116,17 @@ class LoginPageState extends State<LoginPage> {
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.025,
+                  heightRatio: distance2H,
                 ),
               ),
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.06,
+                  heightRatio: buttonH,
                 ),
-                width: widthRatio(context: context, widthRatio: 1),
+                width: widthRatio(context: context, widthRatio: buttonW),
                 padding: EdgeInsets.symmetric(
-                    horizontal: widthRatio(context: context, widthRatio: 0.2)),
+                    horizontal: widthRatio(context: context, widthRatio: buttonPaddingLR)),
                 child: RaisedButton(
                   color: blueColor,
                   shape: RoundedRectangleBorder(
@@ -138,11 +136,12 @@ class LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   elevation: 0.0,
-                  child: font(
-                    text: "로그인",
-                    textStyle: customStyle(
+                  child: Text(
+                    "로그인",
+                    style: customStyle(
                       fontWeightName: "Medium",
                       fontColor: whiteColor,
+                      fontSize: buttonFont,
                     ),
                   ),
                   onPressed: () {
@@ -157,22 +156,22 @@ class LoginPageState extends State<LoginPage> {
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.025,
+                  heightRatio: distance3H,
                 ),
               ),
               Container(
                 height: heightRatio(
                   context: context,
-                  heightRatio: 0.06,
+                  heightRatio: buttonH,
                 ),
                 width: widthRatio(
                   context: context,
-                  widthRatio: 1,
+                  widthRatio: buttonW,
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: widthRatio(
                     context: context,
-                    widthRatio: 0.2,
+                    widthRatio: buttonPaddingLR,
                   ),
                 ),
                 child: RaisedButton(
@@ -184,11 +183,12 @@ class LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   elevation: 0.0,
-                  child: font(
-                    text: "회원가입",
-                    textStyle: customStyle(
+                  child: Text(
+                    "회원가입",
+                    style: customStyle(
                       fontWeightName: "Medium",
                       fontColor: blueColor,
+                      fontSize: buttonFont,
                     ),
                   ),
                   onPressed: () {
