@@ -1,11 +1,14 @@
 //Flutter
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:kopo/kopo.dart';
 
 //Const
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+
 
 //Repos
 import 'package:MyCompany/repos/login/loginRepository.dart';
@@ -62,40 +65,43 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.06,
-            ),
-            child: font(
-              text: "회사 생성",
-              textStyle: customStyle(
+            height: pageNameSizeH.h,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "회사 생성",
+              style: customStyle(
                 fontWeightName: "Medium",
                 fontColor: blueColor,
+                fontSize: pageNameFontSize.sp,
               ),
             ),
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.03,
-            ),
+            height: widgetDistanceH.h,
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.36,
-            ),
             child: Column(
               children: [
                 Form(
                   key: _formKeyCompanyName,
                   child: TextFormField(
                     controller: _companyNameCon,
+                    style: customStyle(
+                      fontWeightName: "Regular",
+                      fontColor: mainColor,
+                      fontSize: textFormFontSize.sp,
+                    ),
                     decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: textFormFontPaddingH.h,
+                        horizontal: textFormFontPaddingW.w,
+                      ),
                       hintText: "회사명",
                       hintStyle: customStyle(
                         fontWeightName: "Regular",
                         fontColor: mainColor,
+                        fontSize: textFormFontSize.sp,
                       ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -111,15 +117,29 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                     }),
                   ),
                 ),
+                Container(
+                  height: widgetDistanceH.h,
+                ),
                 TextFormField(
                   controller: _companyAddressCon,
+                  style: customStyle(
+                    fontWeightName: "Regular",
+                    fontColor: mainColor,
+                    fontSize: textFormFontSize.sp,
+                  ),
                   readOnly: true,
                   showCursor: false,
                   decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: textFormFontPaddingH.h,
+                      horizontal: textFormFontPaddingW.w,
+                    ),
                     hintText: "회사 주소",
                     hintStyle: customStyle(
                       fontWeightName: "Regular",
                       fontColor: mainColor,
+                      fontSize: textFormFontSize.sp,
                     ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -143,16 +163,30 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                     }
                   },
                 ),
+                Container(
+                  height: widgetDistanceH.h,
+                ),
                 TextFormField(
                   controller: _companyDetailAddressCon,
+                  style: customStyle(
+                    fontWeightName: "Regular",
+                    fontColor: mainColor,
+                    fontSize: textFormFontSize.sp,
+                  ),
                   readOnly: _companyAddressCon.text == "",
                   showCursor: _companyAddressCon.text != "",
                   autofocus: _companyAddressCon.text != "",
                   decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: textFormFontPaddingH.h,
+                      horizontal: textFormFontPaddingW.w,
+                    ),
                     hintText: "상세 주소",
                     hintStyle: customStyle(
                       fontWeightName: "Regular",
                       fontColor: mainColor,
+                      fontSize: textFormFontSize.sp,
                     ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -165,49 +199,35 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
             ),
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.025,
-            ),
+            height: widgetButtonDistanceH.h,
           ),
-          Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.06,
-            ),
-            width: widthRatio(context: context, widthRatio: 1),
-            padding: EdgeInsets.symmetric(
-                horizontal: widthRatio(context: context, widthRatio: 0.2)),
-            child: RaisedButton(
-              color: blueColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide(
-                  color: whiteColor,
+          Center(
+            child: Container(
+              height: buttonSizeH.h,
+              width: buttonSizeW.w,
+              child: RaisedButton(
+                color: blueColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(buttonRadiusW.w),
                 ),
-              ),
-              elevation: 0.0,
-              child: font(
-                text: "회사 생성",
-                textStyle: customStyle(
-                  fontWeightName: "Medium",
-                  fontColor: whiteColor,
+                elevation: 0.0,
+                child: Text(
+                  "회사생성",
+                  style: customStyle(
+                    fontWeightName: "Medium",
+                    fontColor: whiteColor,
+                    fontSize: buttonFontSize.sp,
+                  ),
                 ),
+                onPressed: _companyAddressCon.text != ""
+                    ? () async {
+                        _loginRepository.createCompany(
+                          context: context,
+                          companyModel: _newCompany,
+                        );
+                      }
+                    : null,
               ),
-              onPressed: _companyAddressCon.text != ""
-                  ? () async {
-                      _loginRepository.createCompany(
-                        context: context,
-                        companyModel: _newCompany,
-                      );
-                    }
-                  : null,
-            ),
-          ),
-          Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.025,
             ),
           ),
         ],

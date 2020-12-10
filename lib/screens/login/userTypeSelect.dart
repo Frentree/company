@@ -1,11 +1,15 @@
 //Flutter
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 //Const
+import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+
 
 //Provider
 import 'package:provider/provider.dart';
@@ -19,162 +23,109 @@ class UserTypeSelectPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.06,
-            ),
-            child: font(
-              text: "사용자 유형 선택",
-              textStyle: customStyle(
+            height: pageNameSizeH.h,
+            alignment: Alignment.center,
+            child: Text(
+              "사용자 유형 선택",
+              style: customStyle(
                 fontWeightName: "Medium",
                 fontColor: blueColor,
+                fontSize: pageNameFontSize.sp,
               ),
             ),
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.03,
-            ),
+            height: widgetDistanceH.h,
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.24,
-            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  height: heightRatio(
-                    context: context,
-                    heightRatio: 0.13,
-                  ),
-                  width: widthRatio(
-                    context: context,
-                    widthRatio: 0.35,
-                  ),
+                  height: 20.0.h,
+                  width: 35.0.w,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: heightRatio(
-                          context: context,
-                          heightRatio: 0.045,
-                        ),
-                        width: widthRatio(
-                          context: context,
-                          widthRatio: 0.35
-                        ),
-                        child: font(
-                          text: "새로운 회사 생성",
-                          textStyle: customStyle(
+                        height: 4.0.h,
+                        child: Text(
+                          "새로운 회사 생성",
+                          style: customStyle(
                             fontWeightName: "Regular",
                             fontColor: grayColor,
+                            fontSize: 13.0.sp,
                           ),
                         ),
                       ),
                       Container(
-                        height: heightRatio(
-                          context: context,
-                          heightRatio: 0.025,
-                        ),
+                        height: widgetDistanceH.h,
                       ),
-                      Container(
-                        height: heightRatio(
-                          context: context,
-                          heightRatio: 0.06,
-                        ),
-                        width: widthRatio(
-                          context: context,
-                          widthRatio: 0.35
-                        ),
-                        child: RaisedButton(
-                          color: blueColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: whiteColor,
+                      Center(
+                        child: Container(
+                          height: buttonSizeH.h,
+                          width: buttonSizeW.w,
+                          child: RaisedButton(
+                            color: blueColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(buttonRadiusW.w),
                             ),
-                          ),
-                          elevation: 0.0,
-                          child: font(
-                            text: "관리자",
-                            textStyle: customStyle(
-                              fontWeightName: "Medium",
-                              fontColor: whiteColor,
+                            elevation: 0.0,
+                            child: Text(
+                              "관리자",
+                              style: customStyle(
+                                fontWeightName: "Medium",
+                                fontColor: whiteColor,
+                                fontSize: buttonFontSize.sp,
+                              ),
                             ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/CompanyCreate");
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, "/CompanyCreate");
-                          },
                         ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  width: widthRatio(
-                    context: context,
-                    widthRatio: 0.1,
-                  ),
-                ),
-                Container(
-                  height: heightRatio(
-                    context: context,
-                    heightRatio: 0.13,
-                  ),
-                  width: widthRatio(
-                    context: context,
-                    widthRatio: 0.35,
-                  ),
+                  height: 20.0.h,
+                  width: 35.0.w,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: heightRatio(
-                          context: context,
-                          heightRatio: 0.045,
-                        ),
-                        width: widthRatio(
-                            context: context,
-                            widthRatio: 0.35
-                        ),
-                        child: font(
-                          text: "생성된 회사 합류",
-                          textStyle: customStyle(
+                        height: 4.0.h,
+                        child: Text(
+                          "생성된 회사 합류",
+                          style: customStyle(
                             fontWeightName: "Regular",
                             fontColor: grayColor,
+                            fontSize: 13.0.sp,
                           ),
                         ),
                       ),
                       Container(
-                        height: heightRatio(
-                          context: context,
-                          heightRatio: 0.025,
-                        ),
+                        height: widgetDistanceH.h,
                       ),
                       Container(
-                        height: heightRatio(
-                          context: context,
-                          heightRatio: 0.06,
-                        ),
-                        width: widthRatio(
-                            context: context,
-                            widthRatio: 0.35
-                        ),
+                        height: buttonSizeH.h,
+                        width: buttonSizeW.w,
                         child: RaisedButton(
                           color: whiteColor,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(buttonRadiusW.w),
                             side: BorderSide(
                               color: blueColor,
                             ),
                           ),
                           elevation: 0.0,
-                          child: font(
-                            text: "직원",
-                            textStyle: customStyle(
+                          child: Text(
+                            "직원",
+                            style: customStyle(
                               fontWeightName: "Medium",
                               fontColor: blueColor,
+                              fontSize: buttonFontSize.sp,
                             ),
                           ),
                           onPressed: () {

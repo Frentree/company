@@ -1,13 +1,13 @@
 //Flutter
 import 'package:MyCompany/screens/login/companySearch.dart';
 import 'package:flutter/material.dart';
-import 'package:kopo/kopo.dart';
+import 'package:sizer/sizer.dart';
 
 //Const
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 //Repos
 import 'package:MyCompany/repos/login/loginRepository.dart';
 
@@ -48,40 +48,43 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.06,
-            ),
-            child: font(
-              text: "회사 가입",
-              textStyle: customStyle(
+            height: pageNameSizeH.h,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "회사 가입",
+              style: customStyle(
                 fontWeightName: "Medium",
                 fontColor: blueColor,
+                fontSize: pageNameFontSize.sp,
               ),
             ),
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.03,
-            ),
+            height: widgetDistanceH.h,
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.36,
-            ),
             child: Column(
               children: [
                 TextFormField(
                   controller: _companyNameCon,
+                  style: customStyle(
+                    fontWeightName: "Regular",
+                    fontColor: mainColor,
+                    fontSize: textFormFontSize.sp,
+                  ),
                   readOnly: true,
                   showCursor: false,
                   decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: textFormFontPaddingH.h,
+                      horizontal: textFormFontPaddingW.w,
+                    ),
                     hintText: "회사명",
                     hintStyle: customStyle(
                       fontWeightName: "Regular",
                       fontColor: mainColor,
+                      fontSize: textFormFontSize.sp,
                     ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -108,47 +111,33 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
             ),
           ),
           Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.025,
-            ),
+            height: widgetButtonDistanceH.h,
           ),
-          Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.06,
-            ),
-            width: widthRatio(context: context, widthRatio: 1),
-            padding: EdgeInsets.symmetric(
-                horizontal: widthRatio(context: context, widthRatio: 0.2)),
-            child: RaisedButton(
-              color: blueColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide(
-                  color: whiteColor,
+          Center(
+            child: Container(
+              height: buttonSizeH.h,
+              width: buttonSizeW.w,
+              child: RaisedButton(
+                color: blueColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(buttonRadiusW.w),
                 ),
-              ),
-              elevation: 0.0,
-              child: font(
-                text: "회사 가입",
-                textStyle: customStyle(
-                  fontWeightName: "Medium",
-                  fontColor: whiteColor,
+                elevation: 0.0,
+                child: Text(
+                  "회사 가입",
+                  style: customStyle(
+                    fontWeightName: "Medium",
+                    fontColor: whiteColor,
+                    fontSize: buttonFontSize.sp,
+                  ),
                 ),
+                onPressed: _companyNameCon.text != "" ? () async {
+                  _loginRepository.joinCompanyUser(
+                    context: context,
+                    companyCode: _newCompany.companyCode,
+                  );
+                } : null,
               ),
-              onPressed: _companyNameCon.text != "" ? () async {
-                _loginRepository.joinCompanyUser(
-                  context: context,
-                  companyCode: _newCompany.companyCode,
-                );
-              } : null,
-            ),
-          ),
-          Container(
-            height: heightRatio(
-              context: context,
-              heightRatio: 0.025,
             ),
           ),
         ],

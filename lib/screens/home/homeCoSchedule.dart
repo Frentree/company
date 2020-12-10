@@ -122,10 +122,8 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                   child: CircularProgressIndicator(),
                 );
               }
-
               Map<dynamic, dynamic> colleague = isTable ? {_loginUser.mail : "나"} : {}; //회원 리스트
               colleague.addAll(snapshot.data);
-
               return isTable ? StreamBuilder(
                 stream: _repository.getSelectedWeekCompanyWork(companyCode: _loginUser.companyCode, selectedWeek: _format.oneWeekDay(selectTime)),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -143,6 +141,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
 
                   snapshot.data.documents.forEach((element){
                     var elementData = element.data();
+                    print(elementData["type"]);
                     if(elementData["type"] == "내근" || elementData["type"] == "외근"){
                       companyWorkData[elementData["createUid"]].add(element);
                     }
@@ -151,7 +150,9 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                       companyWorkData[elementData["createUid"]].add(element);
                       if(elementData["attendees"] != null){
                         elementData["attendees"].keys.forEach((key){
-                          companyWorkData[key].add(element);
+                          if(companyWorkData.containsKey(key)){
+                            companyWorkData[key].add(element);
+                          }
                         });
                       }
                     }

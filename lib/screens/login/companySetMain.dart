@@ -1,21 +1,25 @@
 //Flutter
-import 'package:MyCompany/consts/universalString.dart';
+
 import 'package:MyCompany/screens/login/companyCreate.dart';
 import 'package:MyCompany/screens/login/companyJoin.dart';
 import 'package:MyCompany/screens/login/userTypeSelect.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 //Const
+import 'package:MyCompany/consts/universalString.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
+
 
 class CompanySetMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding : false,
-      backgroundColor : mainColor,
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: mainColor,
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
@@ -26,88 +30,63 @@ class CompanySetMainPage extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                    height: heightRatio(
-                      context: context,
-                      heightRatio: 0.06,
-                    ),
-                  ),
-                  Container(
-                    height: heightRatio(
-                      context: context,
-                      heightRatio: 0.07,
-                    ),
-                    width: widthRatio(context: context, widthRatio: 0.6),
-                    child: font(
-                      text: APP_NAME,
-                      textStyle: customStyle(
+                    height: appNameSizeH.h,
+                    alignment: Alignment.center,
+                    child: Text(
+                      APP_NAME,
+                      style: customStyle(
                         fontWeightName: "Medium",
                         fontColor: whiteColor,
+                        fontSize: appNameFontSize.sp,
                       ),
                     ),
                   ),
                   Container(
-                    height: heightRatio(
-                      context: context,
-                      heightRatio: 0.03,
-                    ),
+                    height: widgetDistanceH.h,
                   ),
                   Container(
-                    height: heightRatio(
-                      context: context,
-                      heightRatio: 0.03,
-                    ),
-                    width: widthRatio(context: context, widthRatio: 1),
+                    height: appVersionSizeH.h,
+                    alignment: Alignment.centerRight,
                     child: Padding(
-                      padding: EdgeInsets.only(
-                        left: widthRatio(context: context, widthRatio: 0.6),
-                        right: widthRatio(context: context, widthRatio: 0.1),
-                      ),
-                      child: font(
-                        text: "Release " + APP_VERSION,
-                        textStyle: customStyle(
+                      padding: EdgeInsets.only(right: appVersionPaddingW.w),
+                      child: Text(
+                        "Release " + APP_VERSION,
+                        style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: whiteColor,
+                          fontSize: appVersionFontSize.sp,
                         ),
                       ),
                     ),
                   ),
                   Container(
-                    height: heightRatio(
-                      context: context,
-                      heightRatio: 0.06,
-                    ),
+                    height: widgetDistanceH.h,
                   ),
                 ],
               ),
-              Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.75,
-                ),
-                width: widthRatio(
-                  context: context,
-                  widthRatio: 1,
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: widthRatio(context: context, widthRatio: 0.1),
-                  vertical: heightRatio(context: context, heightRatio: 0.025),
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: pagePaddingW.w,
+                    vertical: pagePaddingH.h,
                   ),
-                  color: whiteColor,
-                ),
-                child: ClipRect(
-                  child: MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    initialRoute: "/UserTypeSelect",
-                    routes: {
-                      "/UserTypeSelect" : (context) => UserTypeSelectPage(),
-                      "/CompanyCreate" : (context) => CompanyCreatePage(),
-                      "/CompanyJoin" : (context) => CompanyJoinPage(),
-                    },
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(pageRadiusW.w),
+                      topRight: Radius.circular(pageRadiusW.w),
+                    ),
+                    color: whiteColor,
+                  ),
+                  child: ClipRect(
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      initialRoute: "/UserTypeSelect",
+                      routes: {
+                        "/UserTypeSelect" : (context) => UserTypeSelectPage(),
+                        "/CompanyCreate" : (context) => CompanyCreatePage(),
+                        "/CompanyJoin" : (context) => CompanyJoinPage(),
+                      },
+                    ),
                   ),
                 ),
               ),

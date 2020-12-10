@@ -1,25 +1,29 @@
+import 'package:sizer/sizer.dart';
+
 //글자 크기
-const double pageNameFont = 20;
-const double hintTextFont = 15;
-const double buttonFont = 15;
+const double pageNameFontSize = 15.0;
+const double appNameFontSize = 30.0;
+const double appVersionFontSize = 15.0;
 
 //공간 크기
+//AppName 공간
+const double appNameSizeH = 13.0;
+
+//AppVersion 공간
+const double appVersionSizeH = 6.0;
+const double appVersionPaddingW = 10.0;
+
+//페이지 공간
+const double pagePaddingW = 7.0;
+const double pagePaddingH = 3.0;
+const double pageRadiusW = 8.0;
+
+
 //페이지이름 공간
-const double pageNameSizeH = 0.06;
+const double pageNameSizeH = 6.0;
 
-//페이지 이름과 로그인 정보 입력란 사이 간격
-const double distance1H = 0.05;
+//위젯 사이 간격
+const double widgetDistanceH = 2.0;
 
-//로그인 정보 입력 공간
-const double loginInfoSizeH = 0.24;
-
-//로그인 정보 입력란과 로그인 버튼 사이 간격
-const double distance2H = 0.025;
-
-//로그인 및 회원가입 버튼 공간
-const double buttonH = 0.06;
-const double buttonW = 1;
-const double buttonPaddingLR = 0.2;
-
-//로그인 버튼과 회원가입 버튼 사이 간격
-const double distance3H = 0.025;
+//위젯 버튼사이 간격
+const double widgetButtonDistanceH = 4.0;
