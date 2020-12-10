@@ -78,7 +78,7 @@ class _CellWidget extends StatelessWidget {
       return calendarStyle.outsideStyle;
     } else if (isWeekend && isSaturday) {
       return calendarStyle.saturdayStyle;
-    } else if(isWeekend){
+    } else if (isWeekend) {
       return calendarStyle.weekendStyle;
     } else if (isEventDay) {
       return calendarStyle.eventDayStyle;

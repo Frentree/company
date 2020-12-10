@@ -1,9 +1,4 @@
 
-<<<<<<< HEAD
-=======
-
-import 'package:cloud_firestore/cloud_firestore.dart';
->>>>>>> minji
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -81,7 +76,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                     ),*/
                     ListTile(
                       leading: Icon(Icons.person_add_alt_1_outlined),
-                      title: Text('사용자 추가 요청/삭제'),
+                      title: Text(word.userAddRquestAndDelete()),
                       dense: true,
                       onTap: () {
                         settingUserAddDelete(context);
@@ -89,7 +84,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                     ),
                     ListTile(
                       leading: Icon(Icons.badge),
-                      title: Text('사용자 권한 관리'),
+                      title: Text(word.userGradeManager()),
                       dense: true,
                       onTap: () {
                         SettingUserManager(context);
@@ -245,7 +240,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('연락처'),
+                      Text(word.serviceCenter()),
                       Text(
                         'pe.jeon87@frentree.com',
                         style: customStyle(fontSize: 12, fontColor: grayColor),
@@ -260,14 +255,14 @@ class SettingMainPageState extends State<SettingMainPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('앱버전'),
+                      Text(word.appVersion()),
                       Text(
                         '0.01',
                         style: customStyle(fontSize: 12, fontColor: grayColor),
                       ),
                     ],
                   ),
-                  trailing: Text('최신'),
+                  trailing: Text(word.newVersion()),
                 ),
                 ListTile(
                   leading: Icon(Icons.logout),

@@ -3,6 +3,7 @@ import 'package:MyCompany/provider/screen/companyScreenChange.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
 import 'package:MyCompany/screens/splash.dart';
+import 'package:MyCompany/i18n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         localizationsDelegates: [
           // ... app-specific localization delegate[s] here
+          AppLocalizationDelegate(),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           DefaultCupertinoLocalizations.delegate,

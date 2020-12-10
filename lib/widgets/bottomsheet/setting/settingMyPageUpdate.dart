@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,12 +10,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+
+final word = Words();
 
 SettingMyPageUpdate(BuildContext context) {
   User _loginUser;
@@ -72,6 +75,7 @@ SettingMyPageUpdate(BuildContext context) {
 
             return Container(
               height: MediaQuery.of(context).size.height * 0.9,
+              color: whiteColor,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,9 +87,10 @@ SettingMyPageUpdate(BuildContext context) {
                         Navigator.pop(context);
                       }),
                   ExpansionTile(
+                    backgroundColor: whiteColor,
                     initiallyExpanded: true,
                     leading: Icon(Icons.person_outline),
-                    title: Text('내 정보 수정'),
+                    title: Text(word.myInfomationUpdate()),
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
@@ -141,7 +146,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                   builder: (BuildContext context) {
                                                     return SimpleDialog(
                                                       title: Text(
-                                                        "선택",
+                                                        word.select(),
                                                         style: customStyle(fontColor: mainColor, fontSize: 14),
                                                       ),
                                                       children: [
@@ -150,7 +155,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                             _uploadImageToStorage(ImageSource.camera);
                                                           },
                                                           child: Text(
-                                                            "카메라",
+                                                            word.camera(),
                                                             style: customStyle(fontColor: mainColor, fontSize: 13),
                                                           ),
                                                         ),
@@ -159,7 +164,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                             _uploadImageToStorage(ImageSource.gallery);
                                                           },
                                                           child: Text(
-                                                            "갤러리",
+                                                            word.gallery(),
                                                             style: customStyle(fontColor: mainColor, fontSize: 13),
                                                           ),
                                                         ),
@@ -186,7 +191,7 @@ SettingMyPageUpdate(BuildContext context) {
                                 ActionChip(
                                   backgroundColor: whiteColor,
                                   label: Text(
-                                    "변경",
+                                    word.update(),
                                     style: customStyle(
                                       fontSize: 14,
                                       fontColor: whiteColor,
@@ -204,7 +209,7 @@ SettingMyPageUpdate(BuildContext context) {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    "기존 비밀번호",
+                                    word.currentPassword(),
                                     style: customStyle(
                                       fontSize: 14,
                                       fontColor: mainColor,
@@ -218,7 +223,7 @@ SettingMyPageUpdate(BuildContext context) {
                                     obscureText: true,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: '기존 비밀번호 입력',
+                                      hintText: word.currentPassword() + " " + word.input(),
                                     ),
                                     style: customStyle(
                                       fontSize: 14,
@@ -230,7 +235,7 @@ SettingMyPageUpdate(BuildContext context) {
                                 ActionChip(
                                   backgroundColor: blueColor,
                                   label: Text(
-                                    "확인",
+                                    word.confirm(),
                                     style: customStyle(
                                       fontSize: 14,
                                       fontColor: whiteColor,
@@ -250,17 +255,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           // return object of type Dialog
                                           return AlertDialog(
                                             title: Text(
-                                              "인증 확인",
+                                              word.authentication() + " " + word.confirm(),
                                               style: customStyle(fontColor: blueColor, fontSize: 13, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
-                                              "인증이 완료되었습니다.\n변경될 비밀번호를 입력해주세요.",
+                                              word.authenticationSuccessCon(),
                                               style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
-                                                  "확인",
+                                                  word.confirm(),
                                                   style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
@@ -282,17 +287,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           // return object of type Dialog
                                           return AlertDialog(
                                             title: Text(
-                                              "인증 실패",
+                                              word.authentication() + " " + word.failed(),
                                               style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
-                                              "인증이 실패 하였습니다.",
+                                              word.authenticationFailCon(),
                                               style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
-                                                  "확인",
+                                                  word.confirm(),
                                                   style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
@@ -317,7 +322,7 @@ SettingMyPageUpdate(BuildContext context) {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "새 비밀번호",
+                                            word.newPassword(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: mainColor,
@@ -342,14 +347,7 @@ SettingMyPageUpdate(BuildContext context) {
                                         ),
                                         Chip(
                                           backgroundColor: whiteColor,
-                                          label: Text(
-                                            "변경",
-                                            style: customStyle(
-                                              fontSize: 14,
-                                              fontColor: whiteColor,
-                                              fontWeightName: 'Medium',
-                                            ),
-                                          ),
+                                          label: Text("확인"),
                                         ),
                                       ],
                                     ),
@@ -357,7 +355,7 @@ SettingMyPageUpdate(BuildContext context) {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "새 비밀번호 확인",
+                                            word.newPasswordConfirm(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: mainColor,
@@ -383,7 +381,7 @@ SettingMyPageUpdate(BuildContext context) {
                                         ActionChip(
                                             backgroundColor: blueColor,
                                             label: Text(
-                                              "변경",
+                                              word.update(),
                                               style: customStyle(
                                                 fontSize: 14,
                                                 fontColor: whiteColor,
@@ -407,7 +405,7 @@ SettingMyPageUpdate(BuildContext context) {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    "전화번호",
+                                    word.phone(),
                                     style: customStyle(
                                       fontSize: 14,
                                       fontColor: mainColor,
@@ -420,7 +418,7 @@ SettingMyPageUpdate(BuildContext context) {
                                     controller: _phoneEdit,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: "예) 01012345678",
+                                      hintText: "${word.ex()}) 01012345678",
                                     ),
                                     style: customStyle(
                                       fontSize: 14,
@@ -432,7 +430,7 @@ SettingMyPageUpdate(BuildContext context) {
                                 ActionChip(
                                   backgroundColor: blueColor,
                                   label: Text(
-                                    "변경",
+                                    word.update(),
                                     style: customStyle(
                                       fontSize: 14,
                                       fontColor: whiteColor,
@@ -448,17 +446,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           // return object of type Dialog
                                           return AlertDialog(
                                             title: Text(
-                                              "전화번호 변경 실패",
+                                              word.phoneChangeFiled(),
                                               style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
-                                              "전화번호를 아무것도 입력하지 않았습니다.",
+                                              word.phoneChangeFiledNoneCon(),
                                               style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
-                                                  "확인",
+                                                  word.confirm(),
                                                   style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
@@ -476,17 +474,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           // return object of type Dialog
                                           return AlertDialog(
                                             title: Text(
-                                              "전화번호 변경 실패",
+                                              word.phoneChangeFiled(),
                                               style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
-                                              "기존 전화번호와 동일합니다.",
+                                              word.phoneChangeFiledSameCon(),
                                               style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
-                                                  "확인",
+                                                  word.confirm(),
                                                   style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
@@ -504,17 +502,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           // return object of type Dialog
                                           return AlertDialog(
                                             title: Text(
-                                              "변경 실패",
+                                              word.phoneChangeFiled(),
                                               style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
-                                              "유효하지 않은 전화번호 형식입니다.",
+                                              word.phoneChangeFiledTyepCon(),
                                               style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
-                                                  "확인",
+                                                  word.confirm(),
                                                   style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
@@ -532,17 +530,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           // return object of type Dialog
                                           return AlertDialog(
                                             title: Text(
-                                              "전화번호 변경",
+                                              word.phoneChange(),
                                               style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
-                                              "${_phoneEdit.text}\n이 번호로 변경 하시겟습니까?",
+                                              "${_phoneEdit.text}\n${word.phoneChangeCon()}",
                                               style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
-                                                  "예",
+                                                  word.yes(),
                                                   style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
@@ -558,7 +556,7 @@ SettingMyPageUpdate(BuildContext context) {
                                               ),
                                               FlatButton(
                                                 child: Text(
-                                                  "아니오",
+                                                  word.no(),
                                                   style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
@@ -657,7 +655,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                       child: ExpansionTile(
                         initiallyExpanded: true,
                         leading: Icon(Icons.person_outline),
-                        title: Text('회사 정보 수정'),
+                        title: Text(word.companyInfomation() + " " + word.update()),
                         children: [
                           StreamBuilder(
                             stream: FirebaseRepository().getCompanyInfos(companyCode: _loginUser.companyCode),
@@ -700,7 +698,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                                           builder: (BuildContext context) {
                                                             return SimpleDialog(
                                                               title: Text(
-                                                                "선택",
+                                                                word.select(),
                                                                 style: customStyle(fontColor: mainColor, fontSize: 14),
                                                               ),
                                                               children: [
@@ -709,7 +707,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                                                     _uploadImageToStorage(ImageSource.camera);
                                                                   },
                                                                   child: Text(
-                                                                    "카메라",
+                                                                    word.camera(),
                                                                     style: customStyle(fontColor: mainColor, fontSize: 13),
                                                                   ),
                                                                 ),
@@ -718,7 +716,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                                                     _uploadImageToStorage(ImageSource.gallery);
                                                                   },
                                                                   child: Text(
-                                                                    "갤러리",
+                                                                    word.gallery(),
                                                                     style: customStyle(fontColor: mainColor, fontSize: 13),
                                                                   ),
                                                                 ),
@@ -738,7 +736,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                         ActionChip(
                                           backgroundColor: whiteColor,
                                           label: Text(
-                                            "변경",
+                                            word.update(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: whiteColor,
@@ -756,7 +754,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "회사명",
+                                            word.companyName(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: mainColor,
@@ -784,7 +782,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "사업자번호",
+                                            word.businessNumber(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: mainColor,
@@ -797,7 +795,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                             controller: _companyNoTextCon,
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
-                                              hintText: snapshot.data["companyNo"] != "" ? snapshot.data["companyNo"] : "사업자번호를 입력해주세요",
+                                              hintText: snapshot.data["companyNo"] != "" ? snapshot.data["companyNo"] : word.businessNumberCon(),
                                             ),
                                             style: customStyle(
                                               fontSize: 14,
@@ -812,7 +810,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "주소",
+                                            word.address(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: mainColor,
@@ -840,7 +838,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "전화번호",
+                                            word.phone(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: mainColor,
@@ -868,7 +866,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "웹사이트",
+                                            word.webAddress(),
                                             style: customStyle(
                                               fontSize: 14,
                                               fontColor: mainColor,
@@ -881,7 +879,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                             controller: _companyWebTextCon,
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
-                                              hintText: snapshot.data["companyWeb"] != "" ? snapshot.data["companyWeb"] : "예) www.company.com",
+                                              hintText: snapshot.data["companyWeb"] != "" ? snapshot.data["companyWeb"] :  "${word.ex()}) www.company.com",
                                             ),
                                             style: customStyle(
                                               fontSize: 14,
@@ -903,7 +901,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                         ActionChip(
                                             backgroundColor: blueColor,
                                             label: Text(
-                                              "변경",
+                                              word.update(),
                                               style: customStyle(
                                                 fontSize: 14,
                                                 fontColor: whiteColor,

@@ -7,8 +7,11 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingMyPageUpdate.dart';
 import 'package:MyCompany/widgets/form/textFormField.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+final word = Words();
 
 // 내 정보 화면
 Widget getMyInfomationCard({BuildContext context, User user}){
@@ -91,7 +94,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
             ActionChip(
               backgroundColor: blueColor,
               label: Text(
-                "수정",
+                word.update(),
                 style: customStyle(
                   fontSize: 14,
                   fontColor: whiteColor,
@@ -115,7 +118,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
           children: [
             Expanded(
               child: Text(
-                "입사일",
+                word.joinDate(),
                 style: customStyle(
                   fontSize: 14,
                   fontColor: mainColor,
@@ -145,7 +148,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
           children: [
             Expanded(
               child: Text(
-                "이메일",
+                word.email(),
                 style: customStyle(
                   fontSize: 14,
                   fontColor: mainColor,
@@ -175,7 +178,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
           children: [
             Expanded(
               child: Text(
-                "전화번호",
+                word.phone(),
                 style: customStyle(
                   fontSize: 14,
                   fontColor: mainColor,
@@ -205,7 +208,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
           children: [
             Expanded(
               child: Text(
-                "계정탈퇴",
+                word.accountSecession(),
                 style: customStyle(
                   fontSize: 14,
                   fontColor: mainColor,
@@ -214,14 +217,7 @@ Widget getMyInfomationCard({BuildContext context, User user}){
               ),
             ),
             Expanded(
-              child: Text(
-                "",
-                style: customStyle(
-                  fontSize: 14,
-                  fontColor: grayColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
+              child: SizedBox()
             ),
           ],
         ),
@@ -270,7 +266,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
                 ActionChip(
                   backgroundColor: blueColor,
                   label: Text(
-                    "수정",
+                    word.update(),
                     style: customStyle(
                       fontSize: 14,
                       fontColor: whiteColor,
@@ -294,7 +290,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
               children: [
                 Expanded(
                   child: Text(
-                    "회사명",
+                    word.companyName(),
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,
@@ -324,7 +320,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
               children: [
                 Expanded(
                   child: Text(
-                    "사업자 번호",
+                    word.businessNumber(),
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,
@@ -355,7 +351,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
               children: [
                 Expanded(
                   child: Text(
-                    "주소",
+                    word.address(),
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,
@@ -386,7 +382,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
               children: [
                 Expanded(
                   child: Text(
-                    "전화번호",
+                    word.phone(),
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,
@@ -417,7 +413,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}){
               children: [
                 Expanded(
                   child: Text(
-                    "웹사이트",
+                    word.webAddress(),
                     style: customStyle(
                       fontSize: 14,
                       fontColor: mainColor,

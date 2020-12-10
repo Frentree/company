@@ -1,18 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
-<<<<<<< HEAD
-=======
-import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
->>>>>>> minji
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/screens/setting/gradeMain.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

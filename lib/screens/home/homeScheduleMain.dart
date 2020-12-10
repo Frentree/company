@@ -4,6 +4,7 @@ import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
 import 'package:MyCompany/screens/home/homeCoSchedule.dart';
 import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -25,6 +26,8 @@ import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
 //Model
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
+
+final word = Words();
 
 class HomeScheduleMainPage extends StatefulWidget {
   @override
@@ -57,7 +60,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                     context: context,
                     heightSize: 0.05,
                     widthSize: 0.46,
-                    btnText: "나의 일정",
+                    btnText: word.mySchedule(),
                     tabIndexVariable: tabIndex,
                     tabOrder: 0,
                     tabAction: (){
@@ -70,7 +73,7 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                     context: context,
                     heightSize: 0.05,
                     widthSize: 0.46,
-                    btnText: "동료 일정",
+                    btnText: word.colleagueSchedule(),
                     tabIndexVariable: tabIndex,
                     tabOrder: 1,
                     tabAction: (){

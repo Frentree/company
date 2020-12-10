@@ -6,7 +6,7 @@
 * @version 1.0
 * 이윤혁, 마지막 수정일 2020-09-24
 *
-* *//*
+* */ /*
 
 
 //Flutter
@@ -27,7 +27,7 @@ import 'package:MyCompany/repos/firebasecrud/crudRepository.dart';
 class WorkScheduleMethod{
 
   */
-/* 일정 저장 메소드 *//*
+/* 일정 저장 메소드 */ /*
 
   Future<void> workScheduleFirebaseAuth(
       {BuildContext context,
@@ -61,7 +61,7 @@ class WorkScheduleMethod{
     if(workContents.trim() == ""){
       return;
     }
-*//*
+*/ /*
 
     CompanyWork work = CompanyWork(
       createUid: user.mail,
@@ -90,7 +90,7 @@ class WorkScheduleMethod{
   }
 
   */
-/* 프로젝트 정보 *//*
+/* 프로젝트 정보 */ /*
 
   Future<List<bigCategoryModel>> workCategoryFirebaseAuth({BuildContext context}) async {
     CrudRepository _crudRepository = CrudRepository();

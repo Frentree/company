@@ -1,5 +1,6 @@
 //Flutter
 import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,8 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+
+final word = Words();
 
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;
@@ -85,7 +88,7 @@ Container titleCard(
           height: customHeight(context: context, heightSize: 0.03),
           alignment: Alignment.center,
           child: Text(
-            workModel.type,
+            workModel.type == "내근" ? word.workIn() : word.workOut(),
             style: customStyle(
                 fontSize: typeFontSize,
                 fontWeightName: "Regular",

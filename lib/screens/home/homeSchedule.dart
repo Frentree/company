@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
+import 'package:MyCompany/i18n/word.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 
 //Widget
 import 'package:MyCompany/widgets/card/workScheduleCard.dart';
+
+final word = Words();
 
 class HomeSchedulePage extends StatefulWidget {
   @override
@@ -113,8 +116,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   initialCalendarFormat: CalendarFormat.week,
                   startingDayOfWeek: StartingDayOfWeek.monday,
                   availableCalendarFormats: {
-                    CalendarFormat.week: "주간",
-                    CalendarFormat.month: "월간"
+                    CalendarFormat.week: word.weekly(),
+                    CalendarFormat.month: word.monthly()
                   },
                   onDaySelected: (day, events, holidays) {
                     setState(() {
@@ -191,7 +194,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                   vertical: customHeight(
                                       context: context, heightSize: 0.02)),
                               child: Text(
-                                "일정이 없습니다.",
+                                word.noSchedule(),
                                 style: customStyle(
                                     fontColor: blackColor,
                                     fontSize: 16,

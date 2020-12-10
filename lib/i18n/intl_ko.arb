@@ -1,8 +1,74 @@
 {
-  "@@last_modified": "2020-12-09T18:35:20.249730",
-  "company": "회사",
-  "@company": {
-    "description": "company message",
+  "@@last_modified": "2020-12-10T10:27:34.510847",
+  "input": "입력",
+  "@input": {
+    "description": "input message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirm": "확인",
+  "@confirm": {
+    "description": "confirm message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failed": "실패",
+  "@failed": {
+    "description": "failed message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "select": "선택",
+  "@select": {
+    "description": "select message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "camera": "카메라",
+  "@camera": {
+    "description": "camera message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gallery": "갤러리",
+  "@gallery": {
+    "description": "gallery message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "수정",
+  "@update": {
+    "description": "update message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "삭제",
+  "@delete": {
+    "description": "delete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ex": "예",
+  "@ex": {
+    "description": "ex message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Change": "변경",
+  "@Change": {
+    "description": "Change message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "예",
+  "@yes": {
+    "description": "yes message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "아니오",
+  "@no": {
+    "description": "no message",
     "type": "text",
     "placeholders": {}
   },
@@ -12,9 +78,123 @@
     "type": "text",
     "placeholders": {}
   },
-  "userManager": "유저 관리",
+  "companyName": "회사명",
+  "@companyName": {
+    "description": "companyName message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "businessNumber": "사업자번호",
+  "@businessNumber": {
+    "description": "businessNumber message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "businessNumberCon": "사업자번호를 입력해주세요",
+  "@businessNumberCon": {
+    "description": "businessNumberCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "address": "주소",
+  "@address": {
+    "description": "address message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phone": "전화번호",
+  "@phone": {
+    "description": "phone message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiled": "전화번호 변경 실패",
+  "@phoneChangeFiled": {
+    "description": "phoneChangeFiled message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiledNoneCon": "전화번호를 아무것도 입력하지 않았습니다",
+  "@phoneChangeFiledNoneCon": {
+    "description": "phoneChangeFiledNoneCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiledSameCon": "기존 전화번호와 동일합니다",
+  "@phoneChangeFiledSameCon": {
+    "description": "phoneChangeFiledSameCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiledTyepCon": "유효하지 않은 전화번호 형식입니다",
+  "@phoneChangeFiledTyepCon": {
+    "description": "phoneChangeFiledTyepCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChange": "전화번호 변경",
+  "@phoneChange": {
+    "description": "phoneChange message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeCon": "이 번호로 변경 하시겠습니까?",
+  "@phoneChangeCon": {
+    "description": "phoneChangeCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneCon": "전화번호를 입력해주세요",
+  "@phoneCon": {
+    "description": "phoneCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "webAddress": "웹사이트",
+  "@webAddress": {
+    "description": "webAddress message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "webAddressCon": "웹사이트를 입력해주세요",
+  "@webAddressCon": {
+    "description": "webAddressCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userManager": "사용자 관리",
   "@userManager": {
     "description": "userManager message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authentication": "인증",
+  "@authentication": {
+    "description": "authentication message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationSuccessCon": "인증이 완료되었습니다.\n변경될 비밀번호를 입력해주세요",
+  "@authenticationSuccessCon": {
+    "description": "authenticationSuccessCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationFailCon": "인증이 실패 하였습니다",
+  "@authenticationFailCon": {
+    "description": "authenticationFailCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userAddRquestAndDelete": "사용자 추가 요청/삭제",
+  "@userAddRquestAndDelete": {
+    "description": "userAddRquestAndDelete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userGradeManager": "사용자 권한 관리",
+  "@userGradeManager": {
+    "description": "userGradeManager message",
     "type": "text",
     "placeholders": {}
   },
@@ -24,10 +204,154 @@
     "type": "text",
     "placeholders": {}
   },
+  "myInfomationUpdate": "내 정보 수정",
+  "@myInfomationUpdate": {
+    "description": "myInfomationUpdate message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "currentPassword": "기존 비밀번호",
+  "@currentPassword": {
+    "description": "currentPassword message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newPassword": "새 비밀번호",
+  "@newPassword": {
+    "description": "newPassword message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newPasswordConfirm": "새 비밀번호 확인",
+  "@newPasswordConfirm": {
+    "description": "newPasswordConfirm message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "joinDate": "입사일",
+  "@joinDate": {
+    "description": "joinDate message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "email": "이메일",
+  "@email": {
+    "description": "email message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountSecession": "계정탈퇴",
+  "@accountSecession": {
+    "description": "accountSecession message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "serviceCenter": "고객센터",
+  "@serviceCenter": {
+    "description": "serviceCenter message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appVersion": "앱버전",
+  "@appVersion": {
+    "description": "appVersion message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newVersion": "최신",
+  "@newVersion": {
+    "description": "newVersion message",
+    "type": "text",
+    "placeholders": {}
+  },
   "logout": "로그아웃",
   "@logout": {
     "description": "logout message",
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "my": "나",
+    "@my": {
+      "description": "my message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "workIn": "내근",
+    "@workIn": {
+      "description": "workIn message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "workOut": "외근",
+    "@workOut": {
+      "description": "workOut message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "meeting": "미팅",
+    "@meeting": {
+      "description": "meeting message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "monthly": "월간",
+    "@monthly": {
+      "description": "monthly message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "weekly": "주간",
+    "@weekly": {
+      "description": "weekly message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "daily": "일간",
+    "@daily": {
+      "description": "daily message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "year": "년",
+    "@year": {
+      "description": "year message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "month": "월",
+    "@month": {
+      "description": "month message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "details": "상세",
+    "@details": {
+      "description": "details message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "mySchedule": "나의 일정",
+    "@mySchedule": {
+      "description": "mySchedule message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "colleagueSchedule": "동료 일정",
+    "@colleagueSchedule": {
+      "description": "colleagueSchedule message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "noSchedule": "일정이 없습니다",
+    "@noSchedule": {
+      "description": "noSchedule message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "colleagueTimeSchedule": "이 시각 동료 근무 현황 보기",
+    "@colleagueTimeSchedule": {
+      "description": "Current Time Colleague Schedule message",
+      "type": "text",
+      "placeholders": {}
+    }
 }

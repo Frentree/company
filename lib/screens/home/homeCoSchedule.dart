@@ -6,6 +6,7 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:MyCompany/widgets/table/workDetailTable.dart';
+import 'package:MyCompany/i18n/word.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:MyCompany/widgets/card/workCoScheduleCard.dart';
 
 import '../../models/workModel.dart';
+
+final word = Words();
 
 class HomeScheduleCoPage extends StatefulWidget {
   @override
@@ -105,7 +108,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               },
               child: Column(
                 children: [
-                  Text(isTable ? "일간" : "상세"),
+                  Text(isTable ? word.daily() : word.details()),
                   Icon(isTable
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down),
@@ -123,7 +126,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                 );
               }
 
-              Map<dynamic, dynamic> colleague = isTable ? {_loginUser.mail : "나"} : {}; //회원 리스트
+              Map<dynamic, dynamic> colleague = isTable ? {_loginUser.mail : word.my()} : {}; //회원 리스트
               colleague.addAll(snapshot.data);
 
               return isTable ? StreamBuilder(
@@ -208,7 +211,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                                   vertical: customHeight(
                                       context: context, heightSize: 0.02)),
                               child: Text(
-                                "이 시각 동료 근무 현황 보기",
+                                word.colleagueTimeSchedule(),
                                 style: customStyle(
                                     fontColor: blackColor,
                                     fontSize: 16,

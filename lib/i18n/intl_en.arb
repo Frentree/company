@@ -1,26 +1,266 @@
 {
-  "@@last_modified": "2020-12-09T18:35:20.249730",
-  "company": "company",
-  "@company": {
-    "description": "company message",
+  "@@last_modified": "2020-12-10T10:27:34.510847",
+  "input": "Input",
+  "@input": {
+    "description": "input message",
     "type": "text",
     "placeholders": {}
   },
-  "companyInfomation": "Company Infomation",
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "confirm message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failed": "Failed",
+  "@failed": {
+    "description": "failed message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "select": "Select",
+  "@select": {
+    "description": "select message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "camera": "Camera",
+  "@camera": {
+    "description": "camera message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gallery": "Gallery",
+  "@gallery": {
+    "description": "gallery message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "Update",
+  "@update": {
+    "description": "update message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "delete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ex": "Ex",
+  "@ex": {
+    "description": "ex message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Change": "Change",
+  "@Change": {
+    "description": "Change message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "yes message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "no": "No",
+  "@no": {
+    "description": "no message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "companyInfomation": "Company Information",
   "@companyInfomation": {
     "description": "companyInfomation message",
     "type": "text",
     "placeholders": {}
   },
-  "userManager": "User Manager",
+  "companyName": "CompanyName",
+  "@companyName": {
+    "description": "companyName message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "businessNumber": "BusinessNumber",
+  "@businessNumber": {
+    "description": "businessNumber message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "businessNumberCon": "Please enter the business license number",
+  "@businessNumberCon": {
+    "description": "businessNumberCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "address": "Address",
+  "@address": {
+    "description": "address message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "phone message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiled": "Failed to change phone number",
+  "@phoneChangeFiled": {
+    "description": "phoneChangeFiled message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiledNoneCon": "You have not entered any phone numbers",
+  "@phoneChangeFiledNoneCon": {
+    "description": "phoneChangeFiledNoneCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiledSameCon": "Same as existing phone number",
+  "@phoneChangeFiledSameCon": {
+    "description": "phoneChangeFiledSameCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeFiledTyepCon": "Invalid phone number format",
+  "@phoneChangeFiledTyepCon": {
+    "description": "phoneChangeFiledTyepCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChange": "Change Phone Number",
+  "@phoneChange": {
+    "description": "phoneChange message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneChangeCon": "Would you like to change to this number?",
+  "@phoneChangeCon": {
+    "description": "phoneChangeCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneCon": "Please enter your phone number",
+  "@phoneCon": {
+    "description": "phoneCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "webAddress": "WebSite",
+  "@webAddress": {
+    "description": "webAddress message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "webAddressCon": "Please enter a website",
+  "@webAddressCon": {
+    "description": "webAddressCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userManager": "UserManagement",
   "@userManager": {
     "description": "userManager message",
     "type": "text",
     "placeholders": {}
   },
-  "myInfomation": "My Infomation",
+  "authentication": "Authentication",
+  "@authentication": {
+    "description": "authentication message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationSuccessCon": "Authentication completed successfully.\nPlease enter the password that will be changed.",
+  "@authenticationSuccessCon": {
+    "description": "authenticationSuccessCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationFailCon": "Authentication failed",
+  "@authenticationFailCon": {
+    "description": "authenticationFailCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userAddRquestAndDelete": "Request/Delete Add User",
+  "@userAddRquestAndDelete": {
+    "description": "userAddRquestAndDelete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "userGradeManager": "Manage User Permissions",
+  "@userGradeManager": {
+    "description": "userGradeManager message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myInfomation": "My Info",
   "@myInfomation": {
     "description": "myInfomation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myInfomationUpdate": "Modify My Information",
+  "@myInfomationUpdate": {
+    "description": "myInfomationUpdate message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "currentPassword": "Existing Password",
+  "@currentPassword": {
+    "description": "currentPassword message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newPassword": "New Password",
+  "@newPassword": {
+    "description": "newPassword message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newPasswordConfirm": "Confirm new password",
+  "@newPasswordConfirm": {
+    "description": "newPasswordConfirm message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "joinDate": "Join Date",
+  "@joinDate": {
+    "description": "joinDate message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "email": "Email",
+  "@email": {
+    "description": "email message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountSecession": "Delete Account",
+  "@accountSecession": {
+    "description": "accountSecession message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "serviceCenter": "ServiceCenter",
+  "@serviceCenter": {
+    "description": "serviceCenter message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appVersion": "App Version",
+  "@appVersion": {
+    "description": "appVersion message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newVersion": "New",
+  "@newVersion": {
+    "description": "newVersion message",
     "type": "text",
     "placeholders": {}
   },
@@ -29,5 +269,89 @@
     "description": "logout message",
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "my": "My",
+    "@my": {
+      "description": "my message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "workIn": "WorkIn",
+    "@workIn": {
+      "description": "workIn message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "workOut": "WorkOut",
+    "@workOut": {
+      "description": "workOut message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "meeting": "Meeting",
+    "@meeting": {
+      "description": "meeting message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "monthly": "Monthly",
+    "@monthly": {
+      "description": "monthly message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "weekly": "Weekly",
+    "@weekly": {
+      "description": "weekly message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "daily": "Daily",
+    "@daily": {
+      "description": "daily message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "year": "Year",
+    "@year": {
+      "description": "year message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "month": "Month",
+    "@month": {
+      "description": "month message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "details": "Details",
+    "@details": {
+      "description": "details message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "mySchedule": "My Schedule",
+    "@mySchedule": {
+      "description": "mySchedule message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "colleagueSchedule": "Colleague Schedule",
+    "@colleagueSchedule": {
+      "description": "colleagueSchedule message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "noSchedule": "Have No Schedule",
+    "@noSchedule": {
+      "description": "noSchedule message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "colleagueTimeSchedule": "Current Time Colleague Schedule",
+    "@colleagueTimeSchedule": {
+      "description": "Current Time Colleague Schedule message",
+      "type": "text",
+      "placeholders": {}
+    }
 }

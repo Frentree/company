@@ -282,7 +282,7 @@ class _TableCalendarState extends State<TableCalendar> with SingleTickerProvider
   void _onDayLongPressed(DateTime day) {
     if (widget.onDayLongPressed != null) {
       widget.onDayLongPressed(
-        day, 
+        day,
         widget.calendarController.visibleEvents[_getEventKey(day)] ?? [],
         widget.calendarController.visibleHolidays[_getHolidayKey(day)] ?? [],
       );

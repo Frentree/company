@@ -4,6 +4,7 @@ import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:MyCompany/i18n/word.dart';
 //Const
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -11,6 +12,8 @@ import 'package:MyCompany/consts/widgetSize.dart';
 
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+
+final word = Words();
 
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;
@@ -82,7 +85,7 @@ Container titleCard({BuildContext context, String loginUserMail, String companyC
           height: customHeight(context: context, heightSize: 0.03),
           alignment: Alignment.center,
           child: Text(
-            meetingModel.type,
+            word.meeting(),
             style: customStyle(
                 fontSize: typeFontSize,
                 fontWeightName: "Regular",
