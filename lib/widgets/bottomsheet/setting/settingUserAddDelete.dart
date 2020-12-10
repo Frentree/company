@@ -1,9 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/models/userModel.dart';
-import 'package:MyCompany/provider/user/loginUserInfo.dart';
-import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/models/approvalModel.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -12,7 +10,6 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/consts/font.dart';
->>>>>>> 76172a460a66ae594c4fe74fd4c63e70b541cd0a
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -91,13 +88,13 @@ settingUserAddDelete(BuildContext context) {
                                 child: Icon(Icons.person_add_alt_1_outlined, size: 8.0.w,)),
                           ),
                           Container(
-                            width: 50.0.w,
-                            child: Text(
+                              width: 50.0.w,
+                              child: Text(
                                 "사용자 추가 요청/삭제",
-                              style: customStyle(
-                                fontSize: 14.0.sp
-                              ),
-                            )
+                                style: customStyle(
+                                    fontSize: 14.0.sp
+                                ),
+                              )
                           )
                         ],
                       ),
@@ -151,20 +148,20 @@ settingUserAddDelete(BuildContext context) {
                                                 width: 30.0.w,
                                                 child: Center(
                                                   child: Container(
-                                                    width: 15.0.w,
-                                                    height: 4.0.h,
-                                                    decoration: BoxDecoration(
-                                                        color: blueColor,
-                                                        borderRadius:
-                                                        BorderRadius.circular(12.0.w)),
-                                                    child: Center(
-                                                      child: Text(
-                                                        "${_approvalData.length} 건",
-                                                        style: customStyle(
+                                                      width: 15.0.w,
+                                                      height: 4.0.h,
+                                                      decoration: BoxDecoration(
+                                                          color: blueColor,
+                                                          borderRadius:
+                                                          BorderRadius.circular(12.0.w)),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "${_approvalData.length} 건",
+                                                          style: customStyle(
                                                             fontSize: 12.0.sp,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    )
+                                                      )
                                                   ),
                                                 ),
                                               ),
@@ -175,12 +172,12 @@ settingUserAddDelete(BuildContext context) {
                                           height: 30.0.h,
                                           child: _approvalData.length == 0
                                               ? Center(
-                                            child: Text(
-                                              "승인할 데이터가 없습니다.",
-                                              style: customStyle(
-                                                fontSize: 13.0.sp
-                                              ),
-                                            )
+                                              child: Text(
+                                                "승인할 데이터가 없습니다.",
+                                                style: customStyle(
+                                                    fontSize: 13.0.sp
+                                                ),
+                                              )
                                           )
                                               : ListView.separated(
                                             itemCount: _approvalData.length,
@@ -249,41 +246,32 @@ settingUserAddDelete(BuildContext context) {
                                                           children: [
                                                             Padding(
                                                               padding: EdgeInsets.symmetric(
-                                                                vertical: 1.0.h,
-                                                                horizontal: 8.0.w
+                                                                  vertical: 1.0.h,
+                                                                  horizontal: 8.0.w
                                                               ),
                                                               child: Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text(
-                                                                      "이름 : ${_approval.name}",
+                                                                    "이름 : ${_approval.name}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
                                                                   ),
                                                                   Container(
-                                                                    height: 1.5.h
+                                                                      height: 1.5.h
                                                                   ),
                                                                   Text(
-                                                                      "이메일 : ${_approval.mail}",
+                                                                    "이메일 : ${_approval.mail}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
                                                                   ),
                                                                   Container(
-                                                                    height:1.5.h
+                                                                      height:1.5.h
                                                                   ),
                                                                   Text(
-                                                                      "생년월일 : ${_approval.birthday}",
-                                                                    style: customStyle(
-                                                                      fontSize: 12.0.sp,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    height: 1.5.h,
-                                                                  ),
-                                                                  Text(
-                                                                      "전화번호 : ${_approval.phone}",
+                                                                    "생년월일 : ${_approval.birthday}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
@@ -292,7 +280,16 @@ settingUserAddDelete(BuildContext context) {
                                                                     height: 1.5.h,
                                                                   ),
                                                                   Text(
-                                                                      "요청일 : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
+                                                                    "전화번호 : ${_approval.phone}",
+                                                                    style: customStyle(
+                                                                      fontSize: 12.0.sp,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 1.5.h,
+                                                                  ),
+                                                                  Text(
+                                                                    "요청일 : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
@@ -406,13 +403,13 @@ settingUserAddDelete(BuildContext context) {
                                 Container(
                                   height: 5.0.h,
                                   child: Container(
-                                    width: 35.0.w,
-                                    child: Text(
-                                      "사용자 삭제(퇴사자)",
-                                      style: customStyle(
-                                        fontSize: 12.0.sp,
-                                      ),
-                                    )
+                                      width: 35.0.w,
+                                      child: Text(
+                                        "사용자 삭제(퇴사자)",
+                                        style: customStyle(
+                                          fontSize: 12.0.sp,
+                                        ),
+                                      )
                                   ),
                                 ),
                                 Container(
@@ -445,7 +442,7 @@ settingUserAddDelete(BuildContext context) {
                                             hintText: "삭제할 직원 이름을 입력하세요",
                                             hintStyle: TextStyle(
                                                 fontFamily: "NotoSansKR",
-                                              fontSize: 11.0.sp
+                                                fontSize: 11.0.sp
                                             ),
                                           ),
                                           onFieldSubmitted: ((value){
@@ -516,7 +513,7 @@ settingUserAddDelete(BuildContext context) {
                                                           child: Text(
                                                             searchCompanyUserResult[index].name,
                                                             style: customStyle(
-                                                                fontSize: 20.0.sp,
+                                                              fontSize: 20.0.sp,
                                                             ),
                                                           ),
                                                         )
@@ -544,7 +541,7 @@ settingUserAddDelete(BuildContext context) {
                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
                                                                     Text(
-                                                                        "이름 : ${searchCompanyUserResult[index].name}",
+                                                                      "이름 : ${searchCompanyUserResult[index].name}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),
@@ -553,7 +550,7 @@ settingUserAddDelete(BuildContext context) {
                                                                         height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                        "이메일 : ${searchCompanyUserResult[index].mail}",
+                                                                      "이메일 : ${searchCompanyUserResult[index].mail}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),
@@ -562,7 +559,7 @@ settingUserAddDelete(BuildContext context) {
                                                                         height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                        "생년월일 : ${searchCompanyUserResult[index].birthday}",
+                                                                      "생년월일 : ${searchCompanyUserResult[index].birthday}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),
@@ -571,7 +568,7 @@ settingUserAddDelete(BuildContext context) {
                                                                         height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                        "전화번호 : ${searchCompanyUserResult[index].phone}",
+                                                                      "전화번호 : ${searchCompanyUserResult[index].phone}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),

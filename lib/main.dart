@@ -28,45 +28,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<LoginScreenChangeProvider>(
-          create: (_) => LoginScreenChangeProvider(),
-        ),
-        ChangeNotifierProvider<CompanyScreenChangeProvider>(
-          create: (_) => CompanyScreenChangeProvider(),
-        ),
-        ChangeNotifierProvider<FirebaseAuthProvider>(
-          create: (_) => FirebaseAuthProvider(),
-        ),
-        ChangeNotifierProvider<LoginUserInfoProvider>(
-          create: (_) => LoginUserInfoProvider(),
-        ),
-        ChangeNotifierProvider<AttendanceCheck>(
-          create: (_) => AttendanceCheck(),
-        ),
-      ],
-      child: MaterialApp(
-        localizationsDelegates: [
-          // ... app-specific localization delegate[s] here
-          AppLocalizationDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('ko', 'KR'), // English
-          const Locale('en', 'US'), // German
-          // ... other locales the app supports
-        ],
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: SplashPage(),
-      ),
-=======
     return LayoutBuilder(                           //return LayoutBuilder
       builder: (context, constraints) {
         return OrientationBuilder(                  //return OrientationBuilder
@@ -94,6 +55,7 @@ class MyApp extends StatelessWidget {
               child: MaterialApp(
                 localizationsDelegates: [
                   // ... app-specific localization delegate[s] here
+                  AppLocalizationDelegate(),
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
                   DefaultCupertinoLocalizations.delegate,
@@ -114,7 +76,6 @@ class MyApp extends StatelessWidget {
           },
         );
       },
->>>>>>> 76172a460a66ae594c4fe74fd4c63e70b541cd0a
     );
   }
 }
