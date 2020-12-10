@@ -1,11 +1,13 @@
 //Flutter
-import 'package:MyCompany/widgets/notImplementedPopup.dart';
+
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 //Const
+import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 
 //Repos
 import 'package:MyCompany/repos/login/loginRepository.dart';
@@ -50,60 +52,71 @@ class LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.06,
-                ),
-                child: font(
-                  text: "로그인",
-                  textStyle: customStyle(
+                height: pageNameSizeH.h,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "로그인",
+                  style: customStyle(
                     fontWeightName: "Medium",
                     fontColor: blueColor,
+                    fontSize: pageNameFontSize.sp,
                   ),
                 ),
               ),
               Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.03,
-                ),
+                height: widgetDistanceH.h,
               ),
               Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.24,
-                ),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: heightRatio(
-                        context: context,
-                        heightRatio: 0.04
+                    TextFormField(
+                      controller: _mailTextCon,
+                      style: customStyle(
+                        fontWeightName: "Regular",
+                        fontColor: mainColor,
+                        fontSize: textFormFontSize.sp,
                       ),
-                      child: TextFormField(
-                        controller: _mailTextCon,
-                        decoration: InputDecoration(
-                          hintText: "이메일",
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: textFieldUnderLine,
-                            ),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: textFormFontPaddingH.h,
+                          horizontal: textFormFontPaddingW.w,
+                        ),
+                        hintText: "이메일",
+                        hintStyle: customStyle(
+                          fontWeightName: "Regular",
+                          fontColor: mainColor,
+                          fontSize: textFormFontSize.sp,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: textFieldUnderLine,
                           ),
                         ),
                       ),
                     ),
+                    Container(
+                      height: widgetDistanceH.h,
+                    ),
                     TextFormField(
-                      obscureText: true,
                       controller: _passwordTextCon,
+                      obscureText: true,
+                      style: customStyle(
+                        fontWeightName: "Regular",
+                        fontColor: mainColor,
+                        fontSize: textFormFontSize.sp,
+                      ),
                       decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: textFormFontPaddingH.h,
+                          horizontal: textFormFontPaddingW.w,
+                        ),
                         hintText: "비밀번호",
                         hintStyle: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
+                          fontSize: textFormFontSize.sp,
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -116,84 +129,64 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.025,
+                height: widgetButtonDistanceH.h,
+              ),
+              Center(
+                child: Container(
+                  height: buttonSizeH.h,
+                  width: buttonSizeW.w,
+                  child: RaisedButton(
+                    color: blueColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(buttonRadiusW.w),
+                    ),
+                    elevation: 0.0,
+                    child: Text(
+                      "로그인",
+                      style: customStyle(
+                        fontWeightName: "Medium",
+                        fontColor: whiteColor,
+                        fontSize: buttonFontSize.sp,
+                      ),
+                    ),
+                    onPressed: () {
+                      _loginRepository.signInWithFirebaseAuth(
+                        context: context,
+                        mail: _mailTextCon.text,
+                        password: _passwordTextCon.text,
+                      );
+                    },
+                  ),
                 ),
               ),
               Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.06,
-                ),
-                width: widthRatio(context: context, widthRatio: 1),
-                padding: EdgeInsets.symmetric(
-                    horizontal: widthRatio(context: context, widthRatio: 0.2)),
-                child: RaisedButton(
-                  color: blueColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(
-                      color: whiteColor,
-                    ),
-                  ),
-                  elevation: 0.0,
-                  child: font(
-                    text: "로그인",
-                    textStyle: customStyle(
-                      fontWeightName: "Medium",
-                      fontColor: whiteColor,
-                    ),
-                  ),
-                  onPressed: () {
-                    _loginRepository.signInWithFirebaseAuth(
-                      context: context,
-                      mail: _mailTextCon.text,
-                      password: _passwordTextCon.text,
-                    );
-                  },
-                ),
+                height: widgetDistanceH.h,
               ),
-              Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.025,
-                ),
-              ),
-              Container(
-                height: heightRatio(
-                  context: context,
-                  heightRatio: 0.06,
-                ),
-                width: widthRatio(
-                  context: context,
-                  widthRatio: 1,
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: widthRatio(
-                    context: context,
-                    widthRatio: 0.2,
-                  ),
-                ),
-                child: RaisedButton(
-                  color: whiteColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(
-                      color: blueColor,
+              Center(
+                child: Container(
+                  height: buttonSizeH.h,
+                  width: buttonSizeW.w,
+                  child: RaisedButton(
+                    color: whiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(buttonRadiusW.w),
+                      side: BorderSide(
+                        color: blueColor,
+                      ),
                     ),
-                  ),
-                  elevation: 0.0,
-                  child: font(
-                    text: "회원가입",
-                    textStyle: customStyle(
-                      fontWeightName: "Medium",
-                      fontColor: blueColor,
+                    elevation: 0.0,
+                    child: Text(
+                      "회원가입",
+                      style: customStyle(
+                        fontWeightName: "Medium",
+                        fontColor: blueColor,
+                        fontSize: buttonFontSize.sp,
+                      ),
                     ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/SignUp");
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/SignUp");
-                  },
                 ),
               ),
             ],
