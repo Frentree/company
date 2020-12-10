@@ -18,8 +18,6 @@ import 'package:MyCompany/models/companyModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 
-import 'loginRepository.dart';
-
 class CompanyMethod{
   //회사코드 랜덤 생성
   String createRandomCompanyCode(){
@@ -122,13 +120,14 @@ class CompanyMethod{
     _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
 
     showFunctionSuccessMessage(
-      context: context,
-      successMessage: "새로운 회사가 생성되었습니다!"
+        context: context,
+        successMessage: "새로운 회사가 생성되었습니다!"
     );
   }
 
   //회사 가입
   Future<void> joinCompanyUser({BuildContext context, String companyCode}) async {
+    Format _format = Format();
     FirebaseRepository _repository = FirebaseRepository();
 
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
@@ -142,7 +141,8 @@ class CompanyMethod{
       name: _loginUser.name,
       mail: _loginUser.mail,
       birthday: _loginUser.birthday,
-      phone: _loginUser.phone
+      phone: _loginUser.phone,
+      requestDate: _format.dateTimeToTimeStamp(DateTime.now()),
     );
 
     _repository.saveApproval(
@@ -177,6 +177,17 @@ class CompanyMethod{
     User approvalUser = await _repository.getUser(userMail: approvalUserMail);
 
     approvalUser.state = 2;
+    approvalUser.companyCode = "";
+
+    _repository.updateUser(userModel: approvalUser);
+  }
+
+  Future<void> userLeave({BuildContext context, String leaveUserMail}) async {
+    FirebaseRepository _repository = FirebaseRepository();
+
+    User approvalUser = await _repository.getUser(userMail: leaveUserMail);
+
+    approvalUser.state = 4;
     approvalUser.companyCode = "";
 
     _repository.updateUser(userModel: approvalUser);

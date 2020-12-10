@@ -12,7 +12,7 @@ import 'package:MyCompany/provider/screen/loginScreenChange.dart';
 import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-
+import 'package:sizer/sizer.dart';
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
@@ -66,6 +66,55 @@ class MyApp extends StatelessWidget {
         ),
         home: SplashPage(),
       ),
+=======
+    return LayoutBuilder(                           //return LayoutBuilder
+      builder: (context, constraints) {
+        return OrientationBuilder(                  //return OrientationBuilder
+          builder: (context, orientation) {
+            //initialize SizerUtil()
+            SizerUtil().init(constraints, orientation);  //initialize SizerUtil
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider<LoginScreenChangeProvider>(
+                  create: (_) => LoginScreenChangeProvider(),
+                ),
+                ChangeNotifierProvider<CompanyScreenChangeProvider>(
+                  create: (_) => CompanyScreenChangeProvider(),
+                ),
+                ChangeNotifierProvider<FirebaseAuthProvider>(
+                  create: (_) => FirebaseAuthProvider(),
+                ),
+                ChangeNotifierProvider<LoginUserInfoProvider>(
+                  create: (_) => LoginUserInfoProvider(),
+                ),
+                ChangeNotifierProvider<AttendanceCheck>(
+                  create: (_) => AttendanceCheck(),
+                ),
+              ],
+              child: MaterialApp(
+                localizationsDelegates: [
+                  // ... app-specific localization delegate[s] here
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  DefaultCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('ko', 'KR'), // English
+                  const Locale('en', 'US'), // German
+                  // ... other locales the app supports
+                ],
+                title: 'Flutter Demo',
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                ),
+                home: SplashPage(),
+              ),
+            );
+          },
+        );
+      },
+>>>>>>> 76172a460a66ae594c4fe74fd4c63e70b541cd0a
     );
   }
 }

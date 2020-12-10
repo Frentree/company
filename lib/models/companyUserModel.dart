@@ -26,9 +26,10 @@ class CompanyUser {
   Timestamp createDate;
   Timestamp lastModDate;
   int status;
-  List<int> level;
+  List<dynamic> level;
   String position;
   String team;
+  List<dynamic> userSearch;
 
   CompanyUser({
     this.id,
@@ -39,6 +40,7 @@ class CompanyUser {
     this.level,
     this.position,
     this.team,
+    this.userSearch,
   });
 
   CompanyUser.fromMap(Map snapshot, String id)
@@ -53,7 +55,8 @@ class CompanyUser {
         status = snapshot["status"] ?? 0,
         level = snapshot["level"] ?? [],
         position = snapshot["position"] ?? "",
-        team = snapshot["team"] ?? "";
+        team = snapshot["team"] ?? "",
+        userSearch = snapshot["userSearch"] ?? [];
 
   toJson() {
     return {
@@ -68,6 +71,7 @@ class CompanyUser {
       "level": level,
       "position": position,
       "team": team,
+      "userSearch": user.name.split(""),
     };
   }
 }

@@ -18,7 +18,7 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 class SignUpMethod {
   Future<void> signUpWithFirebaseAuth(
       {BuildContext context,
-      String smsCode,
+      /*String smsCode,*/
       String password,
       User user}) async {
 
@@ -36,9 +36,12 @@ class SignUpMethod {
 
     FirebaseRepository _repository = FirebaseRepository();
 
-    bool _codeConfirmResult = await _firebaseAuthProvider.isVerifySuccess(
+/*    bool _codeConfirmResult = await _firebaseAuthProvider.isVerifySuccess(
       smsCode: smsCode,
-    );
+    );*/
+    //
+    bool _codeConfirmResult = true;
+    //
 
     if (_codeConfirmResult == true) {
       bool _signUpEmailResult = await _firebaseAuthProvider.signUpWithEmail(

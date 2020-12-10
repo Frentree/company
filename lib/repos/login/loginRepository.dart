@@ -31,23 +31,23 @@ class LoginRepository {
           originalValue: originalValue, checkValue: checkValue);
 
   Future<void> signUpWithFirebaseAuth(
-          {BuildContext context, String smsCode, String password, User user}) =>
+      {BuildContext context, /*String smsCode,*/ String password, User user}) =>
       _signUpMethod.signUpWithFirebaseAuth(
-          context: context, smsCode: smsCode, password: password, user: user);
+          context: context, /*smsCode: smsCode,*/ password: password, user: user);
 
   // 패스워드 확인
   Future<bool> InfomationConfirmWithFirebaseAuth(
-          {BuildContext context, String mail, String password, String name}) =>
+      {BuildContext context, String mail, String password, String name}) =>
       _myInfoMethod.InfomationConfirmWithFirebaseAuth(
           context: context, mail: mail, password: password, name: name);
 
   // 패스워드 변경
   Future<void> InfomationUpdateWithFirebaseAuth(
-          {BuildContext context,
-          String mail,
-          String newPassword,
-          String newPasswordConfirm,
-          String name}) =>
+      {BuildContext context,
+        String mail,
+        String newPassword,
+        String newPasswordConfirm,
+        String name}) =>
       _myInfoMethod.InfomationUpdateWithFirebaseAuth(
           context: context,
           mail: mail,
@@ -56,7 +56,7 @@ class LoginRepository {
           name: name);
 
   Future<void> signInWithFirebaseAuth(
-          {BuildContext context, String mail, String password}) =>
+      {BuildContext context, String mail, String password}) =>
       _signInMethod.signInWithFirebaseAuth(
           context: context, mail: mail, password: password);
 
@@ -75,4 +75,8 @@ class LoginRepository {
   Future<void> userRejection({BuildContext context, String approvalUserMail}) =>
       _companyMethod.userRejection(
           context: context, approvalUserMail: approvalUserMail);
+
+  Future<void> userLeave({BuildContext context, String leaveUserMail}) => _companyMethod.userLeave(
+    context: context, leaveUserMail: leaveUserMail,
+  );
 }
