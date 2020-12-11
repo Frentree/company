@@ -6,8 +6,11 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/expenseCard.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+final word = Words();
 
 class SignBoxExpense extends StatefulWidget {
   @override
@@ -58,7 +61,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "지출일자",
+                        word.exDate(),
                         style: customStyle(
                             fontSize: timeFontSize,
                             fontWeightName: "Regular",
@@ -71,7 +74,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "항목",
+                        word.category(),
                         style: customStyle(
                             fontSize: timeFontSize,
                             fontWeightName: "Regular",
@@ -84,7 +87,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "금액",
+                        word.amount(),
                         style: customStyle(
                             fontSize: timeFontSize,
                             fontWeightName: "Regular",
@@ -97,7 +100,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "영수증",
+                        word.receipt(),
                         style: customStyle(
                             fontSize: timeFontSize,
                             fontWeightName: "Regular",
@@ -110,7 +113,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "상태",
+                        word.state(),
                         style: customStyle(
                             fontSize: timeFontSize,
                             fontWeightName: "Regular",
@@ -181,7 +184,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                               vertical: customHeight(
                                   context: context, heightSize: 0.02)),
                           child: Text(
-                            "항목이 없습니다.",
+                            word.categoryCon(),
                             style: customStyle(
                                 fontColor: blackColor,
                                 fontSize: 16,

@@ -569,5 +569,71 @@
          "description": "second message",
          "type": "text",
          "placeholders": {}
-       }
+       },
+"exSetBox": "Expense Settlement Box",
+  "@exSetBox": {
+    "description": "expense settlement box message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appForapproval": "Application for approval",
+  "@appForapproval": {
+    "description": "application for approval message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "exDate": "Expenditure date",
+  "@exDate": {
+    "description": "Expenditure date message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "Category",
+  "@category": {
+    "description": "category message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "Amount",
+  "@amount": {
+    "description": "Amount message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "receipt": "Receipt",
+  "@receipt": {
+    "description": "Receipt message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "state": "State",
+  "@state": {
+    "description": "State message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "categoryCon": "There is no item",
+  "@categoryCon": {
+    "description": "There is no item message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lunch": "Lunch",
+  "@lunch": {
+    "description": "lunch message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dinner": "Dinner",
+  "@dinner": {
+    "description": "dinner message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "Save",
+  "@save": {
+    "description": "save message",
+    "type": "text",
+    "placeholders": {}
+  }
 }
