@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/setting/gradeMain.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+
+final word = Words();
 
 SettingUserManager(BuildContext context) {
   User _loginUser;
@@ -80,7 +83,7 @@ SettingUserManager(BuildContext context) {
                       Container(
                         width: 50.0.w,
                         child: Text(
-                          "사용자 권한 관리",
+                          word.userGradeManager(),
                           style: customStyle(
                             fontSize: homePageDefaultFontSize.sp,
                           ),

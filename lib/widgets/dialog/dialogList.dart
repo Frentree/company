@@ -4,8 +4,10 @@ import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/repos/firebaseMethod.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 
+final word = Words();
 // 권한 미완성
 Future<void> getErrorDialog({BuildContext context, String text}) {
   return showDialog(
@@ -17,7 +19,7 @@ Future<void> getErrorDialog({BuildContext context, String text}) {
           color: mainColor,
           child: Center(
             child: Text(
-              "알림",
+              word.alarm(),
               style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
             ),
           ),
@@ -39,7 +41,7 @@ Future<void> getErrorDialog({BuildContext context, String text}) {
                           child: RaisedButton(
                             color: mainColor,
                             child: Text(
-                              "확인",
+                              word.confirm(),
                               style: customStyle(
                                   fontColor: whiteColor,
                                   fontSize: 15,
@@ -78,7 +80,7 @@ Future<void> getGradeUpadateDialog({BuildContext context, String gradeName, Stri
           color: mainColor,
           child: Center(
             child: Text(
-              "권한명 수정",
+              word.gradeNameUpdate(),
               style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
             ),
           ),
@@ -106,7 +108,7 @@ Future<void> getGradeUpadateDialog({BuildContext context, String gradeName, Stri
                           child: RaisedButton(
                             color: mainColor,
                             child: Text(
-                              "수정",
+                              word.update(),
                               style: customStyle(
                                   fontColor: whiteColor,
                                   fontSize: 15,
@@ -124,7 +126,7 @@ Future<void> getGradeUpadateDialog({BuildContext context, String gradeName, Stri
                         child: RaisedButton(
                           color: mainColor,
                           child: Text(
-                            "취소",
+                            word.cencel(),
                             style: customStyle(
                                 fontColor: whiteColor,
                                 fontSize: 15,
@@ -159,7 +161,7 @@ Future<void> getGradeDeleteDialog({BuildContext context, String documentID, Stri
           color: mainColor,
           child: Center(
             child: Text(
-              "권한 삭제",
+              word.deleteGrade(),
               style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
             ),
           ),
@@ -172,7 +174,7 @@ Future<void> getGradeDeleteDialog({BuildContext context, String documentID, Stri
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text("권한을 정말로 삭제 하시겠습니까?"),
+                  Text(word.deleteGradeCon()),
                   Row(
                     children: [
                       Expanded(
@@ -181,7 +183,7 @@ Future<void> getGradeDeleteDialog({BuildContext context, String documentID, Stri
                           child: RaisedButton(
                             color: mainColor,
                             child: Text(
-                              "예",
+                              word.yes(),
                               style: customStyle(
                                   fontColor: whiteColor,
                                   fontSize: 15,
@@ -201,7 +203,7 @@ Future<void> getGradeDeleteDialog({BuildContext context, String documentID, Stri
                         child: RaisedButton(
                           color: mainColor,
                           child: Text(
-                            "아니오",
+                            word.no(),
                             style: customStyle(
                                 fontColor: whiteColor,
                                 fontSize: 15,
@@ -236,7 +238,7 @@ Future<void> addGradeUserDialog({BuildContext context, String documentID, String
           color: mainColor,
           child: Center(
             child: Text(
-              "사용자 추가",
+              word.addUser(),
               style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
             ),
           ),
@@ -354,7 +356,7 @@ Widget _getUserListAdd(BuildContext context, List<DocumentSnapshot> snapshot, in
                 child: RaisedButton(
                   color: mainColor,
                   child: Text(
-                    "예",
+                    word.yes(),
                     style: customStyle(
                       fontColor: whiteColor,
                       fontSize: 15,
@@ -372,7 +374,7 @@ Widget _getUserListAdd(BuildContext context, List<DocumentSnapshot> snapshot, in
               child: RaisedButton(
                 color: mainColor,
                 child: Text(
-                  "아니오",
+                  word.no(),
                   style: customStyle(
                       fontColor: whiteColor,
                       fontSize: 15,
@@ -402,7 +404,7 @@ Future<void> dropGradeUserDialog({BuildContext context, String documentID, Strin
           color: mainColor,
           child: Center(
             child: Text(
-              "사용자 삭제",
+              word.deleteUserPermission(),
               style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
             ),
           ),
@@ -512,7 +514,7 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
                 child: RaisedButton(
                   color: mainColor,
                   child: Text(
-                    "예",
+                    word.yes(),
                     style: customStyle(
                         fontColor: whiteColor,
                         fontSize: 15,
@@ -522,7 +524,7 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
                   onPressed: () {
                     if(level == 9) {
                       if(snapshot.length == gradeList.length) {
-                        getErrorDialog(context: context, text: "최고관리자는 1명 이하로 삭제 불가능합니다.");
+                        getErrorDialog(context: context, text: word.superAdminCon());
                         return;
                       }
                     }
@@ -537,7 +539,7 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
               child: RaisedButton(
                 color: mainColor,
                 child: Text(
-                  "아니오",
+                  word.cencel(),
                   style: customStyle(
                       fontColor: whiteColor,
                       fontSize: 15,
@@ -567,7 +569,7 @@ Future<void> addGradeDialog({BuildContext context, String companyCode}) {
           color: mainColor,
           child: Center(
             child: Text(
-              "권한 추가",
+              word.addPermission(),
               style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
             ),
           ),
@@ -683,7 +685,7 @@ Widget _getGradeList(BuildContext context, List<DocumentSnapshot> snapshot, Stri
                 child: RaisedButton(
                   color: mainColor,
                   child: Text(
-                    "예",
+                    word.yes(),
                     style: customStyle(
                         fontColor: whiteColor,
                         fontSize: 15,
@@ -704,7 +706,7 @@ Widget _getGradeList(BuildContext context, List<DocumentSnapshot> snapshot, Stri
               child: RaisedButton(
                 color: mainColor,
                 child: Text(
-                  "아니오",
+                  word.no(),
                   style: customStyle(
                       fontColor: whiteColor,
                       fontSize: 15,

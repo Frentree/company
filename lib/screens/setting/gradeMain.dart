@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -10,10 +8,13 @@ import 'package:MyCompany/repos/firebaseMethod.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/dialog/dialogList.dart';
 import 'package:MyCompany/widgets/popupMenu/expensePopupMenu.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+final word = Words();
 
 class GradeMainPage extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class GradeMainPageState extends State<GradeMainPage> {
           addGradeDialog(context: context, companyCode: _loginUser.companyCode);
         },
         label: Text(
-          "권한 추가",
+          word.addPermission(),
           style: customStyle(
             fontColor: whiteColor,
             fontWeightName: 'Bold',
@@ -103,10 +104,10 @@ Widget _buildUserList(BuildContext context, GradeData grade, String companyCode)
             child: DragTarget<Map<String, dynamic>>(
               onAccept: (receivedItem) {
                 print(receivedItem);
-                getErrorDialog(context: context, text: "아직 기능이 구현되지 않았습니다.");
-
+                //getErrorDialog(context: context, text: word.updateFail());
+                NotImplementedFunction(context);
                 if(receivedItem["documentID"] == grade.reference.documentID){
-                  print("기존 위치");
+                  //print("기존 위치");
                 }else {
                   //FirebaseRepository().deleteUser(receivedItem["mail"], companyCode, 7);
 
@@ -170,32 +171,32 @@ Widget _buildUserList(BuildContext context, GradeData grade, String companyCode)
                             getPopupItem(
                                 context: context,
                                 icons: Icons.edit,
-                                text: "권한명 수정하기",
+                                text: word.gradeNameUpdate(),
                                 value: 1
                             ),
                             (grade.gradeID != 9 && grade.gradeID != 8) ?
                             getPopupItem(
                                 context: context,
                                 icons: Icons.edit,
-                                text: "권한 삭제하기",
+                                text: word.deleteGrade(),
                                 value: 2
                             ) : null,
                             getPopupItem(
                                 context: context,
                                 icons: Icons.edit,
-                                text: "권한 상세 설정",
+                                text: word.permissionDetails(),
                                 value: 3
                             ),
                             getPopupItem(
                                 context: context,
                                 icons: Icons.edit,
-                                text: "사용자 추가하기",
+                                text: word.addUser(),
                                 value: 4
                             ),
                             getPopupItem(
                                 context: context,
                                 icons: Icons.edit,
-                                text: "사용자 삭제하기",
+                                text: word.deleteUserPermission(),
                                 value: 5
                             ),
                           ],

@@ -10,6 +10,7 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -17,6 +18,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+
+final word = Words();
 
 settingUserAddDelete(BuildContext context) {
   Format _format = Format();
@@ -93,7 +96,7 @@ settingUserAddDelete(BuildContext context) {
                           Container(
                               width: 50.0.w,
                               child: Text(
-                                "사용자 추가 요청/삭제",
+                                word.userAddRquestAndDelete(),
                                 style: customStyle(
                                     fontSize: homePageDefaultFontSize.sp
                                 ),
@@ -141,7 +144,7 @@ settingUserAddDelete(BuildContext context) {
                                               Container(
                                                 width: 30.0.w,
                                                 child: Text(
-                                                  "사용자 추가 요청",
+                                                  word.requestUser(),
                                                   style: customStyle(
                                                     fontSize: 12.0.sp,
                                                   ),
@@ -159,7 +162,7 @@ settingUserAddDelete(BuildContext context) {
                                                           BorderRadius.circular(12.0.w)),
                                                       child: Center(
                                                         child: Text(
-                                                          "${_approvalData.length} 건",
+                                                          "${_approvalData.length} ${word.count()}",
                                                           style: customStyle(
                                                             fontSize: 12.0.sp,
                                                           ),
@@ -176,7 +179,7 @@ settingUserAddDelete(BuildContext context) {
                                           child: _approvalData.length == 0
                                               ? Center(
                                               child: Text(
-                                                "승인할 데이터가 없습니다.",
+                                                word.noDataApprove(),
                                                 style: customStyle(
                                                     fontSize: 13.0.sp
                                                 ),
@@ -205,7 +208,7 @@ settingUserAddDelete(BuildContext context) {
                                                       Container(
                                                         height: 6.0.h,
                                                         child: Text(
-                                                          "[${_approval.name}] 님의 사용자 추가 요청",
+                                                          "[${_approval.name}] ${word.forAddUser()}",
                                                           style: customStyle(
                                                             fontSize: 15.0.sp,
                                                             fontColor:
@@ -221,7 +224,7 @@ settingUserAddDelete(BuildContext context) {
                                                                 .end,
                                                             children: [
                                                               Text(
-                                                                "요청일자 ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
+                                                                "${word.requestDate()}" + " ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
                                                                 style:
                                                                 customStyle(
                                                                   fontSize:
@@ -241,7 +244,7 @@ settingUserAddDelete(BuildContext context) {
                                                       builder: (BuildContext context) {
                                                         return SimpleDialog(
                                                           title: Text(
-                                                            "[${_approval.name}] 님의 사용자 추가 요청",
+                                                            "[${_approval.name}] ${word.forAddUser()}",
                                                             style: customStyle(
                                                               fontSize: 15.0.sp,
                                                             ),
@@ -256,7 +259,7 @@ settingUserAddDelete(BuildContext context) {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text(
-                                                                    "이름 : ${_approval.name}",
+                                                                    "${word.name()} : ${_approval.name}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
@@ -265,7 +268,7 @@ settingUserAddDelete(BuildContext context) {
                                                                       height: 1.5.h
                                                                   ),
                                                                   Text(
-                                                                    "이메일 : ${_approval.mail}",
+                                                                    "${word.email()} : ${_approval.mail}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
@@ -274,7 +277,7 @@ settingUserAddDelete(BuildContext context) {
                                                                       height:1.5.h
                                                                   ),
                                                                   Text(
-                                                                    "생년월일 : ${_approval.birthday}",
+                                                                    "${word.birthDay()} : ${_approval.birthday}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
@@ -283,7 +286,7 @@ settingUserAddDelete(BuildContext context) {
                                                                     height: 1.5.h,
                                                                   ),
                                                                   Text(
-                                                                    "전화번호 : ${_approval.phone}",
+                                                                    "${word.phone()} : ${_approval.phone}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
@@ -292,7 +295,7 @@ settingUserAddDelete(BuildContext context) {
                                                                     height: 1.5.h,
                                                                   ),
                                                                   Text(
-                                                                    "요청일 : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
+                                                                    "${word.requestDate()} : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
                                                                     style: customStyle(
                                                                       fontSize: 12.0.sp,
                                                                     ),
@@ -312,7 +315,7 @@ settingUserAddDelete(BuildContext context) {
                                                                             elevation: 0.0,
                                                                             color: blueColor,
                                                                             child: Text(
-                                                                              "승낙",
+                                                                              word.accept(),
                                                                               style: customStyle(
                                                                                 fontColor: whiteColor,
                                                                                 fontSize: 12.0.sp,
@@ -344,7 +347,7 @@ settingUserAddDelete(BuildContext context) {
                                                                             elevation: 0.0,
                                                                             color: blueColor,
                                                                             child: Text(
-                                                                              "거절",
+                                                                              word.refusal(),
                                                                               style: customStyle(
                                                                                 fontColor: whiteColor,
                                                                                 fontSize: 12.0.sp,
@@ -408,7 +411,7 @@ settingUserAddDelete(BuildContext context) {
                                   child: Container(
                                       width: 35.0.w,
                                       child: Text(
-                                        "사용자 삭제(퇴사자)",
+                                        word.deleteUser(),
                                         style: customStyle(
                                           fontSize: 12.0.sp,
                                         ),
@@ -442,7 +445,7 @@ settingUserAddDelete(BuildContext context) {
                                                 _retireeNameCon.clear();
                                               },
                                             ),
-                                            hintText: "삭제할 직원 이름을 입력하세요",
+                                            hintText: word.deleteUserCon(),
                                             hintStyle: TextStyle(
                                                 fontFamily: "NotoSansKR",
                                                 fontSize: 11.0.sp
@@ -486,7 +489,7 @@ settingUserAddDelete(BuildContext context) {
                                             if(searchCompanyUserResult.length == 0){
                                               return Container(
                                                 child: Center(
-                                                  child: Text("검색 결과 없음",style: customStyle(
+                                                  child: Text(word.noSearch(),style: customStyle(
                                                       fontSize: 13.0.sp
                                                   ),),
                                                 ),
@@ -529,7 +532,7 @@ settingUserAddDelete(BuildContext context) {
                                                         builder: (BuildContext context) {
                                                           return SimpleDialog(
                                                             title: Text(
-                                                              "[${searchCompanyUserResult[index].name}] 님의 퇴사 처리",
+                                                              "[${searchCompanyUserResult[index].name}] ${word.resignationProcess()}",
                                                               style: customStyle(
                                                                 fontSize: 15.0.sp,
                                                               ),
@@ -544,7 +547,7 @@ settingUserAddDelete(BuildContext context) {
                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
                                                                     Text(
-                                                                      "이름 : ${searchCompanyUserResult[index].name}",
+                                                                      "${word.name()} : ${searchCompanyUserResult[index].name}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),
@@ -553,7 +556,7 @@ settingUserAddDelete(BuildContext context) {
                                                                         height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                      "이메일 : ${searchCompanyUserResult[index].mail}",
+                                                                      "${word.email()} : ${searchCompanyUserResult[index].mail}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),
@@ -562,7 +565,7 @@ settingUserAddDelete(BuildContext context) {
                                                                         height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                      "생년월일 : ${searchCompanyUserResult[index].birthday}",
+                                                                      "${word.birthDay()} : ${searchCompanyUserResult[index].birthday}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),
@@ -571,7 +574,7 @@ settingUserAddDelete(BuildContext context) {
                                                                         height: 1.5.h
                                                                     ),
                                                                     Text(
-                                                                      "전화번호 : ${searchCompanyUserResult[index].phone}",
+                                                                      "${word.phone()} : ${searchCompanyUserResult[index].phone}",
                                                                       style: customStyle(
                                                                         fontSize: 12.0.sp,
                                                                       ),
@@ -594,7 +597,7 @@ settingUserAddDelete(BuildContext context) {
                                                                               elevation: 0.0,
                                                                               color: blueColor,
                                                                               child: Text(
-                                                                                "퇴사",
+                                                                                word.confirm(),
                                                                                 style: customStyle(
                                                                                   fontColor: whiteColor,
                                                                                   fontSize: 12.0.sp,
@@ -630,7 +633,7 @@ settingUserAddDelete(BuildContext context) {
                                                                               elevation: 0.0,
                                                                               color: blueColor,
                                                                               child: Text(
-                                                                                "취소",
+                                                                                word.cencel(),
                                                                                 style: customStyle(
                                                                                   fontColor: whiteColor,
                                                                                   fontSize: 12.0.sp,
