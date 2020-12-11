@@ -10,7 +10,13 @@ import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+<<<<<<< HEAD
 final word = Words();
+=======
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+>>>>>>> minji
 
 class SignBoxExpense extends StatefulWidget {
   @override
@@ -42,7 +48,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
         Card(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(3.0.w),
             side: BorderSide(
               width: 1,
               color: boarderColor,
@@ -50,10 +56,10 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: customWidth(context: context, widthSize: 0.02),
-                vertical: customHeight(context: context, heightSize: 0.01)),
+                horizontal: 2.0.w,
+                vertical: 1.0.h),
             child: Container(
-              height: customHeight(context: context, heightSize: 0.03),
+              height: 3.0.h,
               child: Row(
                 children: [
                   Expanded(
@@ -63,7 +69,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         word.exDate(),
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -76,7 +82,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         word.category(),
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -89,7 +95,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         word.amount(),
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -102,7 +108,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         word.receipt(),
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -115,7 +121,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         word.state(),
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -128,7 +134,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -141,7 +147,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -172,7 +178,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                   Card(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(3.0.w),
                       side: BorderSide(
                         width: 1,
                         color: boarderColor,
@@ -181,13 +187,12 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: Center(
                       child: Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: customHeight(
-                                  context: context, heightSize: 0.02)),
+                              vertical: 2.0.h),
                           child: Text(
                             word.categoryCon(),
                             style: customStyle(
                                 fontColor: blackColor,
-                                fontSize: 16,
+                                fontSize: 15.0.sp,
                                 fontWeightName: "Medium"),
                           )),
                     ),
