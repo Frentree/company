@@ -201,4 +201,18 @@ class Words {
   String second() => Intl.message("초", name: "second", args: [], desc: "second message");
 /* 날짜 포맷 종료 */
 
+/* 알림 - 경비 */
+  String exSetBox() => Intl.message("경비 정산함", name: "exSetBox", args: [], desc: "expense settlement box message");
+  String appForapproval() => Intl.message("결재 신청함", name: "appForapproval", args: [], desc: "application for approval message");
+  String exDate() => Intl.message("지출일자", name: "exDate", args: [], desc: "Expenditure date message");
+  String category() => Intl.message("항목", name: "category", args: [], desc: "category message");
+  String amount() => Intl.message("금액", name: "amount", args: [], desc: "Amount message");
+  String receipt() => Intl.message("영수증", name: "receipt", args: [], desc: "Receipt message");
+  String state() => Intl.message("상태", name: "state", args: [], desc: "State message");
+  String categoryCon() => Intl.message("항목이 없습니다", name: "categoryCon", args: [], desc: "There is no item message");
+  String lunch() => Intl.message("중식비", name: "lunch", args: [], desc: "lunch message");
+  String dinner() => Intl.message("석식비", name: "dinner", args: [], desc: "dinner message");
+  String save() => Intl.message("저장", name: "save", args: [], desc: "save message");
+
+/* 알림 - 경비 종료 */
 }

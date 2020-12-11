@@ -569,5 +569,71 @@
          "description": "second message",
          "type": "text",
          "placeholders": {}
-       }
+       },
+"exSetBox": "경비 정산함",
+  "@exSetBox": {
+    "description": "expense settlement box message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appForapproval": "결재 신청함",
+  "@appForapproval": {
+    "description": "application for approval message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "exDate": "지출일자",
+  "@exDate": {
+    "description": "Expenditure date message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "항목",
+  "@category": {
+    "description": "category message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "금액",
+  "@amount": {
+    "description": "Amount message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "receipt": "영수증",
+  "@receipt": {
+    "description": "Receipt message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "state": "상태",
+  "@state": {
+    "description": "State message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "categoryCon": "항목이 없습니다",
+  "@categoryCon": {
+    "description": "There is no item message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lunch": "중식비",
+  "@lunch": {
+    "description": "lunch message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dinner": "석식비",
+  "@dinner": {
+    "description": "dinner message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "저장",
+  "@save": {
+    "description": "save message",
+    "type": "text",
+    "placeholders": {}
+  }
 }

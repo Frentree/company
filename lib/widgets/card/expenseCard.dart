@@ -7,8 +7,11 @@ import 'package:MyCompany/models/expenseModel.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/alarm/expenseImageDialog.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+final word = Words();
 
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;
@@ -56,7 +59,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      model.contentType,
+                      model.contentType == "석시비" ? word.dinner(): word.lunch(),
                       style: customStyle(
                           fontSize: timeFontSize,
                           fontWeightName: "Regular",
@@ -134,13 +137,13 @@ Container _popupMenu(BuildContext context) {
                 PopupMenuItem(
                   value: 1,
                   child: Row(
-                    children: [Icon(Icons.edit), Text("수정하기")],
+                    children: [Icon(Icons.edit), Text(word.update())],
                   ),
                 ),
                 PopupMenuItem(
                   value: 2,
                   child: Row(
-                    children: [Icon(Icons.delete), Text("삭제하기")],
+                    children: [Icon(Icons.delete), Text(word.delete())],
                   ),
                 ),
               ]));

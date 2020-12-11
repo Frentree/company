@@ -31,7 +31,7 @@ class _SignBoxState extends State<SignBox> {
                     context: context,
                     heightSize: 0.05,
                     widthSize: 0.2,
-                    btnText: "경비 정산함",
+                    btnText: word.exSetBox(),
                     tabIndexVariable: tabIndex,
                     tabOrder: 0,
                     tabAction: (){
@@ -47,7 +47,7 @@ class _SignBoxState extends State<SignBox> {
                     context: context,
                     heightSize: 0.05,
                     widthSize: 0.2,
-                    btnText: "결재 신청함",
+                    btnText: word.appForapproval(),
                     tabIndexVariable: tabIndex,
                     tabOrder: 1,
                     tabAction: (){
