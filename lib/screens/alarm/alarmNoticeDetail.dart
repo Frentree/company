@@ -8,11 +8,15 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+final word = Words();
 class AlarmNoticeDetailPage extends StatefulWidget {
   final noticeUid;
   final noticeTitle;
@@ -76,6 +80,8 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
 
   // 댓글 입력창 포커스
   FocusNode _commnetFocusNode = FocusNode();
+
+  Attendance _attendance = Attendance();
 
   _getCommentList(List<DocumentSnapshot> documents, BuildContext context, String documentID){
     List<Widget> widgets = [];
@@ -167,7 +173,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                               Expanded(
                                 flex: 3,
                                 child: InkWell(
-                                  child: Text("댓글달기",
+                                  child: Text(word.enterComments(),
                                     style: customStyle(
                                         fontColor: blueColor,
                                         fontSize: 11,
@@ -195,7 +201,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                       Expanded(
                                         flex: 1,
                                         child: InkWell(
-                                          child: Text("삭제",
+                                          child: Text(word.delete(),
                                             style: customStyle(
                                                 fontColor: redColor,
                                                 fontSize: 11,
@@ -209,7 +215,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                 // return object of type Dialog
                                                 return AlertDialog(
                                                   title: Text(
-                                                    "댓글 삭제",
+                                                    "${word.comments()} ${word.delete()}",
                                                     style: customStyle(
                                                         fontColor: mainColor,
                                                         fontSize: 14,
@@ -217,7 +223,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                     ),
                                                   ),
                                                   content: Text(
-                                                    "댓글을 정말로 지우시겠습니까?",
+                                                    word.commentsDeleteCon(),
                                                     style: customStyle(
                                                         fontColor: mainColor,
                                                         fontSize: 13,
@@ -226,7 +232,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                   ),
                                                   actions: <Widget>[
                                                     FlatButton(
-                                                      child: Text("네",
+                                                      child: Text(word.yes(),
                                                         style: customStyle(
                                                             fontColor: blueColor,
                                                             fontSize: 15,
@@ -247,7 +253,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       },
                                                     ),
                                                     FlatButton(
-                                                      child: Text("아니오",
+                                                      child: Text(word.no(),
                                                         style: customStyle(
                                                             fontColor: blueColor,
                                                             fontSize: 15,
@@ -296,6 +302,8 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
+    AttendanceCheck _attendanceCheckProvider =
+    Provider.of<AttendanceCheck>(context);
 
     return Scaffold(
       backgroundColor: mainColor,
@@ -303,23 +311,46 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
         backgroundColor: mainColor,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: Row(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.power_settings_new,
-                size: customHeight(context: context, heightSize: 0.04),
-              ),
-              onPressed: () {
-                null;
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text("근무중"),
-            ),
-          ],
-        ),
+        title: FutureBuilder(
+            future: _attendanceCheckProvider.attendanceCheck(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              } else {
+                _attendance = snapshot.data;
+                return Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.power_settings_new,
+                        size: customHeight(context: context, heightSize: 0.04),
+                        color: Colors.white,
+                      ),
+                      onPressed: _attendance.status == 0
+                          ? () async {
+                        await _attendanceCheckProvider.manualOnWork(
+                          context: context,
+                        );
+                      }
+                          : _attendance.status != 3
+                          ? () async {
+                        await _attendanceCheckProvider.manualOffWork(
+                          context: context,
+                        );
+                      }
+                          : null,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        _attendanceCheckProvider
+                            .attendanceStatus(_attendance.status),
+                      ),
+                    )
+                  ],
+                );
+              }
+            }),
         actions: <Widget>[
           Container(
             alignment: Alignment.center,
@@ -537,7 +568,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                               flex: 3,
                                                               child: InkWell(
                                                                 child: Text(
-                                                                  "댓글 달기",
+                                                                  word.enterComments(),
                                                                   style: customStyle(
                                                                       fontColor: blueColor,
                                                                       fontSize: 11,
@@ -566,7 +597,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                       flex: 1,
                                                                       child: InkWell(
                                                                         child: Text(
-                                                                          "수정",
+                                                                          word.update(),
                                                                           style:
                                                                           customStyle(
                                                                               fontColor: blueColor,
@@ -589,7 +620,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                       flex: 1,
                                                                       child: InkWell(
                                                                         child: Text(
-                                                                          "삭제",
+                                                                          word.delete(),
                                                                           style:
                                                                           customStyle(
                                                                               fontColor: redColor,
@@ -604,7 +635,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                               // return object of type Dialog
                                                                               return AlertDialog(
                                                                                 title: Text(
-                                                                                  "댓글 삭제",
+                                                                                  "${word.comments()} ${word.delete()}",
                                                                                   style: customStyle(
                                                                                       fontColor: redColor,
                                                                                       fontSize: 11,
@@ -612,14 +643,14 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                                   ),
                                                                                 ),
                                                                                 content: Text(
-                                                                                  "댓글을 정말로 지우시겠습니까? \n지우실 경우 하위 댓글도 전부 지워집니다.",
+                                                                                  word.commentsDeleteCon(),
                                                                                   style: customStyle(
                                                                                       fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
                                                                                 ),
                                                                                 actions: <Widget>[
                                                                                   FlatButton(
                                                                                     child: Text(
-                                                                                      "네",
+                                                                                      word.yes(),
                                                                                       style: customStyle(
                                                                                           fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                                                     ),
@@ -638,7 +669,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                                                   ),
                                                                                   FlatButton(
                                                                                     child: Text(
-                                                                                      "아니오",
+                                                                                      word.no(),
                                                                                       style: customStyle(
                                                                                           fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
                                                                                     ),
@@ -685,13 +716,13 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       color: const Color(0xFF707070),
                                                     ),
                                                     headerExpanded: Text(
-                                                      "댓글이 " + subDocuments.length.toString() + "개가 있습니다.",
+                                                      "${word.commentsCountHeadCon()} " + subDocuments.length.toString() + " ${word.commentsCountTailCon()}",
                                                       style: customStyle(fontSize: 12, fontWeightName: 'Regular'),
                                                     ),
                                                     header: Container(
                                                         color: Colors.transparent,
                                                         child: Text(
-                                                          "댓글이 " + subDocuments.length.toString() + "개가 있습니다.",
+                                                          "${word.commentsCountHeadCon()} " + subDocuments.length.toString() + " ${word.commentsCountTailCon()}",
                                                           style: customStyle(fontSize: 12, fontColor: blueColor, fontWeightName: 'Regular'),
                                                         )),
                                                     children: <Widget>[
@@ -740,7 +771,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            crudType == 1 ? commnetUser + " 님에게 댓글 입력중입니다." : "댓글을 수정중입니다.",
+                            crudType == 1 ? commnetUser + " ${word.commentsTo()}" : "${word.commnetsUpate()}",
                             style: customStyle(
                                 fontWeightName: 'Bold',
                                 fontColor: whiteColor,
@@ -750,7 +781,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           InkWell(
                             child: Text(
-                              "취소",
+                              word.cencel(),
                               style: TextStyle(
                                 color: whiteColor,
                                 fontWeight: FontWeight.w800,
@@ -805,7 +836,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                       ),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
-                                        hintText: "댓글 입력하세요",
+                                        hintText: word.commnetsInput(),
                                       ),
                                     ),
                                   ),
@@ -825,7 +856,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                             setState(() {
                                               if (_noticeComment.text.trim() != "") {
                                                 if (_commentId.trim() == "") {
-                                                  print("답글 미선택 ====> " + _commentId);
+                                                  //print("답글 미선택 ====> " + _commentId);
                                                   _commnetModel = CommentModel(
                                                     comment: _noticeComment.text,
                                                     createUser: _commentMap,
@@ -837,7 +868,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                       comment: _commnetModel
                                                   );
                                                 } else {
-                                                  print("답글 선택 ====> " + _commentId);
+                                                  //print("답글 선택 ====> " + _commentId);
 
                                                   if(crudType == 1){ // 답글 입력 클릭시
                                                     _commentList = CommentListModel(

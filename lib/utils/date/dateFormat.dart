@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:intl/intl.dart';
+
+final word = Words();
 
 class Format{
   String weekFormat(DateTime date){
@@ -7,31 +10,31 @@ class Format{
 
     switch (date.weekday){
       case 1 :
-        week = "월";
+        week = word.Mon();
         break;
 
       case 2 :
-        week = "화";
+        week = word.Tue();
         break;
 
       case 3 :
-        week = "수";
+        week = word.Wed();
         break;
 
       case 4 :
-        week = "목";
+        week = word.Thu();
         break;
 
       case 5 :
-        week = "금";
+        week = word.Fri();
         break;
 
       case 6 :
-        week = "토";
+        week = word.Sat();
         break;
 
       case 0 :
-        week = "일";
+        week = word.Sun();
         break;
     }
 
@@ -67,14 +70,14 @@ class Format{
   String dateFormat(DateTime date){
     String dateText;
 
-    dateText = date.year.toString() + "년 " + twoDigitsFormat(date.month) + "월 " + twoDigitsFormat(date.day) + "일 " + weekFormat(date) + "요일";
+    dateText = date.year.toString() + " / " + twoDigitsFormat(date.month) + " / " + twoDigitsFormat(date.day) + "  " + weekFormat(date) + "${word.week()}";
     return dateText;
   }
 
   String dateToString(DateTime date){
     String dateText;
 
-    dateText = date.year.toString() + "년 " + twoDigitsFormat(date.month) + "월 " + twoDigitsFormat(date.day) + "일 " + twoDigitsFormat(date.hour) + "시 " + twoDigitsFormat(date.minute) + "분";
+    dateText = date.year.toString() + " / " + twoDigitsFormat(date.month) + " / " + twoDigitsFormat(date.day) + "  " + twoDigitsFormat(date.hour) + " : " + twoDigitsFormat(date.minute) + "";
     return dateText;
   }
 
@@ -122,7 +125,7 @@ class Format{
   }
   String timeStampToDateTimeString(Timestamp time){
     String dateTime;
-    dateTime = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(
+    dateTime = DateFormat('yyyy/MM/dd HH:mm:ss').format(
         DateTime.parse(time.toDate().toString()));
 
     return dateTime;

@@ -353,5 +353,221 @@
       "description": "Current Time Colleague Schedule message",
       "type": "text",
       "placeholders": {}
-    }
+    },
+       "addSheduleSelect": "Select a schedule to add",
+       "@addSheduleSelect": {
+         "description": "addSheduleSelect message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "workInSchedule": "In Schedule",
+       "@workInSchedule": {
+         "description": "workInSchedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "workOutSchedule": "Out Schedule",
+       "@workOutSchedule": {
+         "description": "workOutSchedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "meetingSchedule": "Meeting Schedule",
+       "@meetingSchedule": {
+         "description": "meetingSchedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "settlement": "Settlement",
+       "@settlement": {
+         "description": "settlement message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "payroll": "Payroll",
+       "@payroll": {
+         "description": "payroll message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "notice": "Notice",
+       "@notice": {
+         "description": "Notice message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "copySchedule": "Copy from Recent Schedule",
+       "@copySchedule": {
+         "description": "Copy from Recent Schedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "workRequest": "Work Request",
+       "@workRequest": {
+         "description": "workRequest message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "purchaseItem": "Purchase Item",
+       "@purchaseItem": {
+         "description": "purchaseItem message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "alarm": "Alarm",
+       "@alarm": {
+         "description": "alarm message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "myApproval": "My Approval",
+       "@myApproval": {
+         "description": "My approval message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "noticeDelete": "Notice Delete",
+       "@noticeDelete": {
+         "description": "noticeDelete message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "noticeDeleteCon": "Will you delete the announcement?",
+       "@noticeDeleteCon": {
+         "description": "noticeDeleteCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "moreDetails": "More Details",
+       "@moreDetails": {
+         "description": "more details message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "comments": "Comments",
+       "@comments": {
+         "description": "comments message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "enterComments": "Enter Comments",
+       "@enterComments": {
+         "description": "Enter Comments message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsDeleteCon": "Are you sure you want to delete the comments?",
+       "@commentsDeleteCon": {
+         "description": "commentsDeleteCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsCountHeadCon": "There's",
+       "@commentsCountHeadCon": {
+         "description": "commentsCountHeadCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsCountTailCon": "comment.",
+       "@commentsCountTailCon": {
+         "description": "commentsCountTailCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "cencel": "Cencel",
+       "@cencel": {
+         "description": "cencel message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsTo": ", Entering Comments To",
+       "@commentsTo": {
+         "description": "Entering Comments To message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commnetsUpate": "Modifying comments",
+       "@commnetsUpate": {
+         "description": "commnetUpate message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commnetsInput": "Please enter a comment",
+       "@commnetsInput": {
+         "description": "commnetsInput message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Mon": "Mon",
+       "@Mon": {
+         "description": "Mon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Tue": "Tue",
+       "@Tue": {
+         "description": "Tue message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Wed": "Wed",
+       "@Wed": {
+         "description": "Wed message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Thu": "Thu",
+       "@Thu": {
+         "description": "Thu message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Fri": "Fri",
+       "@Fri": {
+         "description": "Fri message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Sat": "Sat",
+       "@Sat": {
+         "description": "Sat message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Sun": "Sun",
+       "@Sun": {
+         "description": "Sun message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "day": "Day",
+       "@day": {
+         "description": "day message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "week": "Week",
+       "@week": {
+         "description": "week message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "hour": "Hour",
+       "@hour": {
+         "description": "hour message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "minute": "Minute",
+       "@minute": {
+         "description": "minute message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "second": "Second",
+       "@second": {
+         "description": "second message",
+         "type": "text",
+         "placeholders": {}
+       }
 }

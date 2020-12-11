@@ -17,10 +17,13 @@ import 'package:MyCompany/screens/alarm/alarmNoticeDetail.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workNotice.dart';
 import 'package:MyCompany/widgets/popupMenu/expensePopupMenu.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+final word = Words();
 
 class AlarmNoticePage extends StatefulWidget {
   @override
@@ -181,7 +184,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                       // return object of type Dialog
                                                       return AlertDialog(
                                                         title: Text(
-                                                          "공지사항 삭제",
+                                                          word.noticeDelete(),
                                                           style: customStyle(
                                                               fontColor: mainColor,
                                                               fontSize: 14,
@@ -189,7 +192,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                           ),
                                                         ),
                                                         content: Text(
-                                                          "공지사항 내용을 지우시겠습니까?",
+                                                          word.noticeDeleteCon(),
                                                           style: customStyle(
                                                               fontColor: mainColor,
                                                               fontSize: 13,
@@ -198,7 +201,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                         ),
                                                         actions: <Widget>[
                                                           FlatButton(
-                                                            child: Text("네",
+                                                            child: Text(word.yes(),
                                                               style: customStyle(
                                                                   fontColor: blueColor,
                                                                   fontSize: 15,
@@ -216,7 +219,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                             },
                                                           ),
                                                           FlatButton(
-                                                            child: Text("아니오",
+                                                            child: Text(word.no(),
                                                               style: customStyle(
                                                                   fontColor: blueColor,
                                                                   fontSize: 15,
@@ -237,13 +240,13 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                 getPopupItem(
                                                     context: context,
                                                     icons: Icons.edit,
-                                                    text: "수정하기",
+                                                    text: word.update(),
                                                     value: 1
                                                 ),
                                                 getPopupItem(
                                                     context: context,
                                                     icons: Icons.delete,
-                                                    text: "삭제하기",
+                                                    text: word.delete(),
                                                     value: 2
                                                 ),
                                               ],
@@ -305,7 +308,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                 ),
                                                 InkWell(
                                                   child: Text(
-                                                    "더보기",
+                                                    word.moreDetails(),
                                                     maxLines: 3,
                                                     style: customStyle(
                                                         fontSize: 13,
@@ -368,7 +371,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   ),
                                 ),
                                 Text(
-                                  "댓글",
+                                  word.comments(),
                                   style: customStyle(
                                       fontColor: mainColor,
                                       fontWeightName: 'Bold',

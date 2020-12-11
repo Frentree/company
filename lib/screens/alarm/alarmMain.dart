@@ -10,10 +10,12 @@ import 'package:MyCompany/screens/alarm/signBox.dart';
 import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+final word = Words();
 class AlarmMainPage extends StatefulWidget {
   @override
   AlarmMainPageState createState() => AlarmMainPageState();
@@ -44,7 +46,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       context: context,
                       heightSize: 0.05,
                       widthSize: 0.3,
-                      btnText: "알림",
+                      btnText: word.alarm(),
                       tabIndexVariable: tabIndex,
                       tabOrder: 0,
                       tabAction: (){
@@ -58,7 +60,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       context: context,
                       heightSize: 0.05,
                       widthSize: 0.3,
-                      btnText: "내 결재함",
+                      btnText: word.myApproval(),
                       tabIndexVariable: tabIndex,
                       tabOrder: 1,
                       tabAction: (){
@@ -71,7 +73,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       context: context,
                       heightSize: 0.05,
                       widthSize: 0.3,
-                      btnText: "공지사항",
+                      btnText: word.notice(),
                       tabIndexVariable: tabIndex,
                       tabOrder: 2,
                       tabAction: (){
