@@ -10,7 +10,9 @@ import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
-
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
 final word = Words();
 
 MainBottomSheet({BuildContext context, String companyCode, String mail}) {
@@ -71,12 +73,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
               _isStaffMethod(grade);
 
               return Container(
-                height: 180,
-                padding: EdgeInsets.only(left: 15, right: 15),
+                height: 35.0.h,
+                padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w),
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 2.0.h),
                     ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -98,7 +100,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                                 Text(
                                   word.addSheduleSelect(),
                                   style: customStyle(
-                                      fontSize: 16,
+                                      fontSize: homePageDefaultFontSize.sp,
                                       fontWeightName: 'Regular',
                                       fontColor: grayColor),
                                 ),
@@ -108,7 +110,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                           Expanded(flex: 1, child: Container())
                         ]),
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 2.0.h),
                     ),
 
                     /// 개발 미완료로 인한 숨김 처리
@@ -137,11 +139,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         ActionChip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorBlue,
                           label: Text(
                             word.workInSchedule(),
                             style: customStyle(
-                                fontSize: 14,
+                                fontSize: 11.0.sp,
                                 fontWeightName: 'Regular',
                                 fontColor: mainColor),
                           ),
@@ -150,11 +153,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                           },
                         ),
                         ActionChip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorBlue,
                           label: Text(
                             word.workOutSchedule(),
                             style: customStyle(
-                                fontSize: 14,
+                                fontSize: 11.0.sp,
                                 fontWeightName: 'Regular',
                                 fontColor: mainColor),
                           ),
@@ -163,11 +167,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                           },
                         ),
                         ActionChip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorBlue,
                           label: Text(
                             word.meetingSchedule(),
                             style: customStyle(
-                                fontSize: 14,
+                                fontSize: 11.0.sp,
                                 fontWeightName: 'Regular',
                                 fontColor: mainColor),
                           ),
@@ -228,11 +233,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                           },
                         ),*/
                         ActionChip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorRed,
                           label: Text(
                             word.settlement(),
                             style: customStyle(
-                                fontSize: 14,
+                                fontSize: 11.0.sp,
                                 fontWeightName: 'Regular',
                                 fontColor: mainColor),
                           ),
@@ -258,11 +264,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         ),*/
 
                         if (!_isStaff) ActionChip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorGreen,
                           label: Text(
                             word.payroll(),
                             style: customStyle(
-                                fontSize: 14,
+                                fontSize: 11.0.sp,
                                 fontWeightName: 'Regular',
                                 fontColor: mainColor
                             ),
@@ -273,11 +280,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         ),
 
                         if (!_isStaff) ActionChip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorGreen,
                           label: Text(
                             word.notice(),
                             style: customStyle(
-                                fontSize: 14,
+                                fontSize: 11.0.sp,
                                 fontWeightName: 'Regular',
                                 fontColor: mainColor),
                           ),

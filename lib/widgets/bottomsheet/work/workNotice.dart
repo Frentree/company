@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -11,10 +10,14 @@ import 'package:MyCompany/utils/search/searchFormat.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noticeTitle, String noticeContent) async {
+WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID,
+    String noticeTitle, String noticeContent) async {
   TextEditingController _noticeTitle = TextEditingController();
   TextEditingController _noticeContent = TextEditingController();
 
@@ -25,7 +28,7 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
   Map<String, String> _noticeUser = Map();
   NoticeModel _notice;
 
-  if(noticeDocumentID != "") {
+  if (noticeDocumentID != "") {
     _noticeTitle.text = noticeTitle;
     _noticeContent.text = noticeContent;
   }
@@ -34,7 +37,9 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
       isScrollControlled: false,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+            topRight: Radius.circular(3.0.w),
+            topLeft: Radius.circular(3.0.w),
+      )),
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
@@ -42,7 +47,8 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
             LoginUserInfoProvider _loginUserInfoProvider =
                 Provider.of<LoginUserInfoProvider>(context);
             _loginUser = _loginUserInfoProvider.getLoginUser();
-            _noticeUser.addAll({"mail": _loginUser.mail, "name": _loginUser.name});
+            _noticeUser
+                .addAll({"mail": _loginUser.mail, "name": _loginUser.name});
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Listener(
@@ -54,32 +60,40 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                 },
                 child: SingleChildScrollView(
                   padding: EdgeInsets.only(
-                      top: 30,
-                      left: 20,
-                      right: 20,
-                      bottom: MediaQuery.of(context).viewInsets.bottom
-                  ),
+                      top: 2.0.h,
+                      left: 1.0.w,
+                      right: 1.0.w,
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Column(children: <Widget>[
                     IntrinsicHeight(
                       child: Row(
                         children: <Widget>[
-                          Chip(
-                            backgroundColor: chipColorGreen,
-                            label: Text(
-                              word.notice(),
-                              style: customStyle(
-                                fontSize: 14,
-                                fontColor: mainColor,
-                                fontWeightName: 'Regular',
+                          Container(
+                            width: 30.0.w,
+                            child: Chip(
+                              padding: EdgeInsets.zero,
+                              backgroundColor: chipColorGreen,
+                              label: Text(
+                                word.notice(),
+                                style: customStyle(
+                                  fontSize: 11.0.sp,
+                                  fontColor: mainColor,
+                                  fontWeightName: 'Regular',
+                                ),
                               ),
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: EdgeInsets.only(left: 1.0.w),
                           ),
                           Container(
-                            width: 200,
+                            width: 40.0.w,
                             child: TextFormField(
+                              style: customStyle(
+                                fontSize: 13.0.sp,
+                                fontColor: mainColor,
+                                fontWeightName: "Regular",
+                              ),
                               autofocus: true,
                               controller: _noticeTitle,
                               onFieldSubmitted: (value) =>
@@ -90,41 +104,47 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15),
-                          ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 3.0.w),
+                    ),
                           CircleAvatar(
-                              radius: 20,
+                              radius: 5.0.w,
                               backgroundColor: _noticeTitle.text == ''
                                   ? Colors.black12
                                   : _noticeContent.text == ''
                                       ? Colors.black12
                                       : Colors.blue,
                               child: IconButton(
-                                icon: Icon(Icons.arrow_upward),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(Icons.arrow_upward, size: 6.0.w,),
                                 onPressed: () {
                                   if (_noticeTitle.text != '' &&
                                       _noticeContent.text != '') {
-                                    if(noticeDocumentID == "") {
+                                    if (noticeDocumentID == "") {
                                       _notice = NoticeModel(
                                         noticeTitle: _noticeTitle.text,
                                         noticeContent: _noticeContent.text,
                                         noticeCreateUser: _noticeUser,
-                                        noticeCreateDate:
-                                        Timestamp.now(),
-                                        caseSearch: SearchFormat.setSearchParam(_noticeTitle.text),
+                                        noticeCreateDate: Timestamp.now(),
+                                        caseSearch: SearchFormat.setSearchParam(
+                                            _noticeTitle.text),
                                         //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
                                       );
                                       FirebaseRepository().addNotice(
-                                        companyCode: _loginUser.companyCode,
-                                        notice: _notice);
+                                          companyCode: _loginUser.companyCode,
+                                          notice: _notice);
                                     } else {
-                                      Firestore.instance.collection('company')
+                                      Firestore.instance
+                                          .collection('company')
                                           .document(_loginUser.companyCode)
-                                          .collection("notice").document(noticeDocumentID).updateData({
-                                        "noticeTitle" : _noticeTitle.text,
-                                        "noticeContent" : _noticeContent.text,
-                                        "caseSearch": SearchFormat.setSearchParam(_noticeTitle.text),
+                                          .collection("notice")
+                                          .document(noticeDocumentID)
+                                          .updateData({
+                                        "noticeTitle": _noticeTitle.text,
+                                        "noticeContent": _noticeContent.text,
+                                        "caseSearch":
+                                            SearchFormat.setSearchParam(
+                                                _noticeTitle.text),
                                       });
                                     }
                                     Navigator.pop(context);
@@ -136,34 +156,28 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
 
                                   }
                                 },
-                              )
-                          ),
+                              )),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 25),
-                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 4.0.h,)),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                        ),
+                        Padding(padding: EdgeInsets.only(left: 3.0.w),),
                         InkWell(
                           child: Container(
                             child: Row(
                               children: <Widget>[
                                 Icon(
                                   Icons.chat_bubble_outline,
+                                  size: 6.0.w,
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5),
-                                ),
+                                Padding(padding: EdgeInsets.only(left: 3.0.w),),
                                 Text(
                                   word.content(),
                                   style: customStyle(
-                                    fontSize: 14,
+                                    fontSize: 12.0.sp,
                                     fontColor: mainColor,
                                     fontWeightName: 'Regular',
                                   ),
@@ -171,14 +185,10 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                               ],
                             ),
                           ),
-                          onTap: () {
-                          },
+                          onTap: () {},
                         ),
                         SizedBox(
-                          height: customHeight(
-                              context: context,
-                              heightSize: 0.01
-                          ),
+                          height: 1.0.h,
                         ),
                         TextFormField(
                           focusNode: _noticeFocusNode,
@@ -187,7 +197,7 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                           maxLines: 5,
                           maxLengthEnforced: true,
                           style: customStyle(
-                            fontSize: 13,
+                            fontSize: 12.0.sp,
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -195,8 +205,7 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID, String noti
                           ),
                         ),
                         SizedBox(
-                          height:
-                              customHeight(context: context, heightSize: 0.02),
+                          height: 2.0.h,
                         ),
                       ],
                     )
