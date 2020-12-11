@@ -118,18 +118,11 @@ Container filterBtn({BuildContext context, double heightSize, double widthSize, 
 InkWell manualOnWorkBtn({BuildContext context, String btnText, Function btnAction, bool isSelect}) {
   return InkWell(
     child: Container(
-      width: customWidth(
-          context: context,
-          widthSize: 0.21
-      ),
-      height: customHeight(
-          context: context,
-          heightSize: 0.04
-      ),
-
+      width: 18.0.w,
+      height: 4.0.h,
       decoration: BoxDecoration(
         color: isSelect ? mainColor : whiteColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(3.0.w),
         border: Border.all(
           color: mainColor,
         )
@@ -138,7 +131,7 @@ InkWell manualOnWorkBtn({BuildContext context, String btnText, Function btnActio
         child: Text(
           btnText,
           style: customStyle(
-              fontSize: 14,
+              fontSize: 12.0.sp,
               fontWeightName: "Regular",
               fontColor: isSelect ? whiteColor : mainColor
           ),

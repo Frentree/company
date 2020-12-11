@@ -103,8 +103,9 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
               ),
               GestureDetector(
                 child: Container(
-                  width: 8.0.w,
-                  height: 8.0.h,
+                  color: whiteColor,
+                  width: 10.0.w,
+                  height: 7.0.h,
                   alignment: Alignment.center,
                   child: FutureBuilder(
                     future: FirebaseRepository().photoProfile(
@@ -349,8 +350,9 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
             width: 20.0.w,
             child: GestureDetector(
               child: Container(
-                  height: 5.0.h,
+                  color: whiteColor,
                   width: 10.0.w,
+                  height: 7.0.h,
                   alignment: Alignment.center,
                   child: FutureBuilder(
                     future: FirebaseRepository()
@@ -409,8 +411,9 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                   child: GestureDetector(
                                     child: Container(
                                       alignment: Alignment.center,
-                                      width: 8.0.w,
-                                      height: 8.0.h,
+                                      color: whiteColor,
+                                      width: 10.0.w,
+                                      height: 7.0.h,
                                       child: FutureBuilder(
                                         future: FirebaseRepository()
                                             .photoProfile(
@@ -523,8 +526,9 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                 child: GestureDetector(
                                                   child: Container(
                                                     alignment: Alignment.center,
-                                                    width: 8.0.w,
-                                                    height: 8.0.h,
+                                                    color: whiteColor,
+                                                    width: 10.0.w,
+                                                    height: 7.0.h,
                                                     child: FutureBuilder(
                                                       future: FirebaseRepository().photoProfile(_loginUser.companyCode, _loginUser.mail),
                                                       builder: (context, snapshot) {

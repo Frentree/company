@@ -12,6 +12,7 @@ import 'package:MyCompany/screens/setting/settingMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/screens/alarm/alarmMain.dart';
+import 'package:MyCompany/consts/colorCode.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -132,8 +133,9 @@ class HomeMainPageState extends State<HomeMainPage> {
             child: GestureDetector(
               child: Container(
                 alignment: Alignment.center,
-                width: 8.0.w,
-                height: 8.0.h,
+                color: whiteColor,
+                width: 10.0.w,
+                height: 7.0.h,
                 child: FutureBuilder(
                   future: FirebaseRepository().photoProfile(_loginUser.companyCode, _loginUser.mail),
                   builder: (context, snapshot) {

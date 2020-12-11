@@ -15,6 +15,11 @@ import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
+
 
 final word = Words();
 
@@ -74,26 +79,36 @@ SettingMyPageUpdate(BuildContext context) {
             }
 
             return Container(
-              height: MediaQuery.of(context).size.height * 0.9,
-              color: whiteColor,
+              height: 90.0.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(pageRadiusW.w),
+                  topRight: Radius.circular(pageRadiusW.w),
+                ),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                      color: blackColor,
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
+                  Container(
+                    width: 10.0.w,
+                    child: Center(
+                      child: IconButton(
+                          color: blackColor,
+                          icon: Icon(Icons.close,size: iconSizeW.w,),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ),
                   ExpansionTile(
                     backgroundColor: whiteColor,
                     initiallyExpanded: true,
-                    leading: Icon(Icons.person_outline),
+                    leading: Icon(Icons.person_outline, size: iconSizeW.w,),
                     title: Text(word.myInfomationUpdate()),
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+                        padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
                         child: Column(
                           children: [
                             Row(
@@ -104,42 +119,34 @@ SettingMyPageUpdate(BuildContext context) {
                                       Container(
                                         color: whiteColor,
                                         alignment: Alignment.center,
-                                        width: customWidth(context: context, widthSize: 0.1),
-                                        height: customHeight(context: context, heightSize: 0.08),
+                                        width: 10.0.w,
+                                        height: 8.0.h,
                                         child: GestureDetector(
-                                          child: Container(
-                                            height: customHeight(context: context, heightSize: 0.05),
-                                            width: customWidth(context: context, widthSize: 0.1),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(5),
-                                                color: whiteColor,
-                                                border: Border.all(color: whiteColor, width: 2)),
-                                            child: FutureBuilder(
-                                              future: Firestore.instance
-                                                  .collection("company")
-                                                  .document(_loginUser.companyCode)
-                                                  .collection("user")
-                                                  .document(_loginUser.mail)
-                                                  .get(),
-                                              builder: (context, snapshot) {
-                                                if (!snapshot.hasData) {
-                                                  return Icon(Icons.person_outline);
-                                                }
+                                          child: FutureBuilder(
+                                            future: Firestore.instance
+                                                .collection("company")
+                                                .document(_loginUser.companyCode)
+                                                .collection("user")
+                                                .document(_loginUser.mail)
+                                                .get(),
+                                            builder: (context, snapshot) {
+                                              if (!snapshot.hasData) {
+                                                return Icon(Icons.person_outline);
+                                              }
 
-                                                return Image.network(snapshot.data['profilePhoto']);
-                                              },
-                                            ),
+                                              return Image.network(snapshot.data['profilePhoto']);
+                                            },
                                           ),
                                           onTap: () {},
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(left: 20),
+                                        padding: EdgeInsets.only(left: 3.0.w),
                                         child: Container(
-                                          height: customHeight(context: context, heightSize: 0.05),
+                                          height: 5.0.h,
                                           child: FloatingActionButton(
                                             backgroundColor: Colors.orange,
-                                            child: Icon(Icons.attach_file),
+                                            child: Icon(Icons.attach_file, size: 6.0.w,),
                                             onPressed: () {
                                               showDialog(
                                                   context: context,
@@ -147,7 +154,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                     return SimpleDialog(
                                                       title: Text(
                                                         word.select(),
-                                                        style: customStyle(fontColor: mainColor, fontSize: 14),
+                                                        style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
                                                       ),
                                                       children: [
                                                         SimpleDialogOption(
@@ -156,7 +163,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                           },
                                                           child: Text(
                                                             word.camera(),
-                                                            style: customStyle(fontColor: mainColor, fontSize: 13),
+                                                            style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
                                                           ),
                                                         ),
                                                         SimpleDialogOption(
@@ -165,7 +172,7 @@ SettingMyPageUpdate(BuildContext context) {
                                                           },
                                                           child: Text(
                                                             word.gallery(),
-                                                            style: customStyle(fontColor: mainColor, fontSize: 13),
+                                                            style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
                                                           ),
                                                         ),
                                                       ],
@@ -182,28 +189,16 @@ SettingMyPageUpdate(BuildContext context) {
                                   child: Text(
                                     _loginUser.name,
                                     style: customStyle(
-                                      fontSize: 16,
+                                      fontSize: 15.0.sp,
                                       fontColor: mainColor,
                                       fontWeightName: 'Medium',
                                     ),
                                   ),
                                 ),
-                                ActionChip(
-                                  backgroundColor: whiteColor,
-                                  label: Text(
-                                    word.update(),
-                                    style: customStyle(
-                                      fontSize: 14,
-                                      fontColor: whiteColor,
-                                      fontWeightName: 'Medium',
-                                    ),
-                                  ),
-                                  onPressed: () {},
-                                ),
                               ],
                             ),
                             SizedBox(
-                              height: customHeight(context: context, heightSize: 0.01),
+                              height: 1.0.h,
                             ),
                             Row(
                               children: [
@@ -211,7 +206,7 @@ SettingMyPageUpdate(BuildContext context) {
                                   child: Text(
                                     word.currentPassword(),
                                     style: customStyle(
-                                      fontSize: 14,
+                                      fontSize: 11.0.sp,
                                       fontColor: mainColor,
                                       fontWeightName: 'Medium',
                                     ),
@@ -226,18 +221,19 @@ SettingMyPageUpdate(BuildContext context) {
                                       hintText: word.currentPassword() + " " + word.input(),
                                     ),
                                     style: customStyle(
-                                      fontSize: 14,
+                                      fontSize: 11.0.sp,
                                       fontColor: mainColor,
                                       fontWeightName: 'Medium',
                                     ),
                                   ),
                                 ),
                                 ActionChip(
+                                  padding: EdgeInsets.zero,
                                   backgroundColor: blueColor,
                                   label: Text(
                                     word.confirm(),
                                     style: customStyle(
-                                      fontSize: 14,
+                                      fontSize: 11.0.sp,
                                       fontColor: whiteColor,
                                       fontWeightName: 'Medium',
                                     ),
@@ -256,17 +252,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           return AlertDialog(
                                             title: Text(
                                               word.authentication() + " " + word.confirm(),
-                                              style: customStyle(fontColor: blueColor, fontSize: 13, fontWeightName: 'Bold'),
+                                              style: customStyle(fontColor: blueColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
                                               word.authenticationSuccessCon(),
-                                              style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
+                                              style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
                                                   word.confirm(),
-                                                  style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                                                  style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
                                                   setState(() {
@@ -288,17 +284,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           return AlertDialog(
                                             title: Text(
                                               word.authentication() + " " + word.failed(),
-                                              style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
+                                              style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
                                               word.authenticationFailCon(),
-                                              style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
+                                              style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
                                                   word.confirm(),
-                                                  style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                                                  style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
                                                   isPwdConfirm = isChk;
@@ -324,7 +320,7 @@ SettingMyPageUpdate(BuildContext context) {
                                           child: Text(
                                             word.newPassword(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 11.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -339,7 +335,7 @@ SettingMyPageUpdate(BuildContext context) {
                                               hintText: '*****************',
                                             ),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 11.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -357,7 +353,7 @@ SettingMyPageUpdate(BuildContext context) {
                                           child: Text(
                                             word.newPasswordConfirm(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 11.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -372,7 +368,7 @@ SettingMyPageUpdate(BuildContext context) {
                                               hintText: '*****************',
                                             ),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 11.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -383,7 +379,7 @@ SettingMyPageUpdate(BuildContext context) {
                                             label: Text(
                                               word.update(),
                                               style: customStyle(
-                                                fontSize: 14,
+                                                fontSize: 11.0.sp,
                                                 fontColor: whiteColor,
                                                 fontWeightName: 'Medium',
                                               ),
@@ -407,7 +403,7 @@ SettingMyPageUpdate(BuildContext context) {
                                   child: Text(
                                     word.phone(),
                                     style: customStyle(
-                                      fontSize: 14,
+                                      fontSize: 11.0.sp,
                                       fontColor: mainColor,
                                       fontWeightName: 'Medium',
                                     ),
@@ -421,7 +417,7 @@ SettingMyPageUpdate(BuildContext context) {
                                       hintText: "${word.ex()}) 01012345678",
                                     ),
                                     style: customStyle(
-                                      fontSize: 14,
+                                      fontSize: 11.0.sp,
                                       fontColor: mainColor,
                                       fontWeightName: 'Medium',
                                     ),
@@ -432,7 +428,7 @@ SettingMyPageUpdate(BuildContext context) {
                                   label: Text(
                                     word.update(),
                                     style: customStyle(
-                                      fontSize: 14,
+                                      fontSize: 11.0.sp,
                                       fontColor: whiteColor,
                                       fontWeightName: 'Medium',
                                     ),
@@ -447,17 +443,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           return AlertDialog(
                                             title: Text(
                                               word.phoneChangeFiled(),
-                                              style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
+                                              style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
                                               word.phoneChangeFiledNoneCon(),
-                                              style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
+                                              style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
                                                   word.confirm(),
-                                                  style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                                                  style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -475,17 +471,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           return AlertDialog(
                                             title: Text(
                                               word.phoneChangeFiled(),
-                                              style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
+                                              style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
                                               word.phoneChangeFiledSameCon(),
-                                              style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
+                                              style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
                                                   word.confirm(),
-                                                  style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                                                  style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -503,17 +499,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           return AlertDialog(
                                             title: Text(
                                               word.phoneChangeFiled(),
-                                              style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
+                                              style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
                                               word.phoneChangeFiledTyepCon(),
-                                              style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
+                                              style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
                                                   word.confirm(),
-                                                  style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                                                  style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -531,17 +527,17 @@ SettingMyPageUpdate(BuildContext context) {
                                           return AlertDialog(
                                             title: Text(
                                               word.phoneChange(),
-                                              style: customStyle(fontColor: redColor, fontSize: 13, fontWeightName: 'Bold'),
+                                              style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
                                             ),
                                             content: Text(
                                               "${_phoneEdit.text}\n${word.phoneChangeCon()}",
-                                              style: customStyle(fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
+                                              style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: Text(
                                                   word.yes(),
-                                                  style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                                                  style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
                                                   FirebaseRepository().updatePhone(
@@ -557,7 +553,7 @@ SettingMyPageUpdate(BuildContext context) {
                                               FlatButton(
                                                 child: Text(
                                                   word.no(),
-                                                  style: customStyle(fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                                                  style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -573,7 +569,7 @@ SettingMyPageUpdate(BuildContext context) {
                               ],
                             ),
                             SizedBox(
-                              height: customHeight(context: context, heightSize: 0.01),
+                              height: 1.0.h
                             ),
                           ],
                         ),
@@ -639,14 +635,20 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
             }
 
             return Container(
-              height: MediaQuery.of(context).size.height * 0.9,
+              height: 90.0.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(pageRadiusW.w),
+                  topRight: Radius.circular(pageRadiusW.w),
+                ),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
                       color: blackColor,
-                      icon: Icon(Icons.close),
+                      icon: Icon(Icons.close,size: iconSizeW.w,),
                       onPressed: () {
                         Navigator.pop(context);
                       }),
@@ -654,7 +656,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                     child: SingleChildScrollView(
                       child: ExpansionTile(
                         initiallyExpanded: true,
-                        leading: Icon(Icons.person_outline),
+                        leading: Icon(Icons.person_outline, size: iconSizeW.w,),
                         title: Text(word.companyInfomation() + " " + word.update()),
                         children: [
                           StreamBuilder(
@@ -663,7 +665,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
 
                               if (!snapshot.hasData) return SizedBox();
                               return Padding(
-                                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+                                padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
                                 child: Column(
                                   children: [
                                     Row(
@@ -673,22 +675,22 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                             children: [
                                               Container(
                                                 color: mainColor,
-                                                width: customWidth(context: context, widthSize: 0.2),
+                                                width: 20.0.w,
                                                 child: Center(
                                                   child: Container(
                                                     color: whiteColor,
                                                     alignment: Alignment.center,
-                                                    width: customWidth(context: context, widthSize: 0.2),
+                                                    width: 20.0.w,
                                                     child: Image.network(_profileImageURL),
                                                   ),
                                                 ),
                                               ),
                                               Container(
-                                                width: customWidth(context: context, widthSize: 0.25),
+                                                width: 60.0.w,
                                                 alignment: Alignment.topRight,
                                                 child: SizedBox(
-                                                  width: 40,
-                                                  height: 40,
+                                                  width: 10.0.w,
+                                                  height: 6.0.h,
                                                   child: FloatingActionButton(
                                                     backgroundColor: Colors.orange,
                                                     child: Icon(Icons.attach_file),
@@ -699,7 +701,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                                             return SimpleDialog(
                                                               title: Text(
                                                                 word.select(),
-                                                                style: customStyle(fontColor: mainColor, fontSize: 14),
+                                                                style: customStyle(fontColor: mainColor, fontSize: 14.0.sp),
                                                               ),
                                                               children: [
                                                                 SimpleDialogOption(
@@ -708,7 +710,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                                                   },
                                                                   child: Text(
                                                                     word.camera(),
-                                                                    style: customStyle(fontColor: mainColor, fontSize: 13),
+                                                                    style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
                                                                   ),
                                                                 ),
                                                                 SimpleDialogOption(
@@ -717,7 +719,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                                                   },
                                                                   child: Text(
                                                                     word.gallery(),
-                                                                    style: customStyle(fontColor: mainColor, fontSize: 13),
+                                                                    style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
                                                                   ),
                                                                 ),
                                                               ],
@@ -738,7 +740,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                           label: Text(
                                             word.update(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: whiteColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -748,7 +750,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: customHeight(context: context, heightSize: 0.01),
+                                      height: 1.0.h
                                     ),
                                     Row(
                                       children: [
@@ -756,7 +758,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                           child: Text(
                                             word.companyName(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -770,7 +772,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                               hintText: snapshot.data["companyName"].toString(),
                                             ),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -784,7 +786,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                           child: Text(
                                             word.businessNumber(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -798,7 +800,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                               hintText: snapshot.data["companyNo"] != "" ? snapshot.data["companyNo"] : word.businessNumberCon(),
                                             ),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -812,7 +814,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                           child: Text(
                                             word.address(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -826,7 +828,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                               hintText: snapshot.data["companyAddr"],
                                             ),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -840,7 +842,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                           child: Text(
                                             word.phone(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -854,7 +856,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                               hintText: snapshot.data["companyPhone"],
                                             ),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -868,7 +870,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                           child: Text(
                                             word.webAddress(),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -882,7 +884,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                               hintText: snapshot.data["companyWeb"] != "" ? snapshot.data["companyWeb"] :  "${word.ex()}) www.company.com",
                                             ),
                                             style: customStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.0.sp,
                                               fontColor: mainColor,
                                               fontWeightName: 'Medium',
                                             ),
@@ -903,7 +905,7 @@ SettingCompanyPageUpdate(BuildContext context, String imageUrl) {
                                             label: Text(
                                               word.update(),
                                               style: customStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.0.sp,
                                                 fontColor: whiteColor,
                                                 fontWeightName: 'Medium',
                                               ),

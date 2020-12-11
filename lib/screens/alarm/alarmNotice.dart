@@ -88,8 +88,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: cardPaddingW.w,
-                    vertical: cardPaddingH.h,),
+                    horizontal: 3.0.w,
+                    vertical: 2.0.h),
                   child: Column(
                     children: [
                       Row(
@@ -97,8 +97,9 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                         children: <Widget>[
                           Container(
                             alignment: Alignment.center,
-                            width: 8.0.w,
-                            height: 8.0.h,
+                            color: whiteColor,
+                            width: 10.0.w,
+                            height: 7.0.h,
                             child: FutureBuilder(
                               future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data()['noticeCreateUser']['mail']),
                               builder: (context, snapshot) {
@@ -116,6 +117,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
+                                color: Colors.yellow,
                                 width: 70.0.w,
                                 height: 5.0.h,
                                 child: Row(

@@ -1,5 +1,6 @@
 //Flutter
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/consts/font.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:MyCompany/consts/widgetSize.dart';
@@ -20,6 +21,12 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 
 //Widget
 import 'package:MyCompany/widgets/button/textButton.dart';
+
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
+
 
 class AttendanceCheck extends ChangeNotifier {
   Format _format = Format();
@@ -168,8 +175,8 @@ class AttendanceCheck extends ChangeNotifier {
       barrierDismissible: false, //취소 버튼을 통해서만 알림박스를 끌 수 있다.
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("퇴근처리"),
-          content: Text("퇴근 하시겠습니까?"),
+          title: Text("퇴근처리", style: customStyle(fontSize: 15.0.sp,),),
+          content: Text("퇴근 하시겠습니까?", style: customStyle(fontSize: 13.0.sp,)),
           actions: <Widget>[
             textBtn(
               btnText: "확인",
@@ -207,17 +214,17 @@ class AttendanceCheck extends ChangeNotifier {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("출근처리"),
+              title: Text("출근처리", style: customStyle(fontSize: 15.0.sp,),),
               content: Container(
-                height: customHeight(context: context, heightSize: 0.1),
+                height: 10.0.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("수동 처리 사유"),
                     Padding(
                       padding: EdgeInsets.only(
-                          bottom:
-                              customHeight(context: context, heightSize: 0.01)),
+                          bottom: 1.0.h,
+                      ),
                     ),
                     Row(
                       children: [
@@ -234,7 +241,7 @@ class AttendanceCheck extends ChangeNotifier {
                             },
                             isSelect: isSelect[0]),
                         SizedBox(
-                          width: customWidth(context: context, widthSize: 0.01),
+                          width: 3.0.w,
                         ),
                         manualOnWorkBtn(
                             context: context,
@@ -249,7 +256,7 @@ class AttendanceCheck extends ChangeNotifier {
                             },
                             isSelect: isSelect[1]),
                         SizedBox(
-                          width: customWidth(context: context, widthSize: 0.01),
+                          width: 3.0.w,
                         ),
                         manualOnWorkBtn(
                             context: context,

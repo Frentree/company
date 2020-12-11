@@ -20,7 +20,7 @@ final word = Words();
 // 내 정보 화면
 Widget getMyInfomationCard({BuildContext context, User user}) {
   return Padding(
-    padding: EdgeInsets.only(left: 10.0.w, right: 10.0.w, bottom: 2.0.h),
+    padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
     child: Column(
       children: [
         Row(
