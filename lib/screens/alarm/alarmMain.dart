@@ -1,19 +1,12 @@
 
 import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/models/attendanceModel.dart';
-import 'package:MyCompany/models/userModel.dart';
-import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/alarm/alarmNotice.dart';
 import 'package:MyCompany/screens/alarm/signBox.dart';
-import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:sizer/sizer.dart';
 
 final word = Words();
 class AlarmMainPage extends StatefulWidget {
@@ -22,7 +15,7 @@ class AlarmMainPage extends StatefulWidget {
 }
 
 class AlarmMainPageState extends State<AlarmMainPage> {
-  int tabIndex = 0;
+  int tabIndex = 2;
   List<Widget> _page = [Container(),SignBox(),AlarmNoticePage()];
 
   @override
@@ -31,12 +24,9 @@ class AlarmMainPageState extends State<AlarmMainPage> {
       body: Column(
           children: <Widget>[
             Container(
-              height: customHeight(
-                  context: context,
-                  heightSize: 0.06
-              ),
+              height: 6.0.h,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(3.0.w),
                   color: tabColor
               ),
               child: Row(
@@ -44,8 +34,8 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                 children: <Widget>[
                   tabBtn(
                       context: context,
-                      heightSize: 0.05,
-                      widthSize: 0.3,
+                      heightSize: 5,
+                      widthSize: 30,
                       btnText: word.alarm(),
                       tabIndexVariable: tabIndex,
                       tabOrder: 0,
@@ -58,8 +48,8 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                   ),
                   tabBtn(
                       context: context,
-                      heightSize: 0.05,
-                      widthSize: 0.3,
+                      heightSize: 5,
+                      widthSize: 30,
                       btnText: word.myApproval(),
                       tabIndexVariable: tabIndex,
                       tabOrder: 1,
@@ -71,8 +61,8 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                   ),
                   tabBtn(
                       context: context,
-                      heightSize: 0.05,
-                      widthSize: 0.3,
+                      heightSize: 5,
+                      widthSize: 30,
                       btnText: word.notice(),
                       tabIndexVariable: tabIndex,
                       tabOrder: 2,
@@ -85,9 +75,6 @@ class AlarmMainPageState extends State<AlarmMainPage> {
 
                 ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5),
             ),
             Expanded(
               child:_page[tabIndex],

@@ -9,6 +9,10 @@ import 'package:MyCompany/widgets/card/expenseCard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 class SignBoxExpense extends StatefulWidget {
   @override
   _SignBoxExpenseState createState() => _SignBoxExpenseState();
@@ -39,7 +43,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
         Card(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(3.0.w),
             side: BorderSide(
               width: 1,
               color: boarderColor,
@@ -47,10 +51,10 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: customWidth(context: context, widthSize: 0.02),
-                vertical: customHeight(context: context, heightSize: 0.01)),
+                horizontal: 2.0.w,
+                vertical: 1.0.h),
             child: Container(
-              height: customHeight(context: context, heightSize: 0.03),
+              height: 3.0.h,
               child: Row(
                 children: [
                   Expanded(
@@ -60,7 +64,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "지출일자",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -73,7 +77,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "항목",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -86,7 +90,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "금액",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -99,7 +103,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "영수증",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -112,7 +116,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "상태",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -125,7 +129,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -138,7 +142,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                       child: Text(
                         "",
                         style: customStyle(
-                            fontSize: timeFontSize,
+                            fontSize: 11.0.sp,
                             fontWeightName: "Regular",
                             fontColor: blueColor),
                       ),
@@ -169,7 +173,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                   Card(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(3.0.w),
                       side: BorderSide(
                         width: 1,
                         color: boarderColor,
@@ -178,13 +182,12 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: Center(
                       child: Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: customHeight(
-                                  context: context, heightSize: 0.02)),
+                              vertical: 2.0.h),
                           child: Text(
                             "항목이 없습니다.",
                             style: customStyle(
                                 fontColor: blackColor,
-                                fontSize: 16,
+                                fontSize: 15.0.sp,
                                 fontWeightName: "Medium"),
                           )),
                     ),

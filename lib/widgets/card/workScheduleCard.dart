@@ -225,13 +225,13 @@ Container popupMenu(
         PopupMenuItem(
           value: 1,
           child: Row(
-            children: [Icon(Icons.edit, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text("수정하기", style: customStyle(fontSize: 13.0.sp),)],
+            children: [Icon(Icons.edit, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.update(), style: customStyle(fontSize: 13.0.sp),)],
           ),
         ),
         PopupMenuItem(
           value: 2,
           child: Row(
-            children: [Icon(Icons.delete, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text("삭제하기", style: customStyle(fontSize: 13.0.sp),)],
+            children: [Icon(Icons.delete, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.delete(), style: customStyle(fontSize: 13.0.sp),)],
           ),
         ),
       ],

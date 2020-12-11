@@ -45,19 +45,13 @@ InkWell tabBtn({BuildContext context, double heightSize, double widthSize, Strin
 InkWell tabBtnWithUnderline({BuildContext context, double heightSize, double widthSize, String btnText, int tabIndexVariable, int tabOrder, Function tabAction}){
   return InkWell(
     child: Container(
-        height: customHeight(
-          context: context,
-          heightSize: heightSize,
-        ),
-        width: customWidth(
-            context: context,
-            widthSize: widthSize
-        ),
+        height: heightSize.h,
+        width: widthSize.w,
         child: Center(
           child: Text(
             btnText,
             style: customStyle(
-                fontSize: 16,
+                fontSize: homePageDefaultFontSize,
                 fontWeightName: "Medium",
                 fontColor: tabIndexVariable == tabOrder ? mainColor : grayColor
             ),

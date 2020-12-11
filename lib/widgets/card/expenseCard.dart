@@ -10,6 +10,10 @@ import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;
 const typeFontSize = 12.0;
@@ -32,10 +36,10 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
     ),
     child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: customWidth(context: context, widthSize: 0.02),
-            vertical: customHeight(context: context, heightSize: 0.01)),
+            horizontal: cardPaddingW.w,
+            vertical: cardPaddingH.h),
         child: Container(
-            height: customHeight(context: context, heightSize: 0.03),
+            height: 3.0.h,
             child: Row(
               children: [
                 Expanded(
@@ -45,7 +49,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                     child: Text(
                       _format.dateFormatForExpenseCard(model.buyDate),
                       style: customStyle(
-                          fontSize: timeFontSize,
+                          fontSize: 11.0.sp,
                           fontWeightName: "Regular",
                           fontColor: mainColor),
                     ),
@@ -58,7 +62,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                     child: Text(
                       model.contentType,
                       style: customStyle(
-                          fontSize: timeFontSize,
+                          fontSize: 11.0.sp,
                           fontWeightName: "Regular",
                           fontColor: mainColor),
                     ),
@@ -75,7 +79,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                           child: Text(
                             returnString.format(model.cost),
                             style: customStyle(
-                                fontSize: timeFontSize,
+                                fontSize: 11.0.sp,
                                 fontWeightName: "Regular",
                                 fontColor: mainColor),
                           ),
@@ -96,7 +100,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      child: model.imageUrl == "" ? Container() : Icon(Icons.receipt_long_outlined, size: 20),
+                      child: model.imageUrl == "" ? Container() : Icon(Icons.receipt_long_outlined, size: iconSizeW.w),
                     ),
                   ),
                 ),
@@ -107,7 +111,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                     child: Text(
                       model.status.toString(),
                       style: customStyle(
-                          fontSize: timeFontSize,
+                          fontSize: 11.0.sp,
                           fontWeightName: "Regular",
                           fontColor: mainColor),
                     ),
@@ -126,21 +130,21 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
 Container _popupMenu(BuildContext context) {
   return Container(
       alignment: Alignment.topCenter,
-      width: customWidth(context: context, widthSize: 0.05),
+      width: 5.0.w,
       child: PopupMenuButton(
-          icon: Icon(Icons.arrow_forward_ios_sharp, size: 12),
+          icon: Icon(Icons.arrow_forward_ios_sharp, size: iconSizeW.w),
           onSelected: (value) async {},
           itemBuilder: (BuildContext context) => [
                 PopupMenuItem(
                   value: 1,
                   child: Row(
-                    children: [Icon(Icons.edit), Text("수정하기")],
+                    children: [Icon(Icons.edit, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.update(), style: customStyle(fontSize: 13.0.sp),)],
                   ),
                 ),
                 PopupMenuItem(
                   value: 2,
                   child: Row(
-                    children: [Icon(Icons.delete), Text("삭제하기")],
+                    children: [Icon(Icons.delete, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.delete(), style: customStyle(fontSize: 13.0.sp),)],
                   ),
                 ),
               ]));

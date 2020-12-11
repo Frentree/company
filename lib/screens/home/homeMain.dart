@@ -11,6 +11,7 @@ import 'package:MyCompany/screens/search/searchMain.dart';
 import 'package:MyCompany/screens/setting/settingMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/screens/alarm/alarmMain.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -130,15 +131,11 @@ class HomeMainPageState extends State<HomeMainPage> {
             width: 20.0.w,
             child: GestureDetector(
               child: Container(
-                height: 5.0.h,
-                width: 10.0.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.0.w),
-                    color: whiteColor,
-                    border: Border.all(color: whiteColor, width: 2)),
+                alignment: Alignment.center,
+                width: 8.0.w,
+                height: 8.0.h,
                 child: FutureBuilder(
-                  future: FirebaseRepository()
-                      .photoProfile(_loginUser.companyCode, _loginUser.mail),
+                  future: FirebaseRepository().photoProfile(_loginUser.companyCode, _loginUser.mail),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Icon(Icons.person_outline);
@@ -156,7 +153,7 @@ class HomeMainPageState extends State<HomeMainPage> {
       ),
       body: Container(
         height: 85.0.h,
-        width: customWidth(context: context, widthSize: 1),
+        width: 100.0.w,
         padding: EdgeInsets.only(
           left: 2.0.w,
           right: 2.0.w,
@@ -172,7 +169,6 @@ class HomeMainPageState extends State<HomeMainPage> {
               padding: EdgeInsets.only(top: 2.0.h),
             ),
             Expanded(
-              flex: 11,
               child: _page[_currentPageIndex],
             ),
           ],
