@@ -1,5 +1,6 @@
 //Flutter
 
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -13,6 +14,7 @@ import 'package:MyCompany/consts/screenSize/login.dart';
 //Repos
 import 'package:MyCompany/repos/login/loginRepository.dart';
 
+final word = Words();
 class LoginPage extends StatefulWidget {
   @override
   LoginPageState createState() => LoginPageState();
@@ -56,7 +58,7 @@ class LoginPageState extends State<LoginPage> {
                 height: pageNameSizeH.h,
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "로그인",
+                  word.login(),
                   style: customStyle(
                     fontWeightName: "Medium",
                     fontColor: blueColor,
@@ -83,7 +85,7 @@ class LoginPageState extends State<LoginPage> {
                           vertical: textFormFontPaddingH.h,
                           horizontal: textFormFontPaddingW.w,
                         ),
-                        hintText: "이메일",
+                        hintText: word.email(),
                         hintStyle: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
@@ -113,7 +115,7 @@ class LoginPageState extends State<LoginPage> {
                           vertical: textFormFontPaddingH.h,
                           horizontal: textFormFontPaddingW.w,
                         ),
-                        hintText: "비밀번호",
+                        hintText: word.password(),
                         hintStyle: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
@@ -143,7 +145,7 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     elevation: 0.0,
                     child: Text(
-                      "로그인",
+                      word.signIn(),
                       style: customStyle(
                         fontWeightName: "Medium",
                         fontColor: whiteColor,
@@ -177,7 +179,7 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     elevation: 0.0,
                     child: Text(
-                      "회원가입",
+                      word.signUp(),
                       style: customStyle(
                         fontWeightName: "Medium",
                         fontColor: blueColor,

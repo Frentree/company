@@ -6,6 +6,7 @@ import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/i18n/app_localizations.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:MyCompany/repos/tableCalendar/table_calendar.dart';
 //Model
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/models/userModel.dart';
+import 'package:intl/locale.dart';
 
 //Provider
 import 'package:provider/provider.dart';
@@ -130,7 +132,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                           .setCalendarFormat(CalendarFormat.week);
                     });
                   },
-                  locale: 'ko_KR',
+                  //locale: 'ko_KR',
                   calendarStyle: CalendarStyle(
                     selectedColor: mainColor,
                     selectedStyle: customStyle(

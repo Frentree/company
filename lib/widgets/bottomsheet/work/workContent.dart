@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,6 +12,8 @@ import 'package:provider/provider.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+
+final word = Words();
 
 workContent({BuildContext context, int type, WorkModel workModel}) async {
   WorkModel _workModel = workModel;
@@ -76,7 +79,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                         child: Chip(
                           backgroundColor: chipColorBlue,
                           label: Text(
-                            type == 1 ? "내근 일정" : "외근 일정",
+                            type == 1 ? word.workInSchedule() : word.workOutSchedule(),
                             style: customStyle(
                               fontSize: 14,
                               fontColor: mainColor,
@@ -99,7 +102,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: '제목을 입력하세요',
+                            hintText: word.pleaseTitle(),
                           ),
                         ),
                       ),
@@ -120,7 +123,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                               ),
                               onPressed: _titleController.text == ""
                                   ? () {
-                                print("업로드 안됨");
+                                //print("업로드 안됨");
                               }
                                   : () async {
                                 _workModel = workModel != null ? WorkModel(
@@ -204,7 +207,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                             ),
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Text(
-                              type == 1 ? "내근 일시" : "외근 일시",
+                              word.dateTime(),
                               style: customStyle(
                                 fontSize: 14,
                                 fontColor: mainColor,
@@ -252,7 +255,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                               ),
                               Padding(padding: EdgeInsets.only(left: 10)),
                               Text(
-                                "외근 장소",
+                                word.outLocation(),
                                 style: customStyle(
                                   fontSize: 14,
                                   fontColor: mainColor,
@@ -274,7 +277,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                               ),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: '외근지를 입력하세요',
+                                hintText: word.outCon(),
                               ),
                             )),
                       ],
@@ -301,7 +304,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                         ),
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Text(
-                          "추가 항목 입력",
+                          word.addItem(),
                           style: customStyle(
                             fontSize: 14,
                             fontColor: mainColor,
@@ -324,7 +327,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                               ),
                               Padding(padding: EdgeInsets.only(left: 10)),
                               Text(
-                                "상세 내용",
+                                word.content(),
                                 style: customStyle(
                                   fontSize: 14,
                                   fontColor: mainColor,
@@ -346,7 +349,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                               fontWeightName: 'Bold',
                             ),
                             decoration: InputDecoration(
-                              hintText: "상세 내용을 입력하세요",
+                              hintText: word.contentCon(),
                               border: InputBorder.none,
                             ),
                           ),

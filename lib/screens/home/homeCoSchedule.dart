@@ -87,7 +87,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                   selectTime = day;
                 });
               },
-              locale: 'ko_KR',
+              //locale: 'ko_KR',
               headerStyle: HeaderStyle(
                 formatButtonVisible: false,
               ),

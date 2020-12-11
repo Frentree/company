@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,6 +13,7 @@ import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 
+final word = Words();
 meetingMain({BuildContext context, MeetingModel meetingModel}) async {
   MeetingModel _meetingModel = meetingModel;
   bool result = false;
@@ -79,7 +81,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                         child: Chip(
                           backgroundColor: chipColorBlue,
                           label: Text(
-                            "미팅 일정",
+                            word.meetingSchedule(),
                             style: customStyle(
                               fontSize: 14,
                               fontColor: mainColor,
@@ -102,7 +104,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: '미팅 제목을 입력하세요',
+                            hintText: word.pleaseTitle(),
                           ),
                         ),
                       ),
@@ -123,7 +125,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                               ),
                               onPressed: _titleController.text == ""
                                   ? () {
-                                      print("업로드 안됨");
+                                     /* print("업로드 안됨");*/
                                     }
                                   : () async {
                                 _meetingModel = meetingModel != null ? MeetingModel(
@@ -199,7 +201,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                             ),
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Text(
-                              "일시",
+                              word.dateTime(),
                               style: customStyle(
                                 fontSize: 14,
                                 fontColor: mainColor,
@@ -245,7 +247,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                             ),
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Text(
-                              "참가자",
+                              word.participant(),
                               style: customStyle(
                                 fontSize: 14,
                                 fontColor: mainColor,
@@ -320,7 +322,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                         ),
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Text(
-                          "추가 항목 입력",
+                          word.addItem(),
                           style: customStyle(
                             fontSize: 14,
                             fontColor: mainColor,
@@ -343,7 +345,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                               ),
                               Padding(padding: EdgeInsets.only(left: 10)),
                               Text(
-                                "상세 내용",
+                                word.content(),
                                 style: customStyle(
                                   fontSize: 14,
                                   fontColor: mainColor,
@@ -365,7 +367,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                               fontWeightName: 'Bold',
                             ),
                             decoration: InputDecoration(
-                              hintText: "상세 내용을 입력하세요",
+                              hintText: word.contentCon(),
                               border: InputBorder.none,
                             ),
                           ),

@@ -1,4 +1,5 @@
 //Flutter
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
@@ -23,6 +24,8 @@ import 'package:MyCompany/repos/login/loginRepository.dart';
 
 //Model
 import 'package:MyCompany/models/userModel.dart';
+
+final word = Words();
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -117,7 +120,7 @@ class SignUpPageState extends State<SignUpPage> {
                 height: pageNameSizeH.h,
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "회원가입",
+                  word.signUp(),
                   style: customStyle(
                     fontWeightName: "Medium",
                     fontColor: blueColor,
@@ -146,7 +149,7 @@ class SignUpPageState extends State<SignUpPage> {
                             vertical: textFormFontPaddingH.h,
                             horizontal: textFormFontPaddingW.w,
                           ),
-                          hintText: "이름",
+                          hintText: word.name(),
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
@@ -192,7 +195,7 @@ class SignUpPageState extends State<SignUpPage> {
                             vertical: textFormFontPaddingH.h,
                             horizontal: textFormFontPaddingW.w,
                           ),
-                          hintText: "이메일",
+                          hintText: word.email(),
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
@@ -238,7 +241,7 @@ class SignUpPageState extends State<SignUpPage> {
                             vertical: textFormFontPaddingH.h,
                             horizontal: textFormFontPaddingW.w,
                           ),
-                          hintText: "비밀번호",
+                          hintText: word.password(),
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
@@ -284,7 +287,7 @@ class SignUpPageState extends State<SignUpPage> {
                             vertical: textFormFontPaddingH.h,
                             horizontal: textFormFontPaddingW.w,
                           ),
-                          hintText: "비밀번호 확인",
+                          hintText: word.passwordConfirm(),
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
@@ -330,7 +333,7 @@ class SignUpPageState extends State<SignUpPage> {
                             vertical: textFormFontPaddingH.h,
                             horizontal: textFormFontPaddingW.w,
                           ),
-                          hintText: "생년월일",
+                          hintText: word.birthDay(),
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
@@ -376,7 +379,7 @@ class SignUpPageState extends State<SignUpPage> {
                             vertical: textFormFontPaddingH.h,
                             horizontal: textFormFontPaddingW.w,
                           ),
-                          hintText: "핸드폰번호",
+                          hintText: word.phone(),
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,

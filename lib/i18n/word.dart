@@ -213,6 +213,55 @@ class Words {
   String lunch() => Intl.message("중식비", name: "lunch", args: [], desc: "lunch message");
   String dinner() => Intl.message("석식비", name: "dinner", args: [], desc: "dinner message");
   String save() => Intl.message("저장", name: "save", args: [], desc: "save message");
-
 /* 알림 - 경비 종료 */
+
+/* 로그인 및 회원가입 페이지 */
+  String login() => Intl.message("로그인", name: "login", args: [], desc: "Login message");
+  String name() => Intl.message("이름", name: "name", args: [], desc: "Name message");
+  String password() => Intl.message("비밀번호", name: "password", args: [], desc: "password message");
+  String passwordConfirm() => Intl.message("비밀번호 확인", name: "passwordConfirm", args: [], desc: "passwordConfirm message");
+  String signIn() => Intl.message("로그인", name: "signIn", args: [], desc: " message");
+  String signUp() => Intl.message("회원가입", name: "signUp", args: [], desc: "sign up message");
+  String birthDay() => Intl.message("생년월일", name: "birthDay", args: [], desc: "birthDay message");
+/* 로그인 및 회원가입 페이지 종료*/
+
+  String transportation() => Intl.message("교통비", name: "transportation", args: [], desc: "Transportation fee message");
+  String etc() => Intl.message("기타", name: "etc", args: [], desc: "Etc message");
+
+/* 일정 */
+  String pleaseTitle() => Intl.message("제목을 입력하세요", name: "pleaseTitle", args: [], desc: "Please enter a title message");
+  String dateTime() => Intl.message("일시", name: "dateTime", args: [], desc: "date and time message");
+  String addItem() => Intl.message("추가 항목", name: "addItem", args: [], desc: "Additional Items message");
+  String outLocation() => Intl.message("외근 장소", name: "outLocation", args: [], desc: "out-of-office location message");
+  String outCon() => Intl.message("외근지를 입력하세요", name: "outCon", args: [], desc: "Please enter your outside office message");
+
+  String participant() => Intl.message("참가자", name: "participant", args: [], desc: "participant message");
+  String content() => Intl.message("내용", name: "content", args: [], desc: "content message");
+  String contentCon() => Intl.message("내용을 입력하세요", name: "contentCon", args: [], desc: "Please enter the content message");
+/* 일정 종료 */
+
+/* 사용자 추가/ 삭제 */
+  String requestUser() => Intl.message("사용자 추가 요청", name: "requestUser", args: [], desc: "Request Add User message");
+  String count() => Intl.message("건", name: "count", args: [], desc: "count message");
+  String noDataApprove() => Intl.message("승인할 데이터가 없습니다", name: "noDataApprove", args: [], desc: "No data to approve. message");
+  String deleteUser() => Intl.message("사용자 삭제(퇴사자)", name: "", args: [], desc: "Delete User(a retired employee) message");
+  String deleteUserCon() => Intl.message("삭제할 사용자 이름을 입력하세요", name: "deleteUserCon", args: [], desc: "Please enter the user name you want to message");
+  String forAddUser() => Intl.message("님의 사용자 추가 요청", name: "forAddUser", args: [], desc: "'s Request for Add User message");
+  String requestDate() => Intl.message("요청일자", name: "requestDate", args: [], desc: "Request date message");
+  String noSearch() => Intl.message("검색 결과 없음", name: "noSearch", args: [], desc: "No search results. message");
+  String resignationProcess() => Intl.message("님의 퇴사 처리", name: "", args: [], desc: "'s resignation process message");
+  String accept() => Intl.message("승낙", name: "accept", args: [], desc: "Accept message");
+  String refusal() => Intl.message("거절", name: "refusal", args: [], desc: "refusal message");
+/* 사용자 추가/ 삭제 종료 */
+
+/* 권한 */
+  String () => Intl.message("권한명 수정하기", name: "", args: [], desc: " message");
+  /*String () => Intl.message("권한 삭제하기", name: "", args: [], desc: " message");
+  String () => Intl.message("권한을 삭제하시겠습니까?", name: "", args: [], desc: " message");
+  String () => Intl.message("최고 관리자는 1명 이하로 삭제 불가능 합니다.", name: "", args: [], desc: " message");
+  String () => Intl.message("권한 상세 설정", name: "", args: [], desc: " message");
+  String () => Intl.message("사용자 추가하기", name: "", args: [], desc: " message");
+  String () => Intl.message("사용자 삭제하기", name: "", args: [], desc: " message");
+  String () => Intl.message("권한 추가", name: "", args: [], desc: " message");*/
+/* 권한 종료 */
 }
