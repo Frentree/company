@@ -14,6 +14,9 @@ import 'package:provider/provider.dart';
 import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
 
 coScheduleDetail(
     {BuildContext context, List<dynamic> scheduleData, String name, String loginUserMail}) async {
@@ -24,8 +27,8 @@ coScheduleDetail(
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topRight: Radius.circular(20),
-        topLeft: Radius.circular(20),
+        topRight: Radius.circular(pageRadiusW.w),
+        topLeft: Radius.circular(pageRadiusW.w),
       ),
     ),
     context: context,
@@ -37,8 +40,8 @@ coScheduleDetail(
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.only(
-            left: 20,
-            right: 20,
+            left: 5.0.w,
+            right: 5.0.w,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,6 +52,7 @@ coScheduleDetail(
                   IconButton(
                     icon: Icon(
                       Icons.close,
+                      size: iconSizeW.w,
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -57,22 +61,21 @@ coScheduleDetail(
                   Text(
                       name,
                     style: customStyle(
-                      fontSize: 15,
+                      fontSize: homePageDefaultFontSize,
                       fontWeightName: "Regular",
                     ),
                   ),
-                  Container(),
+                  Container(
+                    width: iconSizeW.w,
+                  )
                 ],
               ),
-              Padding(padding: EdgeInsets.only(top: 5)),
+              Padding(padding: EdgeInsets.only(top: 1.0.h)),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.03)),
-                height: customHeight(
-                  context: context,
-                  heightSize: 0.4
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 3.0.w),
+                height: 35.0.h,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(2.0.w),
                   border: Border.all(
                     color: grayColor
                   ),
@@ -113,7 +116,7 @@ coScheduleDetail(
                   },
                 ),
               ),
-              Padding(padding: EdgeInsets.only(bottom: 20)),
+              Padding(padding: EdgeInsets.only(bottom: 2.0.h)),
             ],
           ),
         ),

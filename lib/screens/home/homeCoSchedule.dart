@@ -28,7 +28,10 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:MyCompany/widgets/card/workCoScheduleCard.dart';
 
-import '../../models/workModel.dart';
+
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
 
 final word = Words();
 
@@ -91,14 +94,14 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               calendarStyle: CalendarStyle(
                 selectedColor: mainColor,
                 selectedStyle: customStyle(
-                    fontSize: 18,
+                    fontSize: 13.0.sp,
                     fontWeightName: "Bold",
                     fontColor: whiteColor),
               ),
             ),
           ),
           Container(
-            width: customWidth(context: context, widthSize: 1),
+            width: 100.0.w,
             color: Colors.white,
             child: GestureDetector(
               onTap: () {
@@ -180,12 +183,12 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                     child: Container(
                       color: Colors.white,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: customWidth(context: context, widthSize: 0.08), vertical: customHeight(context: context, heightSize: 0.01)),
+                        padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 1.0.h),
                         child: SingleChildScrollView(
                           child: Table(
                             border: TableBorder.all(width: 0.1,),
                             columnWidths: {
-                              5: FixedColumnWidth(customWidth(context: context, widthSize: 0.23))
+                              5: FixedColumnWidth(23.0.w)
                             },
                             children: childRow,
                           ),
@@ -197,11 +200,11 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               ) : Expanded(
                 child: Column(
                   children: [
-                    InkWell(
+                    /*InkWell(
                       child: Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(cardRadiusW.w),
                           side: BorderSide(
                             width: 1,
                             color: blueColor,
@@ -210,13 +213,12 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                         child: Center(
                           child: Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: customHeight(
-                                      context: context, heightSize: 0.02)),
+                                vertical: cardPaddingH.h,),
                               child: Text(
                                 word.colleagueTimeSchedule(),
                                 style: customStyle(
                                     fontColor: blackColor,
-                                    fontSize: 16,
+                                    fontSize: homePageDefaultFontSize.sp,
                                     fontWeightName: "Regular",),
                               )),
                         ),
@@ -224,7 +226,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                       onTap: (){
                         NotImplementedFunction(context);
                       },
-                    ),
+                    ),*/
                     StreamBuilder(
                       stream: _repository.getSelectedDateCompanyWork(companyCode: _loginUser.companyCode, selectedDate: _format.dateTimeToTimeStamp(selectTime)),
                       builder: (BuildContext context, AsyncSnapshot snapshot){

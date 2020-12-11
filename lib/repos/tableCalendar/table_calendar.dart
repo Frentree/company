@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
+
+import 'package:sizer/sizer.dart';
+
 part 'src/calendar.dart';
 part 'src/calendar_controller.dart';
 part 'src/customization/calendar_builders.dart';

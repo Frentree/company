@@ -10,6 +10,7 @@ import 'package:MyCompany/screens/approval/approval.dart';
 import 'package:MyCompany/screens/search/searchMain.dart';
 import 'package:MyCompany/screens/setting/settingMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/mainBottomSheet.dart';
+import 'package:MyCompany/consts/font.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,10 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/screens/home/homeScheduleMain.dart';
 import 'package:provider/provider.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 class HomeMainPage extends StatefulWidget {
   @override
   HomeMainPageState createState() => HomeMainPageState();
@@ -30,6 +35,7 @@ class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
   List<Widget> _page = [
     HomeScheduleMainPage(),
+
     /// 기능 미구현으로 인한 숨김 처리
     //SearchMainPage(),
     null,
@@ -86,7 +92,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                     IconButton(
                       icon: Icon(
                         Icons.power_settings_new,
-                        size: customHeight(context: context, heightSize: 0.04),
+                        size: iconSizeW.w,
                         color: Colors.white,
                       ),
                       onPressed: _attendance.status == 0
@@ -104,10 +110,14 @@ class HomeMainPageState extends State<HomeMainPage> {
                               : null,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 10),
+                      padding: EdgeInsets.only(left: 2.0.w),
                       child: Text(
                         _attendanceCheckProvider
                             .attendanceStatus(_attendance.status),
+                        style: customStyle(
+                          fontSize: homePageDefaultFontSize.sp,
+                          fontColor: Colors.white,
+                        ),
                       ),
                     )
                   ],
@@ -117,13 +127,13 @@ class HomeMainPageState extends State<HomeMainPage> {
         actions: <Widget>[
           Container(
             alignment: Alignment.center,
-            width: customWidth(context: context, widthSize: 0.2),
+            width: 20.0.w,
             child: GestureDetector(
               child: Container(
-                height: customHeight(context: context, heightSize: 0.05),
-                width: customWidth(context: context, widthSize: 0.1),
+                height: 5.0.h,
+                width: 10.0.w,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(2.0.w),
                     color: whiteColor,
                     border: Border.all(color: whiteColor, width: 2)),
                 child: FutureBuilder(
@@ -145,28 +155,21 @@ class HomeMainPageState extends State<HomeMainPage> {
         ],
       ),
       body: Container(
-        height: heightRatio(
-          context: context,
-          heightRatio: 0.85,
-        ),
+        height: 85.0.h,
         width: customWidth(context: context, widthSize: 1),
         padding: EdgeInsets.only(
-            left: customWidth(
-              context: context,
-              widthSize: 0.02,
-            ),
-            right: customWidth(
-              context: context,
-              widthSize: 0.02,
-            )),
+          left: 2.0.w,
+          right: 2.0.w,
+        ),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                topLeft: Radius.circular(pageRadiusW.w),
+                topRight: Radius.circular(pageRadiusW.w)),
             color: whiteColor),
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(top: 2.0.h),
             ),
             Expanded(
               flex: 11,
@@ -187,23 +190,15 @@ class HomeMainPageState extends State<HomeMainPage> {
         currentIndex: _currentPageIndex,
         items: [
           BottomNavigationBarItem(
-              icon: (_currentPageIndex == 0)
-                  ? Icon(
-                      Icons.calendar_today,
-                      size: customHeight(
-                        context: context,
-                        heightSize: 0.05,
-                      ),
-                color: blueColor,
-                    )
-                  : Icon(
-                      Icons.calendar_today,
-                      size: customHeight(
-                        context: context,
-                        heightSize: 0.04,
-                      ),
-                    ),
-              title: Text("Schedule")),
+            icon: (_currentPageIndex == 0)
+                ? Icon(
+                    Icons.calendar_today,
+                    size: iconSizeW.w,
+                    color: blueColor,
+                  )
+                : Icon(Icons.calendar_today, size: iconSizeW.w),
+            label: "Schedule",
+          ),
 
           /// 기능 미구현으로 인한 숨김 처리
           /*BottomNavigationBarItem(
@@ -226,59 +221,44 @@ class HomeMainPageState extends State<HomeMainPage> {
               =
               title: Text("Search")),*/
           BottomNavigationBarItem(
-              icon: (_currentPageIndex == 1)
-                  ? Icon(
-                Icons.add_circle_outline,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.05,
-                ),
-                color: blueColor,
-              )
-                  : Icon(
-                Icons.add_circle_outline,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.04,
-                ),
-              ),
-              title: Text("Create")),
+            icon: (_currentPageIndex == 1)
+                ? Icon(
+                    Icons.add_circle_outline,
+                    size: iconSizeW.w,
+                    color: blueColor,
+                  )
+                : Icon(
+                    Icons.add_circle_outline,
+                    size: iconSizeW.w,
+                  ),
+            label: "Create",
+          ),
           BottomNavigationBarItem(
-              icon: (_currentPageIndex == 2)
-                  ? Icon(
-                Icons.notifications_none,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.05,
-                ),
-                color: blueColor,
-              )
-                  : Icon(
-                Icons.notifications_none,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.04,
-                ),
-              ),
-              title: Text("Push")),
+            icon: (_currentPageIndex == 2)
+                ? Icon(
+                    Icons.notifications_none,
+                    size: iconSizeW.w,
+                    color: blueColor,
+                  )
+                : Icon(
+                    Icons.notifications_none,
+                    size: iconSizeW.w,
+                  ),
+            label: "Push",
+          ),
           BottomNavigationBarItem(
-              icon: (_currentPageIndex == 3)
-                  ? Icon(
-                Icons.menu,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.05,
-                ),
-                color: blueColor,
-              )
-                  : Icon(
-                Icons.menu,
-                size: customHeight(
-                  context: context,
-                  heightSize: 0.04,
-                ),
-              ),
-              title: Text("Setting")),
+            icon: (_currentPageIndex == 3)
+                ? Icon(
+                    Icons.menu,
+                    size: iconSizeW.w,
+                    color: blueColor,
+                  )
+                : Icon(
+                    Icons.menu,
+                    size: iconSizeW.w,
+                  ),
+            label: "Setting",
+          ),
         ],
       ),
     );

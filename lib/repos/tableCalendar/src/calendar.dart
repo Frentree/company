@@ -356,7 +356,7 @@ class _TableCalendarState extends State<TableCalendar> with SingleTickerProvider
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: widget.calendarController.calendarFormat == CalendarFormat.week ? const EdgeInsets.only(top: 75) : const EdgeInsets.only(top:10),
+                padding: widget.calendarController.calendarFormat == CalendarFormat.week ? EdgeInsets.only(top: 12.5.h) : EdgeInsets.only(top: 1.5.h),
                 child: _CustomIconButton(
                   icon: widget.headerStyle.leftChevronIcon,
                   onTap: _selectPrevious,
@@ -377,7 +377,7 @@ class _TableCalendarState extends State<TableCalendar> with SingleTickerProvider
                 ),
               ),
               Padding(
-                padding: widget.calendarController.calendarFormat == CalendarFormat.week ? const EdgeInsets.only(top: 75) : const EdgeInsets.only(top:10),
+                padding: widget.calendarController.calendarFormat == CalendarFormat.week ? EdgeInsets.only(top: 12.5.h) : EdgeInsets.only(top: 1.5.h),
                 child: _CustomIconButton(
                   icon: widget.headerStyle.rightChevronIcon,
                   onTap: _selectNext,

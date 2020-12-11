@@ -11,6 +11,10 @@ import 'package:MyCompany/consts/widgetSize.dart';
 
 import 'package:MyCompany/models/workModel.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 final word = Words();
 
 const widthDistance = 0.02; // 항목별 간격
@@ -22,52 +26,53 @@ const fontColor = mainColor;
 
 Column childColumn({BuildContext context, List<dynamic> workData}) {
   Format _format = Format();
-  List<Padding> columnChildRow = [];
+  List<Container> columnChildRow = [];
 
   workData.forEach((element) {
     var elementData = element.data();
     columnChildRow.add(
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
+      Container(
+        height: 6.0.h,
+        alignment: Alignment.center,
         child: Row(
           children: [
             Text(
               _format.timeToString(elementData["startTime"]),
               style: customStyle(
-                fontSize: timeFontSize,
+                fontSize: 11.0.sp,
                 fontWeightName: "Regular",
                 fontColor: blueColor,
               ),
             ),
             SizedBox(
-              width: customWidth(context: context, widthSize: widthDistance),
+              width: 2.0.w,
             ),
             Container(
               decoration: BoxDecoration(
                   border: Border.all(color: textFieldUnderLine),
-                  borderRadius: BorderRadius.circular(8)),
-              width: customWidth(context: context, widthSize: 0.1),
-              height: customHeight(context: context, heightSize: 0.03),
+                  borderRadius: BorderRadius.circular(2.0.w)),
+              width: 15.0.w,
+              height: 3.5.h,
               alignment: Alignment.center,
               child: Text(
                 elementData["type"],
                 style: customStyle(
-                    fontSize: typeFontSize,
+                    fontSize: 10.0.sp,
                     fontWeightName: "Regular",
                     fontColor: fontColor),
               ),
             ),
             SizedBox(
-              width: customWidth(context: context, widthSize: widthDistance),
+              width: 2.0.w,
             ),
             Container(
               width: elementData["type"] == "외근"
-                  ? customWidth(context: context, widthSize: 0.3)
-                  : customWidth(context: context, widthSize: 0.45),
+                  ? 25.0.w
+                  : 40.0.w,
               child: Text(
                 elementData["title"],
                 style: customStyle(
-                  fontSize: titleFontSize,
+                  fontSize: cardTitleFontSize.sp,
                   fontWeightName: "Medium",
                   fontColor: mainColor,
                 ),
@@ -76,15 +81,16 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
             Visibility(
               visible: elementData["type"] == "외근",
               child: Container(
-                width: customWidth(context: context, widthSize: 0.15),
+                width: 15.0.w,
                 child: Text(
                     elementData["location"] == ""
                         ? ""
                         : "[${elementData["location"]}]",
                     style: customStyle(
-                        fontSize: titleFontSize,
-                        fontWeightName: "Medium",
-                        fontColor: mainColor,)),
+                      fontSize: 11.0.sp,
+                      fontWeightName: "Medium",
+                      fontColor: mainColor,
+                    )),
               ),
             )
           ],
@@ -106,7 +112,7 @@ Card workCoScheduleCard(
   return Card(
     elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(cardRadiusW.w),
       side: BorderSide(
         width: 1,
         color: boarderColor,
@@ -114,39 +120,41 @@ Card workCoScheduleCard(
     ),
     child: Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: customWidth(context: context, widthSize: 0.02),
-        vertical: customHeight(context: context, heightSize: 0.01),
+        horizontal: cardPaddingW.w,
+        vertical: cardPaddingH.h,
       ),
       child: Row(
         children: [
           Container(
-            width: customWidth(context: context, widthSize: 0.18),
+            width: 12.0.w,
             child: Text(
               name,
               style: customStyle(
-                fontSize: titleFontSize,
+                fontSize: 11.0.sp,
                 fontWeightName: "Regular",
               ),
             ),
           ),
           SizedBox(
-            width: customWidth(context: context, widthSize: widthDistance),
+            width: 2.0.w,
           ),
           workData.length == 0
-              ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
+              ? Container(
+                  height: 6.0.h,
+                  alignment: Alignment.center,
+                  child: Text(
                     word.noSchedule(),
                     style: customStyle(
-                        fontSize: titleFontSize,
-                        fontWeightName: "Medium",
-                        fontColor: mainColor,),
+                      fontSize: cardTitleFontSize.sp,
+                      fontWeightName: "Medium",
+                      fontColor: mainColor,
+                    ),
                   ),
-              )
+                )
               : childColumn(
-            context: context,
-            workData: workData,
-          ),
+                  context: context,
+                  workData: workData,
+                ),
         ],
       ),
     ),

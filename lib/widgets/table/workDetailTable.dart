@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
 
+
 //Flutter
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,9 @@ import 'package:MyCompany/models/workModel.dart';
 //Util
 import 'package:MyCompany/utils/date/dateFormat.dart';
 
-import '../../models/workModel.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
 
 const double heightSize = 0.08;
 const double sizedBoxHeight = 0.01;
@@ -70,9 +73,9 @@ TableRow workDetailTableRow(
 
   companyWorkList.forEach((element) {
     tableRow.add(Container(
-      height: customHeight(context: context, heightSize: heightSize),
+      height: 10.0.h,
       padding: EdgeInsets.symmetric(
-          horizontal: customWidth(context: context, widthSize: 0.01)),
+          horizontal: 1.0.w),
       child: GestureDetector(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -105,11 +108,11 @@ TableRow workDetailTableRow(
   });
 
   tableRow.add(Container(
-    height: customHeight(context: context, heightSize: heightSize),
+    height: 10.0.h,
     padding: EdgeInsets.symmetric(
-        horizontal: customWidth(context: context, widthSize: 0.01)),
+        horizontal: 1.0.w),
     child: Center(
-      child: Text(name),
+      child: Text(name, style: customStyle(fontSize: 13.0.sp, fontWeightName: "Medium"),),
     ),
   ));
 
@@ -137,14 +140,14 @@ Container workChip({BuildContext context, dynamic companyWork, int count}) {
               style: customStyle(
                   fontColor: whiteColor,
                   fontWeightName: "Regular",
-                  fontSize: 10),
+                  fontSize: 9.0.sp),
             ),
           ),
         ),
         (count - 1) != 0
             ? Text(
                 "+${count - 1}",
-                style: TextStyle(fontSize: 11),
+                style: TextStyle(fontSize: 9.0.sp),
               )
             : Text("")
       ],

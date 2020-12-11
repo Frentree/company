@@ -27,6 +27,10 @@ import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 final word = Words();
 
 class HomeScheduleMainPage extends StatefulWidget {
@@ -45,12 +49,9 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
       body: Column(
         children: <Widget>[
           Container(
-            height: customHeight(
-                context: context,
-                heightSize: 0.06
-            ),
+            height: 6.0.h,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(3.0.w),
                 color: tabColor
             ),
             child: Row(
@@ -58,8 +59,8 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
               children: <Widget>[
                 tabBtn(
                     context: context,
-                    heightSize: 0.05,
-                    widthSize: 0.46,
+                    heightSize: 5,
+                    widthSize: 46,
                     btnText: word.mySchedule(),
                     tabIndexVariable: tabIndex,
                     tabOrder: 0,
@@ -71,8 +72,8 @@ class HomeScheduleMainPageState extends State<HomeScheduleMainPage> {
                 ),
                 tabBtn(
                     context: context,
-                    heightSize: 0.05,
-                    widthSize: 0.46,
+                    heightSize: 5,
+                    widthSize: 46,
                     btnText: word.colleagueSchedule(),
                     tabIndexVariable: tabIndex,
                     tabOrder: 1,

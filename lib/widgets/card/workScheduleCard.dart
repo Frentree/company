@@ -13,10 +13,13 @@ import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 final word = Words();
 
 const widthDistance = 0.02; // 항목별 간격
-const timeFontSize = 13.0;
 const typeFontSize = 12.0;
 const titleFontSize = 15.0;
 const writeTimeFontSize = 14.0;
@@ -30,7 +33,7 @@ Card workScheduleCard(
   return Card(
     elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(cardRadiusW.w),
       side: BorderSide(
         width: 1,
         color: boarderColor,
@@ -38,8 +41,8 @@ Card workScheduleCard(
     ),
     child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: customWidth(context: context, widthSize: 0.02),
-            vertical: customHeight(context: context, heightSize: 0.01)),
+            horizontal: cardPaddingW.w,
+            vertical: cardPaddingH.h,),
         child: isDetail
             ? workDetailContents(
                 context: context,
@@ -64,50 +67,50 @@ Container titleCard(
   Format _format = Format();
 
   return Container(
-    height: customHeight(context: context, heightSize: 0.06),
+    height: 6.0.h,
     child: Row(
       children: [
         //시간대
         Text(
           _format.timeToString(workModel.startTime),
           style: customStyle(
-              fontSize: timeFontSize,
+              fontSize: 11.0.sp,
               fontWeightName: "Regular",
               fontColor: blueColor),
         ),
         SizedBox(
-          width: customWidth(context: context, widthSize: widthDistance),
+          width: 2.0.w,
         ),
 
         //업무 타입입
         Container(
           decoration: BoxDecoration(
               border: Border.all(color: textFieldUnderLine),
-              borderRadius: BorderRadius.circular(8)),
-          width: customWidth(context: context, widthSize: 0.1),
-          height: customHeight(context: context, heightSize: 0.03),
+              borderRadius: BorderRadius.circular(2.0.w)),
+          width: 15.0.w,
+          height: 3.5.h,
           alignment: Alignment.center,
           child: Text(
             workModel.type == "내근" ? word.workIn() : word.workOut(),
             style: customStyle(
-                fontSize: typeFontSize,
+                fontSize: 10.0.sp,
                 fontWeightName: "Regular",
                 fontColor: fontColor),
           ),
         ),
         SizedBox(
-          width: customWidth(context: context, widthSize: 0.02),
+          width: 2.0.w,
         ),
 
         //제목
         Container(
           width: workModel.type == "외근"
-              ? customWidth(context: context, widthSize: 0.4)
-              : customWidth(context: context, widthSize: 0.55),
+              ? 30.0.w
+              : 45.0.w,
           child: Text(
             workModel.title,
             style: customStyle(
-                fontSize: titleFontSize,
+                fontSize: cardTitleFontSize.sp,
                 fontWeightName: "Medium",
                 fontColor: mainColor,),
           ),
@@ -115,17 +118,17 @@ Container titleCard(
         Visibility(
           visible: workModel.type == "외근",
           child: Container(
-            width: customWidth(context: context, widthSize: 0.15),
+            width: 15.0.w,
             child: Text(
                 workModel.location == "" ? "" : "[${workModel.location}]",
                 style: customStyle(
-                    fontSize: titleFontSize,
+                    fontSize: 11.0.sp,
                     fontWeightName: "Medium",
                     fontColor: mainColor,)),
           ),
         ),
         SizedBox(
-          width: customWidth(context: context, widthSize: 0.01),
+          width: 2.0.w,
         ),
 
         //popup 버튼
@@ -156,15 +159,16 @@ Column workDetailContents(
           workModel: workModel,
           isDetail: isDetail),
       SizedBox(
-        height: customHeight(context: context, heightSize: 0.01),
+        height: 1.0.h,
       ),
       Padding(
         padding: EdgeInsets.only(
-            left: customWidth(context: context, widthSize: 0.13)),
-        child: Text(workModel.contents),
+            left: 13.0.w
+        ),
+        child: Text(workModel.contents, style: customStyle(fontSize: 12.0.sp),),
       ),
       SizedBox(
-        height: customHeight(context: context, heightSize: 0.01),
+        height: 1.0.h,
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -174,7 +178,7 @@ Column workDetailContents(
                 ? "작성시간 : "
                 : "수정시간 : ",
             style: customStyle(
-                fontSize: writeTimeFontSize,
+                fontSize: 12.0.sp,
                 fontWeightName: "Regular",
                 fontColor: grayColor),
           ),
@@ -182,7 +186,7 @@ Column workDetailContents(
             _format.dateToString(
                 _format.timeStampToDateTime(workModel.lastModDate)),
             style: customStyle(
-                fontSize: writeTimeFontSize,
+                fontSize: 12.0.sp,
                 fontWeightName: "Regular",
                 fontColor: grayColor),
           )
@@ -196,10 +200,12 @@ Container popupMenu(
     {BuildContext context, WorkModel workModel, String companyCode}) {
   FirebaseRepository _repository = FirebaseRepository();
   return Container(
-    width: customWidth(context: context, widthSize: 0.05),
+    width: 5.0.w,
     child: PopupMenuButton(
+      padding: EdgeInsets.zero,
       icon: Icon(
         Icons.more_horiz,
+        size: iconSizeW.w,
       ),
       onSelected: (value) async {
         if (value == 1) {
@@ -219,13 +225,13 @@ Container popupMenu(
         PopupMenuItem(
           value: 1,
           child: Row(
-            children: [Icon(Icons.edit), Text("수정하기")],
+            children: [Icon(Icons.edit, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text("수정하기", style: customStyle(fontSize: 13.0.sp),)],
           ),
         ),
         PopupMenuItem(
           value: 2,
           child: Row(
-            children: [Icon(Icons.delete), Text("삭제하기")],
+            children: [Icon(Icons.delete, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text("삭제하기", style: customStyle(fontSize: 13.0.sp),)],
           ),
         ),
       ],

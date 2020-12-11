@@ -26,6 +26,10 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 //Widget
 import 'package:MyCompany/widgets/card/workScheduleCard.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 final word = Words();
 
 class HomeSchedulePage extends StatefulWidget {
@@ -41,14 +45,14 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
         shape: BoxShape.rectangle,
         color: _calendarController.isSelected(date) ? bottomColor : mainColor,
       ),
-      width: 16.0,
-      height: 16.0,
+      width: 4.0.w,
+      height: 3.0.h,
       child: Center(
         child: Text(
           '${events.length}',
           style: TextStyle().copyWith(
             color: Colors.white,
-            fontSize: 12.0,
+            fontSize: 12.0.sp,
           ),
         ),
       ),
@@ -130,7 +134,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   calendarStyle: CalendarStyle(
                     selectedColor: mainColor,
                     selectedStyle: customStyle(
-                      fontSize: 18,
+                      fontSize: 13.0.sp,
                       fontWeightName: "Bold",
                       fontColor: whiteColor,
                     ),
@@ -140,8 +144,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                       List<Widget> children = [];
                       if (events.isNotEmpty) {
                         children.add(Positioned(
-                          right: 1,
-                          bottom: 1,
+                          left: 7.0.w,
+                          top: 3.5.h,
                           child: _buildEventMarker(date, events),
                         ));
                       }
@@ -182,7 +186,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                       Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(cardRadiusW.w),
                           side: BorderSide(
                             width: 1,
                             color: boarderColor,
@@ -191,14 +195,18 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                         child: Center(
                           child: Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: customHeight(
-                                      context: context, heightSize: 0.02)),
-                              child: Text(
-                                word.noSchedule(),
-                                style: customStyle(
-                                    fontColor: blackColor,
-                                    fontSize: 16,
-                                    fontWeightName: "Medium"),
+                                horizontal: cardPaddingW.w,
+                                vertical: cardPaddingH.h,),
+                              child: Container(
+                                height: 6.0.h,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  word.noSchedule(),
+                                  style: customStyle(
+                                      fontColor: blackColor,
+                                      fontSize: cardTitleFontSize.sp,
+                                      fontWeightName: "Medium"),
+                                ),
                               )),
                         ),
                       ),

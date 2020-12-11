@@ -4,6 +4,10 @@ import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 InkWell textBtn({String btnText, TextStyle btnTextStyle, btnAction}){
   return InkWell(
       child: Text(
@@ -17,26 +21,20 @@ InkWell textBtn({String btnText, TextStyle btnTextStyle, btnAction}){
 InkWell tabBtn({BuildContext context, double heightSize, double widthSize, String btnText, int tabIndexVariable, int tabOrder, Function tabAction}){
   return InkWell(
     child: Container(
-      height: customHeight(
-        context: context,
-        heightSize: heightSize,
-      ),
-      width: customWidth(
-        context: context,
-        widthSize: widthSize
-      ),
+      height: heightSize.h,
+      width: widthSize.w,
       child: Center(
         child: Text(
           btnText,
           style: customStyle(
-            fontSize: 16,
+            fontSize: homePageDefaultFontSize,
             fontWeightName: "Medium",
             fontColor: mainColor
           ),
         ),
       ),
       decoration: tabIndexVariable == tabOrder ? BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(2.0.w),
         color: whiteColor
       ) : null
     ),
