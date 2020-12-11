@@ -1,9 +1,8 @@
-import 'package:sizer/sizer.dart';
-
 //글자 크기
 const double pageNameFontSize = 15.0;
 const double appNameFontSize = 30.0;
 const double appVersionFontSize = 15.0;
+const double homePageDefaultFontSize = 15.0;
 
 //공간 크기
 //AppName 공간

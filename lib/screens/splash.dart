@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
-import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/auth.dart';
 
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -44,7 +44,7 @@ class SplashPageState extends State<SplashPage>{
         child: Text(
           APP_NAME,
           style: customStyle(
-            fontSize: 36,
+            fontSize: 36.0.sp,
             fontWeightName: "Bold",
             fontColor: whiteColor
           ),

@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 
 settingUserAddDelete(BuildContext context) {
   Format _format = Format();
@@ -31,8 +33,8 @@ settingUserAddDelete(BuildContext context) {
     context: context,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topRight: Radius.circular(30),
-        topLeft: Radius.circular(30),
+        topRight: Radius.circular(pageRadiusW.w),
+        topLeft: Radius.circular(pageRadiusW.w),
       ),
     ),
     builder: (context) {
@@ -52,12 +54,12 @@ settingUserAddDelete(BuildContext context) {
               child: Container(
                 height: 90.0.h,
                 padding: EdgeInsets.symmetric(
-                  horizontal: 2.0.w,
+                  horizontal: 3.0.w,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(pageRadiusW.w),
+                    topRight: Radius.circular(pageRadiusW.w),
                   ),
                 ),
                 child: Column(
@@ -75,6 +77,7 @@ settingUserAddDelete(BuildContext context) {
                               child: IconButton(
                                 icon: Icon(
                                   Icons.arrow_back_ios,
+                                  size: iconSizeW.w,
                                 ),
                                 onPressed: () {
                                   Navigator.pop(context);
@@ -85,14 +88,14 @@ settingUserAddDelete(BuildContext context) {
                           Container(
                             width: 15.0.w,
                             child: Center(
-                                child: Icon(Icons.person_add_alt_1_outlined, size: 8.0.w,)),
+                                child: Icon(Icons.person_add_alt_1_outlined, size: iconSizeW.w,)),
                           ),
                           Container(
                               width: 50.0.w,
                               child: Text(
                                 "사용자 추가 요청/삭제",
                                 style: customStyle(
-                                    fontSize: 14.0.sp
+                                    fontSize: homePageDefaultFontSize.sp
                                 ),
                               )
                           )

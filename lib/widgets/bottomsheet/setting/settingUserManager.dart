@@ -10,94 +10,91 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 
-SettingUserManager(BuildContext context){
+SettingUserManager(BuildContext context) {
   User _loginUser;
   // 프로필
 
   showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    elevation: 4,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+      isScrollControlled: true,
+      context: context,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(pageRadiusW.w),
+          topLeft: Radius.circular(pageRadiusW.w),
+        ),
+      ),
+      builder: (context) {
+        LoginUserInfoProvider _loginUserInfoProvider =
+            Provider.of<LoginUserInfoProvider>(context);
+        _loginUser = _loginUserInfoProvider.getLoginUser();
 
-    builder: (context) {
-      LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-      _loginUser = _loginUserInfoProvider.getLoginUser();
-
-      return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.9,
+            height: 90.0.h,
+            padding: EdgeInsets.symmetric(
+              horizontal: 3.0.w,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(pageRadiusW.w),
+                topRight: Radius.circular(pageRadiusW.w),
+              ),
+            ),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.badge),
-                        Padding(padding: EdgeInsets.only(left: 10),),
-                        Text('사용자 권한 관리'),
-                      ],
-                    ),
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(top: 1.0.h),
                 ),
-                SizedBox(height: customHeight(context: context, heightSize: 0.01),),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  height: 7.0.h,
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: customWidth(
-                          context: context,
-                          widthSize: 0.02
-                        ),
-                      ),
-                      Text(
-                          "권한명",
-                          style: customStyle(
-                            fontSize: 14,
-                            fontColor: mainColor,
-                            fontWeightName: 'Bold'
+                      Container(
+                        width: 10.0.w,
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              size: iconSizeW.w,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                           ),
                         ),
-                      SizedBox(
-                        width: customWidth(
-                            context: context,
-                            widthSize: 0.2
-                        ),
                       ),
-                      Text(
-                          "수정",
-                          style: customStyle(
-                              fontSize: 14,
-                              fontColor: mainColor,
-                              fontWeightName: 'Bold'
-                          ),
-                        ),
-                      SizedBox(
-                        width: customWidth(
-                            context: context,
-                            widthSize: 0.1
-                        ),
+                      Container(
+                        width: 15.0.w,
+                        child: Center(
+                            child: Icon(
+                          Icons.badge,
+                          size: iconSizeW.w,
+                        )),
                       ),
-                      Expanded(
+                      Container(
+                        width: 50.0.w,
                         child: Text(
-                          "사용자",
+                          "사용자 권한 관리",
                           style: customStyle(
-                              fontSize: 14,
-                              fontColor: mainColor,
-                              fontWeightName: 'Bold'
+                            fontSize: homePageDefaultFontSize.sp,
                           ),
                         ),
                       ),
                     ],
+                  ),
+                ),
+                SizedBox(
+                  height: customHeight(context: context, heightSize: 0.01),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 2.0.w,
                   ),
                 ),
                 Expanded(
@@ -110,12 +107,8 @@ SettingUserManager(BuildContext context){
               ],
             ),
           );
-
-        }
-      );
-    }
-  );
-
+        });
+      });
 }
 
 class GradeData {
@@ -132,5 +125,6 @@ class GradeData {
         gradeName = map['gradeName'],
         gradeUser = map['gradeUser'];
 
-  GradeData.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap(snapshot.data(), reference: snapshot.reference);
+  GradeData.fromSnapshow(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data(), reference: snapshot.reference);
 }

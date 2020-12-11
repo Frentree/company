@@ -20,3 +20,6 @@ const double cardSubTitleSizeH = 3.0;
 const double cardRadiusW = 3.0;
 const double cardPaddingH = 1.0;
 const double cardPaddingW = 5.0;
+
+/*===Icon===*/
+const double iconSizeW = 8.0;

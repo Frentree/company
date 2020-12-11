@@ -1,4 +1,3 @@
-
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -12,6 +11,9 @@ import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
 
 final word = Words();
 
@@ -32,10 +34,10 @@ class SettingMainPageState extends State<SettingMainPage> {
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider =
-    Provider.of<LoginUserInfoProvider>(context);
+        Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-    print("aaaaa" + word.companyInfomation());
     return Scaffold(
+        backgroundColor: whiteColor,
         body: FutureBuilder(
           future: FirebaseRepository()
               .userGrade(_loginUser.companyCode, _loginUser.mail),
@@ -46,27 +48,42 @@ class SettingMainPageState extends State<SettingMainPage> {
               children: <Widget>[
                 (grade.contains(9) || grade.contains(8))
                     ? ExpansionTile(
-                  // 2. 리스트 항목 추가하면 끝!
-                  leading: Icon(Icons.person_outline),
-                  title: Text(
-                    word.companyInfomation(), // 회사 정보
-                    style: customStyle(fontColor: Colors.green),
-                  ),
-                  children: [getCompanyInfomationCard(context: context, user: _loginUser)],
-                )
+                        // 2. 리스트 항목 추가하면 끝!
+                        leading: Icon(
+                          Icons.person_outline,
+                          size: iconSizeW.w,
+                        ),
+                        title: Text(
+                          word.companyInfomation(), // 회사 정보
+                          style: customStyle(
+                            fontColor: Colors.green,
+                            fontSize: homePageDefaultFontSize,
+                          ),
+                        ),
+                        children: [
+                          getCompanyInfomationCard(
+                              context: context, user: _loginUser)
+                        ],
+                      )
                     : SizedBox(),
                 (grade.contains(9) || grade.contains(8))
                     ? ExpansionTile(
-                  // 2. 리스트 항목 추가하면 끝!
-                  leading: Icon(Icons.people_outline),
-                  title: Text(
-                    word.userManager(),
-                    style: customStyle(fontColor: Colors.green),
-                  ),
-                  childrenPadding: EdgeInsets.only(left: 20),
-                  children: [
-                    /// 기능 미구현으로 인한 숨김 처리
-                    /*ListTile(
+                        // 2. 리스트 항목 추가하면 끝!
+                        leading: Icon(
+                          Icons.people_outline,
+                          size: iconSizeW.w,
+                        ),
+                        title: Text(
+                          word.userManager(),
+                          style: customStyle(
+                            fontColor: Colors.green,
+                            fontSize: homePageDefaultFontSize,
+                          ),
+                        ),
+                        childrenPadding: EdgeInsets.only(left: 5.0.w),
+                        children: [
+                          /// 기능 미구현으로 인한 숨김 처리
+                          /*ListTile(
                       leading: Icon(Icons.account_tree_outlined),
                       title: Text('조직도'),
                       dense: true,
@@ -74,24 +91,41 @@ class SettingMainPageState extends State<SettingMainPage> {
                         NotImplementedFunction(context);
                       },
                     ),*/
-                    ListTile(
-                      leading: Icon(Icons.person_add_alt_1_outlined),
-                      title: Text(word.userAddRquestAndDelete()),
-                      dense: true,
-                      onTap: () {
-                        settingUserAddDelete(context);
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.badge),
-                      title: Text(word.userGradeManager()),
-                      dense: true,
-                      onTap: () {
-                        SettingUserManager(context);
-                      },
-                    ),
-                    /// 기능 미구현으로 인한 숨김 처리
-                    /*ListTile(
+                          ListTile(
+                            leading: Icon(
+                              Icons.person_add_alt_1_outlined,
+                              size: 7.0.w,
+                            ),
+                            title: Text(
+                              word.userAddRquestAndDelete(),
+                              style: customStyle(
+                                fontSize: 12.0.sp,
+                              ),
+                            ),
+                            dense: true,
+                            onTap: () {
+                              settingUserAddDelete(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.badge,
+                              size: 7.0.w,
+                            ),
+                            title: Text(
+                              word.userGradeManager(),
+                              style: customStyle(
+                                fontSize: 12.0.sp,
+                              ),
+                            ),
+                            dense: true,
+                            onTap: () {
+                              SettingUserManager(context);
+                            },
+                          ),
+
+                          /// 기능 미구현으로 인한 숨김 처리
+                          /*ListTile(
                       leading: Icon(Icons.list_alt_sharp),
                       title: Text('사용자별 근채/연차/급여 조회'),
                       dense: true,
@@ -99,17 +133,26 @@ class SettingMainPageState extends State<SettingMainPage> {
                         NotImplementedFunction(context);
                       },
                     ),*/
-                  ],
-                )
+                        ],
+                      )
                     : SizedBox(),
                 ExpansionTile(
                   // 2. 리스트 항목 추가하면 끝!
-                  leading: Icon(Icons.person_outline),
-                  title: Text(word.myInfomation()),
+                  leading: Icon(
+                    Icons.person_outline,
+                    size: iconSizeW.w,
+                  ),
+                  title: Text(
+                    word.myInfomation(),
+                    style: customStyle(
+                      fontSize: homePageDefaultFontSize,
+                    ),
+                  ),
                   children: [
                     getMyInfomationCard(context: context, user: _loginUser),
                   ],
                 ),
+
                 /// 기능 미구현으로 인한 숨김 처리
                 /*ExpansionTile(
                     leading: Icon(Icons.event_note_outlined),
@@ -235,38 +278,64 @@ class SettingMainPageState extends State<SettingMainPage> {
                   ],
                 ),*/
                 ListTile(
-                  leading: Icon(Icons.info_outline),
+                  leading: Icon(
+                    Icons.info_outline,
+                    size: iconSizeW.w,
+                  ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(word.serviceCenter()),
+                      Text(
+                        word.serviceCenter(),
+                        style: customStyle(
+                          fontSize: homePageDefaultFontSize,
+                        ),
+                      ),
                       Text(
                         'pe.jeon87@frentree.com',
-                        style: customStyle(fontSize: 12, fontColor: grayColor),
+                        style: customStyle(
+                            fontSize: 12.0.sp, fontColor: grayColor),
                       ),
                     ],
                   ),
                 ),
 
                 ListTile(
-                  leading: Icon(Icons.info_outline),
+                  leading: Icon(
+                    Icons.info_outline,
+                    size: iconSizeW.w,
+                  ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(word.appVersion()),
+                      Text(
+                        word.appVersion(),
+                        style: customStyle(
+                          fontSize: homePageDefaultFontSize,
+                        ),
+                      ),
                       Text(
                         '0.01',
-                        style: customStyle(fontSize: 12, fontColor: grayColor),
+                        style: customStyle(
+                            fontSize: 12.0.sp, fontColor: grayColor),
                       ),
                     ],
                   ),
                   trailing: Text(word.newVersion()),
                 ),
                 ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text(word.logout()),
+                  leading: Icon(
+                    Icons.logout,
+                    size: iconSizeW.w,
+                  ),
+                  title: Text(
+                    word.logout(),
+                    style: customStyle(
+                      fontSize: homePageDefaultFontSize,
+                    ),
+                  ),
                   onTap: () {
                     _loginUserInfoProvider.logoutUesr();
                   },
@@ -274,8 +343,7 @@ class SettingMainPageState extends State<SettingMainPage> {
               ],
             );
           },
-        )
-    );
+        ));
   }
 
   void movePage(BuildContext context, page, tab) {

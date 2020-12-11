@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 //Const
-import 'package:MyCompany/consts/screenSize/login.dart';
+
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
 
 //Repos
 import 'package:MyCompany/repos/login/loginRepository.dart';
