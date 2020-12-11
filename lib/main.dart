@@ -4,6 +4,7 @@ import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
 import 'package:MyCompany/screens/splash.dart';
 import 'package:MyCompany/i18n/app_localizations.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -13,6 +14,9 @@ import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+final word = Words();
+
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);

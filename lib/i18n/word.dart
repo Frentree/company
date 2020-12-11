@@ -267,4 +267,11 @@ class Words {
   String updateMessage() => Intl.message("업데이트 예정", name: "updateMessage", args: [], desc: "Update scheduled message");
   String buttonCon() => Intl.message("Cancel 버튼을 클릭하여 종료해주세요", name: "buttonCon", args: [], desc: "Please click the button to exit. message");
 /* 권한 종료 */
+
+/* 출근 처리 */
+  String beforeWork() => Intl.message("출근전", name: "beforeWork", args: [], desc: "before going to work message");
+  String leaveWork() => Intl.message("퇴근", name: "leaveWork", args: [], desc: "leave work message");
+  String leaveWorkPro() => Intl.message("퇴근처리", name: "leaveWorkPro", args: [], desc: "leave-of-work processing message");
+  String leaveWorkProCon() => Intl.message("퇴근 하시겠습니까?", name: "leaveWorkProCon", args: [], desc: " message");
+/* 출근 처리 종료 */
 }

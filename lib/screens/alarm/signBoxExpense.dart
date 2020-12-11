@@ -9,14 +9,12 @@ import 'package:MyCompany/widgets/card/expenseCard.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-<<<<<<< HEAD
-final word = Words();
-=======
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
->>>>>>> minji
+
+final word = Words();
+
 
 class SignBoxExpense extends StatefulWidget {
   @override
