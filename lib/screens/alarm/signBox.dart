@@ -28,15 +28,9 @@ class _SignBoxState extends State<SignBox> {
               children: <Widget>[
                 tabBtnWithUnderline(
                     context: context,
-<<<<<<< HEAD
-                    heightSize: 0.05,
-                    widthSize: 0.2,
                     btnText: word.exSetBox(),
-=======
                     heightSize: 5.0,
                     widthSize: 20.0,
-                    btnText: "경비 정산함",
->>>>>>> minji
                     tabIndexVariable: tabIndex,
                     tabOrder: 0,
                     tabAction: (){
@@ -50,15 +44,9 @@ class _SignBoxState extends State<SignBox> {
                 ),
                 tabBtnWithUnderline(
                     context: context,
-<<<<<<< HEAD
-                    heightSize: 0.05,
-                    widthSize: 0.2,
+                  heightSize: 5,
+                  widthSize: 20.0,
                     btnText: word.appForapproval(),
-=======
-                    heightSize: 5,
-                    widthSize: 20.0,
-                    btnText: "결재 신청함",
->>>>>>> minji
                     tabIndexVariable: tabIndex,
                     tabOrder: 1,
                     tabAction: (){

@@ -10,14 +10,11 @@ import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-<<<<<<< HEAD
-final word = Words();
-=======
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
->>>>>>> minji
+
+final word = Words();
 
 const widthDistance = 0.02; // 항목별 간격
 const timeFontSize = 13.0;
@@ -143,21 +140,17 @@ Container _popupMenu(BuildContext context) {
                 PopupMenuItem(
                   value: 1,
                   child: Row(
-<<<<<<< HEAD
-                    children: [Icon(Icons.edit), Text(word.update())],
-=======
+
                     children: [Icon(Icons.edit, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.update(), style: customStyle(fontSize: 13.0.sp),)],
->>>>>>> minji
+
                   ),
                 ),
                 PopupMenuItem(
                   value: 2,
                   child: Row(
-<<<<<<< HEAD
-                    children: [Icon(Icons.delete), Text(word.delete())],
-=======
+
                     children: [Icon(Icons.delete, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.delete(), style: customStyle(fontSize: 13.0.sp),)],
->>>>>>> minji
+
                   ),
                 ),
               ]));

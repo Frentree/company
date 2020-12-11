@@ -255,7 +255,7 @@ class Words {
 /* 사용자 추가/ 삭제 종료 */
 
 /* 권한 */
-  String () => Intl.message("권한명 수정하기", name: "", args: [], desc: " message");
+  //String () => Intl.message("권한명 수정하기", name: "", args: [], desc: " message");
   /*String () => Intl.message("권한 삭제하기", name: "", args: [], desc: " message");
   String () => Intl.message("권한을 삭제하시겠습니까?", name: "", args: [], desc: " message");
   String () => Intl.message("최고 관리자는 1명 이하로 삭제 불가능 합니다.", name: "", args: [], desc: " message");

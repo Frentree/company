@@ -13,6 +13,10 @@ import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
+
 final word = Words();
 meetingMain({BuildContext context, MeetingModel meetingModel}) async {
   MeetingModel _meetingModel = meetingModel;
@@ -47,8 +51,8 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topRight: Radius.circular(20),
-        topLeft: Radius.circular(20),
+        topRight: Radius.circular(3.0.w),
+        topLeft: Radius.circular(3.0.w),
       ),
     ),
     context: context,
@@ -67,9 +71,9 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
             child: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  right: 20,
+                  top: 2.0.h,
+                  left: 5.0.w,
+                  right: 5.0.w,
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,13 +81,14 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                   Row(
                     children: [
                       Container(
-                        width: customWidth(context: context, widthSize: 0.25),
+                        width: 30.0.w,
                         child: Chip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorBlue,
                           label: Text(
                             word.meetingSchedule(),
                             style: customStyle(
-                              fontSize: 14,
+                              fontSize: 11.0.sp,
                               fontColor: mainColor,
                               fontWeightName: "Regular",
                             ),
@@ -91,14 +96,14 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: EdgeInsets.only(left: 3.0.w),
                       ),
                       Container(
-                        width: customWidth(context: context, widthSize: 0.5),
+                        width: 40.0.w,
                         child: TextField(
                           controller: _titleController,
                           style: customStyle(
-                            fontSize: 14,
+                            fontSize: 13.0.sp,
                             fontColor: mainColor,
                             fontWeightName: "Regular",
                           ),
@@ -109,19 +114,21 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: EdgeInsets.only(left: 3.0.w),
                       ),
                       Container(
-                        width: customWidth(context: context, widthSize: 0.1),
+                        width: 10.0.w,
                         child: CircleAvatar(
-                          radius: 20,
+                          radius: 5.0.w,
                           backgroundColor: _titleController.text == ""
                               ? disableUploadBtn
                               : blueColor,
                           child: IconButton(
+                              padding: EdgeInsets.zero,
                               icon: Icon(
                                 Icons.arrow_upward,
                                 color: whiteColor,
+                                size: 6.0.w,
                               ),
                               onPressed: _titleController.text == ""
                                   ? () {
@@ -134,6 +141,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                                   name: meetingModel.name,
                                   type: meetingModel.type,
                                   title: _titleController.text,
+                                  contents: _contentController.text,
                                   createDate: meetingModel.createDate,
                                   lastModDate:
                                   _format.dateTimeToTimeStamp(
@@ -153,6 +161,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                                   name: _loginUser.name,
                                   type: "미팅",
                                   title: _titleController.text,
+                                  contents: _contentController.text,
                                   createDate: _format.dateTimeToTimeStamp(
                                       DateTime.now()),
                                   lastModDate:
@@ -189,21 +198,22 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                       ),
                     ],
                   ),
-                  Padding(padding: EdgeInsets.only(top: 10)),
+                  Padding(padding: EdgeInsets.only(top: 2.0.h,)),
                   Row(
                     children: [
                       Container(
-                        width: customWidth(context: context, widthSize: 0.25),
+                        width: 30.0.w,
                         child: Row(
                           children: [
                             Icon(
                               Icons.calendar_today,
+                              size: 6.0.w,
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(padding: EdgeInsets.only(left: 3.0.w),),
                             Text(
                               word.dateTime(),
                               style: customStyle(
-                                fontSize: 14,
+                                fontSize: 12.0.sp,
                                 fontColor: mainColor,
                                 fontWeightName: 'Regular',
                               ),
@@ -212,14 +222,14 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                         ),
                       ),
                       Container(
-                        width: customWidth(context: context, widthSize: 0.6),
+                        width: 55.0.w,
                         child: InkWell(
                           child: Text(
                             _format.dateToString(startTime),
                             style: customStyle(
-                              fontSize: 13,
+                              fontSize: 12.0.sp,
                               fontColor: mainColor,
-                              fontWeightName: 'Bold',
+                              fontWeightName: 'Regular',
                             ),
                           ),
                           onTap: () async {
@@ -235,21 +245,22 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                       ),
                     ],
                   ),
-                  Padding(padding: EdgeInsets.only(top: 10)),
+                  Padding(padding: EdgeInsets.only(top: 2.0.h,)),
                   Row(
                     children: [
                       Container(
-                        width: customWidth(context: context, widthSize: 0.25),
+                        width: 30.0.w,
                         child: Row(
                           children: [
                             Icon(
                               Icons.supervisor_account,
+                              size: 6.0.w,
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(padding: EdgeInsets.only(left: 3.0.w),),
                             Text(
                               word.participant(),
                               style: customStyle(
-                                fontSize: 14,
+                                fontSize: 12.0.sp,
                                 fontColor: mainColor,
                                 fontWeightName: 'Regular',
                               ),
@@ -258,10 +269,11 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                         ),
                       ),
                       Container(
-                          height: 35,
-                          width: customWidth(context: context, widthSize: 0.6),
+                          width: 55.0.w,
+                          height: 5.0.h,
                           child: attendees == null
                               ? IconButton(
+                            padding: EdgeInsets.zero,
                                   icon: Icon(Icons.person_add_alt_1),
                                   onPressed: () async {
                                     Map<String, String> temp =
@@ -281,22 +293,20 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                                     String key =
                                         attendees.keys.elementAt(index);
                                     return Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: EdgeInsets.all(1.0.w),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             border: Border.all(
                                                 color: textFieldUnderLine),
                                             borderRadius:
-                                                BorderRadius.circular(8)),
-                                        width: customWidth(
-                                            context: context, widthSize: 0.1),
-                                        height: customHeight(
-                                            context: context, heightSize: 0.03),
+                                                BorderRadius.circular(2.0.w)),
+                                        width: 10.0.w,
+                                        height:3.0.h,
                                         alignment: Alignment.center,
                                         child: Text(
                                           attendees[key],
                                           style: customStyle(
-                                              fontSize: 12,
+                                              fontSize: 10.0.sp,
                                               fontWeightName: "Regular",
                                               fontColor: mainColor),
                                         ),
@@ -305,12 +315,13 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                                   })),
                     ],
                   ),
+                  Padding(padding: EdgeInsets.only(top: 2.0.h,)),
                   Container(
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 25,
-                          height: 30,
+                          width: 7.0.w,
+                          height: 3.0.h,
                           child: Checkbox(
                             value: isChk,
                             onChanged: (value) {
@@ -320,11 +331,11 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 3.0.w),),
                         Text(
                           word.addItem(),
                           style: customStyle(
-                            fontSize: 14,
+                            fontSize: 12.0.sp,
                             fontColor: mainColor,
                             fontWeightName: 'Regular',
                           ),
@@ -337,17 +348,18 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                     child: Row(
                       children: [
                         Container(
-                          width: customWidth(context: context, widthSize: 0.25),
+                          width: 30.0.w,
                           child: Row(
                             children: [
                               Icon(
                                 Icons.list,
+                                size: 6.0.w,
                               ),
-                              Padding(padding: EdgeInsets.only(left: 10)),
+                              Padding(padding: EdgeInsets.only(left: 3.0.w),),
                               Text(
                                 word.content(),
                                 style: customStyle(
-                                  fontSize: 14,
+                                  fontSize: 12.0.sp,
                                   fontColor: mainColor,
                                   fontWeightName: 'Regular',
                                 ),
@@ -356,15 +368,15 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                           ),
                         ),
                         Container(
-                          width: customWidth(context: context, widthSize: 0.6),
+                          width: 55.0.w,
                           child: TextField(
                             maxLines: null,
                             controller: _contentController,
                             keyboardType: TextInputType.multiline,
                             style: customStyle(
-                              fontSize: 13,
+                              fontSize: 12.0.sp,
                               fontColor: mainColor,
-                              fontWeightName: 'Bold',
+                              fontWeightName: 'Regular',
                             ),
                             decoration: InputDecoration(
                               hintText: word.contentCon(),
@@ -375,7 +387,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(bottom: 20)),
+                  Padding(padding: EdgeInsets.only(bottom: 4.0.h)),
                 ],
               ),
             ),

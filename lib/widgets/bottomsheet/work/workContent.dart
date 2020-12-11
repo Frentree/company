@@ -12,6 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:sizer/sizer.dart';
 
 final word = Words();
 
@@ -43,8 +46,8 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topRight: Radius.circular(20),
-        topLeft: Radius.circular(20),
+        topRight: Radius.circular(3.0.w),
+        topLeft: Radius.circular(3.0.w),
       ),
     ),
     context: context,
@@ -62,9 +65,9 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
             child: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  right: 20,
+                  top: 2.0.h,
+                  left: 5.0.w,
+                  right: 5.0.w,
                   bottom: MediaQuery
                       .of(context)
                       .viewInsets
@@ -75,13 +78,14 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                   Row(
                     children: [
                       Container(
-                        width: customWidth(context: context, widthSize: 0.25),
+                        width: 30.0.w,
                         child: Chip(
+                          padding: EdgeInsets.zero,
                           backgroundColor: chipColorBlue,
                           label: Text(
                             type == 1 ? word.workInSchedule() : word.workOutSchedule(),
                             style: customStyle(
-                              fontSize: 14,
+                              fontSize: 11.0.sp,
                               fontColor: mainColor,
                               fontWeightName: "Regular",
                             ),
@@ -89,14 +93,14 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: EdgeInsets.only(left: 3.0.w),
                       ),
                       Container(
-                        width: customWidth(context: context, widthSize: 0.5),
+                        width: 40.0.w,
                         child: TextField(
                           controller: _titleController,
                           style: customStyle(
-                            fontSize: 14,
+                            fontSize: 13.0.sp,
                             fontColor: mainColor,
                             fontWeightName: "Regular",
                           ),
@@ -107,19 +111,22 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: EdgeInsets.only(left: 3.0.w),
                       ),
                       Container(
-                        width: customWidth(context: context, widthSize: 0.1),
+                        width: 10.0.w,
+                        alignment: Alignment.center,
                         child: CircleAvatar(
-                          radius: 20,
+                          radius: 5.0.w,
                           backgroundColor: _titleController.text == ""
                               ? disableUploadBtn
                               : blueColor,
                           child: IconButton(
+                            padding: EdgeInsets.zero,
                               icon: Icon(
                                 Icons.arrow_upward,
                                 color: whiteColor,
+                                size: 6.0.w,
                               ),
                               onPressed: _titleController.text == ""
                                   ? () {
@@ -195,21 +202,22 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                       ),
                     ],
                   ),
-                  Padding(padding: EdgeInsets.only(top: 10)),
+                  Padding(padding: EdgeInsets.only(top: 2.0.h,)),
                   Row(
                     children: [
                       Container(
-                        width: customWidth(context: context, widthSize: 0.25),
+                        width: 30.0.w,
                         child: Row(
                           children: [
                             Icon(
                               Icons.calendar_today,
+                              size: 6.0.w,
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(padding: EdgeInsets.only(left: 3.0.w),),
                             Text(
                               word.dateTime(),
                               style: customStyle(
-                                fontSize: 14,
+                                fontSize: 12.0.sp,
                                 fontColor: mainColor,
                                 fontWeightName: 'Regular',
                               ),
@@ -218,14 +226,14 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                         ),
                       ),
                       Container(
-                        width: customWidth(context: context, widthSize: 0.6),
+                        width: 55.0.w,
                         child: InkWell(
                           child: Text(
                             _format.dateToString(startTime),
                             style: customStyle(
-                              fontSize: 13,
+                              fontSize: 12.0.sp,
                               fontColor: mainColor,
-                              fontWeightName: 'Bold',
+                              fontWeightName: 'Regular',
                             ),
                           ),
                           onTap: () async {
@@ -241,23 +249,24 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                       ),
                     ],
                   ),
-                  Padding(padding: EdgeInsets.only(top: 10)),
+                  Padding(padding: EdgeInsets.only(top: 2.0.h,)),
                   Visibility(
                     visible: (type == 2),
                     child: Row(
                       children: [
                         Container(
-                          width: customWidth(context: context, widthSize: 0.25),
+                          width: 30.0.w,
                           child: Row(
                             children: [
                               Icon(
                                 Icons.location_on_outlined,
+                                size: 6.0.w,
                               ),
-                              Padding(padding: EdgeInsets.only(left: 10)),
+                              Padding(padding: EdgeInsets.only(left: 3.0.w),),
                               Text(
                                 word.outLocation(),
                                 style: customStyle(
-                                  fontSize: 14,
+                                  fontSize: 12.0.sp,
                                   fontColor: mainColor,
                                   fontWeightName: 'Regular',
                                 ),
@@ -266,12 +275,11 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                           ),
                         ),
                         Container(
-                            width:
-                            customWidth(context: context, widthSize: 0.6),
+                            width: 55.0.w,
                             child: TextField(
                               controller: _locationController,
                               style: customStyle(
-                                fontSize: 14,
+                                fontSize: 12.0.sp,
                                 fontColor: mainColor,
                                 fontWeightName: 'Regular',
                               ),
@@ -285,14 +293,14 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                   ),
                   Visibility(
                     visible: (type == 2),
-                    child: Padding(padding: EdgeInsets.only(top: 10)),
+                    child: Padding(padding: EdgeInsets.only(top: 2.0.h,)),
                   ),
                   Container(
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 25,
-                          height: 30,
+                          width: 7.0.w,
+                          height: 3.0.h,
                           child: Checkbox(
                             value: isChk,
                             onChanged: (value) {
@@ -302,11 +310,11 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 3.0.w),),
                         Text(
                           word.addItem(),
                           style: customStyle(
-                            fontSize: 14,
+                            fontSize: 12.0.sp,
                             fontColor: mainColor,
                             fontWeightName: 'Regular',
                           ),
@@ -319,17 +327,18 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                     child: Row(
                       children: [
                         Container(
-                          width: customWidth(context: context, widthSize: 0.25),
+                          width: 30.0.w,
                           child: Row(
                             children: [
                               Icon(
                                 Icons.list,
+                                size: 6.0.w,
                               ),
-                              Padding(padding: EdgeInsets.only(left: 10)),
+                              Padding(padding: EdgeInsets.only(left: 3.0.w),),
                               Text(
                                 word.content(),
                                 style: customStyle(
-                                  fontSize: 14,
+                                  fontSize: 12.0.sp,
                                   fontColor: mainColor,
                                   fontWeightName: 'Regular',
                                 ),
@@ -338,15 +347,15 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                           ),
                         ),
                         Container(
-                          width: customWidth(context: context, widthSize: 0.6),
+                          width: 55.0.w,
                           child: TextField(
                             maxLines: null,
                             controller: _contentController,
                             keyboardType: TextInputType.multiline,
                             style: customStyle(
-                              fontSize: 13,
+                              fontSize: 12.0.sp,
                               fontColor: mainColor,
-                              fontWeightName: 'Bold',
+                              fontWeightName: 'Regular',
                             ),
                             decoration: InputDecoration(
                               hintText: word.contentCon(),
@@ -357,7 +366,7 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(bottom: 20)),
+                  Padding(padding: EdgeInsets.only(bottom: 4.0.h)),
                 ],
               ),
             ),
