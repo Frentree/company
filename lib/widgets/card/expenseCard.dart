@@ -64,7 +64,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      model.contentType == "석시비" ? word.dinner(): word.lunch(),
+                      model.contentType == "석식비" ? word.dinner(): model.contentType == "중식비" ? word.lunch() : model.contentType == "교통비" ? word.transportation() : word.etc(),
                       style: customStyle(
                           fontSize: 11.0.sp,
                           fontWeightName: "Regular",

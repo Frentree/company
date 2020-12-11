@@ -192,7 +192,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "userGradeManager": "Manage User Permissions",
+  "userGradeManager": "User Permissions",
   "@userGradeManager": {
     "description": "userGradeManager message",
     "type": "text",
@@ -246,7 +246,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "serviceCenter": "ServiceCenter",
+  "serviceCenter": "Content",
   "@serviceCenter": {
     "description": "serviceCenter message",
     "type": "text",
@@ -757,7 +757,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "deleteUser": "Delete User(a retired employee)",
+  "deleteUser": "Delete User",
   "@deleteUser": {
     "description": "Delete User(a retired employee) message",
     "type": "text",
