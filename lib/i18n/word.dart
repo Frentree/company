@@ -240,28 +240,31 @@ class Words {
   String contentCon() => Intl.message("내용을 입력하세요", name: "contentCon", args: [], desc: "Please enter the content message");
 /* 일정 종료 */
 
-/* 사용자 추가/ 삭제 */
+/* 사용자 추가 & 삭제 */
   String requestUser() => Intl.message("사용자 추가 요청", name: "requestUser", args: [], desc: "Request Add User message");
   String count() => Intl.message("건", name: "count", args: [], desc: "count message");
   String noDataApprove() => Intl.message("승인할 데이터가 없습니다", name: "noDataApprove", args: [], desc: "No data to approve. message");
-  String deleteUser() => Intl.message("사용자 삭제(퇴사자)", name: "", args: [], desc: "Delete User(a retired employee) message");
+  String deleteUser() => Intl.message("사용자 삭제(퇴사자)", name: "deleteUser", args: [], desc: "Delete User(a retired employee) message");
   String deleteUserCon() => Intl.message("삭제할 사용자 이름을 입력하세요", name: "deleteUserCon", args: [], desc: "Please enter the user name you want to message");
   String forAddUser() => Intl.message("님의 사용자 추가 요청", name: "forAddUser", args: [], desc: "'s Request for Add User message");
   String requestDate() => Intl.message("요청일자", name: "requestDate", args: [], desc: "Request date message");
   String noSearch() => Intl.message("검색 결과 없음", name: "noSearch", args: [], desc: "No search results. message");
-  String resignationProcess() => Intl.message("님의 퇴사 처리", name: "", args: [], desc: "'s resignation process message");
+  String resignationProcess() => Intl.message("님의 퇴사 처리", name: "resignationProcess", args: [], desc: "'s resignation process message");
   String accept() => Intl.message("승낙", name: "accept", args: [], desc: "Accept message");
   String refusal() => Intl.message("거절", name: "refusal", args: [], desc: "refusal message");
 /* 사용자 추가/ 삭제 종료 */
 
 /* 권한 */
-  String () => Intl.message("권한명 수정하기", name: "", args: [], desc: " message");
-  /*String () => Intl.message("권한 삭제하기", name: "", args: [], desc: " message");
-  String () => Intl.message("권한을 삭제하시겠습니까?", name: "", args: [], desc: " message");
-  String () => Intl.message("최고 관리자는 1명 이하로 삭제 불가능 합니다.", name: "", args: [], desc: " message");
-  String () => Intl.message("권한 상세 설정", name: "", args: [], desc: " message");
-  String () => Intl.message("사용자 추가하기", name: "", args: [], desc: " message");
-  String () => Intl.message("사용자 삭제하기", name: "", args: [], desc: " message");
-  String () => Intl.message("권한 추가", name: "", args: [], desc: " message");*/
+  String gradeNameUpdate() => Intl.message("권한명 수정하기", name: "gradeNameUpdate", args: [], desc: "Modify Privilege Name message");
+  String deleteGrade() => Intl.message("권한 삭제하기", name: "deleteGrade", args: [], desc: "Delete Permissions message");
+  String deleteGradeCon() => Intl.message("권한을 삭제하시겠습니까?", name: "deleteGradeCon", args: [], desc: "Are you sure you want to delete the permissions? message");
+  String superAdminCon() => Intl.message("최고 관리자는 1명 이하로 삭제 불가능 합니다.", name: "superAdminCon", args: [], desc: "Super Administrator cannot be deleted with less than 1 person message");
+  String permissionDetails() => Intl.message("권한 상세 설명", name: "permissionDetails", args: [], desc: "Privilege Detail Description message");
+  String addUser() => Intl.message("사용자 추가하기", name: "addUser", args: [], desc: "Add User message");
+  String deleteUserPermission() => Intl.message("사용자 삭제하기", name: "deleteUserPermission", args: [], desc: "Delete User message");
+  String addPermission() => Intl.message("권한 추가", name: "addPermission", args: [], desc: "Add Permissions message");
+  String updateFail() => Intl.message("아직 구현되지 않은 기능입니다", name: "updateFail", args: [], desc: "Feature not yet implemented. message");
+  String updateMessage() => Intl.message("업데이트 예정", name: "updateMessage", args: [], desc: "Update scheduled message");
+  String buttonCon() => Intl.message("Cancel 버튼을 클릭하여 종료해주세요", name: "buttonCon", args: [], desc: "Please click the button to exit. message");
 /* 권한 종료 */
 }

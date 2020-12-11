@@ -372,7 +372,7 @@
          "type": "text",
          "placeholders": {}
        },
-       "meetingSchedule": "Meeting Schedule",
+       "meetingSchedule": "Meeting",
        "@meetingSchedule": {
          "description": "meetingSchedule message",
          "type": "text",
@@ -633,6 +633,241 @@
   "save": "Save",
   "@save": {
     "description": "save message",
+    "type": "text",
+    "placeholders": {}
+  },
+
+  "login": "Login",
+  "@login": {
+    "description": "Login message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Name message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "Password",
+  "@password": {
+    "description": "password message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "passwordConfirm": "Password Confirm",
+  "@passwordConfirm": {
+    "description": "passwordConfirm message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "signIn message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "sign up message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthDay": "BirthDay",
+  "@birthDay": {
+    "description": "birthDay message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "transportation": "Transportation fee",
+  "@transportation": {
+    "description": "Transportation fee message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "etc": "Etc",
+  "@etc": {
+    "description": "Etc message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseTitle": "Please enter a title",
+  "@pleaseTitle": {
+    "description": "Please enter a title message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dateTime": "Date",
+  "@dateTime": {
+    "description": "date and time message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addItem": "Additional Items",
+  "@addItem": {
+    "description": "Additional Items message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "outLocation": "Location",
+  "@outLocation": {
+    "description": "out-of-office location message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "outCon": "Please enter your outside office",
+  "@outCon": {
+    "description": "Please enter your outside office message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "participant": "Participant",
+  "@participant": {
+    "description": "participant message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "content": "Content",
+  "@content": {
+    "description": "content message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contentCon": "Please enter the content",
+  "@contentCon": {
+    "description": "Please enter the content message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestUser": "Request Add User",
+  "@requestUser": {
+    "description": "Request Add User message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "count": "Count",
+  "@count": {
+    "description": "count message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noDataApprove": "No data to approve",
+  "@noDataApprove": {
+    "description": "No data to approve. message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteUser": "Delete User(a retired employee)",
+  "@deleteUser": {
+    "description": "Delete User(a retired employee) message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteUserCon": "Please enter the user name you want to",
+  "@deleteUserCon": {
+    "description": "Please enter the user name you want to message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "forAddUser": "'s Request for Add User",
+  "@forAddUser": {
+    "description": "'s Request for Add User message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestDate": "Request date",
+  "@requestDate": {
+    "description": "Request date message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noSearch": "No search results",
+  "@noSearch": {
+    "description": "No search results. message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resignationProcess": "'s resignation process",
+  "@resignationProcess": {
+    "description": "'s resignation process message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "accept": "Accept",
+  "@accept": {
+    "description": "Accept message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "refusal": "Refusal",
+  "@refusal": {
+    "description": "refusal message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gradeNameUpdate": "Modify Privilege Name",
+  "@gradeNameUpdate": {
+    "description": "Modify Privilege Name message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteGrade": "Delete Permissions",
+  "@deleteGrade": {
+    "description": "Delete Permissions message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteGradeCon": "Are you sure you want to delete the permissions?",
+  "@deleteGradeCon": {
+    "description": "Are you sure you want to delete the permissions? message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "superAdminCon": "Super Administrator cannot be deleted with less than 1 person",
+  "@superAdminCon": {
+    "description": "Super Administrator cannot be deleted with less than 1 person message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "permissionDetails": "Privilege Detail Description",
+  "@permissionDetails": {
+    "description": "Privilege Detail Description message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addUser": "Add User",
+  "@addUser": {
+    "description": "Add User message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteUserPermission": "Delete User",
+  "@deleteUserPermission": {
+    "description": "Delete User message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPermission": "Add Permissions",
+  "@addPermission": {
+    "description": "Add Permissions message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updateFail": "Feature not yet implemented",
+  "@updateFail": {
+    "description": "Feature not yet implemented. message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updateMessage": "Update scheduled",
+  "@updateMessage": {
+    "description": "Update scheduled message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "buttonCon": "Please click the Cencel button to exit",
+  "@buttonCon": {
+    "description": "Please click the button to exit. message",
     "type": "text",
     "placeholders": {}
   }

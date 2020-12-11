@@ -1,4 +1,7 @@
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
+
+final word = Words();
 
 NotImplementedFunction(BuildContext context) {
   return showDialog(
@@ -6,11 +9,11 @@ NotImplementedFunction(BuildContext context) {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-            title: Text("업데이트 예정"),
+            title: Text(word.updateMessage()),
             content: SingleChildScrollView(
                 child: ListBody(children: <Widget>[
-                  Text("아직 구현되지 않은 기능입니다."),
-                  Text("Cancel 버튼을 클릭하여 종료해주세요"),
+                  Text(word.updateFail()),
+                  Text(word.buttonCon()),
                 ])),
             actions: <Widget>[
               FlatButton(
@@ -29,11 +32,11 @@ NotImplementedScreen(BuildContext context) {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-            title: Text("업데이트 예정"),
+            title: Text(word.updateMessage()),
             content: SingleChildScrollView(
                 child: ListBody(children: <Widget>[
-                  Text("아직 구현되지 않은 화면입니다."),
-                  Text("Cancel 버튼을 클릭하여 종료해주세요"),
+                  Text(word.updateFail()),
+                  Text(word.buttonCon()),
                 ])),
             actions: <Widget>[
               FlatButton(
