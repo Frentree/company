@@ -8,10 +8,12 @@ import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workNotice.dart';
 import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 
+final word = Words();
+
 MainBottomSheet({BuildContext context, String companyCode, String mail}) {
-  // 사용자 권한
   bool result = false;
   void _workBottomMove(int type) async {
     switch (type) {
@@ -50,7 +52,6 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
     }
   }
 
-  // 관리자 권한이 아닐 경우
   showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -95,7 +96,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "추가할 일정을 선택하세요",
+                                  word.addSheduleSelect(),
                                   style: customStyle(
                                       fontSize: 16,
                                       fontWeightName: 'Regular',
@@ -138,7 +139,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         ActionChip(
                           backgroundColor: chipColorBlue,
                           label: Text(
-                            "내근 일정",
+                            word.workInSchedule(),
                             style: customStyle(
                                 fontSize: 14,
                                 fontWeightName: 'Regular',
@@ -151,7 +152,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         ActionChip(
                           backgroundColor: chipColorBlue,
                           label: Text(
-                            "외근 일정",
+                            word.workOutSchedule(),
                             style: customStyle(
                                 fontSize: 14,
                                 fontWeightName: 'Regular',
@@ -164,7 +165,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         ActionChip(
                           backgroundColor: chipColorBlue,
                           label: Text(
-                            "회의 일정",
+                            word.meetingSchedule(),
                             style: customStyle(
                                 fontSize: 14,
                                 fontWeightName: 'Regular',
@@ -229,7 +230,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         ActionChip(
                           backgroundColor: chipColorRed,
                           label: Text(
-                            "경비 품의",
+                            word.settlement(),
                             style: customStyle(
                                 fontSize: 14,
                                 fontWeightName: 'Regular',
@@ -259,7 +260,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         if (!_isStaff) ActionChip(
                           backgroundColor: chipColorGreen,
                           label: Text(
-                            "급여 명세",
+                            word.payroll(),
                             style: customStyle(
                                 fontSize: 14,
                                 fontWeightName: 'Regular',
@@ -274,7 +275,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         if (!_isStaff) ActionChip(
                           backgroundColor: chipColorGreen,
                           label: Text(
-                            "공지 사항",
+                            word.notice(),
                             style: customStyle(
                                 fontSize: 14,
                                 fontWeightName: 'Regular',

@@ -129,6 +129,76 @@ class Words {
 
   String colleagueTimeSchedule() =>
       Intl.message("이 시각 동료 근무 현황 보기", name: "colleagueTimeSchedule", args: [], desc: "Current Time Colleague Schedule message");
-
 /* 스케줄 종료 */
+
+/* bottom Sheet 타이틀 */
+  String addSheduleSelect() => Intl.message("추가할 일정을 선택하세요", name: "addSheduleSelect", args: [], desc: "addSheduleSelect message");
+
+  String workInSchedule() => Intl.message("내근 일정", name: "workInSchedule", args: [], desc: "workInSchedule message");
+
+  String workOutSchedule() => Intl.message("외근 일정", name: "workOutSchedule", args: [], desc: "workOutSchedule message");
+
+  String meetingSchedule() => Intl.message("미팅 일정", name: "meetingSchedule", args: [], desc: "meetingSchedule message");
+
+  String settlement() => Intl.message("경비 정산", name: "settlement", args: [], desc: "settlement message");
+
+  String payroll() => Intl.message("급여 명세", name: "payroll", args: [], desc: "payroll message");
+
+  String notice() => Intl.message("공지사항", name: "notice", args: [], desc: "Notice message");
+
+  String copySchedule() => Intl.message("최근 일정에서 복사", name: "copySchedule", args: [], desc: "Copy from Recent Schedule message");
+
+  String workRequest() => Intl.message("업무 요청", name: "workRequest", args: [], desc: "workRequest message");
+
+  String purchaseItem() => Intl.message("구매 품의", name: "purchaseItem", args: [], desc: "purchaseItem message");
+  //String () => Intl.message("", name: "", args: [], desc: " message");
+/* bottom Sheet 타이틀 종료 */
+
+/* 알림 */
+  String alarm() => Intl.message("알림", name: "alarm", args: [], desc: "alarm message");
+
+  String myApproval() => Intl.message("내 결재함", name: "myApproval", args: [], desc: "My approval message");
+
+  // 내 결재함
+  //String () => Intl.message("", name: "", args: [], desc: " message");
+
+  // 공지사항
+  String noticeDelete() => Intl.message("공지사항 삭제", name: "noticeDelete", args: [], desc: "noticeDelete message");
+
+  String noticeDeleteCon() => Intl.message("공지사항 내용을 지우시겠습니까?", name: "noticeDeleteCon", args: [], desc: "noticeDeleteCon message");
+
+  String moreDetails() => Intl.message("더보기", name: "moreDetails", args: [], desc: "more details message");
+
+  String comments() => Intl.message("댓글", name: "comments", args: [], desc: "comments message");
+
+  String enterComments() => Intl.message("댓글달기", name: "enterComments", args: [], desc: "Enter Comments message");
+
+  String commentsDeleteCon() => Intl.message("댓글을 정말로 지우시겠습니까?", name: "commentsDeleteCon", args: [], desc: "commentsDeleteCon message");
+
+  String commentsCountHeadCon() => Intl.message("댓글이", name: "commentsCountHeadCon", args: [], desc: "commentsCountHeadCon message");
+
+  String commentsCountTailCon() => Intl.message("개가 있습니다", name: "commentsCountTailCon", args: [], desc: "commentsCountTailCon message");
+
+  String cencel() => Intl.message("취소", name: "cencel", args: [], desc: "cencel message");
+
+  String commentsTo() => Intl.message("님에게 댓글 입력중입니다", name: "commentsTo", args: [], desc: "Entering Comments To message");
+  String commnetsUpate() => Intl.message("댓글 수정중입니다", name: "commnetsUpate", args: [], desc: "commnetUpate message");
+  String commnetsInput() => Intl.message("댓글을 입력하세요", name: "commnetsInput", args: [], desc: "commnetsInput message");
+/* 알림 종료 */
+
+/* 날짜 포맷 */
+  String Mon() => Intl.message("월", name: "Mon", args: [], desc: "Mon message");
+  String Tue() => Intl.message("화", name: "Tue", args: [], desc: "Tue message");
+  String Wed() => Intl.message("수", name: "Wed", args: [], desc: "Wed message");
+  String Thu() => Intl.message("목", name: "Thu", args: [], desc: "Thu message");
+  String Fri() => Intl.message("금", name: "Fri", args: [], desc: "Fri message");
+  String Sat() => Intl.message("토", name: "Sat", args: [], desc: "Sat message");
+  String Sun() => Intl.message("일", name: "Sun", args: [], desc: "Sun message");
+  String day() => Intl.message("일", name: "day", args: [], desc: "day message");
+  String week() => Intl.message("요일", name: "week", args: [], desc: "week message");
+  String hour() => Intl.message("시", name: "hour", args: [], desc: "hour message");
+  String minute() => Intl.message("분", name: "minute", args: [], desc: "minute message");
+  String second() => Intl.message("초", name: "second", args: [], desc: "second message");
+/* 날짜 포맷 종료 */
+
 }

@@ -353,5 +353,221 @@
       "description": "Current Time Colleague Schedule message",
       "type": "text",
       "placeholders": {}
-    }
+    },
+     "addSheduleSelect": "추가할 일정을 선택하세요",
+       "@addSheduleSelect": {
+         "description": "addSheduleSelect message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "workInSchedule": "내근 일정",
+       "@workInSchedule": {
+         "description": "workInSchedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "workOutSchedule": "외근 일정",
+       "@workOutSchedule": {
+         "description": "workOutSchedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "meetingSchedule": "미팅 일정",
+       "@meetingSchedule": {
+         "description": "meetingSchedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "settlement": "경비 정산",
+       "@settlement": {
+         "description": "settlement message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "payroll": "급여 명세",
+       "@payroll": {
+         "description": "payroll message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "notice": "공지사항",
+       "@notice": {
+         "description": "Notice message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "copySchedule": "최근 일정에서 복사",
+       "@copySchedule": {
+         "description": "Copy from Recent Schedule message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "workRequest": "업무 요청",
+       "@workRequest": {
+         "description": "workRequest message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "purchaseItem": "구매 품의",
+       "@purchaseItem": {
+         "description": "purchaseItem message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "alarm": "알림",
+       "@alarm": {
+         "description": "alarm message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "myApproval": "내 결재함",
+       "@myApproval": {
+         "description": "My approval message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "noticeDelete": "공지사항 삭제",
+       "@noticeDelete": {
+         "description": "noticeDelete message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "noticeDeleteCon": "공지사항 내용을 지우시겠습니까?",
+       "@noticeDeleteCon": {
+         "description": "noticeDeleteCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "moreDetails": "더보기",
+       "@moreDetails": {
+         "description": "more details message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "comments": "댓글",
+       "@comments": {
+         "description": "comments message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "enterComments": "댓글달기",
+       "@enterComments": {
+         "description": "Enter Comments message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsDeleteCon": "댓글을 정말로 지우시겠습니까?",
+       "@commentsDeleteCon": {
+         "description": "commentsDeleteCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsCountHeadCon": "댓글이",
+       "@commentsCountHeadCon": {
+         "description": "commentsCountHeadCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsCountTailCon": "개가 있습니다",
+       "@commentsCountTailCon": {
+         "description": "commentsCountTailCon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "cencel": "취소",
+       "@cencel": {
+         "description": "cencel message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commentsTo": "님에게 댓글 입력중입니다",
+       "@commentsTo": {
+         "description": "Entering Comments To message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commnetsUpate": "댓글 수정중입니다",
+       "@commnetsUpate": {
+         "description": "commnetUpate message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "commnetsInput": "댓글을 입력하세요",
+       "@commnetsInput": {
+         "description": "commnetsInput message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Mon": "월",
+       "@Mon": {
+         "description": "Mon message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Tue": "화",
+       "@Tue": {
+         "description": "Tue message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Wed": "수",
+       "@Wed": {
+         "description": "Wed message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Thu": "목",
+       "@Thu": {
+         "description": "Thu message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Fri": "금",
+       "@Fri": {
+         "description": "Fri message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Sat": "토",
+       "@Sat": {
+         "description": "Sat message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "Sun": "일",
+       "@Sun": {
+         "description": "Sun message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "day": "일",
+       "@day": {
+         "description": "day message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "week": "요일",
+       "@week": {
+         "description": "week message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "hour": "시",
+       "@hour": {
+         "description": "hour message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "minute": "분",
+       "@minute": {
+         "description": "minute message",
+         "type": "text",
+         "placeholders": {}
+       },
+       "second": "초",
+       "@second": {
+         "description": "second message",
+         "type": "text",
+         "placeholders": {}
+       }
 }

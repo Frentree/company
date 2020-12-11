@@ -14,10 +14,10 @@ class Company {
   String companyName;
   String companyCode;
   String companyAddr;
-  String companyPhoneNumber;
-  String businessNumber;
-  String companyLogo;
-  String companyLink;
+  String companyPhone;
+  String companyNo;
+  String companyPhoto;
+  String companyWeb;
   List<dynamic> companySearch;
 
   Company({
@@ -25,10 +25,10 @@ class Company {
     this.companyName,
     this.companyCode,
     this.companyAddr,
-    this.companyPhoneNumber,
-    this.businessNumber,
-    this.companyLogo,
-    this.companyLink,
+    this.companyPhone,
+    this.companyNo,
+    this.companyPhoto,
+    this.companyWeb,
     this.companySearch,
   });
 
@@ -37,21 +37,20 @@ class Company {
         companyName = snapshot["companyName"] ?? "",
         companyCode = snapshot["companyCode"] ?? "",
         companyAddr = snapshot["companyAddr"] ?? "",
-        companyPhoneNumber = snapshot["companyPhoneNumber"] ?? "",
-        businessNumber = snapshot["businessNumber"] ?? "",
-        companyLogo = snapshot["companyLogo"] ?? "",
-        companyLink = snapshot["companyLink"] ?? "",
+        companyPhone = snapshot["companyPhone"] ?? "",
+        companyNo = snapshot["companyNo"] ?? "",
+        companyPhoto = snapshot["companyPhoto"] ?? "",
+        companyWeb = snapshot["companyWeb"] ?? "",
         companySearch = snapshot["companySearch"] ?? [];
-
   toJson() {
     return {
       "companyName": companyName,
       "companyCode": companyCode,
       "companyAddr": companyAddr,
-      "companyPhoneNumber": companyPhoneNumber,
-      "businessNumber": businessNumber,
-      "companyLogo": companyLogo,
-      "companyLink": companyLink,
+      "companyPhone": "",
+      "companyNo": "",
+      "companyPhoto": "",
+      "companyWeb": "",
       "companySearch": companySearch,
     };
   }
