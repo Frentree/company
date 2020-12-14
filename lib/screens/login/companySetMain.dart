@@ -12,7 +12,8 @@ import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
-
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 
 class CompanySetMainPage extends StatelessWidget {
   @override
@@ -34,11 +35,7 @@ class CompanySetMainPage extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Text(
                       APP_NAME,
-                      style: customStyle(
-                        fontWeightName: "Medium",
-                        fontColor: whiteColor,
-                        fontSize: appNameFontSize.sp,
-                      ),
+                      style: appNameStyle,
                     ),
                   ),
                   Container(
@@ -51,11 +48,7 @@ class CompanySetMainPage extends StatelessWidget {
                       padding: EdgeInsets.only(right: appVersionPaddingW.w),
                       child: Text(
                         "Release " + APP_VERSION,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: whiteColor,
-                          fontSize: appVersionFontSize.sp,
-                        ),
+                        style: appVersionStyle,
                       ),
                     ),
                   ),

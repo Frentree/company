@@ -1,4 +1,5 @@
 //Flutter
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:kopo/kopo.dart';
@@ -8,7 +9,7 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-
+import 'package:MyCompany/consts/screenSize/size.dart';
 
 //Repos
 import 'package:MyCompany/repos/login/loginRepository.dart';
@@ -72,7 +73,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
               style: customStyle(
                 fontWeightName: "Medium",
                 fontColor: blueColor,
-                fontSize: pageNameFontSize.sp,
+                fontSize: defaultSize.sp,
               ),
             ),
           ),
@@ -89,7 +90,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                     style: customStyle(
                       fontWeightName: "Regular",
                       fontColor: mainColor,
-                      fontSize: textFormFontSize.sp,
+                      fontSize: defaultSize.sp,
                     ),
                     decoration: InputDecoration(
                       isDense: true,
@@ -101,7 +102,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                       hintStyle: customStyle(
                         fontWeightName: "Regular",
                         fontColor: mainColor,
-                        fontSize: textFormFontSize.sp,
+                        fontSize: defaultSize.sp,
                       ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -125,7 +126,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                   style: customStyle(
                     fontWeightName: "Regular",
                     fontColor: mainColor,
-                    fontSize: textFormFontSize.sp,
+                    fontSize: defaultSize.sp,
                   ),
                   readOnly: true,
                   showCursor: false,
@@ -139,7 +140,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                     hintStyle: customStyle(
                       fontWeightName: "Regular",
                       fontColor: mainColor,
-                      fontSize: textFormFontSize.sp,
+                      fontSize: defaultSize.sp,
                     ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -171,7 +172,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                   style: customStyle(
                     fontWeightName: "Regular",
                     fontColor: mainColor,
-                    fontSize: textFormFontSize.sp,
+                    fontSize: defaultSize.sp,
                   ),
                   readOnly: _companyAddressCon.text == "",
                   showCursor: _companyAddressCon.text != "",
@@ -183,11 +184,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                       horizontal: textFormFontPaddingW.w,
                     ),
                     hintText: "상세 주소",
-                    hintStyle: customStyle(
-                      fontWeightName: "Regular",
-                      fontColor: mainColor,
-                      fontSize: textFormFontSize.sp,
-                    ),
+                    hintStyle: pageNameStyle,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: textFieldUnderLine,
@@ -216,7 +213,7 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                   style: customStyle(
                     fontWeightName: "Medium",
                     fontColor: whiteColor,
-                    fontSize: buttonFontSize.sp,
+                    fontSize: defaultSize.sp,
                   ),
                 ),
                 onPressed: _companyAddressCon.text != ""

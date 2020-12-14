@@ -33,6 +33,8 @@ import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:MyCompany/widgets/bottomsheet/work/attendance.dart';
+
 final word = Words();
 
 class HomeScheduleCoPage extends StatefulWidget {
@@ -148,7 +150,6 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
 
                   snapshot.data.documents.forEach((element){
                     var elementData = element.data();
-                    print(elementData["type"]);
                     if(elementData["type"] == "내근" || elementData["type"] == "외근"){
                       companyWorkData[elementData["createUid"]].add(element);
                     }
@@ -200,7 +201,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               ) : Expanded(
                 child: Column(
                   children: [
-                    /*InkWell(
+                    InkWell(
                       child: Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -224,9 +225,9 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                         ),
                       ),
                       onTap: (){
-                        NotImplementedFunction(context);
+                        attendance(context: context);
                       },
-                    ),*/
+                    ),
                     StreamBuilder(
                       stream: _repository.getSelectedDateCompanyWork(companyCode: _loginUser.companyCode, selectedDate: _format.dateTimeToTimeStamp(selectTime)),
                       builder: (BuildContext context, AsyncSnapshot snapshot){

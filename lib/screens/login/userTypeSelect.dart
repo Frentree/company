@@ -9,8 +9,8 @@ import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-
-
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 //Provider
 import 'package:provider/provider.dart';
 
@@ -27,11 +27,7 @@ class UserTypeSelectPage extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               "사용자 유형 선택",
-              style: customStyle(
-                fontWeightName: "Medium",
-                fontColor: blueColor,
-                fontSize: pageNameFontSize.sp,
-              ),
+              style: pageNameStyle,
             ),
           ),
           Container(
@@ -54,7 +50,7 @@ class UserTypeSelectPage extends StatelessWidget {
                           style: customStyle(
                             fontWeightName: "Regular",
                             fontColor: grayColor,
-                            fontSize: 13.0.sp,
+                            fontSize: defaultSize.sp,
                           ),
                         ),
                       ),
@@ -76,7 +72,7 @@ class UserTypeSelectPage extends StatelessWidget {
                               style: customStyle(
                                 fontWeightName: "Medium",
                                 fontColor: whiteColor,
-                                fontSize: buttonFontSize.sp,
+                                fontSize: defaultSize.sp,
                               ),
                             ),
                             onPressed: () {
@@ -101,7 +97,7 @@ class UserTypeSelectPage extends StatelessWidget {
                           style: customStyle(
                             fontWeightName: "Regular",
                             fontColor: grayColor,
-                            fontSize: 13.0.sp,
+                            fontSize: defaultSize.sp,
                           ),
                         ),
                       ),
@@ -125,7 +121,7 @@ class UserTypeSelectPage extends StatelessWidget {
                             style: customStyle(
                               fontWeightName: "Medium",
                               fontColor: blueColor,
-                              fontSize: buttonFontSize.sp,
+                              fontSize: defaultSize.sp,
                             ),
                           ),
                           onPressed: () {

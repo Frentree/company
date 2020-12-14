@@ -9,7 +9,8 @@ import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
-
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 //Screen
 import 'package:MyCompany/screens/login/login.dart';
 import 'package:MyCompany/screens/login/signUp.dart';
@@ -34,11 +35,7 @@ class SignUpMainPage extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Text(
                       APP_NAME,
-                      style: customStyle(
-                        fontWeightName: "Medium",
-                        fontColor: whiteColor,
-                        fontSize: appNameFontSize.sp,
-                      ),
+                      style: appNameStyle,
                     ),
                   ),
                   Container(
@@ -51,11 +48,7 @@ class SignUpMainPage extends StatelessWidget {
                       padding: EdgeInsets.only(right: appVersionPaddingW.w),
                       child: Text(
                         "Release " + APP_VERSION,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: whiteColor,
-                          fontSize: appVersionFontSize.sp,
-                        ),
+                        style: appVersionStyle,
                       ),
                     ),
                   ),

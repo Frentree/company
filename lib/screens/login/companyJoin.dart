@@ -1,4 +1,5 @@
 //Flutter
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/screens/login/companySearch.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -8,6 +9,7 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
 //Repos
 import 'package:MyCompany/repos/login/loginRepository.dart';
 
@@ -55,7 +57,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
               style: customStyle(
                 fontWeightName: "Medium",
                 fontColor: blueColor,
-                fontSize: pageNameFontSize.sp,
+                fontSize: defaultSize.sp,
               ),
             ),
           ),
@@ -70,7 +72,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
                   style: customStyle(
                     fontWeightName: "Regular",
                     fontColor: mainColor,
-                    fontSize: textFormFontSize.sp,
+                    fontSize: defaultSize.sp,
                   ),
                   readOnly: true,
                   showCursor: false,
@@ -84,7 +86,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
                     hintStyle: customStyle(
                       fontWeightName: "Regular",
                       fontColor: mainColor,
-                      fontSize: textFormFontSize.sp,
+                      fontSize: defaultSize.sp,
                     ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -125,11 +127,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
                 elevation: 0.0,
                 child: Text(
                   "회사 가입",
-                  style: customStyle(
-                    fontWeightName: "Medium",
-                    fontColor: whiteColor,
-                    fontSize: buttonFontSize.sp,
-                  ),
+                  style: pageNameStyle,
                 ),
                 onPressed: _companyNameCon.text != "" ? () async {
                   _loginRepository.joinCompanyUser(

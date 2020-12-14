@@ -11,6 +11,8 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 //Widget
 import 'package:flutter/rendering.dart';
 
@@ -121,11 +123,7 @@ class SignUpPageState extends State<SignUpPage> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   word.signUp(),
-                  style: customStyle(
-                    fontWeightName: "Medium",
-                    fontColor: blueColor,
-                    fontSize: pageNameFontSize.sp,
-                  ),
+                  style: pageNameStyle,
                 ),
               ),
               Container(
@@ -141,7 +139,7 @@ class SignUpPageState extends State<SignUpPage> {
                         style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
+                          fontSize: defaultSize.sp,
                         ),
                         decoration: InputDecoration(
                           isDense: true,
@@ -153,7 +151,7 @@ class SignUpPageState extends State<SignUpPage> {
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
-                            fontSize: textFormFontSize.sp,
+                            fontSize: defaultSize.sp,
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -187,7 +185,7 @@ class SignUpPageState extends State<SignUpPage> {
                         style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
+                          fontSize: defaultSize.sp,
                         ),
                         decoration: InputDecoration(
                           isDense: true,
@@ -199,7 +197,7 @@ class SignUpPageState extends State<SignUpPage> {
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
-                            fontSize: textFormFontSize.sp,
+                            fontSize: defaultSize.sp,
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -233,7 +231,7 @@ class SignUpPageState extends State<SignUpPage> {
                         style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
+                          fontSize: defaultSize.sp,
                         ),
                         decoration: InputDecoration(
                           isDense: true,
@@ -245,7 +243,7 @@ class SignUpPageState extends State<SignUpPage> {
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
-                            fontSize: textFormFontSize.sp,
+                            fontSize: defaultSize.sp,
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -279,7 +277,7 @@ class SignUpPageState extends State<SignUpPage> {
                         style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
+                          fontSize: defaultSize.sp,
                         ),
                         decoration: InputDecoration(
                           isDense: true,
@@ -291,7 +289,7 @@ class SignUpPageState extends State<SignUpPage> {
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
-                            fontSize: textFormFontSize.sp,
+                            fontSize: defaultSize.sp,
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -325,7 +323,7 @@ class SignUpPageState extends State<SignUpPage> {
                         style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
+                          fontSize: defaultSize.sp,
                         ),
                         decoration: InputDecoration(
                           isDense: true,
@@ -337,7 +335,7 @@ class SignUpPageState extends State<SignUpPage> {
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
-                            fontSize: textFormFontSize.sp,
+                            fontSize: defaultSize.sp,
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -371,7 +369,7 @@ class SignUpPageState extends State<SignUpPage> {
                         style: customStyle(
                           fontWeightName: "Regular",
                           fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
+                          fontSize: defaultSize.sp,
                         ),
                         decoration: InputDecoration(
                           isDense: true,
@@ -383,7 +381,7 @@ class SignUpPageState extends State<SignUpPage> {
                           hintStyle: customStyle(
                             fontWeightName: "Regular",
                             fontColor: mainColor,
-                            fontSize: textFormFontSize.sp,
+                            fontSize: defaultSize.sp,
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -663,7 +661,7 @@ class SignUpPageState extends State<SignUpPage> {
                             style: customStyle(
                               fontWeightName: "Medium",
                               fontColor: whiteColor,
-                              fontSize: buttonFontSize.sp,
+                              fontSize: defaultSize.sp,
                             ),
                           ),
                           onPressed: !(isFormValidation.contains(false) /*|| _smsCode.contains("")*/) ? () async {
