@@ -27,7 +27,7 @@ InkWell tabBtn({BuildContext context, double heightSize, double widthSize, Strin
         child: Text(
           btnText,
           style: customStyle(
-            fontSize: homePageDefaultFontSize,
+            fontSize: homePageDefaultFontSize.sp,
             fontWeightName: "Medium",
             fontColor: mainColor
           ),
@@ -51,7 +51,7 @@ InkWell tabBtnWithUnderline({BuildContext context, double heightSize, double wid
           child: Text(
             btnText,
             style: customStyle(
-                fontSize: homePageDefaultFontSize,
+                fontSize: homePageDefaultFontSize.sp,
                 fontWeightName: "Medium",
                 fontColor: tabIndexVariable == tabOrder ? mainColor : grayColor
             ),

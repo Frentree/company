@@ -132,6 +132,13 @@ class FirebaseRepository {
         today: today,
       );
 
+  Stream<QuerySnapshot> getColleagueNowAttendance(
+      {String companyCode, String loginUserMail, Timestamp today}) => _firebaseMethods.getColleagueNowAttendance(
+    companyCode: companyCode,
+    loginUserMail: loginUserMail,
+    today: today,
+  );
+
   Future<void> updateAttendance(
       {Attendance attendanceModel, String documentId ,String companyCode}) => _firebaseMethods.updateAttendance(
     attendanceModel: attendanceModel,

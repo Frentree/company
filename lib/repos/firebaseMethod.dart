@@ -282,6 +282,18 @@ class FirebaseMethods {
         .get();
   }
 
+  Stream<QuerySnapshot> getColleagueNowAttendance(
+      {String companyCode, String loginUserMail, Timestamp today}){
+
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(ATTENDANCE)
+        .where("mail", isNotEqualTo: loginUserMail)
+        .where("createDate", isEqualTo: today)
+        .snapshots();
+  }
+
   Future<void> updateAttendance(
       {Attendance attendanceModel,
       String documentId,
@@ -293,6 +305,7 @@ class FirebaseMethods {
         .doc(documentId)
         .update(attendanceModel.toJson());
   }
+
 
   //알람 관련
   //사용자 승인

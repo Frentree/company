@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:sizer/sizer.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 
 class CompanySearchPage extends StatefulWidget {
   Company company;
@@ -50,7 +52,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
           style: customStyle(
             fontWeightName: "Regular",
             fontColor: mainColor,
-            fontSize: textFormFontSize.sp,
+            fontSize: defaultSize.sp,
           ),
           decoration: InputDecoration(
             isDense: true,
@@ -62,7 +64,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
             hintStyle: customStyle(
               fontWeightName: "Regular",
               fontColor: mainColor,
-              fontSize: textFormFontSize.sp,
+              fontSize: defaultSize.sp,
             ),
             border: InputBorder.none,
           ),
@@ -102,7 +104,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
                         child: Text(
                           "Search Company",
                           style: customStyle(
-                            fontSize: 13.0.sp,
+                            fontSize: defaultSize.sp,
                           ),
                         )),
                   ],
@@ -149,7 +151,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
                                 child: Text(
                                   "검색 결과 없음",
                                   style: customStyle(
-                                    fontSize: 13.0.sp,
+                                    fontSize: defaultSize.sp,
                                   ),
                                 )),
                           ],

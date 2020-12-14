@@ -1,11 +1,11 @@
 //Flutter
-
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 
 //Const
-
+import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
@@ -55,30 +55,24 @@ class LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: pageNameSizeH.h,
+                color: Colors.yellow,
+                height: 5.0.h,
                 alignment: Alignment.centerLeft,
                 child: Text(
                   word.login(),
-                  style: customStyle(
-                    fontWeightName: "Medium",
-                    fontColor: blueColor,
-                    fontSize: pageNameFontSize.sp,
-                  ),
+                  style: pageNameStyle,
                 ),
               ),
               Container(
-                height: widgetDistanceH.h,
+                color: Colors.brown,
+                height: 2.0.h,
               ),
               Container(
                 child: Column(
                   children: [
                     TextFormField(
                       controller: _mailTextCon,
-                      style: customStyle(
-                        fontWeightName: "Regular",
-                        fontColor: mainColor,
-                        fontSize: textFormFontSize.sp,
-                      ),
+                      style: defaultStyle,
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(
@@ -86,11 +80,7 @@ class LoginPageState extends State<LoginPage> {
                           horizontal: textFormFontPaddingW.w,
                         ),
                         hintText: word.email(),
-                        hintStyle: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
-                        ),
+                        hintStyle: defaultStyle,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: textFieldUnderLine,
@@ -104,11 +94,7 @@ class LoginPageState extends State<LoginPage> {
                     TextFormField(
                       controller: _passwordTextCon,
                       obscureText: true,
-                      style: customStyle(
-                        fontWeightName: "Regular",
-                        fontColor: mainColor,
-                        fontSize: textFormFontSize.sp,
-                      ),
+                      style: defaultStyle,
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(
@@ -116,11 +102,7 @@ class LoginPageState extends State<LoginPage> {
                           horizontal: textFormFontPaddingW.w,
                         ),
                         hintText: word.password(),
-                        hintStyle: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: textFormFontSize.sp,
-                        ),
+                        hintStyle: defaultStyle,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: textFieldUnderLine,
@@ -149,7 +131,7 @@ class LoginPageState extends State<LoginPage> {
                       style: customStyle(
                         fontWeightName: "Medium",
                         fontColor: whiteColor,
-                        fontSize: buttonFontSize.sp,
+                        fontSize: defaultSize.sp,
                       ),
                     ),
                     onPressed: () {
@@ -183,7 +165,7 @@ class LoginPageState extends State<LoginPage> {
                       style: customStyle(
                         fontWeightName: "Medium",
                         fontColor: blueColor,
-                        fontSize: buttonFontSize.sp,
+                        fontSize: defaultSize.sp,
                       ),
                     ),
                     onPressed: () {
