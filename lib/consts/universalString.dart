@@ -3,6 +3,7 @@ const String WORK = "work";
 const String EXPENSE = "expense";
 const String USER = "user";
 const String NOTICE = "notice";
+const String TEAM = "team";
 const String COMMENT = "comment";
 const String COMMENTS = "comments";
 const String APPROVAL = "approval";

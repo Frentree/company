@@ -369,7 +369,30 @@ settingUserAddDelete(BuildContext context) {
                                                                               Navigator.pop(context);
                                                                             },
                                                                           ),
-                                                                        )
+                                                                        ),
+                                                                        /*Container(
+                                                                          width: 10.0.w,
+                                                                        ),
+                                                                        Container(
+                                                                          width: 20.0.w,
+                                                                          child: RaisedButton(
+                                                                            elevation: 0.0,
+                                                                            color: blueColor,
+                                                                            child: Text(
+                                                                              word.cencel(),
+                                                                              style: customStyle(
+                                                                                fontColor: whiteColor,
+                                                                                fontSize: 12.0.sp,
+                                                                              ),
+                                                                            ),
+                                                                            shape: RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(12),
+                                                                            ),
+                                                                            onPressed: () async {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                          ),
+                                                                        )*/
                                                                       ],
                                                                     ),
                                                                   )

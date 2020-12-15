@@ -69,8 +69,8 @@ class CompanyUser {
       "lastModDate": lastModDate,
       "status": status,
       "level": level,
-      "position": position,
-      "team": team,
+      "position": "",
+      "team": "",
       "userSearch": user.name.split(""),
     };
   }

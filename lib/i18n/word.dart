@@ -274,4 +274,20 @@ class Words {
   String leaveWorkPro() => Intl.message("퇴근처리", name: "leaveWorkPro", args: [], desc: "leave-of-work processing message");
   String leaveWorkProCon() => Intl.message("퇴근 하시겠습니까?", name: "leaveWorkProCon", args: [], desc: " message");
 /* 출근 처리 종료 */
+
+/* 조직도 */
+  String organizationChart() => Intl.message("조직도", name: "organizationChart", args: [], desc: "Organization chart message");
+
+  String departmentAdd() => Intl.message("부서 추가하기", name: "departmentAdd", args: [], desc: "departmentAdd message");
+  String departmentAddCon() => Intl.message("부서명을 입력해주세요", name: "departmentAddCon", args: [], desc: "departmentAdd message");
+  String departmentUpdate() => Intl.message("부서명 수정하기", name: "departmentUpdate", args: [], desc: "To amend the department name message");
+  String parentDepartmentCreate() => Intl.message("상위 부서 생성하기", name: "parentDepartmentCreate", args: [], desc: "Create a parent department message");
+  String subDepartmentCreate() => Intl.message("하위 부서 생성하기", name: "subDepartmentCreate", args: [], desc: "Create a sub department message");
+  String departmentDelete() => Intl.message("부서 삭제하기", name: "departmentDelete", args: [], desc: "departmentDelete message");
+  String addMember() => Intl.message("구성원 추가하기", name: "addMember", args: [], desc: "Add Members message");
+  String deleteMember() => Intl.message("구성원 삭제하기", name: "deleteMember", args: [], desc: "Delete Members message");
+  String deleteTeamCon() => Intl.message("부서를 삭제 하시겠습니까?", name: "deleteTeamCon", args: [], desc: "deleteTeamCon message");
+/* 조직도 종료 */
+
+
 }

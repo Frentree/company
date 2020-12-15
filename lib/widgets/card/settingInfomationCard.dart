@@ -19,188 +19,189 @@ final word = Words();
 
 // 내 정보 화면
 Widget getMyInfomationCard({BuildContext context, User user}) {
-  return Padding(
-    padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
-    child: Column(
-      children: [
-        Row(
+  return FutureBuilder(
+    future: Firestore.instance
+        .collection("company")
+        .doc(user.companyCode)
+        .collection("user")
+        .doc(user.mail)
+        .get(),
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      return Padding(
+        padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
+        child: Column(
           children: [
-            Container(
-              color: whiteColor,
-              alignment: Alignment.center,
-              width: 10.0.w,
-              child: GestureDetector(
-                child: Container(
-                  height: 4.0.h,
+            Row(
+              children: [
+                Container(
+                  color: whiteColor,
+                  alignment: Alignment.center,
                   width: 10.0.w,
-                  child: FutureBuilder(
-                    future: Firestore.instance
-                        .collection("company")
-                        .document(user.companyCode)
-                        .collection("user")
-                        .document(user.mail)
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return Image.network(snapshot.data['profilePhoto']);
-                    },
+                  child: GestureDetector(
+                    child: Container(
+                        height: 4.0.h,
+                        width: 10.0.w,
+                        child: Image.network(snapshot.data['profilePhoto']),
+                    ),
+                    onTap: () {},
                   ),
                 ),
-                onTap: () {},
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(left: 2.0.w)),
-            Expanded(
-              child: Text(
-                user.name,
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
+                Padding(padding: EdgeInsets.only(left: 2.0.w)),
+                Expanded(
+                  child: Text(
+                    user.name,
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Text(
-              "개발팀",
-              style: customStyle(
-                fontSize: 13.0.sp,
-                fontColor: grayColor,
-                fontWeightName: 'Medium',
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(left: 4.0.w)),
-            Text(
-              "사원",
-              style: customStyle(
-                fontSize: 13.0.sp,
-                fontColor: grayColor,
-                fontWeightName: 'Medium',
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(left: 4.0.w)),
-            Container(
-              child: ActionChip(
-                backgroundColor: blueColor,
-                label: Text(
-                  word.update(),
+                Text(
+                  snapshot.data['team'],
                   style: customStyle(
-                    fontSize: 12.0.sp,
-                    fontColor: whiteColor,
+                    fontSize: 13.0.sp,
+                    fontColor: grayColor,
                     fontWeightName: 'Medium',
                   ),
                 ),
-                onPressed: () {
-                  SettingMyPageUpdate(context);
-                },
-              ),
+                Padding(padding: EdgeInsets.only(left: 4.0.w)),
+                Text(
+                  snapshot.data['position'],
+                  style: customStyle(
+                    fontSize: 13.0.sp,
+                    fontColor: grayColor,
+                    fontWeightName: 'Medium',
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(left: 4.0.w)),
+                Container(
+                  child: ActionChip(
+                    backgroundColor: blueColor,
+                    label: Text(
+                      word.update(),
+                      style: customStyle(
+                        fontSize: 12.0.sp,
+                        fontColor: whiteColor,
+                        fontWeightName: 'Medium',
+                      ),
+                    ),
+                    onPressed: () {
+                      SettingMyPageUpdate(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 1.0.h,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    word.joinDate(),
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    "2018.11.01",
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: grayColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 1.0.h,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    word.email(),
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    user.mail,
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: grayColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 1.0.h,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    word.phone(),
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    user.phone,
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: grayColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 1.0.h,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    word.accountSecession(),
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+              ],
             ),
           ],
         ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.joinDate(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                "2018.11.01",
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: grayColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.email(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                user.mail,
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: grayColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.phone(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                user.phone,
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: grayColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.accountSecession(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-            Expanded(child: SizedBox()),
-          ],
-        ),
-      ],
-    ),
+      );
+    }
   );
 }
 

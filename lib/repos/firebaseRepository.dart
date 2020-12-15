@@ -276,4 +276,34 @@ class FirebaseRepository {
   // 공지사항 - 대댓글 삭제
   Future<void> deleteNoticeComments({String companyCode, String noticeDocumentID, String commntDocumentID, String commntsDocumentID}) =>
       _firebaseMethods.deleteNoticeComments(companyCode, noticeDocumentID, commntDocumentID, commntsDocumentID);
+
+  // 팀추가
+  Future<void> addOrganizationChart({String companyCode, String teamName}) =>
+      _firebaseMethods.addOrganizationChart(companyCode, teamName);
+
+  // 팀명 수정
+  Future<void> modifyOrganizationChartName({String companyCode, String teamName, String documentID}) =>
+      _firebaseMethods.modifyOrganizationChartName(companyCode, teamName, documentID);
+
+  //팀 불러오기
+  Stream<QuerySnapshot> getTeamList({String companyCode}) =>
+      _firebaseMethods.getTeamList(companyCode);
+
+  //팀 유저 불러오기
+  Stream<QuerySnapshot> getUserTeam({String companyCode, String teamName}) =>
+      _firebaseMethods.getUserTeam(companyCode, teamName);
+
+  //팀 삭제
+  Future<void> deleteUserOrganizationChart({String documentID, String companyCode, String teamName}) async =>
+      _firebaseMethods.deleteUserOrganizationChart(documentID, companyCode, teamName);
+
+  // 팀 - 사용자 추가
+  Future<void> addTeamUser({String companyCode, List<Map<String, dynamic>> user}) =>
+      _firebaseMethods.addTeamUser(companyCode, user);
+
+  // 팀 - 사용자 삭제 데이터 갖고오기
+  Stream<QuerySnapshot> getTeamUserDelete(String companyCode, String teamName) =>
+      _firebaseMethods.getTeamUserDelete(companyCode, teamName);
+
+
 }
