@@ -6,7 +6,7 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseMethod.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/widgets/dialog/dialogList.dart';
+import 'package:MyCompany/widgets/dialog/gradeDialogList.dart';
 import 'package:MyCompany/widgets/popupMenu/expensePopupMenu.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';

@@ -433,18 +433,18 @@ class FirebaseMethods {
       String documentID, String gradeName, String companyCode) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(GRADE)
-        .document(documentID)
-        .updateData({"gradeName": gradeName});
+        .doc(documentID)
+        .update( {"gradeName": gradeName});
   }
 
   Future<void> deleteGrade(String documentID, String companyCode) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(GRADE)
-        .document(documentID)
+        .doc(documentID)
         .delete();
   }
 
@@ -452,10 +452,10 @@ class FirebaseMethods {
       String documentID, String companyCode, int level) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
         .where("level", arrayContains: level)
-        .getDocuments()
+        .get()
         .then((value) {
       value.documents.forEach((element) {
         element.reference.updateData({
@@ -468,7 +468,7 @@ class FirebaseMethods {
   Stream<QuerySnapshot> getGreadeUserDetail(String companyCode, int level) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
         .where("level", arrayContains: level)
         .snapshots();
@@ -477,7 +477,7 @@ class FirebaseMethods {
   Stream<QuerySnapshot> getGreadeUserAdd(String companyCode) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
         .orderBy("name", descending: true)
         .snapshots();
@@ -486,7 +486,7 @@ class FirebaseMethods {
   Stream<QuerySnapshot> getGreadeUserDelete(String companyCode, int level) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
         .where("level", arrayContains: level)
         .snapshots();
@@ -498,10 +498,10 @@ class FirebaseMethods {
       print("추가 ====> " + user[i]['mail']);
       await firestore
           .collection(COMPANY)
-          .document(companyCode)
+          .doc(companyCode)
           .collection(USER)
-          .document(user[i]['mail'])
-          .updateData({
+          .doc(user[i]['mail'])
+          .update({
         "level": FieldValue.arrayUnion([user[i]['level']])
       });
     }
@@ -514,10 +514,10 @@ class FirebaseMethods {
       print("삭제 ====> " + user[i]['mail']);
       await firestore
           .collection(COMPANY)
-          .document(companyCode)
+          .doc(companyCode)
           .collection(USER)
-          .document(user[i]['mail'])
-          .updateData({
+          .doc(user[i]['mail'])
+          .update({
         "level": FieldValue.arrayRemove([user[i]['level']])
       });
     }
@@ -527,7 +527,7 @@ class FirebaseMethods {
   Future<void> addNotice(String companyCode, NoticeModel notice) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
         .add(notice.toJson());
   }
@@ -535,16 +535,16 @@ class FirebaseMethods {
   Future<void> deleteNotice(String companyCode, String documentID) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(documentID)
+        .doc(documentID)
         .delete();
   }
 
   Stream<QuerySnapshot> getNoticeList(String companyCode) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
         .orderBy("noticeCreateDate", descending: true)
         .snapshots();
@@ -554,9 +554,9 @@ class FirebaseMethods {
       String companyCode, String documentID) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(documentID)
+        .doc(documentID)
         .collection(COMMENT)
         .orderBy("createDate", descending: false)
         .snapshots();
@@ -566,11 +566,11 @@ class FirebaseMethods {
       String companyCode, String noticeDocumentID, String commntDocumentID) {
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(noticeDocumentID)
+        .doc(noticeDocumentID)
         .collection(COMMENT)
-        .document(commntDocumentID)
+        .doc(commntDocumentID)
         .collection(COMMENTS)
         .orderBy("createDate", descending: false)
         .snapshots();
@@ -580,9 +580,9 @@ class FirebaseMethods {
       String companyCode, String noticeDocumentID, CommentModel comment) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(noticeDocumentID)
+        .doc(noticeDocumentID)
         .collection(COMMENT)
         .add(comment.toJson());
   }
@@ -591,11 +591,11 @@ class FirebaseMethods {
       String commntDocumentID, String comment) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(noticeDocumentID)
+        .doc(noticeDocumentID)
         .collection(COMMENT)
-        .document(commntDocumentID)
+        .doc(commntDocumentID)
         .update({
       "comment": comment,
       "updateDate": Timestamp.now(),
@@ -606,11 +606,11 @@ class FirebaseMethods {
       String commntDocumentID) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(noticeDocumentID)
+        .doc(noticeDocumentID)
         .collection(COMMENT)
-        .document(commntDocumentID)
+        .doc(commntDocumentID)
         .delete();
   }
 
@@ -618,11 +618,11 @@ class FirebaseMethods {
       String commntDocumentID, CommentListModel comment) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(noticeDocumentID)
+        .doc(noticeDocumentID)
         .collection(COMMENT)
-        .document(commntDocumentID)
+        .doc(commntDocumentID)
         .collection(COMMENTS)
         .add(comment.toJson());
   }
@@ -631,13 +631,13 @@ class FirebaseMethods {
       String commntDocumentID, String commntsDocumentID, String comment) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(noticeDocumentID)
+        .doc(noticeDocumentID)
         .collection(COMMENT)
-        .document(commntDocumentID)
+        .doc(commntDocumentID)
         .collection(COMMENTS)
-        .document(commntsDocumentID)
+        .doc(commntsDocumentID)
         .update({
       "comment": comment,
       "updateDate": Timestamp.now(),
@@ -648,15 +648,122 @@ class FirebaseMethods {
       String commntDocumentID, String commntsDocumentID) async {
     return await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(NOTICE)
-        .document(noticeDocumentID)
+        .doc(noticeDocumentID)
         .collection(COMMENT)
-        .document(commntDocumentID)
+        .doc(commntDocumentID)
         .collection(COMMENTS)
-        .document(commntsDocumentID)
+        .doc(commntsDocumentID)
         .delete();
   }
+
+  Stream<QuerySnapshot> getTeamList(
+      String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(TEAM)
+        .orderBy("teamName", descending: false)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getUserTeam(
+      String companyCode, String teamName) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("team", isEqualTo: teamName)
+        .snapshots();
+  }
+
+  Future<void> addOrganizationChart(String companyCode, String teamName) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(TEAM)
+        .add({
+          "teamName" : teamName
+        });
+  }
+
+  Future<void> modifyOrganizationChartName(String companyCode, String teamName, String documentID) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(TEAM)
+        .doc(documentID)
+        .update({
+      "teamName" : teamName
+    });
+  }
+
+  Future<void> addOrganizationChartMembers(String companyCode, String noticeDocumentID,
+      String commntDocumentID, String commntsDocumentID, String comment) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(NOTICE)
+        .doc(noticeDocumentID)
+        .collection(COMMENT)
+        .doc(commntDocumentID)
+        .collection(COMMENTS)
+        .doc(commntsDocumentID)
+        .update({
+      "comment": comment,
+      "updateDate": Timestamp.now(),
+    });
+  }
+
+  Future<void> addTeamUser(String companyCode, List<Map<String, dynamic>> user) async {
+    for (int i = 0; i < user.length; i++) {
+      //print("추가 ====> " + user[i]['mail']);
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(USER)
+          .doc(user[i]['mail'])
+          .updateData({
+        "team": user[i]['team']
+      });
+    }
+    return null;
+  }
+
+
+  Future<void> deleteUserOrganizationChart(String documentID, String companyCode, String teamName) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(TEAM)
+        .doc(documentID)
+        .delete();
+
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("team", isEqualTo: teamName)
+        .get()
+        .then((value) {
+      value.documents.forEach((element) {
+        element.reference.update({
+          "team": ""
+        });
+      });
+    });
+  }
+
+  Stream<QuerySnapshot> getTeamUserDelete(String companyCode, String teamName) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("team", isEqualTo:teamName)
+        .snapshots();
+  }
+
 }
 
 class FirestoreApi {

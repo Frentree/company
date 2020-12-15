@@ -4,10 +4,12 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/setting/myWork.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingOrganizationChart.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserManager.dart';
 import 'package:MyCompany/widgets/card/settingInfomationCard.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -82,15 +84,23 @@ class SettingMainPageState extends State<SettingMainPage> {
                         ),
                         childrenPadding: EdgeInsets.only(left: 5.0.w),
                         children: [
-                          /// 기능 미구현으로 인한 숨김 처리
-                          /*ListTile(
-                      leading: Icon(Icons.account_tree_outlined),
-                      title: Text('조직도'),
-                      dense: true,
-                      onTap: () {
-                        NotImplementedFunction(context);
-                      },
-                    ),*/
+                          // 조직도
+                          ListTile(
+                            leading: Icon(
+                              Icons.account_tree_outlined,
+                              size: 7.0.w,
+                            ),
+                            title: Text(
+                              word.organizationChart(),
+                              style: customStyle(
+                                fontSize: 12.0.sp,
+                              ),
+                            ),
+                            dense: true,
+                            onTap: () {
+                              SettingOrganizationChart(context);
+                            },
+                          ),
                           ListTile(
                             leading: Icon(
                               Icons.person_add_alt_1_outlined,

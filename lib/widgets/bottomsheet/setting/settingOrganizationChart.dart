@@ -1,3 +1,4 @@
+import 'package:MyCompany/screens/setting/organizationChart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -17,9 +18,8 @@ import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 
 final word = Words();
 
-SettingUserManager(BuildContext context) {
+SettingOrganizationChart(BuildContext context) {
   User _loginUser;
-  // 프로필
 
   showModalBottomSheet(
       isScrollControlled: true,
@@ -83,7 +83,7 @@ SettingUserManager(BuildContext context) {
                       Container(
                         width: 50.0.w,
                         child: Text(
-                          word.userGradeManager(),
+                          word.organizationChart(),
                           style: customStyle(
                             fontSize: homePageDefaultFontSize.sp,
                           ),
@@ -101,16 +101,11 @@ SettingUserManager(BuildContext context) {
                   ),
                 ),
                 Expanded(
-                  child: GradeMainPage(),
-                )
-                /*getGrade(context, "최고 관리자", 9),
-                getGrade(context, "업무 관리자", 8),
-                getGrade(context, "회계 담당자", 7),
-                getGrade(context, "앱 관리자", 6),*/
+                  child: OrganizationChartPage(),
+                ),
               ],
             ),
           );
         });
       });
 }
-
