@@ -6,10 +6,11 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseMethod.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/widgets/dialog/organizationChartDialogList.dart';
+import 'package:MyCompany/widgets/dialog/positionDialogList.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:MyCompany/widgets/popupMenu/expensePopupMenu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,33 +18,18 @@ import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-class OrganizationChartPage extends StatefulWidget {
+class PositionPage extends StatefulWidget {
   @override
-  OrganizationChartPageState createState() => OrganizationChartPageState();
+  PositionPageState createState() => PositionPageState();
 }
 
-class OrganizationChartPageState extends State<OrganizationChartPage> {
+class PositionPageState extends State<PositionPage> {
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
 
     return Scaffold(
-      /*floatingActionButton:
-      FloatingActionButton.extended(
-        backgroundColor: mainColor,
-        onPressed: (){
-          addGradeDialog(context: context, companyCode: _loginUser.companyCode);
-        },
-        label: Text(
-          word.addPermission(),
-          style: customStyle(
-            fontColor: whiteColor,
-            fontWeightName: 'Bold',
-            fontSize: 15
-          ),
-        ),
-      ),*/
       body: _buildBody(context, _loginUser),
     );
   }
@@ -53,25 +39,11 @@ class OrganizationChartPageState extends State<OrganizationChartPage> {
 
 Widget _buildBody(BuildContext context, User user) {
   return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseMethods().getTeamList(user.companyCode),
+    stream: FirebaseRepository().getPositionList(companyCode: user.companyCode),
     builder: (context, snapshot) {
       if (!snapshot.hasData) return LinearProgressIndicator();
 
       return _buildList(context, snapshot.data.documents, user.companyCode);
-          /*Container(
-            alignment: Alignment.centerLeft,
-            child: RaisedButton(
-              color: whiteColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: mainColor)),
-              child: Icon(Icons.add),
-              onPressed: () {
-                addTeamDialog(
-                    companyCode: user.companyCode,
-                    context: context
-                );
-              },
-            ),
-          )*/
     },
   );
 }
@@ -93,7 +65,7 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot, String 
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: mainColor)),
                     child: Icon(Icons.add),
                     onPressed: () {
-                      addTeamDialog(companyCode: companyCode, context: context);
+                      addPositionDialog(companyCode: companyCode, context: context);
                     },
                   ),
                 ),
@@ -110,7 +82,7 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot, String 
 }
 
 Widget _buildListItem(BuildContext context, DocumentSnapshot data, String companyCode) {
-  final team = TeamData.fromSnapshow(data);
+  final team = PositionData.fromSnapshow(data);
 
   return Container(
     decoration: BoxDecoration(
@@ -128,7 +100,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data, String compan
   );
 }
 
-Widget _buildUserList(BuildContext context, TeamData team, String companyCode) {
+Widget _buildUserList(BuildContext context, PositionData postion, String companyCode) {
   List<Map<String,dynamic>> gradeList = List();
   return Expanded(
     child: Container(
@@ -140,7 +112,7 @@ Widget _buildUserList(BuildContext context, TeamData team, String companyCode) {
               print(receivedItem);
               //getErrorDialog(context: context, text: word.updateFail());
               NotImplementedFunction(context);
-              if (receivedItem["documentID"] == team.reference.documentID) {
+              if (receivedItem["documentID"] == postion.reference.documentID) {
                 //print("기존 위치");
               } else {}
             },
@@ -161,7 +133,7 @@ Widget _buildUserList(BuildContext context, TeamData team, String companyCode) {
                         children: [
                           Icon(Icons.web_outlined),
                           Text(
-                            team.teamName,
+                            postion.position,
                             style: customStyle(fontSize: 14, fontWeightName: 'Medium', fontColor: mainColor),
                           ),
                         ],
@@ -182,22 +154,22 @@ Widget _buildUserList(BuildContext context, TeamData team, String companyCode) {
                         onSelected: (value) {
                           switch (value) {
                             case 1:
-                              getTeamUpadateDialog(
-                                  context: context, documentID: team.reference.documentID, teamName: team.teamName, companyCode: companyCode);
+                              getPositionUpadateDialog(
+                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
                               break;
                             case 2: case 3:
                               break;
                             case 4:
-                              getTeamDeleteDialog(
-                                  context: context, documentID: team.reference.documentID, teamName: team.teamName, companyCode: companyCode);
+                              getPositionDeleteDialog(
+                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
                               break;
                             case 5:
-                              addTeamUserDialog(
-                                  context: context, documentID: team.reference.documentID, teamName: team.teamName, companyCode: companyCode);
+                              addPositionUserDialog(
+                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
                               break;
                             case 6:
-                              dropTeamUserDialog(
-                                  context: context, documentID: team.reference.documentID, teamName: team.teamName, companyCode: companyCode);
+                              dropPositionUserDialog(
+                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
                               break;
                             default:
 
@@ -209,7 +181,7 @@ Widget _buildUserList(BuildContext context, TeamData team, String companyCode) {
                     Expanded(
                       flex: 3,
                       child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseRepository().getUserTeam(companyCode: companyCode, teamName: team.teamName),
+                        stream: FirebaseRepository().getUserPosition(companyCode: companyCode, position: postion.position),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) return LinearProgressIndicator();
 
@@ -287,13 +259,13 @@ Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String co
 
 }
 
-class TeamData {
-  final String teamName;
+class PositionData {
+  final String position;
   final DocumentReference reference;
 
-  TeamData.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['teamName'] != null),
-        teamName = map['teamName'];
+  PositionData.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['position'] != null),
+        position = map['position'];
 
-  TeamData.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap(snapshot.data(), reference: snapshot.reference);
+  PositionData.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap(snapshot.data(), reference: snapshot.reference);
 }

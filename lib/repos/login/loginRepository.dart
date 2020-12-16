@@ -68,9 +68,9 @@ class LoginRepository {
       _companyMethod.joinCompanyUser(
           context: context, companyCode: companyCode);
 
-  Future<void> userApproval({BuildContext context, String approvalUserMail}) =>
+  Future<void> userApproval({BuildContext context, String approvalUserMail, String position, String teamName, String enteredDate}) =>
       _companyMethod.userApproval(
-          context: context, approvalUserMail: approvalUserMail);
+          context: context, approvalUserMail: approvalUserMail, position: position, team: teamName, enteredDate: enteredDate);
 
   Future<void> userRejection({BuildContext context, String approvalUserMail}) =>
       _companyMethod.userRejection(

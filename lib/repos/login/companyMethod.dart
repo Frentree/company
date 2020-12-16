@@ -2,6 +2,7 @@
 import 'package:MyCompany/models/approvalModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -154,14 +155,26 @@ class CompanyMethod{
   }
 
   //가입자 승인
-  Future<void> userApproval({BuildContext context, String approvalUserMail}) async {
+  Future<void> userApproval({BuildContext context, String approvalUserMail, String position, String team, String enteredDate}) async {
     FirebaseRepository _repository = FirebaseRepository();
 
     User approvalUser = await _repository.getUser(userMail: approvalUserMail);
+    print("enteredDate ===> " + enteredDate);
+
+    if(position.trim() == word.notSelect().toString().trim()) {
+      position = "";
+    }
+
+    if(team.trim() == word.notSelect().toString().trim()) {
+      team = "";
+    }
 
     CompanyUser _newCompanyUser = CompanyUser(
       user: approvalUser,
       level: [0],
+      position: position,
+      team: team,
+      enteredDate: enteredDate
     );
 
     approvalUser.state = 1;

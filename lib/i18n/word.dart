@@ -287,7 +287,20 @@ class Words {
   String addMember() => Intl.message("구성원 추가하기", name: "addMember", args: [], desc: "Add Members message");
   String deleteMember() => Intl.message("구성원 삭제하기", name: "deleteMember", args: [], desc: "Delete Members message");
   String deleteTeamCon() => Intl.message("부서를 삭제 하시겠습니까?", name: "deleteTeamCon", args: [], desc: "deleteTeamCon message");
+
 /* 조직도 종료 */
+  String team() => Intl.message("팀", name: "team", args: [], desc: "team message");
+  String position() => Intl.message("직급", name: "position", args: [], desc: "position message");
+  String positionCon() => Intl.message("직급을 입력해주세요", name: "positionCon", args: [], desc: "positionCon message");
+  String notSelect() => Intl.message("나중에 선택", name: "notSelect", args: [], desc: "notSelect message");
+  String positionManagerment() => Intl.message("직급관리", name: "positionManagerment", args: [], desc: "positionManagerment message");
 
+  String positionAdd() => Intl.message("직급 추가하기", name: "positionAdd", args: [], desc: "departmentAdd message");
+  String positionAddCon() => Intl.message("직급명을 입력해주세요", name: "positionAddCon", args: [], desc: "departmentAdd message");
+  String positionUpdate() => Intl.message("직급명 수정하기", name: "positionUpdate", args: [], desc: "To amend the department name message");
+  String positionDelete() => Intl.message("직급 삭제하기", name: "positionDelete", args: [], desc: "departmentDelete message");
+  String deletePositionCon() => Intl.message("직급을 삭제 하시겠습니까?", name: "deletePsitionCon", args: [], desc: "deleteTeamCon message");
 
+  String enteredDate() => Intl.message("입사일", name: "enteredDate", args: [], desc: "Entered date message");
+  String enteredDateCon() => Intl.message("입사일을 입력해주세요", name: "enteredDateCon", args: [], desc: "Entered date message");
 }

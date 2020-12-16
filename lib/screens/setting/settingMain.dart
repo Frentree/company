@@ -5,6 +5,7 @@ import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/setting/myWork.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingOrganizationChart.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingPosition.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserManager.dart';
 import 'package:MyCompany/widgets/card/settingInfomationCard.dart';
@@ -99,6 +100,23 @@ class SettingMainPageState extends State<SettingMainPage> {
                             dense: true,
                             onTap: () {
                               SettingOrganizationChart(context);
+                            },
+                          ),
+                          // 직급관리
+                          ListTile(
+                            leading: Icon(
+                              Icons.account_box_outlined,
+                              size: 7.0.w,
+                            ),
+                            title: Text(
+                              word.positionManagerment(),
+                              style: customStyle(
+                                fontSize: 12.0.sp,
+                              ),
+                            ),
+                            dense: true,
+                            onTap: () {
+                              SettingPosition(context);
                             },
                           ),
                           ListTile(

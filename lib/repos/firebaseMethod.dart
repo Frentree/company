@@ -777,6 +777,95 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getPositionList(
+      String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(POSITION)
+        .orderBy("position", descending: false)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getUserPosition(
+      String companyCode, String position) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("position", isEqualTo: position)
+        .snapshots();
+  }
+
+  Future<void> addPosition(String companyCode, String position) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(POSITION)
+        .add({
+      "position" : position
+    });
+  }
+
+  Future<void> modifyPositionName(String companyCode, String position, String documentID) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(POSITION)
+        .doc(documentID)
+        .update({
+      "position" : position
+    });
+  }
+
+  Future<void> addPositionUser(String companyCode, List<Map<String, dynamic>> user) async {
+    for (int i = 0; i < user.length; i++) {
+      //print("추가 ====> " + user[i]['mail']);
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(USER)
+          .doc(user[i]['mail'])
+          .updateData({
+        "position": user[i]['position']
+      });
+    }
+    return null;
+  }
+
+
+  Future<void> deleteUserPosition(String documentID, String companyCode, String position) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(POSITION)
+        .doc(documentID)
+        .delete();
+
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("position", isEqualTo: position)
+        .get()
+        .then((value) {
+      value.documents.forEach((element) {
+        element.reference.update({
+          "position": ""
+        });
+      });
+    });
+  }
+
+  Stream<QuerySnapshot> getPositionUserDelete(String companyCode, String position) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("position", isEqualTo:position)
+        .snapshots();
+  }
+
 }
 
 class FirestoreApi {

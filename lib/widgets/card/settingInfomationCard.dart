@@ -53,31 +53,30 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(left: 2.0.w)),
-                Expanded(
-                  child: Text(
-                    user.name,
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
-                    ),
+                Text(
+                  user.name + "  ",
+                  style: customStyle(
+                    fontSize: 13.0.sp,
+                    fontColor: mainColor,
+                    fontWeightName: 'Medium',
                   ),
                 ),
-                Text(
+                /*Text(
                   snapshot.data['team'],
                   style: customStyle(
                     fontSize: 13.0.sp,
                     fontColor: grayColor,
                     fontWeightName: 'Medium',
                   ),
-                ),
-                Padding(padding: EdgeInsets.only(left: 4.0.w)),
-                Text(
-                  snapshot.data['position'],
-                  style: customStyle(
-                    fontSize: 13.0.sp,
-                    fontColor: grayColor,
-                    fontWeightName: 'Medium',
+                ),*/
+                Expanded(
+                  child: Text(
+                    snapshot.data['position'],
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: grayColor,
+                      fontWeightName: 'Medium',
+                    ),
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(left: 4.0.w)),
@@ -106,6 +105,34 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
               children: [
                 Expanded(
                   child: Text(
+                    word.team(),
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    snapshot.data['team'],
+                    style: customStyle(
+                      fontSize: 13.0.sp,
+                      fontColor: grayColor,
+                      fontWeightName: 'Medium',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 1.0.h,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
                     word.joinDate(),
                     style: customStyle(
                       fontSize: 13.0.sp,
@@ -115,8 +142,9 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Text(
-                    "2018.11.01",
+                    snapshot.data['enteredDate'],
                     style: customStyle(
                       fontSize: 13.0.sp,
                       fontColor: grayColor,
@@ -142,6 +170,7 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Text(
                     user.mail,
                     style: customStyle(
@@ -169,6 +198,7 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Text(
                     user.phone,
                     style: customStyle(
@@ -283,7 +313,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}) {
             SizedBox(
               height: 1.0.h,
             ),
-            Row(
+            /*Row(
               children: [
                 Expanded(
                   child: Text(
@@ -309,7 +339,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}) {
             ),
             SizedBox(
               height: 1.0.h,
-            ),
+            ),*/
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

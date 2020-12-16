@@ -11,22 +11,25 @@ import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 
 final word = Words();
+final _formKeyEnteredDate = GlobalKey<FormState>();
 
 settingUserAddDelete(BuildContext context) {
   Format _format = Format();
   FirebaseRepository _repository = FirebaseRepository();
   LoginRepository _loginRepository = LoginRepository();
   User _loginUser;
-
+  
   TextEditingController _retireeNameCon = TextEditingController();
 
   Future<List<DocumentSnapshot>> searchResults;
@@ -242,164 +245,290 @@ settingUserAddDelete(BuildContext context) {
                                                   showDialog(
                                                       context: context,
                                                       builder: (BuildContext context) {
-                                                        return SimpleDialog(
-                                                          title: Text(
-                                                            "[${_approval.name}] ${word.forAddUser()}",
-                                                            style: customStyle(
-                                                              fontSize: 15.0.sp,
-                                                            ),
-                                                          ),
-                                                          children: [
-                                                            Padding(
-                                                              padding: EdgeInsets.symmetric(
-                                                                  vertical: 1.0.h,
-                                                                  horizontal: 8.0.w
+                                                        String dropDownPositionValue = word.notSelect();
+                                                        String dropDownTeamValue = word.notSelect();
+                                                        TextEditingController _enteredDateController = MaskedTextController(mask: '0000.00.00');
+                                                        return StatefulBuilder(
+                                                          builder: (context, setState) {
+                                                            return SimpleDialog(
+                                                              title: Text(
+                                                                "[${_approval.name}] ${word.forAddUser()}",
+                                                                style: customStyle(
+                                                                  fontSize: 15.0.sp,
+                                                                ),
                                                               ),
-                                                              child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Text(
-                                                                    "${word.name()} : ${_approval.name}",
-                                                                    style: customStyle(
-                                                                      fontSize: 12.0.sp,
-                                                                    ),
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      vertical: 1.0.h,
+                                                                      horizontal: 8.0.w
                                                                   ),
-                                                                  Container(
-                                                                      height: 1.5.h
-                                                                  ),
-                                                                  Text(
-                                                                    "${word.email()} : ${_approval.mail}",
-                                                                    style: customStyle(
-                                                                      fontSize: 12.0.sp,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                      height:1.5.h
-                                                                  ),
-                                                                  Text(
-                                                                    "${word.birthDay()} : ${_approval.birthday}",
-                                                                    style: customStyle(
-                                                                      fontSize: 12.0.sp,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    height: 1.5.h,
-                                                                  ),
-                                                                  Text(
-                                                                    "${word.phone()} : ${_approval.phone}",
-                                                                    style: customStyle(
-                                                                      fontSize: 12.0.sp,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    height: 1.5.h,
-                                                                  ),
-                                                                  Text(
-                                                                    "${word.requestDate()} : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
-                                                                    style: customStyle(
-                                                                      fontSize: 12.0.sp,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    height: 3.0.h,
-                                                                  ),
-                                                                  Container(
-                                                                    height: 4.0.h,
-                                                                    width: 100.0.w,
-                                                                    child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                      children: [
-                                                                        Container(
-                                                                          width: 20.0.w,
-                                                                          child: RaisedButton(
-                                                                            elevation: 0.0,
-                                                                            color: blueColor,
-                                                                            child: Text(
-                                                                              word.accept(),
-                                                                              style: customStyle(
-                                                                                fontColor: whiteColor,
-                                                                                fontSize: 12.0.sp,
-                                                                              ),
+                                                                  child: Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      Text(
+                                                                        "${word.name()} : ${_approval.name}",
+                                                                        style: customStyle(
+                                                                          fontSize: 12.0.sp,
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                          height: 1.5.h
+                                                                      ),
+                                                                      Text(
+                                                                        "${word.email()} : ${_approval.mail}",
+                                                                        style: customStyle(
+                                                                          fontSize: 12.0.sp,
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                          height:1.5.h
+                                                                      ),
+                                                                      Text(
+                                                                        "${word.birthDay()} : ${_approval.birthday}",
+                                                                        style: customStyle(
+                                                                          fontSize: 12.0.sp,
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        height: 1.5.h,
+                                                                      ),
+                                                                      Text(
+                                                                        "${word.phone()} : ${_approval.phone}",
+                                                                        style: customStyle(
+                                                                          fontSize: 12.0.sp,
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        height: 1.5.h,
+                                                                      ),
+                                                                      Text(
+                                                                        "${word.requestDate()} : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
+                                                                        style: customStyle(
+                                                                          fontSize: 12.0.sp,
+                                                                        ),
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "${word.team()} : ",
+                                                                            style: customStyle(
+                                                                              fontSize: 12.0.sp,
                                                                             ),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12),
-                                                                            ),
-                                                                            onPressed: () async {
-                                                                              _approval.state = 1;
-                                                                              _approval.signUpApprover = _loginUser.mail;
-                                                                              _approval.approvalDate = _format.dateTimeToTimeStamp(DateTime.now());
+                                                                          ),
+                                                                          StreamBuilder(
+                                                                            stream: _repository.getTeamList(companyCode: _loginUser.companyCode),
+                                                                            builder: (context, snapshot) {
+                                                                              if(!snapshot.hasData) return Text("");
 
-                                                                              await _repository.updateApproval(
-                                                                                companyCode: _loginUser.companyCode,
-                                                                                approvalModel: _approval,
-                                                                              );
-                                                                              await _loginRepository.userApproval(approvalUserMail: _approval.mail, context: context);
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                          ),
-                                                                        ),
-                                                                        Container(
-                                                                          width: 10.0.w,
-                                                                        ),
-                                                                        Container(
-                                                                          width: 20.0.w,
-                                                                          child: RaisedButton(
-                                                                            elevation: 0.0,
-                                                                            color: blueColor,
-                                                                            child: Text(
-                                                                              word.refusal(),
-                                                                              style: customStyle(
-                                                                                fontColor: whiteColor,
-                                                                                fontSize: 12.0.sp,
-                                                                              ),
-                                                                            ),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12),
-                                                                            ),
-                                                                            onPressed: () async {
-                                                                              _approval.state = 2;
-                                                                              _approval.signUpApprover = _loginUser.mail;
-                                                                              _approval.approvalDate = _format.dateTimeToTimeStamp(DateTime.now());
+                                                                              List<DocumentSnapshot> list = snapshot.data.documents;
 
-                                                                              await _repository.updateApproval(
-                                                                                companyCode: _loginUser.companyCode,
-                                                                                approvalModel: _approval,
+                                                                              List<String> buttonList = List();
+                                                                              buttonList.add(word.notSelect());
+                                                                              list.map((value) {
+                                                                                buttonList.add(value['teamName']);
+                                                                              }).toList();
+
+                                                                              return DropdownButton(
+                                                                                value: dropDownTeamValue,
+
+                                                                                onChanged: (value) {
+                                                                                  setState(() {
+                                                                                    dropDownTeamValue = value;
+                                                                                  });
+                                                                                },
+                                                                                items: buttonList.map<DropdownMenuItem<String>>((value) {
+                                                                                  return DropdownMenuItem<String>(
+                                                                                    value: value,
+                                                                                    child: Text(value,
+                                                                                      style: customStyle(
+                                                                                        fontSize: 12.0.sp,
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
+                                                                                }).toList(),
                                                                               );
-                                                                              await _loginRepository.userRejection(approvalUserMail: _approval.mail, context: context);
-                                                                              Navigator.pop(context);
                                                                             },
                                                                           ),
-                                                                        ),
-                                                                        /*Container(
-                                                                          width: 10.0.w,
-                                                                        ),
-                                                                        Container(
-                                                                          width: 20.0.w,
-                                                                          child: RaisedButton(
-                                                                            elevation: 0.0,
-                                                                            color: blueColor,
-                                                                            child: Text(
-                                                                              word.cencel(),
-                                                                              style: customStyle(
-                                                                                fontColor: whiteColor,
-                                                                                fontSize: 12.0.sp,
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "${word.position()} : ",
+                                                                            style: customStyle(
+                                                                              fontSize: 12.0.sp,
+                                                                            ),
+                                                                          ),
+                                                                          StreamBuilder(
+                                                                            stream: _repository.getPositionList(companyCode: _loginUser.companyCode),
+                                                                            builder: (context, snapshot) {
+                                                                              if(!snapshot.hasData) return Text("");
+
+                                                                              List<DocumentSnapshot> list = snapshot.data.documents;
+
+                                                                              List<String> buttonList = List();
+                                                                              buttonList.add(word.notSelect());
+                                                                              list.map((value) {
+                                                                                buttonList.add(value['position']);
+                                                                              }).toList();
+
+                                                                              return DropdownButton(
+                                                                                value: dropDownPositionValue,
+
+                                                                                onChanged: (value) {
+                                                                                  setState(() {
+                                                                                    dropDownPositionValue = value;
+                                                                                  });
+                                                                                },
+                                                                                items: buttonList.map<DropdownMenuItem<String>>((value) {
+                                                                                  return DropdownMenuItem<String>(
+                                                                                    value: value,
+                                                                                    child: Text(value,
+                                                                                      style: customStyle(
+                                                                                        fontSize: 12.0.sp,
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
+                                                                                }).toList(),
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "${word.enteredDate()} : ",
+                                                                            style: customStyle(
+                                                                              fontSize: 12.0.sp,
+                                                                            ),
+                                                                          ),
+                                                                          Expanded(
+                                                                            child: Form(
+                                                                              key: _formKeyEnteredDate,
+                                                                              child: TextFormField(
+                                                                                controller: _enteredDateController,
+                                                                                style: customStyle(
+                                                                                  fontSize: 12.0.sp,
+                                                                                ),
+                                                                                decoration: InputDecoration(
+                                                                                  hintText: word.enteredDateCon(),
+                                                                                  border: InputBorder.none,
+                                                                                ),
                                                                               ),
                                                                             ),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Container(
+                                                                        height: 3.0.h,
+                                                                      ),
+                                                                      Container(
+                                                                        height: 4.0.h,
+                                                                        width: 100.0.w,
+                                                                        child: Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 20.0.w,
+                                                                              child: RaisedButton(
+                                                                                elevation: 0.0,
+                                                                                color: blueColor,
+                                                                                child: Text(
+                                                                                  word.accept(),
+                                                                                  style: customStyle(
+                                                                                    fontColor: whiteColor,
+                                                                                    fontSize: 12.0.sp,
+                                                                                  ),
+                                                                                ),
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(12),
+                                                                                ),
+                                                                                onPressed: () async {
+                                                                                  _approval.state = 1;
+                                                                                  _approval.signUpApprover = _loginUser.mail;
+                                                                                  _approval.approvalDate = _format.dateTimeToTimeStamp(DateTime.now());
+
+                                                                                  await _repository.updateApproval(
+                                                                                    companyCode: _loginUser.companyCode,
+                                                                                    approvalModel: _approval,
+                                                                                  );
+                                                                                  await _loginRepository.userApproval(
+                                                                                    context: context,
+                                                                                    approvalUserMail: _approval.mail,
+                                                                                    position: dropDownPositionValue,
+                                                                                    teamName: dropDownTeamValue,
+                                                                                    enteredDate: _enteredDateController.text
+                                                                                  );
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                              ),
                                                                             ),
-                                                                            onPressed: () async {
-                                                                              Navigator.pop(context);
-                                                                            },
+                                                                            Container(
+                                                                              width: 10.0.w,
+                                                                            ),
+                                                                            Container(
+                                                                              width: 20.0.w,
+                                                                              child: RaisedButton(
+                                                                                elevation: 0.0,
+                                                                                color: blueColor,
+                                                                                child: Text(
+                                                                                  word.refusal(),
+                                                                                  style: customStyle(
+                                                                                    fontColor: whiteColor,
+                                                                                    fontSize: 12.0.sp,
+                                                                                  ),
+                                                                                ),
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(12),
+                                                                                ),
+                                                                                onPressed: () async {
+                                                                                  _approval.state = 2;
+                                                                                  _approval.signUpApprover = _loginUser.mail;
+                                                                                  _approval.approvalDate = _format.dateTimeToTimeStamp(DateTime.now());
+
+                                                                                  await _repository.updateApproval(
+                                                                                    companyCode: _loginUser.companyCode,
+                                                                                    approvalModel: _approval,
+                                                                                  );
+                                                                                  await _loginRepository.userRejection(approvalUserMail: _approval.mail, context: context);
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                              ),
+                                                                            ),
+                                                                            /*Container(
+                                                                            width: 10.0.w,
                                                                           ),
-                                                                        )*/
-                                                                      ],
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
+                                                                          Container(
+                                                                            width: 20.0.w,
+                                                                            child: RaisedButton(
+                                                                              elevation: 0.0,
+                                                                              color: blueColor,
+                                                                              child: Text(
+                                                                                word.cencel(),
+                                                                                style: customStyle(
+                                                                                  fontColor: whiteColor,
+                                                                                  fontSize: 12.0.sp,
+                                                                                ),
+                                                                              ),
+                                                                              shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(12),
+                                                                              ),
+                                                                              onPressed: () async {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                            ),
+                                                                          )*/
+                                                                          ],
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
                                                         );
                                                       });
                                                 },

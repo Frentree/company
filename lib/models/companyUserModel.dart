@@ -25,6 +25,7 @@ class CompanyUser {
   String profilePhoto;
   Timestamp createDate;
   Timestamp lastModDate;
+  String enteredDate;
   int status;
   List<dynamic> level;
   String position;
@@ -36,6 +37,7 @@ class CompanyUser {
     this.user,
     this.createDate,
     this.lastModDate,
+    this.enteredDate,
     this.status = 0,
     this.level,
     this.position,
@@ -51,6 +53,7 @@ class CompanyUser {
         phone = snapshot["phone"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
         createDate = snapshot["createDate"] ?? null,
+        enteredDate = snapshot["enteredDate"] ?? null,
         lastModDate = snapshot["lastModDate"] ?? null,
         status = snapshot["status"] ?? 0,
         level = snapshot["level"] ?? [],
@@ -67,10 +70,11 @@ class CompanyUser {
       "profilePhoto": user.profilePhoto,
       "createDate": createDate,
       "lastModDate": lastModDate,
+      "enteredDate": enteredDate == null ? "" : enteredDate,
       "status": status,
       "level": level,
-      "position": "",
-      "team": "",
+      "position": position == null ? "" : position,
+      "team": team == null ? "" : team,
       "userSearch": user.name.split(""),
     };
   }

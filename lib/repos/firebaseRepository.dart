@@ -305,5 +305,33 @@ class FirebaseRepository {
   Stream<QuerySnapshot> getTeamUserDelete(String companyCode, String teamName) =>
       _firebaseMethods.getTeamUserDelete(companyCode, teamName);
 
+  // 직급추가
+  Future<void> addPosition({String companyCode, String position}) =>
+      _firebaseMethods.addPosition(companyCode, position);
+
+  // 직급명 수정
+  Future<void> modifyPositionName({String companyCode, String position, String documentID}) =>
+      _firebaseMethods.modifyPositionName(companyCode, position, documentID);
+
+  //직급 불러오기
+  Stream<QuerySnapshot> getPositionList({String companyCode}) =>
+      _firebaseMethods.getPositionList(companyCode);
+
+  //직급 유저 불러오기
+  Stream<QuerySnapshot> getUserPosition({String companyCode, String position}) =>
+      _firebaseMethods.getUserPosition(companyCode, position);
+
+  //직급 삭제
+  Future<void> deleteUserPosition({String documentID, String companyCode, String position}) async =>
+      _firebaseMethods.deleteUserPosition(documentID, companyCode, position);
+
+  // 직급 - 사용자 추가
+  Future<void> addPositionUser({String companyCode, List<Map<String, dynamic>> user}) =>
+      _firebaseMethods.addPositionUser(companyCode, user);
+
+  // 직급 - 사용자 삭제 데이터 갖고오기
+  Stream<QuerySnapshot> getPositionUserDelete(String companyCode, String position) =>
+      _firebaseMethods.getPositionUserDelete(companyCode, position);
+
 
 }
