@@ -1,6 +1,7 @@
 //Flutter
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/screens/login/companySearch.dart';
+import 'package:MyCompany/main.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -82,7 +83,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
                       vertical: textFormFontPaddingH.h,
                       horizontal: textFormFontPaddingW.w,
                     ),
-                    hintText: "회사명",
+                    hintText: word.companyName(),
                     hintStyle: customStyle(
                       fontWeightName: "Regular",
                       fontColor: mainColor,
@@ -127,7 +128,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
                 elevation: 0.0,
                 child: Text(
                   "회사 가입",
-                  style: pageNameStyle,
+                  style: appVersionStyle,
                 ),
                 onPressed: _companyNameCon.text != "" ? () async {
                   _loginRepository.joinCompanyUser(

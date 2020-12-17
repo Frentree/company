@@ -1,10 +1,14 @@
 //Flutter
+import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/widgets/dialog/accountDialogList.dart';
+import 'package:MyCompany/widgets/dialog/gradeDialogList.dart';
+//Firebase
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//Firebase
-import 'package:firebase_auth/firebase_auth.dart';
-
+final word = Words();
 
 class FirebaseAuthProvider with ChangeNotifier {
   //Firebase 인증 instance
@@ -180,21 +184,63 @@ class FirebaseAuthProvider with ChangeNotifier {
     }
   }
 
+  // 계정 삭제 패스워드 확인
+  Future<void> confirmDropAccountPassword({BuildContext context, String companyCode, String mail, String password, String name}) async {
+    try {
+      var result = await _firebaseAuth.signInWithEmailAndPassword(email: mail, password: password);
+      if (result.user != null) {
+        Navigator.pop(context);
+        dropRealAccountDialog(context: context, companyCode: companyCode, mail: mail);
+      } else {
+        getErrorDialog(
+            context: context,
+            text: word.passwordFail()
+        );
+      }
+    } on Exception catch (e) {
+      getErrorDialog(
+          context: context,
+          text: word.passwordFail()
+      );
+    }
+  }
+
+  // 계정 삭제
+  Future<bool> confirmDropAccount({BuildContext context, String companyCode, String mail}) async {
+    bool isResult = false;
+    var result = await _firebaseAuth.currentUser;
+    
+    await result.delete().then((value) {
+      isResult = true;
+      //유저 삭제시
+      FirebaseRepository().deleteAccount(companyCode: companyCode, mail: mail);
+    }).catchError((error) {
+      getErrorDialog(context: context, text: word.dropAccountFail());
+      isResult = false;
+    });
+
+    return isResult;
+  }
+
   //패스워드 확인
-  Future<bool> confirmPassword({String mail, String password, String name}) async {
+  Future<bool> confirmPassword({BuildContext context, String mail, String password, String name}) async {
     try {
       var result = await _firebaseAuth.signInWithEmailAndPassword(
           email: mail,
           password: password
       );
       if(result.user != null) {
+
         return true;
       } else {
         return false;
       }
 
-    } on PlatformException catch (e) {
-      setLastFirebaseMessage(message: e.code);
+    } on Exception catch (e) {
+      getErrorDialog(
+        context: context,
+        text: word.passwordFail()
+      );
       return false;
     }
   }

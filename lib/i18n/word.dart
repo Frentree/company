@@ -296,11 +296,21 @@ class Words {
   String positionManagerment() => Intl.message("직급관리", name: "positionManagerment", args: [], desc: "positionManagerment message");
 
   String positionAdd() => Intl.message("직급 추가하기", name: "positionAdd", args: [], desc: "departmentAdd message");
-  String positionAddCon() => Intl.message("직급명을 입력해주세요", name: "positionAddCon", args: [], desc: "departmentAdd message");
+  String positionAddCon() => Intl.message("직급명을 입력해주세요", name: "positionAddCon", args: [], desc: "tdepartmentAdd message");
   String positionUpdate() => Intl.message("직급명 수정하기", name: "positionUpdate", args: [], desc: "To amend the department name message");
   String positionDelete() => Intl.message("직급 삭제하기", name: "positionDelete", args: [], desc: "departmentDelete message");
   String deletePositionCon() => Intl.message("직급을 삭제 하시겠습니까?", name: "deletePsitionCon", args: [], desc: "deleteTeamCon message");
 
   String enteredDate() => Intl.message("입사일", name: "enteredDate", args: [], desc: "Entered date message");
   String enteredDateCon() => Intl.message("입사일을 입력해주세요", name: "enteredDateCon", args: [], desc: "Entered date message");
+  String dropAccountCon() => Intl.message("계정을 정말로 삭제 하시겠습니까?", name: "dropAccountCon", args: [], desc: "dropAccountCon message");
+  String passwordFail() => Intl.message("패스워드가 틀렸습니다.", name: "passwordFail", args: [], desc: "dropAccountCon message");
+  String dropAccountFail() => Intl.message("계정 삭제를 실패하였습니다.", name: "dropAccountFail", args: [], desc: "dropAccountCon message");
+  String dropAccountGradeFail() => Intl.message("최고 및 앱 관리자이므로 삭제 불가능합니다. ", name: "dropAccountGradeFail", args: [], desc: "dropAccountCon message");
+  String dropAccountCompltedDialog() => Intl.message("계정이 삭제되었습니다.", name: "dropAccountCompltedDialog", args: [], desc: "dropAccountCon message");
+  String loginPageGo() => Intl.message("로그인 화면으로 이동", name: "loginPageGo", args: [], desc: "loginPageGo message");
+
+
+  String singUpWaiting() => Intl.message("승인 대기", name: "singUpWaiting", args: [], desc: "singUpWaiting message");
+  String singUpWaitingCon() => Intl.message("회원가입 승인 대기 상태입니다.\n승인 완료 후 이용 가능합니다.", name: "singUpWaitingCon", args: [], desc: "singUpWaiting message");
 }

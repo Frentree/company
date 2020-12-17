@@ -2,6 +2,7 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:flutter/material.dart';
 
 //Provider
@@ -17,14 +18,38 @@ import 'package:MyCompany/repos/showSnackBarMethod.dart';
 import 'package:MyCompany/models/userModel.dart';
 
 class myInfomationMethod{
-  Future<bool> InfomationConfirmWithFirebaseAuth({BuildContext context, String mail, String password, String name}) async {
+  Future<bool> InfomationConfirmWithFirebaseAuth({BuildContext context, String companyCode, String mail, String password, String name}) async {
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
 
-    print("메일 => " + mail + ", 패스워드 => " + password + ", 이름 => " + name);
+    //print("메일 => " + mail + ", 패스워드 => " + password + ", 이름 => " + name);
 
-    bool _signUpEmailResult = await _firebaseAuthProvider.confirmPassword(mail: mail, password: password, name: name);
+    bool _signUpEmailResult = await _firebaseAuthProvider.confirmPassword(context: context, mail: mail, password: password, name: name);
 
     return _signUpEmailResult;
+  }
+
+  // 계정삭제 패스워드 확인
+  Future<void> dropAccountWithFirebaseAuth({BuildContext context, String companyCode, String mail, String password, String name}) async {
+    FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
+    await _firebaseAuthProvider.confirmDropAccountPassword(context: context, companyCode: companyCode, mail: mail, password: password, name: name);
+  }
+
+  // 계정삭제
+  Future<void> dropAccountAuth(BuildContext context, String companyCode, String mail) async {
+    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
+
+    FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
+
+    bool result = await _firebaseAuthProvider.confirmDropAccount(context: context, companyCode: companyCode, mail: mail);
+
+    print("result =================> " + result.toString());
+
+    if(result){
+      _loginUserInfoProvider.logoutUesr();
+      Navigator.pop(context);
+    } else {
+      Navigator.pop(context);
+    }
   }
 
   Future<bool> InfomationUpdateWithFirebaseAuth({BuildContext context, String mail, String newPassword, String newPasswordConfirm, String name}) async {
@@ -41,9 +66,6 @@ class myInfomationMethod{
     bool signUpEmailResult;
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
     LoginScreenChangeProvider _loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context, listen: false);
-
-    print("메일 => " + mail + ", 패스워드 => " + newPassword + ", 패스워드 확인 => " + newPasswordConfirm + ", 이름 => " + name);
-
 
     if(newPassword == ""){  // 패스워드 입력 안함
       pwdMsgTitle = "비밀번호 변경 실패";

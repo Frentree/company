@@ -35,6 +35,17 @@ class LoginRepository {
       _signUpMethod.signUpWithFirebaseAuth(
           context: context, /*smsCode: smsCode,*/ password: password, user: user);
 
+  // 계정삭제 패스워드 확인
+  Future<void> dropAccountWithFirebaseAuth(
+      {BuildContext context, String companyCode, String mail, String password, String name}) =>
+      _myInfoMethod.dropAccountWithFirebaseAuth(
+          context: context, companyCode: companyCode, mail: mail, password: password, name: name);
+
+  // 계정삭제
+  Future<void> dropAccountAuth(
+      {BuildContext context, String companyCode, String mail}) =>
+      _myInfoMethod.dropAccountAuth(context, companyCode, mail);
+
   // 패스워드 확인
   Future<bool> InfomationConfirmWithFirebaseAuth(
       {BuildContext context, String mail, String password, String name}) =>

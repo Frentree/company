@@ -866,6 +866,29 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Future<void> deleteAccount(String companyCode, String mail) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
+        .delete();
+
+    return await firestore
+        .collection(USER)
+        .doc(mail)
+        .delete();
+  }
+
+  Future<CompanyUser> getComapnyUser(String companyCode, String mail) async {
+    var doc = await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
+        .get();
+    return CompanyUser.fromMap(doc.data(), doc.id);
+  }
 }
 
 class FirestoreApi {

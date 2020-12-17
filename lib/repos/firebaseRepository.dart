@@ -333,5 +333,12 @@ class FirebaseRepository {
   Stream<QuerySnapshot> getPositionUserDelete(String companyCode, String position) =>
       _firebaseMethods.getPositionUserDelete(companyCode, position);
 
+  // 계정삭제
+  Future<void> deleteAccount({String companyCode, String mail}) =>
+      _firebaseMethods.deleteAccount(companyCode, mail);
+
+  // 회사가입된 유저 정보 갖고오기
+  Future<CompanyUser> getComapnyUser({String companyCode, String mail}) =>
+      _firebaseMethods.getComapnyUser(companyCode, mail);
 
 }

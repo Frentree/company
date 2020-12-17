@@ -1,18 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingMyPageUpdate.dart';
-import 'package:MyCompany/widgets/form/textFormField.dart';
-import 'package:MyCompany/i18n/word.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:MyCompany/widgets/dialog/accountDialogList.dart';
+import 'package:MyCompany/widgets/dialog/gradeDialogList.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
@@ -36,6 +32,7 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
       return Padding(
         padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -213,21 +210,33 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
             SizedBox(
               height: 1.0.h,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    word.accountSecession(),
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
-                    ),
-                  ),
+            ActionChip(
+              backgroundColor: blueColor,
+              label: Text(
+                word.accountSecession(),
+                style: customStyle(
+                  fontSize: 13.0.sp,
+                  fontColor: whiteColor,
+                  fontWeightName: 'Medium',
                 ),
-                Expanded(child: SizedBox()),
-              ],
-            ),
+              ),
+              onPressed: () async {
+                CompanyUser comUser = await FirebaseRepository().getComapnyUser(companyCode: user.companyCode, mail: user.mail);
+                List<String> list = List();
+                comUser.level.map((value) => list.add(value.toString())).toList();
+
+                if (list.contains("9") || list.contains("8")) {
+                    getErrorDialog(context: context, text: word.dropAccountGradeFail());
+                  } else {
+                    dropAccountDialog(
+                      context: context,
+                      companyCode: user.companyCode,
+                      mail: user.mail,
+                      name: user.name,
+                    );
+                  }
+                },
+              ),
           ],
         ),
       );
@@ -299,6 +308,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Text(
                     snapshot.data["companyName"],
                     style: customStyle(
@@ -354,6 +364,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Text(
                     snapshot.data["companyAddr"],
                     style: customStyle(
@@ -382,6 +393,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Text(
                     snapshot.data["companyPhone"],
                     style: customStyle(
@@ -410,6 +422,7 @@ Widget getCompanyInfomationCard({BuildContext context, User user}) {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Text(
                     snapshot.data["companyWeb"],
                     style: customStyle(
