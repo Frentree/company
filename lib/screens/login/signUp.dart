@@ -119,16 +119,14 @@ class SignUpPageState extends State<SignUpPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: pageNameSizeH.h,
+                height: 5.0.h,
                 alignment: Alignment.centerLeft,
                 child: Text(
                   word.signUp(),
                   style: pageNameStyle,
                 ),
               ),
-              Container(
-                height: widgetDistanceH.h,
-              ),
+              emptySpace,
               Container(
                 child: Column(
                   children: [
@@ -136,23 +134,12 @@ class SignUpPageState extends State<SignUpPage> {
                       key: _formKeyName,
                       child: TextFormField(
                         controller: _nameTextCon,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: defaultSize.sp,
-                        ),
+                        style: defaultRegularStyle,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: textFormFontPaddingH.h,
-                            horizontal: textFormFontPaddingW.w,
-                          ),
+                          contentPadding: textFormPadding,
                           hintText: word.name(),
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                            fontSize: defaultSize.sp,
-                          ),
+                          hintStyle: hintStyle,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: textFieldUnderLine,
@@ -175,30 +162,17 @@ class SignUpPageState extends State<SignUpPage> {
                         }),
                       ),
                     ),
-                    Container(
-                      height: widgetDistanceH.h,
-                    ),
+                    emptySpace,
                     Form(
                       key: _formKeyMail,
                       child: TextFormField(
                         controller: _mailTextCon,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: defaultSize.sp,
-                        ),
+                        style: defaultRegularStyle,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: textFormFontPaddingH.h,
-                            horizontal: textFormFontPaddingW.w,
-                          ),
+                          contentPadding: textFormPadding,
                           hintText: word.email(),
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                            fontSize: defaultSize.sp,
-                          ),
+                          hintStyle: hintStyle,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: textFieldUnderLine,
@@ -221,30 +195,17 @@ class SignUpPageState extends State<SignUpPage> {
                         }),
                       ),
                     ),
-                    Container(
-                      height: widgetDistanceH.h,
-                    ),
+                    emptySpace,
                     Form(
                       key: _formKeyPassword,
                       child: TextFormField(
                         controller: _passwordTextCon,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: defaultSize.sp,
-                        ),
+                        style: defaultRegularStyle,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: textFormFontPaddingH.h,
-                            horizontal: textFormFontPaddingW.w,
-                          ),
+                          contentPadding: textFormPadding,
                           hintText: word.password(),
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                            fontSize: defaultSize.sp,
-                          ),
+                          hintStyle: hintStyle,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: textFieldUnderLine,
@@ -267,30 +228,17 @@ class SignUpPageState extends State<SignUpPage> {
                         }),
                       ),
                     ),
-                    Container(
-                      height: widgetDistanceH.h,
-                    ),
+                    emptySpace,
                     Form(
                       key: _formKeyPasswordConfirm,
                       child: TextFormField(
                         controller: _passwordConfirmTextCon,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: defaultSize.sp,
-                        ),
+                        style: defaultRegularStyle,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: textFormFontPaddingH.h,
-                            horizontal: textFormFontPaddingW.w,
-                          ),
+                          contentPadding: textFormPadding,
                           hintText: word.passwordConfirm(),
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                            fontSize: defaultSize.sp,
-                          ),
+                          hintStyle: hintStyle,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: textFieldUnderLine,
@@ -313,30 +261,17 @@ class SignUpPageState extends State<SignUpPage> {
                         }),
                       ),
                     ),
-                    Container(
-                      height: widgetDistanceH.h,
-                    ),
+                    emptySpace,
                     Form(
                       key: _formKeyBirthday,
                       child: TextFormField(
                         controller: _birthdayTextCon,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: defaultSize.sp,
-                        ),
+                        style: defaultRegularStyle,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: textFormFontPaddingH.h,
-                            horizontal: textFormFontPaddingW.w,
-                          ),
+                          contentPadding: textFormPadding,
                           hintText: word.birthDay(),
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                            fontSize: defaultSize.sp,
-                          ),
+                          hintStyle: hintStyle,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: textFieldUnderLine,
@@ -359,30 +294,17 @@ class SignUpPageState extends State<SignUpPage> {
                         }),
                       ),
                     ),
-                    Container(
-                      height: widgetDistanceH.h,
-                    ),
+                    emptySpace,
                     Form(
                       key: _formKeyPhone,
                       child: TextFormField(
                         controller: _phoneNumberTextCon,
-                        style: customStyle(
-                          fontWeightName: "Regular",
-                          fontColor: mainColor,
-                          fontSize: defaultSize.sp,
-                        ),
+                        style: defaultRegularStyle,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: textFormFontPaddingH.h,
-                            horizontal: textFormFontPaddingW.w,
-                          ),
+                          contentPadding: textFormPadding,
                           hintText: word.phone(),
-                          hintStyle: customStyle(
-                            fontWeightName: "Regular",
-                            fontColor: mainColor,
-                            fontSize: defaultSize.sp,
-                          ),
+                          hintStyle: hintStyle,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: textFieldUnderLine,
@@ -405,9 +327,7 @@ class SignUpPageState extends State<SignUpPage> {
                         }),
                       ),
                     ),
-                    Container(
-                      height: widgetButtonDistanceH.h,
-                    ),
+                    emptySpace,
                     /*Container(
                       height: heightRatio(
                         context: context,
@@ -645,24 +565,18 @@ class SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                     ),*/
-
+                    emptySpace,
                     Center(
                       child: Container(
                         height: buttonSizeH.h,
-                        width: buttonSizeW.w,
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? buttonSizeTW.w : buttonSizeMW.w,
                         child: RaisedButton(
                           color: blueColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(buttonRadiusW.w),
-                          ),
+                          shape: raisedButtonShape,
                           elevation: 0.0,
                           child: Text(
                             "회원가입",
-                            style: customStyle(
-                              fontWeightName: "Medium",
-                              fontColor: whiteColor,
-                              fontSize: defaultSize.sp,
-                            ),
+                            style: buttonWhiteStyle,
                           ),
                           onPressed: !(isFormValidation.contains(false) /*|| _smsCode.contains("")*/) ? () async {
                             await _loginRepository.signUpWithFirebaseAuth(

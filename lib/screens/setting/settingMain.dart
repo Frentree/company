@@ -1,22 +1,20 @@
 import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/screens/setting/myWork.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingOrganizationChart.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingPosition.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserManager.dart';
 import 'package:MyCompany/widgets/card/settingInfomationCard.dart';
 import 'package:MyCompany/i18n/word.dart';
-import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
+
 
 final word = Words();
 
@@ -26,7 +24,7 @@ class SettingMainPage extends StatefulWidget {
 }
 
 class SettingMainPageState extends State<SettingMainPage> {
-  int tabIndex = 0;
+  List<bool> tabIndex = [false, false, false];
   User _loginUser;
   bool co_worker_alert = true;
   bool approval_alert = false;
@@ -37,7 +35,7 @@ class SettingMainPageState extends State<SettingMainPage> {
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider =
-        Provider.of<LoginUserInfoProvider>(context);
+    Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
     return Scaffold(
         backgroundColor: whiteColor,
@@ -49,136 +47,339 @@ class SettingMainPageState extends State<SettingMainPage> {
             List<dynamic> grade = snapshot.data['level'];
             return ListView(
               children: <Widget>[
-                (grade.contains(9) || grade.contains(8))
-                    ? ExpansionTile(
-                        // 2. 리스트 항목 추가하면 끝!
-                        leading: Icon(
-                          Icons.person_outline,
-                          size: iconSizeW.w,
+                (grade.contains(9) || grade.contains(8)) ? Container(
+                  decoration: tabIndex[0] == false ? BoxDecoration() : BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
                         ),
-                        title: Text(
-                          word.companyInfomation(), // 회사 정보
-                          style: customStyle(
-                            fontColor: Colors.green,
-                            fontSize: homePageDefaultFontSize,
-                          ),
+                        bottom: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
                         ),
-                        children: [
-                          getCompanyInfomationCard(
-                              context: context, user: _loginUser)
-                        ],
                       )
-                    : SizedBox(),
-                (grade.contains(9) || grade.contains(8))
-                    ? ExpansionTile(
-                        // 2. 리스트 항목 추가하면 끝!
-                        leading: Icon(
-                          Icons.people_outline,
-                          size: iconSizeW.w,
-                        ),
-                        title: Text(
-                          word.userManager(),
-                          style: customStyle(
-                            fontColor: Colors.green,
-                            fontSize: homePageDefaultFontSize,
-                          ),
-                        ),
-                        childrenPadding: EdgeInsets.only(left: 5.0.w),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // 조직도
-                          ListTile(
-                            leading: Icon(
-                              Icons.account_tree_outlined,
-                              size: 7.0.w,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.apartment_sharp,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
                             ),
-                            title: Text(
-                              word.organizationChart(),
-                              style: customStyle(
-                                fontSize: 12.0.sp,
+                          ),
+                          cardSpace,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              word.companyInfomation(), // 회사 정보
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  tabIndex[0] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){;
+                                setState(() {
+                                  tabIndex[0] = !tabIndex[0];
+                                });
+                                },
+                              )
+                          )
+                        ],
+                      ),
+                      tabIndex[0] == false ? Container() : getCompanyInfomationCard(
+                        context: context, user: _loginUser,
+                      )
+                    ],
+                  ),
+                ) : Container(),
+                (grade.contains(9) || grade.contains(8)) ? Container(
+                  decoration: tabIndex[1] == false ? BoxDecoration() : BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                        bottom: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                      )
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.people_outline,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
+                            ),
+                          ),
+                          cardSpace,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              word.userManager(),
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  tabIndex[1] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    tabIndex[1] = !tabIndex[1];
+                                  });
+                                },
+                              )
+                          )
+                        ],
+                      ),
+                      tabIndex[1] == false ? Container() : Column(
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.account_tree_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      word.organizationChart(),
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            dense: true,
-                            onTap: () {
+                            onTap: (){
                               SettingOrganizationChart(context);
                             },
                           ),
-                          // 직급관리
-                          ListTile(
-                            leading: Icon(
-                              Icons.account_box_outlined,
-                              size: 7.0.w,
-                            ),
-                            title: Text(
-                              word.positionManagerment(),
-                              style: customStyle(
-                                fontSize: 12.0.sp,
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.account_box_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      word.positionManagerment(),
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            dense: true,
-                            onTap: () {
+                            onTap: (){
                               SettingPosition(context);
                             },
                           ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.person_add_alt_1_outlined,
-                              size: 7.0.w,
-                            ),
-                            title: Text(
-                              word.userAddRquestAndDelete(),
-                              style: customStyle(
-                                fontSize: 12.0.sp,
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.person_add_alt_1_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      word.userAddRquestAndDelete(),
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            dense: true,
-                            onTap: () {
-                              settingUserAddDelete(context);
+                            onTap: (){
+                              settingUserAddDelete(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
                             },
                           ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.badge,
-                              size: 7.0.w,
-                            ),
-                            title: Text(
-                              word.userGradeManager(),
-                              style: customStyle(
-                                fontSize: 12.0.sp,
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.badge,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      word.userGradeManager(), // 회사 정보
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            dense: true,
-                            onTap: () {
+                            onTap: (){
                               SettingUserManager(context);
                             },
                           ),
-
-                          /// 기능 미구현으로 인한 숨김 처리
-                          /*ListTile(
-                      leading: Icon(Icons.list_alt_sharp),
-                      title: Text('사용자별 근채/연차/급여 조회'),
-                      dense: true,
-                      onTap: () {
-                        NotImplementedFunction(context);
-                      },
-                    ),*/
+                          emptySpace,
                         ],
+                      ),
+                    ],
+                  ),
+                ) : Container(),
+                Container(
+                  decoration: tabIndex[2] == false ? BoxDecoration() : BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                        bottom: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
                       )
-                    : SizedBox(),
-                ExpansionTile(
-                  // 2. 리스트 항목 추가하면 끝!
-                  leading: Icon(
-                    Icons.person_outline,
-                    size: iconSizeW.w,
                   ),
-                  title: Text(
-                    word.myInfomation(),
-                    style: customStyle(
-                      fontSize: homePageDefaultFontSize,
-                    ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   ),
-                  children: [
-                    getMyInfomationCard(context: context, user: _loginUser),
-                  ],
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.person_outline,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
+                            ),
+                          ),
+                          cardSpace,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              word.myInfomation(), // 회사 정보
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  tabIndex[2] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    tabIndex[2] = !tabIndex[2];
+                                  });
+                                },
+                              )
+                          )
+                        ],
+                      ),
+                      tabIndex[2] == false ? Container() : getMyInfomationCard(context: context, user: _loginUser),
+                    ],
+                  ),
                 ),
 
                 /// 기능 미구현으로 인한 숨김 처리
@@ -305,81 +506,141 @@ class SettingMainPageState extends State<SettingMainPage> {
                     )
                   ],
                 ),*/
-                ListTile(
-                  leading: Icon(
-                    Icons.info_outline,
-                    size: iconSizeW.w,
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  child: Column(
                     children: [
-                      Text(
-                        word.serviceCenter(),
-                        style: customStyle(
-                          fontSize: homePageDefaultFontSize,
-                        ),
-                      ),
-                      Text(
-                        'pe.jeon87@frentree.com',
-                        style: customStyle(
-                            fontSize: 12.0.sp, fontColor: grayColor),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.info_outline,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
+                            ),
+                          ),
+                          cardSpace,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 78.5.w : 72.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  word.serviceCenter(), // 회사 정보
+                                  style: defaultMediumStyle,
+                                ),
+                                Text(
+                                  "pe.jeon87@frentree.com", // 회사 정보
+                                  style: hintStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-
-                ListTile(
-                  leading: Icon(
-                    Icons.info_outline,
-                    size: iconSizeW.w,
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  child: Column(
                     children: [
-                      Text(
-                        word.appVersion(),
-                        style: customStyle(
-                          fontSize: homePageDefaultFontSize,
-                        ),
-                      ),
-                      Text(
-                        '0.01',
-                        style: customStyle(
-                            fontSize: 12.0.sp, fontColor: grayColor),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.info_outline,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
+                            ),
+                          ),
+                          cardSpace,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.5.w : 62.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  word.appVersion(), // 회사 정보
+                                  style: defaultMediumStyle,
+                                ),
+                                Text(
+                                  "0.01", // 회사 정보
+                                  style: hintStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                word.newVersion(),
+                                style: defaultRegularStyle,
+                              )
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  trailing: Text(word.newVersion()),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    size: iconSizeW.w,
-                  ),
-                  title: Text(
-                    word.logout(),
-                    style: customStyle(
-                      fontSize: homePageDefaultFontSize,
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: Icon(
+                                Icons.logout,
+                                size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                color: mainColor,
+                              ),
+                            ),
+                            cardSpace,
+                            Container(
+                                height: 9.0.h,
+                                width: SizerUtil.deviceType == DeviceType.Tablet ? 78.5.w : 72.0.w,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  word.logout(),
+                                  style: defaultMediumStyle,
+                                )
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  onTap: () {
+                  onTap: (){
                     _loginUserInfoProvider.logoutUesr();
                   },
                 ),
               ],
             );
           },
-        ));
-  }
-
-  void movePage(BuildContext context, page, tab) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MyWork(),
-      ),
+        )
     );
   }
 }

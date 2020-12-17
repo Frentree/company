@@ -1,28 +1,15 @@
 //Flutter
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 //Const
-import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-
-import 'package:MyCompany/models/workModel.dart';
-
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
-
-const widthDistance = 0.02; // 항목별 간격
-const timeFontSize = 13.0;
-const typeFontSize = 12.0;
-const titleFontSize = 15.0;
-const writeTimeFontSize = 14.0;
-const fontColor = mainColor;
 
 Column childColumn({BuildContext context, List<dynamic> workData}) {
   Format _format = Format();
@@ -32,65 +19,45 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
     var elementData = element.data();
     columnChildRow.add(
       Container(
-        height: 6.0.h,
-        alignment: Alignment.center,
+        height: scheduleCardDefaultSizeH.h,
         child: Row(
           children: [
-            Text(
-              _format.timeToString(elementData["startTime"]),
-              style: customStyle(
-                fontSize: 11.0.sp,
-                fontWeightName: "Regular",
-                fontColor: blueColor,
+            Container(
+              width: SizerUtil.deviceType == DeviceType.Tablet ? 9.0.w : 12.0.w,
+              child: Text(
+                _format.timeToString(elementData["startTime"]),
+                style: cardBlueStyle,
               ),
             ),
-            SizedBox(
-              width: 2.0.w,
-            ),
             Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: textFieldUnderLine),
-                  borderRadius: BorderRadius.circular(2.0.w)),
-              width: 15.0.w,
-              height: 3.5.h,
+              height: 3.0.h,
+              width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+              decoration: containerChipDecoration,
+              padding: EdgeInsets.symmetric(
+                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+              ),
               alignment: Alignment.center,
               child: Text(
                 elementData["type"],
-                style: customStyle(
-                    fontSize: 10.0.sp,
-                    fontWeightName: "Regular",
-                    fontColor: fontColor),
+                style: containerChipStyle,
               ),
             ),
-            SizedBox(
-              width: 2.0.w,
-            ),
+            cardSpace,
             Container(
-              width: elementData["type"] == "외근"
-                  ? 25.0.w
-                  : 40.0.w,
+              width: elementData["type"] == "외근" ? SizerUtil.deviceType == DeviceType.Tablet ? 34.0.w : 18.0.w : SizerUtil.deviceType == DeviceType.Tablet ? 49.5.w : 33.0.w,
               child: Text(
                 elementData["title"],
-                style: customStyle(
-                  fontSize: cardTitleFontSize.sp,
-                  fontWeightName: "Medium",
-                  fontColor: mainColor,
-                ),
+                style: cardTitleStyle,
               ),
             ),
             Visibility(
               visible: elementData["type"] == "외근",
               child: Container(
-                width: 15.0.w,
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 15.5.w : 15.0.w,
                 child: Text(
-                    elementData["location"] == ""
-                        ? ""
-                        : "[${elementData["location"]}]",
-                    style: customStyle(
-                      fontSize: 11.0.sp,
-                      fontWeightName: "Medium",
-                      fontColor: mainColor,
-                    )),
+                  elementData["location"] == "" ? "" : "[${elementData["location"]}]",
+                  style: cardTitleStyle,
+                ),
               ),
             )
           ],
@@ -100,61 +67,42 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
   });
 
   Column childColumn = Column(
-    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: columnChildRow,
   );
 
   return childColumn;
 }
 
-Card workCoScheduleCard(
-    {BuildContext context, String name, List<dynamic> workData}) {
+Card workCoScheduleCard({BuildContext context, String name, List<dynamic> workData}) {
   return Card(
     elevation: 0,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(cardRadiusW.w),
-      side: BorderSide(
-        width: 1,
-        color: boarderColor,
-      ),
-    ),
+    shape: cardShape,
     child: Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: cardPaddingW.w,
-        vertical: cardPaddingH.h,
-      ),
+      padding: cardPadding,
       child: Row(
         children: [
           Container(
-            width: 12.0.w,
+            width: SizerUtil.deviceType == DeviceType.Tablet ? 9.0.w : 12.0.w,
             child: Text(
               name,
-              style: customStyle(
-                fontSize: 11.0.sp,
-                fontWeightName: "Regular",
-              ),
+              style: cardTitleStyle,
             ),
           ),
-          SizedBox(
-            width: 2.0.w,
+          Container(
+            width: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
           ),
-          workData.length == 0
-              ? Container(
-                  height: 6.0.h,
-                  alignment: Alignment.center,
-                  child: Text(
-                    word.noSchedule(),
-                    style: customStyle(
-                      fontSize: cardTitleFontSize.sp,
-                      fontWeightName: "Medium",
-                      fontColor: mainColor,
-                    ),
-                  ),
-                )
-              : childColumn(
-                  context: context,
-                  workData: workData,
-                ),
+          workData.length == 0 ? Container(
+            height: scheduleCardDefaultSizeH.h,
+            alignment: Alignment.center,
+            child: Text(
+              word.noSchedule(),
+              style: cardTitleStyle,
+            ),
+          ) : childColumn(
+            context: context,
+            workData: workData,
+          ),
         ],
       ),
     ),

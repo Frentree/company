@@ -55,40 +55,23 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
             alignment: Alignment.centerLeft,
             child: Text(
               "회사 가입",
-              style: customStyle(
-                fontWeightName: "Medium",
-                fontColor: blueColor,
-                fontSize: defaultSize.sp,
-              ),
+              style: pageNameStyle,
             ),
           ),
-          Container(
-            height: widgetDistanceH.h,
-          ),
+          emptySpace,
           Container(
             child: Column(
               children: [
                 TextFormField(
                   controller: _companyNameCon,
-                  style: customStyle(
-                    fontWeightName: "Regular",
-                    fontColor: mainColor,
-                    fontSize: defaultSize.sp,
-                  ),
+                  style: defaultRegularStyle,
                   readOnly: true,
                   showCursor: false,
                   decoration: InputDecoration(
                     isDense: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: textFormFontPaddingH.h,
-                      horizontal: textFormFontPaddingW.w,
-                    ),
+                    contentPadding: textFormPadding,
                     hintText: word.companyName(),
-                    hintStyle: customStyle(
-                      fontWeightName: "Regular",
-                      fontColor: mainColor,
-                      fontSize: defaultSize.sp,
-                    ),
+                    hintStyle: hintStyle,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: textFieldUnderLine,
@@ -113,22 +96,19 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
               ],
             ),
           ),
-          Container(
-            height: widgetButtonDistanceH.h,
-          ),
+          emptySpace,
+          emptySpace,
           Center(
             child: Container(
               height: buttonSizeH.h,
-              width: buttonSizeW.w,
+              width: SizerUtil.deviceType == DeviceType.Tablet ? buttonSizeTW.w : buttonSizeMW.w,
               child: RaisedButton(
                 color: blueColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(buttonRadiusW.w),
-                ),
+                shape: raisedButtonShape,
                 elevation: 0.0,
                 child: Text(
                   "회사 가입",
-                  style: appVersionStyle,
+                  style: buttonWhiteStyle,
                 ),
                 onPressed: _companyNameCon.text != "" ? () async {
                   _loginRepository.joinCompanyUser(

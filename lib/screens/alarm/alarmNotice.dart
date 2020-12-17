@@ -1,7 +1,9 @@
 //Flutter
-
 import 'dart:ui';
 
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -45,14 +47,14 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
 
   // 댓글 카운트
   Future<String> countDocuments(String companyCode, String documentId) async {
-    QuerySnapshot commentCount = await Firestore.instance
+    QuerySnapshot commentCount = await FirebaseFirestore.instance
         .collection('company')
-        .document(_loginUser.companyCode)
+        .doc(_loginUser.companyCode)
         .collection("notice")
-        .document(documentId)
+        .doc(documentId)
         .collection("comment")
-        .getDocuments();
-    List<DocumentSnapshot> _commentCount = commentCount.documents;
+        .get();
+    List<DocumentSnapshot> _commentCount = commentCount.docs;
 
     print(_commentCount.length);  // Count of Documents in Collection
 
@@ -79,178 +81,180 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
             itemBuilder: (context, index) {
               return Card(
                 elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(cardRadiusW.w),
-                    side: BorderSide(
-                      width: 1,
-                      color: boarderColor,
-                    )
-                ),
+                shape: cardShape,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 3.0.w,
-                    vertical: 2.0.h),
+                  padding: cardPadding,
                   child: Column(
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
+                            height: 8.0.h,
                             alignment: Alignment.center,
-                            color: whiteColor,
-                            width: 10.0.w,
-                            height: 7.0.h,
-                            child: FutureBuilder(
-                              future: FirebaseRepository().photoProfile(_loginUser.companyCode, documents[index].data()['noticeCreateUser']['mail']),
-                              builder: (context, snapshot) {
-                                if (!snapshot.hasData) {
-                                  return Icon(Icons.person_outline);
-                                }
-                                return Image.network(snapshot.data['profilePhoto']);
-                              },
-                            ),
+                            child: profilePhoto(loginUser: _loginUser),
                           ),
-                          SizedBox(
-                            width: 4.0.w,
-                          ),
+                          cardSpace,
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                color: Colors.yellow,
-                                width: 70.0.w,
-                                height: 5.0.h,
-                                child: Row(
+                                height: 8.0.h,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      width: 60.0.w,
-                                      child: Text(
-                                        documents[index].data()['noticeTitle'].toString(),
-                                        style: customStyle(
-                                            fontSize: cardTitleFontSize.sp,
-                                            fontWeightName: 'Medium',
-                                            fontColor: mainColor
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 68.0.w : 57.0.w,
+                                          height: 5.0.h,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            documents[index].data()['noticeTitle'].toString(),
+                                            style: cardTitleStyle,
+                                          ),
                                         ),
-                                      ),
+                                        Visibility(
+                                          visible: documents[index].data()['noticeCreateUser']['mail'] == _loginUser.mail,
+                                          child: Container(
+                                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                            height: 5.0.h,
+                                            alignment: Alignment.center,
+                                            child: PopupMenuButton(
+                                              padding: EdgeInsets.zero,
+                                              icon: Icon(
+                                                Icons.more_vert_sharp,
+                                                size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                              ),
+                                              onSelected: (value) {
+                                                if(value == 1){  // 수정하기 버튼 클릭시
+                                                  WorkNoticeBottomSheet(context,
+                                                      documents[index].id,
+                                                      documents[index].data()['noticeTitle'],
+                                                      documents[index].data()['noticeContent']
+                                                  );
+                                                } else if(value == 2) { // 삭제 버튼 클릭시
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      // return object of type Dialog
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                          word.noticeDelete(),
+                                                          style: customStyle(
+                                                              fontColor: mainColor,
+                                                              fontSize: homePageDefaultFontSize.sp,
+                                                              fontWeightName: 'Medium'
+                                                          ),
+                                                        ),
+                                                        content: Text(
+                                                          word.noticeDeleteCon(),
+                                                          style: customStyle(
+                                                              fontColor: mainColor,
+                                                              fontSize: 12.0.sp,
+                                                              fontWeightName: 'Regular'
+                                                          ),
+                                                        ),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text(word.yes(),
+                                                              style: customStyle(
+                                                                  fontColor: blueColor,
+                                                                  fontSize: homePageDefaultFontSize.sp,
+                                                                  fontWeightName: 'Medium'
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                FirebaseRepository().deleteNotice(
+                                                                  companyCode: _loginUser.companyCode,
+                                                                  documentID: documents[index].documentID
+                                                                );
+                                                              });
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                          FlatButton(
+                                                            child: Text(word.no(),
+                                                              style: customStyle(
+                                                                  fontColor: blueColor,
+                                                                  fontSize: homePageDefaultFontSize.sp,
+                                                                  fontWeightName: 'Medium'
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                              itemBuilder: (BuildContext context) => [
+                                                PopupMenuItem(
+                                                  height: 7.0.h,
+                                                  value: 1,
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        child: Icon(
+                                                          Icons.edit,
+                                                          size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+                                                        ),
+                                                      ),
+                                                      Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+                                                      Text(
+                                                        word.update(),
+                                                        style: popupMenuStyle,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                PopupMenuItem(
+                                                  height: 7.0.h,
+                                                  value: 2,
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.delete,
+                                                        size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+                                                      ),
+                                                      Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+                                                      Text(
+                                                        word.delete(),
+                                                        style: popupMenuStyle,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
-                                      width: 10.0.w,
-                                      child: Visibility(
-                                        visible: documents[index].data()['noticeCreateUser']['mail'] == _loginUser.mail,
-                                        child: PopupMenuButton(
-                                          padding: EdgeInsets.zero,
-                                          icon: Icon(
-                                              Icons.more_horiz,
-                                            size: iconSizeW.w,
-                                          ),
-                                          onSelected: (value) {
-                                            if(value == 1){  // 수정하기 버튼 클릭시
-                                              WorkNoticeBottomSheet(context,
-                                                  documents[index].documentID,
-                                                  documents[index].data()['noticeTitle'],
-                                                  documents[index].data()['noticeContent']
-                                              );
-                                            } else if(value == 2) { // 삭제 버튼 클릭시
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  // return object of type Dialog
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                      word.noticeDelete(),
-                                                      style: customStyle(
-                                                          fontColor: mainColor,
-                                                          fontSize: homePageDefaultFontSize.sp,
-                                                          fontWeightName: 'Medium'
-                                                      ),
-                                                    ),
-                                                    content: Text(
-                                                      word.noticeDeleteCon(),
-                                                      style: customStyle(
-                                                          fontColor: mainColor,
-                                                          fontSize: 12.0.sp,
-                                                          fontWeightName: 'Regular'
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      FlatButton(
-                                                        child: Text(word.yes(),
-                                                          style: customStyle(
-                                                              fontColor: blueColor,
-                                                              fontSize: homePageDefaultFontSize.sp,
-                                                              fontWeightName: 'Medium'
-                                                          ),
-                                                        ),
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            FirebaseRepository().deleteNotice(
-                                                              companyCode: _loginUser.companyCode,
-                                                              documentID: documents[index].documentID
-                                                            );
-                                                          });
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                      FlatButton(
-                                                        child: Text(word.no(),
-                                                          style: customStyle(
-                                                              fontColor: blueColor,
-                                                              fontSize: homePageDefaultFontSize.sp,
-                                                              fontWeightName: 'Medium'
-                                                          ),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
-                                          },
-                                          itemBuilder: (BuildContext context) => [
-                                            PopupMenuItem(
-                                              value: 1,
-                                              child: Row(
-                                                children: [Icon(Icons.edit, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.update(), style: customStyle(fontSize: 13.0.sp),)],
-                                              ),
-                                            ),
-                                            PopupMenuItem(
-                                              value: 2,
-                                              child: Row(
-                                                children: [Icon(Icons.delete, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text(word.delete(), style: customStyle(fontSize: 13.0.sp),)],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                      height: 3.0.h,
+                                      child: Text(
+                                        _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
+                                        style: cardSubTitleStyle,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Text(
-                              _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
-                                style: customStyle(
-                                    fontSize: 11.0.sp,
-                                    fontWeightName: 'Regular',
-                                    fontColor: grayColor
-                                ),
-                              ),
                               Column(
                                 children: [
-                                  SizedBox(
-                                    height: 2.0.h,
-                                  ),
+                                  emptySpace,
                                   Container(
-                                    width: 70.0.w,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 68.0.w : 57.0.w,
                                     child: LayoutBuilder(
                                       builder: (context, size) {
-                                        final span = TextSpan(text: documents[index].data()['noticeContent'].toString(), style: customStyle(
-                                            fontSize: 12.0.sp,
-                                            fontWeightName: 'Regular',
-                                            fontColor: mainColor
-                                        ),);
+                                        final span = TextSpan(text: documents[index].data()['noticeContent'].toString(),
+                                          style: cardContentsStyle,
+                                        );
                                         final tp = TextPainter(text: span,textDirection:TextDirection.ltr , maxLines: 3);
                                         tp.layout(maxWidth: size.maxWidth);
 
@@ -265,48 +269,39 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                               Text(
                                                 documents[index].data()['noticeContent'].toString(),
                                                 maxLines: 3,
-                                                style: customStyle(
-                                                    fontSize: 12.0.sp,
-                                                    fontWeightName: 'Regular',
-                                                    fontColor: mainColor
-                                                ),
+                                                style: cardContentsStyle,
                                               ),
+                                              emptySpace,
+                                              //더보기 글씨
                                               InkWell(
                                                 child: Text(
                                                   word.moreDetails(),
                                                   maxLines: 3,
-                                                  style: customStyle(
-                                                      fontSize: 11.0.sp,
-                                                      fontWeightName: 'Regular',
-                                                      fontColor: blueColor
-                                                  ),
+                                                  style: cardBlueStyle,
                                                 ),
                                                 onTap: () {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(builder: (context) =>
                                                       AlarmNoticeDetailPage(
-                                                        noticeUid: documents[index].documentID,
+                                                        noticeUid: documents[index].id,
                                                         noticeTitle: documents[index].data()['noticeTitle'].toString(),
                                                         noticeContent: documents[index].data()['noticeContent'].toString(),
                                                         noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
                                                         noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
-                                                      )
-                                                      )
+                                                      ),
+                                                    )
                                                   );
                                                 },
                                               ),
                                             ],
                                           );
                                         } else {
-                                          return Text(documents[index].data()['noticeContent'].toString(), style: customStyle(
-                                              fontSize: 12.0.sp,
-                                              fontWeightName: 'Medium',
-                                              fontColor: mainColor
-                                          ),);
+                                          return Text(
+                                            documents[index].data()['noticeContent'].toString(),
+                                            style: cardContentsStyle,
+                                          );
                                         }
-
-
                                       },
                                     ),
                                   ),
@@ -316,76 +311,64 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                           ),
                         ],
                       ),
-
+                      SizerUtil.deviceType == DeviceType.Tablet ? emptySpace : Container(),
                       Row(
                         children: [
-                          FlatButton(
-                            color: Colors.white,
-                            padding: EdgeInsets.only(right: 10.0.w,),
-                            child: Row( // Replace with a Row for horizontal icon + text
-                              children: <Widget>[
-                                Icon(
-                                  Icons.question_answer,
-                                  size: 6.0.w,
-                                ),
-
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 5.0.w,
+                          Container(
+                            child: FlatButton(
+                              padding: EdgeInsets.zero,
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    child: Icon(
+                                      Icons.question_answer,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  word.comments(),
-                                  style: customStyle(
-                                      fontColor: mainColor,
-                                      fontWeightName: 'Medium',
-                                      fontSize: 12.0.sp
+                                  cardSpace,
+                                  cardSpace,
+                                  Text(
+                                    word.comments(),
+                                    style: cardTitleStyle,
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5.0.w,
+                                  cardSpace,
+                                  cardSpace,
+                                  FutureBuilder(
+                                    future: countDocuments(_loginUser.companyCode, documents[index].id),
+                                    builder: (BuildContext context, AsyncSnapshot<String> text) {
+                                      if(text.data != "0") {
+                                        return Text(
+                                          "${text.data}",
+                                          style: cardBlueStyle,
+                                        );
+                                      } else {
+                                        return Text("");
+                                      }
+                                    },
                                   ),
-                                ),
-                                FutureBuilder(
-                                  future: countDocuments(_loginUser.companyCode, documents[index].documentID),
-                                  builder: (BuildContext context, AsyncSnapshot<String> text) {
-                                    if(text.data != "0") {
-                                      return Text(
-                                        "${text.data}",
-                                        style: customStyle(
-                                            fontColor: blueColor,
-                                            fontWeightName: 'Medium',
-                                            fontSize: 12.0.sp
-                                        ),
-                                      );
-                                    } else {
-                                      return Text("");
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                            onPressed: () =>{
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) =>
-                                  /*AlarmNoticeCommentPage(
-                                      noticeUid: documents[index].data()['noticeUid'].toString(),
+                                ],
+                              ),
+                              onPressed: () =>{
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>
+                                    /*AlarmNoticeCommentPage(
+                                        noticeUid: documents[index].data()['noticeUid'].toString(),
+                                        noticeTitle: documents[index].data()['noticeTitle'].toString(),
+                                        noticeContent: documents[index].data()['noticeContent'].toString(),
+                                        noticeCreateDate: _createDate,
+                                      )*/
+                                    AlarmNoticeDetailPage(
+                                      noticeUid: documents[index].id,
                                       noticeTitle: documents[index].data()['noticeTitle'].toString(),
                                       noticeContent: documents[index].data()['noticeContent'].toString(),
-                                      noticeCreateDate: _createDate,
-                                    )*/
-                                  AlarmNoticeDetailPage(
-                                    noticeUid: documents[index].documentID,
-                                    noticeTitle: documents[index].data()['noticeTitle'].toString(),
-                                    noticeContent: documents[index].data()['noticeContent'].toString(),
-                                    noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
-                                    noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
-                                  )
-                                  )
-                              ),
-                            },
+                                      noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
+                                      noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
+                                    )
+                                    )
+                                ),
+                              },
+                            ),
                           ),
                         ],
                       ),

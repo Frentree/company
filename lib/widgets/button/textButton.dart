@@ -4,7 +4,6 @@ import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 

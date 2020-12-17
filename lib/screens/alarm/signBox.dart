@@ -1,3 +1,5 @@
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/screens/alarm/signBoxExpense.dart';
 import 'package:MyCompany/screens/alarm/signBoxPurchase.dart';
@@ -22,46 +24,64 @@ class _SignBoxState extends State<SignBox> {
       body: Column(
         children: <Widget>[
           Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
+            ),
             height: 6.0.h,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                tabBtnWithUnderline(
-                    context: context,
-
-                    heightSize: 5.0,
-                    widthSize: 20.0,
-                    btnText: word.exSetBox(),
-
-                    tabIndexVariable: tabIndex,
-                    tabOrder: 0,
-                    tabAction: (){
-                      setState(() {
-                        tabIndex = 0;
-                      });
-                    }
+                InkWell(
+                  child: Container(
+                    height: 5.0.h,
+                    width: 42.0.w,
+                    alignment: Alignment.center,
+                    decoration: tabIndex == 0 ? BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: mainColor,
+                          width: 1.0,
+                        )
+                      )
+                    ) : null,
+                    child: Text(
+                      word.exSetBox(),
+                      style: defaultMediumStyle,
+                    ),
+                  ),
+                  onTap: (){
+                    setState(() {
+                      tabIndex = 0;
+                    });
+                  },
                 ),
-                Padding(
-                  padding: EdgeInsets.only(right: 15.0.w),
-                ),
-                tabBtnWithUnderline(
-                    context: context,
-                    btnText: word.appForapproval(),
-                    heightSize: 5,
-                    widthSize: 20.0,
-                    tabIndexVariable: tabIndex,
-                    tabOrder: 1,
-                    tabAction: (){
-                      setState(() {
-                        tabIndex = 1;
-                      });
-                    }
+                cardSpace,
+                InkWell(
+                  child: Container(
+                    height: 5.0.h,
+                    width: 42.0.w,
+                    alignment: Alignment.center,
+                    decoration: tabIndex == 1 ? BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                              color: mainColor,
+                              width: 1.0,
+                            )
+                        )
+                    ) : null,
+                    child: Text(
+                      word.appForapproval(),
+                      style: defaultMediumStyle,
+                    ),
+                  ),
+                  onTap: (){
+                    setState(() {
+                      tabIndex = 1;
+                    });
+                  },
                 ),
               ],
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 3.0.h),
           ),
           Expanded(
             child:_page[tabIndex],
