@@ -1,3 +1,4 @@
+/*
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
@@ -41,6 +42,7 @@ class SearchMainPage extends StatelessWidget {
   }
 }
 
+*/
 /*
 
 class SearchMainPage extends StatefulWidget {
@@ -75,3 +77,4 @@ class SearchMainPageState extends State<SearchMainPage> {
   }
 }
 */
+

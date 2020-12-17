@@ -1,5 +1,6 @@
-
 import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/screens/alarm/alarmNotice.dart';
 import 'package:MyCompany/screens/alarm/signBox.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
@@ -25,57 +26,80 @@ class AlarmMainPageState extends State<AlarmMainPage> {
           children: <Widget>[
             Container(
               height: 6.0.h,
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
+              ),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3.0.w),
-                  color: tabColor
+                borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? tabRadiusTW.w : tabRadiusMW.w),
+                color: tabColor,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  tabBtn(
-                      context: context,
-                      heightSize: 5,
-                      widthSize: 30,
-                      btnText: word.alarm(),
-                      tabIndexVariable: tabIndex,
-                      tabOrder: 0,
-                      tabAction: (){
-                        NotImplementedFunction(context);
-                        setState(() {
-                          tabIndex = 0;
-                        });
-                      }
+                  InkWell(
+                    child: Container(
+                      height: 5.0.h,
+                      width: 30.0.w,
+                      alignment: Alignment.center,
+                      decoration: tabIndex == 0 ? BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w),
+                      ) : null,
+                      child: Text(
+                        word.alarm(),
+                        style: defaultMediumStyle,
+                      ),
+                    ),
+                    onTap: (){
+                      setState(() {
+                        tabIndex = 0;
+                      });
+                    },
                   ),
-                  tabBtn(
-                      context: context,
-                      heightSize: 5,
-                      widthSize: 30,
-                      btnText: word.myApproval(),
-                      tabIndexVariable: tabIndex,
-                      tabOrder: 1,
-                      tabAction: (){
-                        setState(() {
-                          tabIndex = 1;
-                        });
-                      }
+                  InkWell(
+                    child: Container(
+                      height: 5.0.h,
+                      width: 30.0.w,
+                      alignment: Alignment.center,
+                      decoration: tabIndex == 1 ? BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w),
+                      ) : null,
+                      child: Text(
+                        word.myApproval(),
+                        style: defaultMediumStyle,
+                      ),
+                    ),
+                    onTap: (){
+                      setState(() {
+                        tabIndex = 1;
+                      });
+                    },
                   ),
-                  tabBtn(
-                      context: context,
-                      heightSize: 5,
-                      widthSize: 30,
-                      btnText: word.notice(),
-                      tabIndexVariable: tabIndex,
-                      tabOrder: 2,
-                      tabAction: (){
-                        setState(() {
-                          tabIndex = 2;
-                        });
-                      }
+                  InkWell(
+                    child: Container(
+                      height: 5.0.h,
+                      width: 30.0.w,
+                      alignment: Alignment.center,
+                      decoration: tabIndex == 2 ? BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w),
+                      ) : null,
+                      child: Text(
+                        word.notice(),
+                        style: defaultMediumStyle,
+                      ),
+                    ),
+                    onTap: (){
+                      setState(() {
+                        tabIndex = 2;
+                      });
+                    },
                   ),
-
                 ],
               ),
             ),
+            emptySpace,
             Expanded(
               child:_page[tabIndex],
             )

@@ -1,19 +1,17 @@
 //Flutter
-
-import 'package:MyCompany/screens/login/companyCreate.dart';
-import 'package:MyCompany/screens/login/companyJoin.dart';
-import 'package:MyCompany/screens/login/userTypeSelect.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 //Const
 import 'package:MyCompany/consts/universalString.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+
+//Screen
+import 'package:MyCompany/screens/login/companyCreate.dart';
+import 'package:MyCompany/screens/login/companyJoin.dart';
+import 'package:MyCompany/screens/login/userTypeSelect.dart';
 
 class CompanySetMainPage extends StatelessWidget {
   @override
@@ -31,42 +29,38 @@ class CompanySetMainPage extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                    height: appNameSizeH.h,
+                    height: 13.0.h,
                     alignment: Alignment.center,
                     child: Text(
                       APP_NAME,
                       style: appNameStyle,
                     ),
                   ),
+                  emptySpace,
                   Container(
-                    height: widgetDistanceH.h,
-                  ),
-                  Container(
-                    height: appVersionSizeH.h,
+                    height: 6.0.h,
                     alignment: Alignment.centerRight,
                     child: Padding(
-                      padding: EdgeInsets.only(right: appVersionPaddingW.w),
+                      padding: EdgeInsets.only(right: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w),
                       child: Text(
                         "Release " + APP_VERSION,
                         style: appVersionStyle,
                       ),
                     ),
                   ),
-                  Container(
-                    height: widgetDistanceH.h,
-                  ),
+                  emptySpace,
                 ],
               ),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: pagePaddingW.w,
-                    vertical: pagePaddingH.h,
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                    vertical: 3.0.h,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(pageRadiusW.w),
-                      topRight: Radius.circular(pageRadiusW.w),
+                      topLeft: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                      topRight: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
                     ),
                     color: whiteColor,
                   ),

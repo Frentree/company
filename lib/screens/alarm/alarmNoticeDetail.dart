@@ -80,7 +80,6 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
   FocusNode _commnetFocusNode = FocusNode();
 
   Attendance _attendance = Attendance();
-
   _getCommentList(List<DocumentSnapshot> documents, BuildContext context,
       String documentID) {
     List<Widget> widgets = [];
@@ -380,7 +379,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(pageRadiusW.w),
               topRight: Radius.circular(pageRadiusW.w)),
-          color: whiteColor,
+          color: Colors.yellow,
         ),
         child: Stack(
           children: [

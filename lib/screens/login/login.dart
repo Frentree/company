@@ -55,7 +55,6 @@ class LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                color: Colors.yellow,
                 height: 5.0.h,
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -63,24 +62,18 @@ class LoginPageState extends State<LoginPage> {
                   style: pageNameStyle,
                 ),
               ),
-              Container(
-                color: Colors.brown,
-                height: 2.0.h,
-              ),
+              emptySpace,
               Container(
                 child: Column(
                   children: [
                     TextFormField(
                       controller: _mailTextCon,
-                      style: defaultStyle,
+                      style: defaultRegularStyle,
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: textFormFontPaddingH.h,
-                          horizontal: textFormFontPaddingW.w,
-                        ),
+                        contentPadding: textFormPadding,
                         hintText: word.email(),
-                        hintStyle: defaultStyle,
+                        hintStyle: hintStyle,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: textFieldUnderLine,
@@ -88,21 +81,16 @@ class LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: widgetDistanceH.h,
-                    ),
+                    emptySpace,
                     TextFormField(
                       controller: _passwordTextCon,
                       obscureText: true,
-                      style: defaultStyle,
+                      style: defaultRegularStyle,
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: textFormFontPaddingH.h,
-                          horizontal: textFormFontPaddingW.w,
-                        ),
+                        contentPadding: textFormPadding,
                         hintText: word.password(),
-                        hintStyle: defaultStyle,
+                        hintStyle: hintStyle,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: textFieldUnderLine,
@@ -113,26 +101,19 @@ class LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Container(
-                height: widgetButtonDistanceH.h,
-              ),
+              emptySpace,
+              emptySpace,
               Center(
                 child: Container(
                   height: buttonSizeH.h,
-                  width: buttonSizeW.w,
+                  width: SizerUtil.deviceType == DeviceType.Tablet ? buttonSizeTW.w : buttonSizeMW.w,
                   child: RaisedButton(
                     color: blueColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(buttonRadiusW.w),
-                    ),
+                    shape: raisedButtonShape,
                     elevation: 0.0,
                     child: Text(
                       word.signIn(),
-                      style: customStyle(
-                        fontWeightName: "Medium",
-                        fontColor: whiteColor,
-                        fontSize: defaultSize.sp,
-                      ),
+                      style: buttonWhiteStyle,
                     ),
                     onPressed: () {
                       _loginRepository.signInWithFirebaseAuth(
@@ -150,23 +131,14 @@ class LoginPageState extends State<LoginPage> {
               Center(
                 child: Container(
                   height: buttonSizeH.h,
-                  width: buttonSizeW.w,
+                  width: SizerUtil.deviceType == DeviceType.Tablet ? buttonSizeTW.w : buttonSizeMW.w,
                   child: RaisedButton(
                     color: whiteColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(buttonRadiusW.w),
-                      side: BorderSide(
-                        color: blueColor,
-                      ),
-                    ),
+                    shape: raisedButtonBlueShape,
                     elevation: 0.0,
                     child: Text(
                       word.signUp(),
-                      style: customStyle(
-                        fontWeightName: "Medium",
-                        fontColor: blueColor,
-                        fontSize: defaultSize.sp,
-                      ),
+                      style: buttonBlueStyle,
                     ),
                     onPressed: () {
                       Navigator.pushNamed(context, "/SignUp");

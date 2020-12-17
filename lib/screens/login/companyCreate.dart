@@ -70,16 +70,10 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
             alignment: Alignment.centerLeft,
             child: Text(
               "회사 생성",
-              style: customStyle(
-                fontWeightName: "Medium",
-                fontColor: blueColor,
-                fontSize: defaultSize.sp,
-              ),
+              style: pageNameStyle,
             ),
           ),
-          Container(
-            height: widgetDistanceH.h,
-          ),
+          emptySpace,
           Container(
             child: Column(
               children: [
@@ -87,23 +81,12 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                   key: _formKeyCompanyName,
                   child: TextFormField(
                     controller: _companyNameCon,
-                    style: customStyle(
-                      fontWeightName: "Regular",
-                      fontColor: mainColor,
-                      fontSize: defaultSize.sp,
-                    ),
+                    style: defaultRegularStyle,
                     decoration: InputDecoration(
                       isDense: true,
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: textFormFontPaddingH.h,
-                        horizontal: textFormFontPaddingW.w,
-                      ),
+                      contentPadding: textFormPadding,
                       hintText: "회사명",
-                      hintStyle: customStyle(
-                        fontWeightName: "Regular",
-                        fontColor: mainColor,
-                        fontSize: defaultSize.sp,
-                      ),
+                      hintStyle: hintStyle,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: textFieldUnderLine,
@@ -118,30 +101,17 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                     }),
                   ),
                 ),
-                Container(
-                  height: widgetDistanceH.h,
-                ),
+                emptySpace,
                 TextFormField(
                   controller: _companyAddressCon,
-                  style: customStyle(
-                    fontWeightName: "Regular",
-                    fontColor: mainColor,
-                    fontSize: defaultSize.sp,
-                  ),
+                  style: defaultRegularStyle,
                   readOnly: true,
                   showCursor: false,
                   decoration: InputDecoration(
                     isDense: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: textFormFontPaddingH.h,
-                      horizontal: textFormFontPaddingW.w,
-                    ),
+                    contentPadding: textFormPadding,
                     hintText: "회사 주소",
-                    hintStyle: customStyle(
-                      fontWeightName: "Regular",
-                      fontColor: mainColor,
-                      fontSize: defaultSize.sp,
-                    ),
+                    hintStyle: hintStyle,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: textFieldUnderLine,
@@ -164,27 +134,18 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
                     }
                   },
                 ),
-                Container(
-                  height: widgetDistanceH.h,
-                ),
+                emptySpace,
                 TextFormField(
                   controller: _companyDetailAddressCon,
-                  style: customStyle(
-                    fontWeightName: "Regular",
-                    fontColor: mainColor,
-                    fontSize: defaultSize.sp,
-                  ),
+                  style: defaultRegularStyle,
                   readOnly: _companyAddressCon.text == "",
                   showCursor: _companyAddressCon.text != "",
                   autofocus: _companyAddressCon.text != "",
                   decoration: InputDecoration(
                     isDense: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: textFormFontPaddingH.h,
-                      horizontal: textFormFontPaddingW.w,
-                    ),
+                    contentPadding: textFormPadding,
                     hintText: "상세 주소",
-                    hintStyle: pageNameStyle,
+                    hintStyle: hintStyle,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: textFieldUnderLine,
@@ -195,26 +156,19 @@ class CompanyCreatePageState extends State<CompanyCreatePage> {
               ],
             ),
           ),
-          Container(
-            height: widgetButtonDistanceH.h,
-          ),
+          emptySpace,
+          emptySpace,
           Center(
             child: Container(
               height: buttonSizeH.h,
-              width: buttonSizeW.w,
+              width: SizerUtil.deviceType == DeviceType.Tablet ? buttonSizeTW.w : buttonSizeMW.w,
               child: RaisedButton(
                 color: blueColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(buttonRadiusW.w),
-                ),
+                shape: raisedButtonShape,
                 elevation: 0.0,
                 child: Text(
                   "회사생성",
-                  style: customStyle(
-                    fontWeightName: "Medium",
-                    fontColor: whiteColor,
-                    fontSize: defaultSize.sp,
-                  ),
+                  style: buttonWhiteStyle,
                 ),
                 onPressed: _companyAddressCon.text != ""
                     ? () async {

@@ -1,5 +1,7 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -51,7 +53,6 @@ attendance({BuildContext context}) async {
       _loginUser = _loginUserInfoProvider.getLoginUser();
 
       return StatefulBuilder(
-
         builder: (BuildContext context, StateSetter setState) {
           return GestureDetector(
             onTap: () {
@@ -98,61 +99,53 @@ attendance({BuildContext context}) async {
                         )
                       ],
                     ),
-                    Container(
-                      height: 5.0.h,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 23.0.w,
-
-                            child: Center(
+                    emptySpace,
+                    Padding(
+                      padding: cardPadding,
+                      child: Container(
+                        height: 3.0.h,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                              alignment: Alignment.center,
                               child: Text(
                                 "이름",
-                                style: customStyle(
-                                  fontSize: 13.0.sp,
-                                ),
+                                style: cardBlueStyle,
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 23.0.w,
-                            child: Center(
+                            cardSpace,
+                            Container(
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                              alignment: Alignment.center,
                               child: Text(
                                 "부서",
-                                style: customStyle(
-                                  fontSize: 13.0.sp,
-                                ),
+                                style: cardBlueStyle,
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 20.0.w,
-                            child: Center(
+                            cardSpace,
+                            Container(
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                              alignment: Alignment.center,
                               child: Text(
                                 "근무상태",
-                                style: customStyle(
-                                  fontSize: 13.0.sp,
-                                ),
+                                style: cardBlueStyle,
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 23.0.w,
-                            child: Center(
+                            cardSpace,
+                            Container(
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                              alignment: Alignment.center,
                               child: Text(
                                 "기타",
-                                style: customStyle(
-                                  fontSize: 13.0.sp,
-                                ),
+                                style: cardBlueStyle,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                      height: 1.0.h,
-                    ),
+                    emptySpace,
                     StreamBuilder(
                       stream: _repository.getColleague(loginUserMail: _loginUser.mail, companyCode: _loginUser.companyCode).asStream(),
                       builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -173,7 +166,6 @@ attendance({BuildContext context}) async {
                               );
                             }
                             Map<String, dynamic> attendanceData = {};
-                            Map<String, String> a = {"a": "b"};
 
                             colleague.keys.forEach((element) {
                               attendanceData.addAll({element: ""});
@@ -189,61 +181,41 @@ attendance({BuildContext context}) async {
                               child: ListView.builder(
                                 itemCount: attendanceData.keys.length,
                                 itemBuilder: (context, index){
-                                  print("hii ${attendanceData[attendanceData.keys.elementAt(index)].runtimeType}");
                                   Attendance _attendance = attendanceData[attendanceData.keys.elementAt(index)] == "" ? null : Attendance.fromMap(attendanceData[attendanceData.keys.elementAt(index)], "");
                                   return Card(
                                     elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(cardRadiusW.w),
-                                      side: BorderSide(
-                                        width: 1,
-                                        color: boarderColor,
-                                      ),
-                                    ),
+                                    shape: cardShape,
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: cardPaddingW.w,
-                                        vertical: cardPaddingH.h,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 15.0.w,
-                                            child: Text(
-                                              colleague.values.elementAt(index),
-                                              style: customStyle(
-                                                fontSize: 11.0.sp,
-                                                fontWeightName: "Regular",
+                                      padding: cardPadding,
+                                      child: Container(
+                                        height: scheduleCardDefaultSizeH.h,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                                              child: Text(
+                                                colleague.values.elementAt(index),
+                                                style: containerChipStyle,
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 3.0.w,
-                                          ),
-                                          Container(
-                                            width: 20.0.w,
-                                            child: Text(
-                                              "개발팀",
-                                              style: customStyle(
-                                                fontSize: 11.0.sp,
-                                                fontWeightName: "Regular",
+                                            cardSpace,
+                                            Container(
+                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                                              child: Text(
+                                                "개발팀",
+                                                style: containerChipStyle,
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 3.0.w,
-                                          ),
-                                          Container(
-                                            width: 20.0.w,
-                                            child: Text(
-                                             ( _attendance == null || _attendance.status == 0) ? "출근전" : _attendance.status == 1 ? "내근" : _attendance.status == 2 ? "외근" : "퇴근",
-                                              style: customStyle(
-                                                fontSize: 11.0.sp,
-                                                fontWeightName: "Regular",
+                                            cardSpace,
+                                            Container(
+                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                                              child: Text(
+                                               ( _attendance == null || _attendance.status == 0) ? "출근전" : _attendance.status == 1 ? "내근" : _attendance.status == 2 ? "외근" : "퇴근",
+                                                style: containerChipStyle,
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );
@@ -254,7 +226,6 @@ attendance({BuildContext context}) async {
                         );
                       },
                     ),
-                    Padding(padding: EdgeInsets.only(bottom: 2.0.h)),
                   ],
                 ),
               ),

@@ -1,3 +1,6 @@
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -19,187 +22,148 @@ final word = Words();
 
 // 내 정보 화면
 Widget getMyInfomationCard({BuildContext context, User user}) {
-  return Padding(
-    padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
-    child: Column(
-      children: [
-        Row(
-          children: [
-            Container(
-              color: whiteColor,
-              alignment: Alignment.center,
-              width: 10.0.w,
-              child: GestureDetector(
+  return Container(
+    child: Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+        vertical: 1.0.h,
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                color: whiteColor,
+                alignment: Alignment.center,
+                child: profilePhoto(loginUser: user)
+              ),
+              cardSpace,
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 13.0.w,
+                child: Text(
+                  user.name,
+                  style: defaultRegularStyle,
+                ),
+              ),
+              cardSpace,
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 13.0.w,
+                child: Text(
+                  "개발팀",
+                  style: hintStyle,
+                ),
+              ),
+              cardSpace,
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 10.0.w,
+                child: Text(
+                  "사원",
+                  style: hintStyle,
+                ),
+              ),
+              cardSpace,
+              GestureDetector(
                 child: Container(
                   height: 4.0.h,
-                  width: 10.0.w,
-                  child: FutureBuilder(
-                    future: Firestore.instance
-                        .collection("company")
-                        .document(user.companyCode)
-                        .collection("user")
-                        .document(user.mail)
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return Image.network(snapshot.data['profilePhoto']);
-                    },
+                  width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+                  decoration: BoxDecoration(
+                    color: blueColor,
+                    borderRadius: BorderRadius.circular(
+                        SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    word.update(),
+                    style: defaultMediumWhiteStyle,
                   ),
                 ),
-                onTap: () {},
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(left: 2.0.w)),
-            Expanded(
-              child: Text(
-                user.name,
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
-                ),
-              ),
-            ),
-            Text(
-              "개발팀",
-              style: customStyle(
-                fontSize: 13.0.sp,
-                fontColor: grayColor,
-                fontWeightName: 'Medium',
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(left: 4.0.w)),
-            Text(
-              "사원",
-              style: customStyle(
-                fontSize: 13.0.sp,
-                fontColor: grayColor,
-                fontWeightName: 'Medium',
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(left: 4.0.w)),
-            Container(
-              child: ActionChip(
-                backgroundColor: blueColor,
-                label: Text(
-                  word.update(),
-                  style: customStyle(
-                    fontSize: 12.0.sp,
-                    fontColor: whiteColor,
-                    fontWeightName: 'Medium',
-                  ),
-                ),
-                onPressed: () {
+                onTap: (){
                   SettingMyPageUpdate(context);
                 },
               ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.joinDate(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
+            ],
+          ),
+          emptySpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                child: Text(
+                  word.joinDate(),
+                  style: defaultRegularStyle,
                 ),
               ),
-            ),
-            Expanded(
-              child: Text(
-                "2018.11.01",
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: grayColor,
-                  fontWeightName: 'Medium',
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                child: Text(
+                  "2018.11.01",
+                  style: hintStyle,
                 ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.email(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
+            ],
+          ),
+          emptySpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                child: Text(
+                  word.email(),
+                  style: defaultRegularStyle,
                 ),
               ),
-            ),
-            Expanded(
-              child: Text(
-                user.mail,
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: grayColor,
-                  fontWeightName: 'Medium',
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                child: Text(
+                  user.mail,
+                  style: hintStyle,
                 ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.phone(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
+            ],
+          ),
+          emptySpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                child: Text(
+                  word.phone(),
+                  style: defaultRegularStyle,
                 ),
               ),
-            ),
-            Expanded(
-              child: Text(
-                user.phone,
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: grayColor,
-                  fontWeightName: 'Medium',
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                child: Text(
+                  user.phone,
+                  style: hintStyle,
                 ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 1.0.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                word.accountSecession(),
-                style: customStyle(
-                  fontSize: 13.0.sp,
-                  fontColor: mainColor,
-                  fontWeightName: 'Medium',
+            ],
+          ),
+          emptySpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                child: Text(
+                  word.accountSecession(),
+                  style: defaultRegularStyle,
                 ),
               ),
-            ),
-            Expanded(child: SizedBox()),
-          ],
-        ),
-      ],
+            ],
+          ),
+          emptySpace,
+        ],
+      ),
     ),
   );
 }
@@ -207,195 +171,164 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
 // 회사 정보
 Widget getCompanyInfomationCard({BuildContext context, User user}) {
   String imageUrl = "";
-  return Padding(
-    padding: EdgeInsets.only(left: 10.0.w, right: 10.0.w, bottom: 2.0.h),
-    child: StreamBuilder(
-      stream:
-          FirebaseRepository().getCompanyInfos(companyCode: user.companyCode),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox();
-        imageUrl = snapshot.data['companyPhoto'] != ""
-            ? snapshot.data['companyPhoto']
-            : "https://firebasestorage.googleapis.com/v0/b/app-dev-c912f.appspot.com/o/defaultImage%2Fnoimage.png?alt=media&token=c447305b-d623-444e-a163-fc1b3e393699";
-        return Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  color: mainColor,
-                  width: 20.0.w,
-                  child: Center(
-                    child: Container(
+  return Container(
+    child: Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+        vertical: 1.0.h,
+      ),
+      child: StreamBuilder(
+        stream:
+        FirebaseRepository().getCompanyInfos(companyCode: user.companyCode),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
+          imageUrl = snapshot.data['companyPhoto'] != ""
+              ? snapshot.data['companyPhoto']
+              : "https://firebasestorage.googleapis.com/v0/b/app-dev-c912f.appspot.com/o/defaultImage%2Fnoimage.png?alt=media&token=c447305b-d623-444e-a163-fc1b3e393699";
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
                       color: whiteColor,
+                      width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                      height: SizerUtil.deviceType == DeviceType.Tablet ? 11.25.w : 15.0.w,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Image.network(imageUrl),
+                      )
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      height: 4.0.h,
+                      width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+                      decoration: BoxDecoration(
+                        color: blueColor,
+                        borderRadius: BorderRadius.circular(
+                            SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                      ),
                       alignment: Alignment.center,
-                      width: 20.0.w,
-                      child: Image.network(imageUrl),
+                      child: Text(
+                        word.update(),
+                        style: defaultMediumWhiteStyle,
+                      ),
+                    ),
+                    onTap: (){
+                      SettingCompanyPageUpdate(context, imageUrl);
+                    },
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      word.companyName(),
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(padding: EdgeInsets.only(left: 2.0.w)),
-                ),
-                ActionChip(
-                  backgroundColor: blueColor,
-                  label: Text(
-                    word.update(),
-                    style: customStyle(
-                      fontSize: 12.0.sp,
-                      fontColor: whiteColor,
-                      fontWeightName: 'Medium',
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      snapshot.data["companyName"],
+                      style: defaultRegularStyle,
                     ),
                   ),
-                  onPressed: () {
-                    SettingCompanyPageUpdate(context, imageUrl);
-                  },
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    word.companyName(),
-                    style: customStyle(
-                      fontSize: 14,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      word.businessNumber(),
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    snapshot.data["companyName"],
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      snapshot.data["companyNo"],
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    word.businessNumber(),
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      word.address(),
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    snapshot.data["companyNo"],
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      snapshot.data["companyAddr"],
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    word.address(),
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      word.phone(),
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    snapshot.data["companyAddr"],
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      snapshot.data["companyPhone"],
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    word.phone(),
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      word.webAddress(),
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    snapshot.data["companyPhone"],
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      snapshot.data["companyWeb"],
+                      style: defaultRegularStyle,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    word.webAddress(),
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    snapshot.data["companyWeb"],
-                    style: customStyle(
-                      fontSize: 13.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: 'Medium',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-          ],
-        );
-      },
+                ],
+              ),
+              emptySpace,
+            ],
+          );
+        },
+      ),
     ),
   );
 }

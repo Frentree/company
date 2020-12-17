@@ -1,4 +1,6 @@
 //Flutter
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,46 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:MyCompany/i18n/word.dart';
 
 //Const
-import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-const widthDistance = 0.02; // 항목별 간격
-const timeFontSize = 13.0;
-const typeFontSize = 12.0;
-const titleFontSize = 15.0;
-const writeTimeFontSize = 14.0;
-const fontColor = mainColor;
-
-Card meetingScheduleCard(
-    {BuildContext context,
-    String loginUserMail,
-    String companyCode,
-    MeetingModel meetingModel,
-    bool isDetail}) {
+Card meetingScheduleCard({BuildContext context, String loginUserMail, String companyCode, MeetingModel meetingModel, bool isDetail}) {
   return Card(
     elevation: 0,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(cardRadiusW.w),
-      side: BorderSide(
-        width: 1,
-        color: boarderColor,
-      ),
-    ),
+    shape: cardShape,
     child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: cardPaddingW.w,
-          vertical: cardPaddingH.h,
-        ),
+        padding: cardPadding,
         child: isDetail
             ? meetingDetailContents(
                 context: context,
@@ -61,140 +35,93 @@ Card meetingScheduleCard(
                 companyCode: companyCode,
                 meetingModel: meetingModel,
                 isDetail: isDetail,
-              )),
+              )
+    ),
   );
 }
 
-Container titleCard(
-    {BuildContext context,
-    String loginUserMail,
-    String companyCode,
-    MeetingModel meetingModel,
-    bool isDetail}) {
+Container titleCard({BuildContext context, String loginUserMail, String companyCode, MeetingModel meetingModel, bool isDetail}) {
   Format _format = Format();
 
   return Container(
-    height: 6.0.h,
+    height: scheduleCardDefaultSizeH.h,
     child: Row(
       children: [
         //시간대
-        Text(
-          _format.timeToString(meetingModel.startTime),
-          style: customStyle(
-              fontSize: 11.0.sp,
-              fontWeightName: "Regular",
-              fontColor: blueColor),
+        Container(
+          width: SizerUtil.deviceType == DeviceType.Tablet ? 9.0.w : 12.0.w,
+          child: Text(
+            _format.timeToString(meetingModel.startTime),
+            style: cardBlueStyle,
+          ),
         ),
-        SizedBox(
-          width: 2.0.w,
-        ),
-
         //업무 타입입
         Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: textFieldUnderLine),
-              borderRadius: BorderRadius.circular(2.0.w)),
-          width: 15.0.w,
-          height: 3.5.h,
+          width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+          height: 3.0.h,
+          decoration:containerChipDecoration,
+          padding: EdgeInsets.symmetric(
+            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+          ),
           alignment: Alignment.center,
           child: Text(
             word.meeting(),
-            style: customStyle(
-                fontSize: 10.0.sp,
-                fontWeightName: "Regular",
-                fontColor: fontColor),
+            style: containerChipStyle,
           ),
         ),
-        SizedBox(
-          width: 2.0.w,
-        ),
-
+        cardSpace,
         //제목
         Container(
-          width: 45.0.w,
+          width: SizerUtil.deviceType == DeviceType.Tablet ? 53.5.w : 37.0.w,
           child: Text(
             meetingModel.title,
-            style: customStyle(
-              fontSize: cardTitleFontSize.sp,
-              fontWeightName: "Medium",
-              fontColor: mainColor,
-            ),
+            style: cardTitleStyle,
           ),
-        ),
-        SizedBox(
-          width: 2.0.w,
         ),
 
         //popup 버튼
-        meetingModel.createUid == loginUserMail
-            ? isDetail
-                ? popupMenu(
-                    context: context,
-                    meetingModel: meetingModel,
-                    companyCode: companyCode,
-                  )
-                : Container()
-            : Container()
+        meetingModel.createUid == loginUserMail ? isDetail ? popupMenu(
+          context: context,
+          meetingModel: meetingModel,
+          companyCode: companyCode,
+        ) : Container() : Container()
       ],
     ),
   );
 }
 
-Column meetingDetailContents(
-    {BuildContext context,
-    String loginUserMail,
-    String companyCode,
-    MeetingModel meetingModel,
-    bool isDetail}) {
+Column meetingDetailContents({BuildContext context, String loginUserMail, String companyCode, MeetingModel meetingModel, bool isDetail}) {
   Format _format = Format();
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      titleCard(
-          context: context,
-          companyCode: companyCode,
-          loginUserMail: loginUserMail,
-          meetingModel: meetingModel,
-          isDetail: isDetail),
-      SizedBox(
-        height: 1.0.h,
-      ),
+      titleCard(context: context, companyCode: companyCode, loginUserMail: loginUserMail, meetingModel: meetingModel, isDetail: isDetail),
+      emptySpace,
       Padding(
-        padding: EdgeInsets.only(
-            left: 13.0.w
+        padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w),
+        child: Text(
+          meetingModel.contents,
+          style: cardContentsStyle,
         ),
-        child: Text(meetingModel.contents, style: customStyle(fontSize: 12.0.sp),),
       ),
-      SizedBox(
-        height: 1.0.h,
-      ),
+      emptySpace,
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Text(
-            meetingModel.createDate == meetingModel.lastModDate
-                ? "작성시간 : "
-                : "수정시간 : ",
-            style: customStyle(
-                fontSize: 12.0.sp,
-                fontWeightName: "Regular",
-                fontColor: grayColor),
-          ),
-          Text(
             _format.dateToString(
                 _format.timeStampToDateTime(meetingModel.lastModDate)),
-            style: customStyle(
-                fontSize: 12.0.sp,
-                fontWeightName: "Regular",
-                fontColor: grayColor),
-          )
+            style: cardSubTitleStyle,
+          ),
+          Text(
+            meetingModel.createDate == meetingModel.lastModDate ? " 작성됨" : " 수정됨",
+            style: cardSubTitleStyle,
+          ),
         ],
       ),
       Visibility(
         visible: meetingModel.createUid != loginUserMail,
-        child: SizedBox(
-          height: 1.0.h,
-        ),
+        child: emptySpace,
       ),
       Visibility(
         visible: meetingModel.createUid != loginUserMail,
@@ -203,17 +130,11 @@ Column meetingDetailContents(
           children: <Widget>[
             Text(
               "작성자 : ",
-              style: customStyle(
-                  fontSize: 12.0.sp,
-                  fontWeightName: "Regular",
-                  fontColor: grayColor),
+              style: cardSubTitleStyle,
             ),
             Text(
               meetingModel.name,
-              style: customStyle(
-                  fontSize: 12.0.sp,
-                  fontWeightName: "Regular",
-                  fontColor: grayColor),
+              style: cardSubTitleStyle,
             )
           ],
         ),
@@ -222,16 +143,16 @@ Column meetingDetailContents(
   );
 }
 
-Container popupMenu(
-    {BuildContext context, MeetingModel meetingModel, String companyCode}) {
+Container popupMenu({BuildContext context, MeetingModel meetingModel, String companyCode}) {
   FirebaseRepository _repository = FirebaseRepository();
   return Container(
-    width: 5.0.w,
+    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+    alignment: Alignment.center,
     child: PopupMenuButton(
       padding: EdgeInsets.zero,
       icon: Icon(
-        Icons.more_horiz,
-        size: iconSizeW.w,
+        Icons.more_vert_sharp,
+        size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
       ),
       onSelected: (value) async {
         if (value == 1) {
@@ -248,15 +169,39 @@ Container popupMenu(
       },
       itemBuilder: (BuildContext context) => [
         PopupMenuItem(
+          height: 7.0.h,
           value: 1,
           child: Row(
-            children: [Icon(Icons.edit, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text("수정하기", style: customStyle(fontSize: 13.0.sp),)],
+            children: [
+              Container(
+                child: Icon(
+                  Icons.edit,
+                  size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+              Text(
+                word.update(),
+                style: popupMenuStyle,
+              )
+            ],
           ),
         ),
         PopupMenuItem(
+          height: 7.0.h,
           value: 2,
           child: Row(
-            children: [Icon(Icons.delete, size: 7.0.w,), Padding(padding: EdgeInsets.only(left: 2.0.w)),Text("삭제하기", style: customStyle(fontSize: 13.0.sp),)],
+            children: [
+              Icon(
+                Icons.delete,
+                size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+              ),
+              Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+              Text(
+                word.delete(),
+                style: popupMenuStyle,
+              )
+            ],
           ),
         ),
       ],
