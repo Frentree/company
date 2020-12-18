@@ -13,10 +13,12 @@ import 'package:MyCompany/models/noticeModel.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseMethods {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  static final FirebaseStorage firestorage = FirebaseStorage.instance;
 
   // 경비 청구 항목 저장 메서드
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) async {
@@ -889,6 +891,19 @@ class FirebaseMethods {
         .get();
     return CompanyUser.fromMap(doc.data(), doc.id);
   }
+
+  /*Future<String> firebaseStorege(String companyCode, String mail) async {
+    String data = await firestorage.ref("profile/${mail}").getDownloadURL().catchError({
+
+    });
+
+    return await firestore
+        .collection(COMPANY)
+        .document(companyCode)
+        .collection(USER)
+        .document(mail)
+        .get();
+  }*/
 }
 
 class FirestoreApi {

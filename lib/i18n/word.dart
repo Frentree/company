@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 
+
 class Words {
+  static final word = Words();
   /* 공통 */
   String input() => Intl.message("입력", name: "input", args: [], desc: "input message");
 
