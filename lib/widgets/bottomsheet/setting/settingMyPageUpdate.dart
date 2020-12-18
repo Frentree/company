@@ -163,7 +163,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                           return SimpleDialog(
                                             title: Text(
                                               word.select(),
-                                              style: customStyle(fontColor: mainColor, fontSize: 14.0.sp),
+                                              style: defaultMediumStyle,
                                             ),
                                             children: [
                                               SimpleDialogOption(
@@ -172,7 +172,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                                 },
                                                 child: Text(
                                                   word.camera(),
-                                                  style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
+                                                  style: defaultRegularStyle,
                                                 ),
                                               ),
                                               SimpleDialogOption(
@@ -181,7 +181,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                                 },
                                                 child: Text(
                                                   word.gallery(),
-                                                  style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
+                                                  style: defaultRegularStyle,
                                                 ),
                                               ),
                                             ],
@@ -260,22 +260,23 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                       if (isChk) {
                                         showDialog(
                                           context: context,
+                                          barrierDismissible: false,
                                           builder: (BuildContext context) {
                                             // return object of type Dialog
                                             return AlertDialog(
                                               title: Text(
                                                 word.authentication() + " " + word.confirm(),
-                                                style: customStyle(fontColor: blueColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
+                                                style: defaultMediumStyle,
                                               ),
                                               content: Text(
                                                 word.authenticationSuccessCon(),
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
+                                                style: defaultRegularStyle,
                                               ),
                                               actions: <Widget>[
                                                 FlatButton(
                                                   child: Text(
                                                     word.confirm(),
-                                                    style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
+                                                    style: buttonBlueStyle,
                                                   ),
                                                   onPressed: () {
                                                     setState(() {
@@ -292,22 +293,23 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                       } else {
                                         showDialog(
                                           context: context,
+                                          barrierDismissible: false,
                                           builder: (BuildContext context) {
                                             // return object of type Dialog
                                             return AlertDialog(
                                               title: Text(
                                                 word.authentication() + " " + word.failed(),
-                                                style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
+                                                style: defaultMediumStyle,
                                               ),
                                               content: Text(
                                                 word.authenticationFailCon(),
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
+                                                style: defaultRegularStyle,
                                               ),
                                               actions: <Widget>[
                                                 FlatButton(
                                                   child: Text(
                                                     word.confirm(),
-                                                    style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
+                                                    style: buttonBlueStyle,
                                                   ),
                                                   onPressed: () {
                                                     isPwdConfirm = isChk;
@@ -470,22 +472,23 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                       if (_phoneEdit.text.trim() == "") {
                                         showDialog(
                                           context: context,
+                                          barrierDismissible: false,
                                           builder: (BuildContext context) {
                                             // return object of type Dialog
                                             return AlertDialog(
                                               title: Text(
                                                 word.phoneChangeFiled(),
-                                                style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
+                                                style: defaultMediumStyle,
                                               ),
                                               content: Text(
                                                 word.phoneChangeFiledNoneCon(),
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
+                                                style: defaultRegularStyle,
                                               ),
                                               actions: <Widget>[
                                                 FlatButton(
                                                   child: Text(
                                                     word.confirm(),
-                                                    style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
+                                                    style: buttonBlueStyle,
                                                   ),
                                                   onPressed: () {
                                                     Navigator.pop(context);
@@ -498,22 +501,23 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                       } else if (_phoneEdit.text.trim() == _loginUser.phone) {
                                         showDialog(
                                           context: context,
+                                          barrierDismissible: false,
                                           builder: (BuildContext context) {
                                             // return object of type Dialog
                                             return AlertDialog(
                                               title: Text(
                                                 word.phoneChangeFiled(),
-                                                style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
+                                                style: defaultMediumStyle,
                                               ),
                                               content: Text(
                                                 word.phoneChangeFiledSameCon(),
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
+                                                style: defaultRegularStyle,
                                               ),
                                               actions: <Widget>[
                                                 FlatButton(
                                                   child: Text(
                                                     word.confirm(),
-                                                    style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
+                                                    style: buttonBlueStyle,
                                                   ),
                                                   onPressed: () {
                                                     Navigator.pop(context);
@@ -526,22 +530,23 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                       } else if (!phoneRegExp.hasMatch(_phoneEdit.text.trim())) {
                                         showDialog(
                                           context: context,
+                                          barrierDismissible: false,
                                           builder: (BuildContext context) {
                                             // return object of type Dialog
                                             return AlertDialog(
                                               title: Text(
                                                 word.phoneChangeFiled(),
-                                                style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
+                                                style: defaultMediumStyle,
                                               ),
                                               content: Text(
                                                 word.phoneChangeFiledTyepCon(),
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
+                                                style: defaultRegularStyle,
                                               ),
                                               actions: <Widget>[
                                                 FlatButton(
                                                   child: Text(
                                                     word.confirm(),
-                                                    style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
+                                                    style: buttonBlueStyle,
                                                   ),
                                                   onPressed: () {
                                                     Navigator.pop(context);
@@ -554,22 +559,23 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                       } else {
                                         showDialog(
                                           context: context,
+                                          barrierDismissible: false,
                                           builder: (BuildContext context) {
                                             // return object of type Dialog
                                             return AlertDialog(
                                               title: Text(
                                                 word.phoneChange(),
-                                                style: customStyle(fontColor: redColor, fontSize: 13.0.sp, fontWeightName: 'Bold'),
+                                                style: defaultMediumStyle,
                                               ),
                                               content: Text(
                                                 "${_phoneEdit.text}\n${word.phoneChangeCon()}",
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp, fontWeightName: 'Regular'),
+                                                style: defaultRegularStyle,
                                               ),
                                               actions: <Widget>[
                                                 FlatButton(
                                                   child: Text(
                                                     word.yes(),
-                                                    style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
+                                                    style: buttonBlueStyle,
                                                   ),
                                                   onPressed: () {
                                                     FirebaseRepository().updatePhone(
@@ -743,7 +749,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                         return SimpleDialog(
                                           title: Text(
                                             word.select(),
-                                            style: customStyle(fontColor: mainColor, fontSize: 14.0.sp),
+                                            style: defaultMediumStyle,
                                           ),
                                           children: [
                                             SimpleDialogOption(
@@ -752,7 +758,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                               },
                                               child: Text(
                                                 word.camera(),
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
+                                                style: defaultRegularStyle,
                                               ),
                                             ),
                                             SimpleDialogOption(
@@ -761,7 +767,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                               },
                                               child: Text(
                                                 word.gallery(),
-                                                style: customStyle(fontColor: mainColor, fontSize: 13.0.sp),
+                                                style: defaultRegularStyle,
                                               ),
                                             ),
                                           ],
@@ -811,7 +817,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                   Container(
                                       width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                                       child: TextFormField(
-                                        controller: _companyNameTextCon,
+                                        controller: _companyAddrTextCon,
                                         style: defaultRegularStyle,
                                         decoration: InputDecoration(
                                           isDense: true,
@@ -838,7 +844,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                   Container(
                                       width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                                       child: TextFormField(
-                                        controller: _companyNameTextCon,
+                                        controller: _companyPhoneTextCon,
                                         style: defaultRegularStyle,
                                         decoration: InputDecoration(
                                           isDense: true,
@@ -865,7 +871,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                   Container(
                                       width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                                       child: TextFormField(
-                                        controller: _companyNameTextCon,
+                                        controller: _companyWebTextCon,
                                         style: defaultRegularStyle,
                                         decoration: InputDecoration(
                                           isDense: true,
@@ -905,7 +911,6 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                       FirebaseRepository().updateCompany(
                                         companyCode: _loginUser.companyCode,
                                         companyName: _companyNameTextCon.text.trim() != "" ? _companyNameTextCon.text : snapshot.data["companyName"],
-                                        companyNo: _companyNoTextCon.text.trim() != "" ? _companyNoTextCon.text : snapshot.data["companyNo"],
                                         companyAddr: _companyAddrTextCon.text.trim() != "" ? _companyAddrTextCon.text : snapshot.data["companyAddr"],
                                         companyPhone: _companyPhoneTextCon.text.trim() != "" ? _companyPhoneTextCon.text : snapshot.data["companyPhone"],
                                         companyWeb: _companyWebTextCon.text.trim() != "" ? _companyWebTextCon.text : snapshot.data["companyWeb"],

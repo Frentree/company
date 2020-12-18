@@ -123,9 +123,9 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               ),
             ),
           ),
-
+          emptySpace,
           StreamBuilder(
-            stream: _repository.getColleague(loginUserMail: _loginUser.mail, companyCode: _loginUser.companyCode).asStream(),
+            stream: _repository.getColleagueInfo(companyCode: _loginUser.companyCode),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if (snapshot.data == null) {
                 return Center(
@@ -134,7 +134,13 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               }
 
               Map<dynamic, dynamic> colleague = isTable ? {_loginUser.mail : word.my()} : {}; //회원 리스트
-              colleague.addAll(snapshot.data);
+              snapshot.data.documents.forEach((element){
+                var elementData = element.data();
+                if(elementData["mail"] != _loginUser.mail){
+                  colleague.addAll({elementData["mail"]: elementData["name"]});
+                }
+              });
+
               return isTable ? StreamBuilder(
                 stream: _repository.getSelectedWeekCompanyWork(companyCode: _loginUser.companyCode, selectedWeek: _format.oneWeekDay(selectTime)),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -226,7 +232,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                         ),
                       ),
                       onTap: (){
-                        attendance(context: context);
+                        attendance(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(Scaffold.of(context).context).context).context).padding.top);
                       },
                     ),
                     StreamBuilder(

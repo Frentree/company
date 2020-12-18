@@ -174,6 +174,17 @@ class FirebaseMethods {
     return colleague;
   }
 
+  Stream<QuerySnapshot> getColleagueInfo(
+      {String companyCode}) {
+
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .orderBy("name")
+        .snapshots();
+  }
+
   //내외근 데이터 관련 관련
   Future<void> saveWork({WorkModel workModel, String companyCode}) async {
     return await firestore
@@ -217,8 +228,8 @@ class FirebaseMethods {
         .collection(COMPANY)
         .doc(companyCode)
         .collection(WORK)
-        .document(meetingModel.id)
-        .updateData(meetingModel.toJson());
+        .doc(meetingModel.id)
+        .update(meetingModel.toJson());
   }
 
   Future<void> deleteMeeting({String documentID, String companyCode}) async {

@@ -107,7 +107,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                     Row(
                                       children: [
                                         Container(
-                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 68.0.w : 57.0.w,
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 67.0.w : 55.0.w,
                                           height: 5.0.h,
                                           alignment: Alignment.centerLeft,
                                           child: Text(

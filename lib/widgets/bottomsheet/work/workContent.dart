@@ -1,5 +1,6 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
@@ -44,12 +45,6 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
 
   await showModalBottomSheet(
     isScrollControlled: true,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(3.0.w),
-        topLeft: Radius.circular(3.0.w),
-      ),
-    ),
     context: context,
     builder: (BuildContext context) {
       LoginUserInfoProvider _loginUserInfoProvider =
@@ -62,77 +57,63 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
             onTap: () {
               FocusScope.of(context).unfocus();
             },
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.only(
-                  top: 2.0.h,
-                  left: 5.0.w,
-                  right: 5.0.w,
-                  bottom: MediaQuery
-                      .of(context)
-                      .viewInsets
-                      .bottom),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 30.0.w,
-                        child: Chip(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: chipColorBlue,
-                          label: Text(
+            child: Container(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                    left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                    right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                    top: 2.0.h,
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          height: 6.0.h,
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                          decoration: BoxDecoration(
+                            color: chipColorBlue,
+                            borderRadius: BorderRadius.circular(
+                              SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                            ),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
                             type == 1 ? word.workInSchedule() : word.workOutSchedule(),
-                            style: customStyle(
-                              fontSize: 11.0.sp,
-                              fontColor: mainColor,
-                              fontWeightName: "Regular",
+                            style: defaultMediumStyle,
+                          ),
+                        ),
+                        cardSpace,
+                        Expanded(
+                          child: TextField(
+                            controller: _titleController,
+                            style: defaultRegularStyle,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: textFormPadding,
+                              border: InputBorder.none,
+                              hintText: word.pleaseTitle(),
+                              hintStyle: hintStyle,
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 3.0.w),
-                      ),
-                      Container(
-                        width: 40.0.w,
-                        child: TextField(
-                          controller: _titleController,
-                          style: customStyle(
-                            fontSize: 13.0.sp,
-                            fontColor: mainColor,
-                            fontWeightName: "Regular",
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: word.pleaseTitle(),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 3.0.w),
-                      ),
-                      Container(
-                        width: 10.0.w,
-                        alignment: Alignment.center,
-                        child: CircleAvatar(
-                          radius: 5.0.w,
-                          backgroundColor: _titleController.text == ""
-                              ? disableUploadBtn
-                              : blueColor,
+                        cardSpace,
+                        CircleAvatar(
+                          radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                          backgroundColor: _titleController.text == "" ? disableUploadBtn : blueColor,
                           child: IconButton(
                             padding: EdgeInsets.zero,
                               icon: Icon(
                                 Icons.arrow_upward,
                                 color: whiteColor,
-                                size: 6.0.w,
+                                size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
-                              onPressed: _titleController.text == ""
-                                  ? () {
-                                //print("업로드 안됨");
-                              }
-                                  : () async {
+                              onPressed: _titleController.text == "" ? () {} : () async {
                                 _workModel = workModel != null ? WorkModel(
                                   id: workModel.id,
                                   createUid: workModel.createUid,
@@ -142,18 +123,9 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                                   contents: _contentController.text,
                                   location: _locationController.text,
                                   createDate: workModel.createDate,
-                                  lastModDate:
-                                  _format.dateTimeToTimeStamp(
-                                      DateTime.now()),
-                                  startDate: _format.dateTimeToTimeStamp(
-                                      DateTime(
-                                          startTime.year,
-                                          startTime.month,
-                                          startTime.day,
-                                          21,
-                                          00,)),
-                                  startTime: _format
-                                      .dateTimeToTimeStamp(startTime),
+                                  lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  startDate: _format.dateTimeToTimeStamp(DateTime( startTime.year, startTime.month, startTime.day, 21, 00,)),
+                                  startTime: _format.dateTimeToTimeStamp(startTime),
                                   timeSlot: _format.timeSlot(startTime),
                                   level: 0,
                                 ) : WorkModel(
@@ -163,20 +135,10 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                                   title: _titleController.text,
                                   contents: _contentController.text,
                                   location: _locationController.text,
-                                  createDate: _format.dateTimeToTimeStamp(
-                                      DateTime.now()),
-                                  lastModDate:
-                                  _format.dateTimeToTimeStamp(
-                                      DateTime.now()),
-                                  startDate: _format.dateTimeToTimeStamp(
-                                      DateTime(
-                                        startTime.year,
-                                        startTime.month,
-                                        startTime.day,
-                                        21,
-                                        00,)),
-                                  startTime: _format
-                                      .dateTimeToTimeStamp(startTime),
+                                  createDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
+                                  startTime: _format.dateTimeToTimeStamp(startTime),
                                   timeSlot: _format.timeSlot(startTime),
                                   level: 0,
                                 );
@@ -187,7 +149,6 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                                     companyCode: _loginUser.companyCode,
                                   );
                                 }
-
                                 else {
                                   await _repository.updateWork(
                                     workModel: _workModel,
@@ -199,175 +160,161 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                                 return result;
                               }),
                         ),
-                      ),
-                    ],
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 2.0.h,)),
-                  Row(
-                    children: [
-                      Container(
-                        width: 30.0.w,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.calendar_today,
-                              size: 6.0.w,
-                            ),
-                            Padding(padding: EdgeInsets.only(left: 3.0.w),),
-                            Text(
-                              word.dateTime(),
-                              style: customStyle(
-                                fontSize: 12.0.sp,
-                                fontColor: mainColor,
-                                fontWeightName: 'Regular',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 55.0.w,
-                        child: InkWell(
-                          child: Text(
-                            _format.dateToString(startTime),
-                            style: customStyle(
-                              fontSize: 12.0.sp,
-                              fontColor: mainColor,
-                              fontWeightName: 'Regular',
-                            ),
-                          ),
-                          onTap: () async {
-                            DateTime _dateTime = await workDatePage(
-                              context: context,
-                              startTime: startTime
-                            );
-                            setState(() {
-                              startTime = _dateTime;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 2.0.h,)),
-                  Visibility(
-                    visible: (type == 2),
-                    child: Row(
+                      ],
+                    ),
+                    emptySpace,
+                    Row(
                       children: [
                         Container(
-                          width: 30.0.w,
+                          height: 6.0.h,
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
                           child: Row(
                             children: [
                               Icon(
-                                Icons.location_on_outlined,
-                                size: 6.0.w,
+                                Icons.calendar_today,
+                                size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
-                              Padding(padding: EdgeInsets.only(left: 3.0.w),),
+                              cardSpace,
                               Text(
-                                word.outLocation(),
-                                style: customStyle(
-                                  fontSize: 12.0.sp,
-                                  fontColor: mainColor,
-                                  fontWeightName: 'Regular',
-                                ),
+                                word.dateTime(),
+                                style: defaultRegularStyle,
                               ),
                             ],
                           ),
                         ),
-                        Container(
-                            width: 55.0.w,
-                            child: TextField(
-                              controller: _locationController,
-                              style: customStyle(
-                                fontSize: 12.0.sp,
-                                fontColor: mainColor,
-                                fontWeightName: 'Regular',
-                              ),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: word.outCon(),
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                    visible: (type == 2),
-                    child: Padding(padding: EdgeInsets.only(top: 2.0.h,)),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 7.0.w,
-                          height: 3.0.h,
-                          child: Checkbox(
-                            value: isChk,
-                            onChanged: (value) {
+                        cardSpace,
+                        Expanded(
+                          child: InkWell(
+                            child: Text(
+                              _format.dateToString(startTime),
+                              style: defaultRegularStyle,
+                            ),
+                            onTap: () async {
+                              DateTime _dateTime = await workDatePage(
+                                context: context,
+                                startTime: startTime
+                              );
                               setState(() {
-                                isChk = value;
+                                startTime = _dateTime;
                               });
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 3.0.w),),
-                        Text(
-                          word.addItem(),
-                          style: customStyle(
-                            fontSize: 12.0.sp,
-                            fontColor: mainColor,
-                            fontWeightName: 'Regular',
-                          ),
-                        ),
                       ],
                     ),
-                  ),
-                  Visibility(
-                    visible: isChk,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30.0.w,
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.list,
-                                size: 6.0.w,
-                              ),
-                              Padding(padding: EdgeInsets.only(left: 3.0.w),),
-                              Text(
-                                word.content(),
-                                style: customStyle(
-                                  fontSize: 12.0.sp,
-                                  fontColor: mainColor,
-                                  fontWeightName: 'Regular',
+                    emptySpace,
+                    Visibility(
+                      visible: (type == 2),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 6.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on_outlined,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                                 ),
+                                cardSpace,
+                                Text(
+                                  word.outLocation(),
+                                  style: defaultRegularStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          cardSpace,
+                          Expanded(
+                            child: TextField(
+                              controller: _locationController,
+                              style: defaultRegularStyle,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: textFormPadding,
+                                border: InputBorder.none,
+                                hintText: word.outCon(),
+                                hintStyle: hintStyle,
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 55.0.w,
-                          child: TextField(
-                            maxLines: null,
-                            controller: _contentController,
-                            keyboardType: TextInputType.multiline,
-                            style: customStyle(
-                              fontSize: 12.0.sp,
-                              fontColor: mainColor,
-                              fontWeightName: 'Regular',
-                            ),
-                            decoration: InputDecoration(
-                              hintText: word.contentCon(),
-                              border: InputBorder.none,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 4.0.h)),
-                ],
+                    Visibility(
+                      visible: (type == 2),
+                      child: emptySpace,
+                    ),
+                    Container(
+                      child: Row(
+                        children: [
+                          Container(
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                            height: 6.0.h,
+                            child: Checkbox(
+                              value: isChk,
+                              onChanged: (value) {
+                                setState(() {
+                                  isChk = value;
+                                });
+                              },
+                            ),
+                          ),
+                          cardSpace,
+                          Text(
+                            word.addItem(),
+                            style: defaultRegularStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: isChk,
+                      child: emptySpace,
+                    ),
+                    Visibility(
+                      visible: isChk,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 6.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.chat_bubble_outline,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                ),
+                                cardSpace,
+                                Text(
+                                  word.content(),
+                                  style: defaultRegularStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          emptySpace,
+                          TextFormField(
+                            maxLines: 5,
+                            maxLengthEnforced: true,
+                            controller: _contentController,
+                            style: defaultRegularStyle,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                              contentPadding: textFormPadding,
+                              hintText: word.contentCon(),
+                              hintStyle: hintStyle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    emptySpace,
+                  ],
+                ),
               ),
             ),
           );

@@ -30,7 +30,7 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
               ),
             ),
             Container(
-              height: 3.0.h,
+              height: 4.0.h,
               width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
               decoration: containerChipDecoration,
               padding: EdgeInsets.symmetric(

@@ -1,9 +1,11 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
@@ -22,10 +24,8 @@ import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-attendance({BuildContext context}) async {
+attendance({BuildContext context, double statusBarHeight}) async {
   bool result = false;
-  bool isChk = false;
-
   Format _format = Format();
 
   TextEditingController _titleController = TextEditingController();
@@ -42,8 +42,8 @@ attendance({BuildContext context}) async {
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topRight: Radius.circular(3.0.w),
-        topLeft: Radius.circular(3.0.w),
+        topRight: Radius.circular(pageRadiusW.w),
+        topLeft: Radius.circular(pageRadiusW.w),
       ),
     ),
     context: context,
@@ -51,7 +51,7 @@ attendance({BuildContext context}) async {
       LoginUserInfoProvider _loginUserInfoProvider =
       Provider.of<LoginUserInfoProvider>(context);
       _loginUser = _loginUserInfoProvider.getLoginUser();
-
+      print(statusBarHeight);
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return GestureDetector(
@@ -59,45 +59,59 @@ attendance({BuildContext context}) async {
               FocusScope.of(context).unfocus();
             },
             child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(
-                  top: 2.0.h,
-                  left: 5.0.w,
-                  right: 5.0.w,
+                bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
               child: Container(
-                height: 50.0.h,
+                height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
+                padding: EdgeInsets.only(
+                  left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  top: 2.0.h,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                    topRight: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                  ),
+                  color: whiteColor,
+                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.clear,
-                            size: 6.0.w,
+                    Container(
+                      height: 6.0.h,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 6.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: IconButton(
+                              constraints: BoxConstraints(),
+                              padding: EdgeInsets.zero,
+                              icon: Icon(
+                                Icons.keyboard_arrow_left_sharp,
+                                size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                color: mainColor,
+                              ),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              },
+                            ),
                           ),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Container(
-                          height: 5.0.h,
-                          child: Center(
-                            child: Text(
-                              nowTime + " 현재 동료 근무 현황",
-                              style: customStyle(
-                                fontSize: 13.0.sp,
-                                fontWeightName: "Medium",
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                nowTime + " 현재 동료 근무 현황",
+                                style: defaultMediumStyle,
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          width: 6.0.w,
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                     emptySpace,
                     Padding(
@@ -147,7 +161,7 @@ attendance({BuildContext context}) async {
                     ),
                     emptySpace,
                     StreamBuilder(
-                      stream: _repository.getColleague(loginUserMail: _loginUser.mail, companyCode: _loginUser.companyCode).asStream(),
+                      stream: _repository.getColleagueInfo(companyCode: _loginUser.companyCode),
                       builder: (BuildContext context, AsyncSnapshot snapshot){
                         if(snapshot.data == null){
                           return Center(
@@ -155,8 +169,15 @@ attendance({BuildContext context}) async {
                           );
                         }
                         Map<dynamic, dynamic> colleague = {};
-                        colleague.addAll(snapshot.data);
+                        List<CompanyUser> _companyUserInfo = [];
 
+                        snapshot.data.documents.forEach((element){
+                          var elementData = element.data();
+                          if(elementData["mail"] != _loginUser.mail){
+                            _companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
+                            colleague.addAll({elementData["mail"]: elementData["name"]});
+                          }
+                        });
                         return StreamBuilder(
                           stream: _repository.getColleagueNowAttendance(companyCode: _loginUser.companyCode, loginUserMail: _loginUser.mail, today: _format.dateTimeToTimeStamp(today),),
                           builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -192,6 +213,7 @@ attendance({BuildContext context}) async {
                                         child: Row(
                                           children: [
                                             Container(
+                                              alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                                               child: Text(
                                                 colleague.values.elementAt(index),
@@ -200,14 +222,16 @@ attendance({BuildContext context}) async {
                                             ),
                                             cardSpace,
                                             Container(
+                                              alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                                               child: Text(
-                                                "개발팀",
+                                                _companyUserInfo[index].team,
                                                 style: containerChipStyle,
                                               ),
                                             ),
                                             cardSpace,
                                             Container(
+                                              alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                                               child: Text(
                                                ( _attendance == null || _attendance.status == 0) ? "출근전" : _attendance.status == 1 ? "내근" : _attendance.status == 2 ? "외근" : "퇴근",

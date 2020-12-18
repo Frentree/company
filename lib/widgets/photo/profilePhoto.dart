@@ -14,14 +14,10 @@ FutureBuilder profilePhoto({User loginUser}){
         return CircularProgressIndicator();
       }
       else
-        return Container(
-          height: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-          width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-          color: whiteColor,
-          child: FittedBox(
-            fit: BoxFit.cover,
-            child: Image.network(snapshot.data['profilePhoto']),
-          )
+        return CircleAvatar(
+          backgroundColor: whiteColor,
+          radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+          backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
         );
     },
   );
