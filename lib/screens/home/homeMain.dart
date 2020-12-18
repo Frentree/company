@@ -98,9 +98,19 @@ class HomeMainPageState extends State<HomeMainPage> {
                                     color: whiteColor,
                                     size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                                   ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
+                                  onPressed: _attendance.status == 0
+                                      ? () async {
+                                    await _attendanceCheckProvider.manualOnWork(
+                                      context: context,
+                                    );
+                                  }
+                                      : _attendance.status != 3
+                                      ? () async {
+                                    await _attendanceCheckProvider.manualOffWork(
+                                      context: context,
+                                    );
+                                  }
+                                      : null,
                                 ),
                               ),
                               Text(

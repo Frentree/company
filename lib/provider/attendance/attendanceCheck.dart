@@ -1,4 +1,5 @@
 //Flutter
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:flutter/material.dart';
@@ -214,18 +215,21 @@ class AttendanceCheck extends ChangeNotifier {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("출근처리", style: customStyle(fontSize: 15.0.sp,),),
+              title: Text(
+                "출근처리",
+                style: defaultMediumStyle,
+              ),
               content: Container(
+                color: Colors.pink,
                 height: 10.0.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("수동 처리 사유"),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          bottom: 1.0.h,
-                      ),
+                    Text(
+                      "수동 처리 사유",
+                      style: defaultRegularStyle,
                     ),
+                    emptySpace,
                     Row(
                       children: [
                         manualOnWorkBtn(
@@ -240,9 +244,7 @@ class AttendanceCheck extends ChangeNotifier {
                               });
                             },
                             isSelect: isSelect[0]),
-                        SizedBox(
-                          width: 3.0.w,
-                        ),
+                        cardSpace,
                         manualOnWorkBtn(
                             context: context,
                             btnText: "기기고장",
@@ -255,9 +257,7 @@ class AttendanceCheck extends ChangeNotifier {
                               });
                             },
                             isSelect: isSelect[1]),
-                        SizedBox(
-                          width: 3.0.w,
-                        ),
+                        cardSpace,
                         manualOnWorkBtn(
                             context: context,
                             btnText: "착오",
@@ -276,30 +276,41 @@ class AttendanceCheck extends ChangeNotifier {
                 ),
               ),
               actions: <Widget>[
-                textBtn(
-                    btnText: "확인",
-                    btnAction: isSelect.contains(true)
-                        ? () {
-                            if (isSelect[0] == true) {
-                              _attendance.status = 2;
-                            } else {
-                              _attendance.status = 1;
-                            }
-                            _attendance.attendTime =
-                                _format.dateTimeToTimeStamp(nowTime);
-                            _repository.updateAttendance(
-                              attendanceModel: _attendance,
-                              documentId: _attendance.id,
-                              companyCode: _loginUser.companyCode,
-                            );
-                            notifyListeners();
-                            Navigator.pop(context, "OK");
-                          }
-                        : null),
-                textBtn(
-                  btnText: "취소",
-                  btnAction: () {
-                    Navigator.pop(context, "NO");
+
+                Container(
+                  color: Colors.pink,
+                  child: FlatButton(
+                    padding: EdgeInsets.zero,
+                    //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    child: Text(
+                      "확인",
+                      style: buttonBlueStyle,
+                    ),
+                    onPressed: isSelect.contains(true) ? () {
+                      if (isSelect[0] == true) {
+                        _attendance.status = 2;
+                      } else {
+                        _attendance.status = 1;
+                      }
+                      _attendance.attendTime =
+                          _format.dateTimeToTimeStamp(nowTime);
+                      _repository.updateAttendance(
+                        attendanceModel: _attendance,
+                        documentId: _attendance.id,
+                        companyCode: _loginUser.companyCode,
+                      );
+                      notifyListeners();
+                      Navigator.pop(context, "OK");
+                    } : null,
+                  ),
+                ),
+                FlatButton(
+                  child: Text(
+                    "취소",
+                    style: buttonBlueStyle,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
                   },
                 ),
               ],
