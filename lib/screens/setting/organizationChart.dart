@@ -247,7 +247,15 @@ Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String co
           children: [
             Row(
               children: [
-                Draggable(
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: CircleAvatar(
+                    backgroundColor: whiteColor,
+                    backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+                  ),
+                ),
+               /* Draggable(
                   data: map,
                   child: SizedBox(
                     width: 30,
@@ -263,7 +271,7 @@ Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String co
                       backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
                     ),
                   ),
-                ),
+                ),*/
                 Padding(
                   padding: const EdgeInsets.only(right: 10, left: 5),
                   child: Text(

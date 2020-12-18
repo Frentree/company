@@ -72,10 +72,12 @@ Future<void> getErrorDialog({BuildContext context, String text}) {
 Future<void> getTeamUpadateDialog({BuildContext context, String teamName, String documentID, String companyCode}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       TextEditingController _teamNameEditController = TextEditingController();
       return AlertDialog(
-        title: Container(
+        title: Text(word.departmentUpdate(),),
+        /*Container(
           height: 50,
           color: mainColor,
           child: Center(
@@ -84,59 +86,37 @@ Future<void> getTeamUpadateDialog({BuildContext context, String teamName, String
               style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
             ),
           ),
-        ),
-        titlePadding: EdgeInsets.all(0.0),
-        content: Container(
-          height: customHeight(context: context, heightSize: 0.2),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.account_circle),
-                  labelText: teamName,
-                ),
-                controller: _teamNameEditController,
+        ),*/
+        //titlePadding: EdgeInsets.all(0.0),
+        content: SingleChildScrollView(
+          child: ListBody(children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(
+                icon: Icon(Icons.account_circle),
+                labelText: teamName,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
-                        color: mainColor,
-                        child: Text(
-                          word.update(),
-                          style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-                        ),
-                        onPressed: () {
-                          FirebaseRepository().modifyOrganizationChartName(
-                            companyCode: companyCode,
-                            documentID: documentID,
-                            teamName: _teamNameEditController.text
-                          );
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: RaisedButton(
-                      color: mainColor,
-                      child: Text(
-                        word.cencel(),
-                        style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              controller: _teamNameEditController,
+            ),
+        ])),
+        actions: [
+          FlatButton(
+            child: Text(word.update()),
+            onPressed: () {
+              FirebaseRepository().modifyOrganizationChartName(
+                  companyCode: companyCode,
+                  documentID: documentID,
+                  teamName: _teamNameEditController.text
+              );
+              Navigator.pop(context);
+            },
           ),
-        ),
+          FlatButton(
+            child: Text(word.cencel()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       );
     },
   );
@@ -146,100 +126,54 @@ Future<void> getTeamUpadateDialog({BuildContext context, String teamName, String
 Future<void> getTeamDeleteDialog({BuildContext context, String documentID, String companyCode, String teamName}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.departmentDelete(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.departmentDelete(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
-        content: Container(
-          height: customHeight(context: context, heightSize: 0.2),
-          child: Column(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(word.deleteTeamCon()),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            color: mainColor,
-                            child: Text(
-                              word.yes(),
-                              style: customStyle(
-                                  fontColor: whiteColor,
-                                  fontSize: 15,
-                                  fontWeightName: 'Bold'
-                              ),
-                            ),
-                            onPressed: () {
-                              FirebaseRepository().deleteUserOrganizationChart(
-                                documentID: documentID,
-                                companyCode: companyCode,
-                                teamName: teamName
-                              );
-                              /*FirebaseRepository().deleteTeam(documentID, companyCode);*/
+        content: SingleChildScrollView(
+          child: ListBody(children: <Widget>[
+            Text(word.deleteTeamCon()),
+        ])),
+        actions: [
+          FlatButton(
+            child: Text(word.yes()),
+            onPressed: () {
+              FirebaseRepository().deleteUserOrganizationChart(
+                  documentID: documentID,
+                  companyCode: companyCode,
+                  teamName: teamName
+              );
+              /*FirebaseRepository().deleteTeam(documentID, companyCode);*/
 
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: RaisedButton(
-                          color: mainColor,
-                          child: Text(
-                            word.no(),
-                            style: customStyle(
-                                fontColor: whiteColor,
-                                fontSize: 15,
-                                fontWeightName: 'Bold'
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+              Navigator.pop(context);
+            },
           ),
-        ),
+          FlatButton(
+            child: Text(word.no()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       );
     },
   );
 }
 
+final List<Map<String,dynamic>> teamList = List();
 // 팀 유저 추가 다이얼로그
 Future<void> addTeamUserDialog({BuildContext context, String documentID, String companyCode, String teamName}) {
+
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.addUser(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.addUser(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
         content: Container(
           height: customHeight(context: context, heightSize: 0.5),
           child: Column(
@@ -254,9 +188,29 @@ Future<void> addTeamUserDialog({BuildContext context, String documentID, String 
                   },
                 ),
               ),
+
             ],
           ),
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.yes()),
+            onPressed: () async {
+              await FirebaseRepository().addTeamUser(
+                  companyCode: companyCode,
+                  user: teamList
+              );
+              teamList.clear();
+              Navigator.pop(context);
+            },
+          ),
+          FlatButton(
+            child: Text(word.no()),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
       );
     },
   );
@@ -264,7 +218,6 @@ Future<void> addTeamUserDialog({BuildContext context, String documentID, String 
 
 // 팀 추가 안된 사용자 불러오기
 Widget _getUserTeamListAdd(BuildContext context, List<DocumentSnapshot> snapshot, String teamName, String companyCode) {
-  List<Map<String,dynamic>> teamList = List();
   return Column(
     children: [
       Expanded(
@@ -292,6 +245,7 @@ Widget _getUserTeamListAdd(BuildContext context, List<DocumentSnapshot> snapshot
                                   width: 40,
                                   height: 40,
                                   child: CircleAvatar(
+                                    backgroundColor: whiteColor,
                                     backgroundImage: NetworkImage(snapshot[index]['profilePhoto']),
                                   ),
                                 ),
@@ -347,52 +301,7 @@ Widget _getUserTeamListAdd(BuildContext context, List<DocumentSnapshot> snapshot
           ),
         ),
       ),
-      Expanded(
-        flex: 2,
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  color: mainColor,
-                  child: Text(
-                    word.yes(),
-                    style: customStyle(
-                      fontColor: whiteColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'
-                    ),
-                  ),
-                  onPressed: () {
-                    FirebaseRepository().addTeamUser(
-                      companyCode: companyCode,
-                      user: teamList
-                    );
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              child: RaisedButton(
-                color: mainColor,
-                child: Text(
-                  word.no(),
-                  style: customStyle(
-                      fontColor: whiteColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+
     ],
   );
 }
@@ -401,19 +310,12 @@ Widget _getUserTeamListAdd(BuildContext context, List<DocumentSnapshot> snapshot
 Future<void> dropTeamUserDialog({BuildContext context, String documentID, String companyCode, String teamName}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.deleteMember(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.deleteMember(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
         content: Container(
           height: customHeight(context: context, heightSize: 0.5),
           child: Column(
@@ -431,6 +333,26 @@ Future<void> dropTeamUserDialog({BuildContext context, String documentID, String
             ],
           ),
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.yes()),
+            onPressed: () async {
+              print(teamList);
+              await FirebaseRepository().addTeamUser(
+                companyCode: companyCode,
+                user: teamList
+              );
+              teamList.clear();
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(word.cencel()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       );
     },
   );
@@ -438,7 +360,6 @@ Future<void> dropTeamUserDialog({BuildContext context, String documentID, String
 
 // 팀 삭제 추가된 사용자 불러오기
 Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot, String teamName, String companyCode) {
-  List<Map<String,dynamic>> teamList = List();
   return Column(
     children: [
       Expanded(
@@ -465,6 +386,7 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
                                   width: 40,
                                   height: 40,
                                   child: CircleAvatar(
+                                    backgroundColor: whiteColor,
                                     backgroundImage: NetworkImage(snapshot[index]['profilePhoto']),
                                   ),
                                 ),
@@ -516,52 +438,6 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
             /*children: snapshot.map((data) =>
               _getUserItem(context, data, level, (level == data['level']))).toList(),*/
           ),
-        ),
-      ),
-      Expanded(
-        flex: 2,
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  color: mainColor,
-                  child: Text(
-                    word.yes(),
-                    style: customStyle(
-                        fontColor: whiteColor,
-                        fontSize: 15,
-                        fontWeightName: 'Bold'
-                    ),
-                  ),
-                  onPressed: () {
-                   FirebaseRepository().addTeamUser(
-                     companyCode: companyCode,
-                     user: teamList
-                   );
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              child: RaisedButton(
-                color: mainColor,
-                child: Text(
-                  word.cencel(),
-                  style: customStyle(
-                      fontColor: whiteColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
         ),
       ),
     ],

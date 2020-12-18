@@ -144,10 +144,10 @@ Widget _buildUserList(BuildContext context, PositionData postion, String company
                       child: PopupMenuButton(
                         icon: Icon(Icons.more_horiz),
                         itemBuilder: (context) => [
-                          getPopupItem(context: context, icons: Icons.update, text: word.departmentUpdate(), value: 1),
+                          getPopupItem(context: context, icons: Icons.update, text: word.positionUpdate(), value: 1),
                           //getPopupItem(context: context, icons: Icons.edit, text: word.parentDepartmentCreate(), value: 2),
                           //getPopupItem(context: context, icons: Icons.edit, text: word.subDepartmentCreate(), value: 3),
-                          getPopupItem(context: context, icons: Icons.delete, text: word.departmentDelete(), value: 4),
+                          getPopupItem(context: context, icons: Icons.delete, text: word.positionDelete(), value: 4),
                           getPopupItem(context: context, icons: Icons.add, text: word.addMember(), value: 5),
                           getPopupItem(context: context, icons: Icons.delete, text: word.deleteMember(), value: 6),
                         ],
@@ -155,21 +155,21 @@ Widget _buildUserList(BuildContext context, PositionData postion, String company
                           switch (value) {
                             case 1:
                               getPositionUpadateDialog(
-                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
+                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
                               break;
                             case 2: case 3:
                               break;
                             case 4:
                               getPositionDeleteDialog(
-                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
+                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
                               break;
                             case 5:
                               addPositionUserDialog(
-                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
+                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
                               break;
                             case 6:
                               dropPositionUserDialog(
-                                  context: context, documentID: postion.reference.documentID, position: postion.position, companyCode: companyCode);
+                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
                               break;
                             default:
 
@@ -219,7 +219,15 @@ Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String co
           children: [
             Row(
               children: [
-                Draggable(
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: CircleAvatar(
+                    backgroundColor: whiteColor,
+                    backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+                  ),
+                ),
+                /*Draggable(
                   data: map,
                   child: SizedBox(
                     width: 30,
@@ -235,7 +243,7 @@ Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String co
                       backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
                     ),
                   ),
-                ),
+                ),*/
                 Padding(
                   padding: const EdgeInsets.only(right: 10, left: 5),
                   child: Text(

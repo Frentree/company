@@ -12,56 +12,27 @@ final word = Words();
 Future<void> getErrorDialog({BuildContext context, String text}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.alarm(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.alarm(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
-        content: Container(
-          height: customHeight(context: context, heightSize: 0.2),
-          child: Column(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(text),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            color: mainColor,
-                            child: Text(
-                              word.confirm(),
-                              style: customStyle(
-                                  fontColor: whiteColor,
-                                  fontSize: 15,
-                                  fontWeightName: 'Bold'
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      
-                    ],
-                  ),
-                ],
-              ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(text)
             ],
           ),
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.confirm()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       );
     },
   );
@@ -72,79 +43,41 @@ Future<void> getErrorDialog({BuildContext context, String text}) {
 Future<void> getGradeUpadateDialog({BuildContext context, String gradeName, String documentID, String companyCode}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       TextEditingController _gradeNameEditController = TextEditingController();
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.gradeNameUpdate(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.gradeNameUpdate(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
-        content: Container(
-          height: customHeight(context: context, heightSize: 0.2),
-          child: Column(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.account_circle),
-                      labelText: gradeName,
-                    ),
-                    controller: _gradeNameEditController,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            color: mainColor,
-                            child: Text(
-                              word.update(),
-                              style: customStyle(
-                                  fontColor: whiteColor,
-                                  fontSize: 15,
-                                  fontWeightName: 'Bold'
-                              ),
-                            ),
-                            onPressed: () {
-                              FirebaseRepository().updateGradeName(documentID, _gradeNameEditController.text, companyCode);
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: RaisedButton(
-                          color: mainColor,
-                          child: Text(
-                            word.cencel(),
-                            style: customStyle(
-                                fontColor: whiteColor,
-                                fontSize: 15,
-                                fontWeightName: 'Bold'
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget> [
+              TextFormField(
+                decoration: InputDecoration(
+                  icon: Icon(Icons.account_circle),
+                  labelText: gradeName,
+                ),
+                controller: _gradeNameEditController,
               ),
             ],
           ),
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.update()),
+            onPressed: () {
+              FirebaseRepository().updateGradeName(documentID, _gradeNameEditController.text, companyCode);
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(word.cencel()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       );
     },
   );
@@ -154,96 +87,51 @@ Future<void> getGradeUpadateDialog({BuildContext context, String gradeName, Stri
 Future<void> getGradeDeleteDialog({BuildContext context, String documentID, String companyCode, int level}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.deleteGrade(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.deleteGrade(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
-        content: Container(
-          height: customHeight(context: context, heightSize: 0.2),
-          child: Column(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(word.deleteGradeCon()),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            color: mainColor,
-                            child: Text(
-                              word.yes(),
-                              style: customStyle(
-                                  fontColor: whiteColor,
-                                  fontSize: 15,
-                                  fontWeightName: 'Bold'
-                              ),
-                            ),
-                            onPressed: () {
-                              FirebaseRepository().deleteUserGrade(documentID, companyCode, level);
-                              FirebaseRepository().deleteGrade(documentID, companyCode);
-
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: RaisedButton(
-                          color: mainColor,
-                          child: Text(
-                            word.no(),
-                            style: customStyle(
-                                fontColor: whiteColor,
-                                fontSize: 15,
-                                fontWeightName: 'Bold'
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(word.deleteGradeCon()),
             ],
           ),
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.yes()),
+            onPressed: () {
+              FirebaseRepository().deleteUserGrade(documentID, companyCode, level);
+              FirebaseRepository().deleteGrade(documentID, companyCode);
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(word.no()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       );
     },
   );
 }
 
+List<Map<String,dynamic>> gradeList = List();
 // 권한 유저 추가 다이얼로그
 Future<void> addGradeUserDialog({BuildContext context, String documentID, String companyCode, int level}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.addUser(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.addUser(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
         content: Container(
           height: customHeight(context: context, heightSize: 0.5),
           child: Column(
@@ -261,6 +149,23 @@ Future<void> addGradeUserDialog({BuildContext context, String documentID, String
             ],
           ),
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.yes()),
+            onPressed: () async {
+              await FirebaseRepository().addGradeUser(companyCode, gradeList);
+              gradeList.clear();
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(word.no()),
+            onPressed: () {
+              gradeList.clear();
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       );
     },
   );
@@ -268,7 +173,6 @@ Future<void> addGradeUserDialog({BuildContext context, String documentID, String
 
 // 권한 추가 안된 사용자 불러오기
 Widget _getUserListAdd(BuildContext context, List<DocumentSnapshot> snapshot, int level, String companyCode) {
-  List<Map<String,dynamic>> gradeList = List();
   return Column(
     children: [
       Expanded(
@@ -297,6 +201,7 @@ Widget _getUserListAdd(BuildContext context, List<DocumentSnapshot> snapshot, in
                                   width: 40,
                                   height: 40,
                                   child: CircleAvatar(
+                                    backgroundColor: whiteColor,
                                     backgroundImage: NetworkImage(snapshot[index]['profilePhoto']),
                                   ),
                                 ),
@@ -346,70 +251,21 @@ Widget _getUserListAdd(BuildContext context, List<DocumentSnapshot> snapshot, in
           ),
         ),
       ),
-      Expanded(
-        flex: 2,
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  color: mainColor,
-                  child: Text(
-                    word.yes(),
-                    style: customStyle(
-                      fontColor: whiteColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'
-                    ),
-                  ),
-                  onPressed: () {
-                    FirebaseRepository().addGradeUser(companyCode, gradeList);
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              child: RaisedButton(
-                color: mainColor,
-                child: Text(
-                  word.no(),
-                  style: customStyle(
-                      fontColor: whiteColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     ],
   );
 }
 
 // 권한 유저 삭제 다이얼로그
 Future<void> dropGradeUserDialog({BuildContext context, String documentID, String companyCode, int level}) {
+  int countGrade;
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.deleteUserPermission(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title: Text(
+          word.deleteUserPermission(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
         content: Container(
           height: customHeight(context: context, heightSize: 0.5),
           child: Column(
@@ -419,7 +275,7 @@ Future<void> dropGradeUserDialog({BuildContext context, String documentID, Strin
                   stream: FirebaseRepository().getGreadeUserDelete(companyCode, level),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return LinearProgressIndicator();
-
+                    countGrade = snapshot.data.documents.length;
                     return _getUserListDelete(context, snapshot.data.documents, level, companyCode);
                   },
                 ),
@@ -427,6 +283,30 @@ Future<void> dropGradeUserDialog({BuildContext context, String documentID, Strin
             ],
           ),
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.yes()),
+            onPressed: () async {
+              if(level == 9) {
+                if(countGrade == gradeList.length) {
+                  getErrorDialog(context: context, text: word.superAdminCon());
+                  return;
+                }
+              }
+
+              await FirebaseRepository().deleteGradeUser(companyCode, gradeList);
+              gradeList.clear();
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(word.no()),
+            onPressed: () {
+              gradeList.clear();
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       );
     },
   );
@@ -434,7 +314,6 @@ Future<void> dropGradeUserDialog({BuildContext context, String documentID, Strin
 
 // 권한 삭제 추가된 사용자 불러오기
 Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot, int level, String companyCode) {
-  List<Map<String,dynamic>> gradeList = List();
   return Column(
     children: [
       Expanded(
@@ -459,9 +338,10 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
                             Expanded(
                               child: CheckboxListTile(
                                 secondary:SizedBox(
-                                  width: 40,
-                                  height: 40,
+                                  width: 30,
+                                  height: 30,
                                   child: CircleAvatar(
+                                    backgroundColor: whiteColor,
                                     backgroundImage: NetworkImage(snapshot[index]['profilePhoto']),
                                   ),
                                 ),
@@ -484,10 +364,8 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
                                         "level" : level
                                       };
                                       gradeList.add(map);
-                                      print(gradeList);
                                     } else {
                                       gradeList.removeWhere((element) => snapshot[index]['mail'] == element['mail']);
-                                      print(gradeList);
                                     }
                                   });
                                 },
@@ -504,77 +382,22 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
           ),
         ),
       ),
-      Expanded(
-        flex: 2,
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  color: mainColor,
-                  child: Text(
-                    word.yes(),
-                    style: customStyle(
-                        fontColor: whiteColor,
-                        fontSize: 15,
-                        fontWeightName: 'Bold'
-                    ),
-                  ),
-                  onPressed: () {
-                    if(level == 9) {
-                      if(snapshot.length == gradeList.length) {
-                        getErrorDialog(context: context, text: word.superAdminCon());
-                        return;
-                      }
-                    }
-
-                    FirebaseRepository().deleteGradeUser(companyCode, gradeList);
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              child: RaisedButton(
-                color: mainColor,
-                child: Text(
-                  word.cencel(),
-                  style: customStyle(
-                      fontColor: whiteColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     ],
   );
 }
 
+bool isAccountingChk = false;
+bool isTaskChk = false;
 // 권한 추가 다이얼로그
 Future<void> addGradeDialog({BuildContext context, String companyCode}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.addPermission(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-            ),
-          ),
+        title:Text(
+          word.addPermission(),
         ),
-        titlePadding: EdgeInsets.all(0.0),
         content: Container(
           height: customHeight(context: context, heightSize: 0.5),
           child: Column(
@@ -591,7 +414,33 @@ Future<void> addGradeDialog({BuildContext context, String companyCode}) {
               ),
             ],
           ),
+
         ),
+        actions: [
+          FlatButton(
+            child: Text(word.yes()),
+            onPressed: () {
+              if(isAccountingChk == true){
+                FirebaseRepository().addGrade(companyCode, "회계 담당자", 7);
+                isAccountingChk = false;
+              }
+
+              if(isTaskChk == true) {
+                FirebaseRepository().addGrade(companyCode, "업무 관리자", 6);
+                isTaskChk = false;
+              }
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(word.no()),
+            onPressed: () {
+              isAccountingChk = false;
+              isTaskChk = false;
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       );
     },
   );
@@ -603,9 +452,6 @@ Widget _getGradeList(BuildContext context, List<DocumentSnapshot> snapshot, Stri
   for(int i= 0; i < snapshot.length; i++){
     gradeIdList.add(snapshot[i].data()['gradeID']);
   }
-
-  bool isAccountingChk = false;
-  bool isTaskChk = false;
   return Column(
     children: [
       Expanded(
@@ -673,52 +519,6 @@ Widget _getGradeList(BuildContext context, List<DocumentSnapshot> snapshot, Stri
               );
             },
           )
-        ),
-      ),
-      Expanded(
-        flex: 2,
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  color: mainColor,
-                  child: Text(
-                    word.yes(),
-                    style: customStyle(
-                        fontColor: whiteColor,
-                        fontSize: 15,
-                        fontWeightName: 'Bold'
-                    ),
-                  ),
-                  onPressed: () {
-                    if(isAccountingChk == true)
-                      FirebaseRepository().addGrade(companyCode, "회계 담당자", 7);
-                    if(isTaskChk == true)
-                      FirebaseRepository().addGrade(companyCode, "업무 관리자", 6);
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              child: RaisedButton(
-                color: mainColor,
-                child: Text(
-                  word.no(),
-                  style: customStyle(
-                      fontColor: whiteColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
         ),
       ),
     ],

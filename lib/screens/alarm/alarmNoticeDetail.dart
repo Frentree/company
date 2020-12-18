@@ -878,7 +878,7 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                   child: TextFormField(
                                     focusNode: _commnetFocusNode,
                                     textAlignVertical:
-                                        TextAlignVertical.bottom,
+                                    TextAlignVertical.bottom,
                                     controller: _noticeComment,
                                     style: customStyle(
                                       fontSize: 13.0.sp,
@@ -898,9 +898,9 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                   child: CircleAvatar(
                                       radius: 4.0.w,
                                       backgroundColor:
-                                          _noticeComment.text == ''
-                                              ? Colors.black12
-                                              : Colors.blue,
+                                      _noticeComment.text == ''
+                                          ? Colors.black12
+                                          : Colors.blue,
                                       child: IconButton(
                                         padding: EdgeInsets.zero,
                                         icon: Icon(Icons.arrow_upward, size: iconSizeW.w,),
@@ -917,18 +917,18 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                 //print("답글 미선택 ====> " + _commentId);
                                                 _commnetModel = CommentModel(
                                                   comment:
-                                                      _noticeComment.text,
+                                                  _noticeComment.text,
                                                   createUser: _commentMap,
                                                   createDate: Timestamp.now(),
                                                 );
                                                 FirebaseRepository()
                                                     .addNoticeComment(
-                                                        companyCode: _loginUser
-                                                            .companyCode,
-                                                        noticeDocumentID:
-                                                            noticeUid,
-                                                        comment:
-                                                            _commnetModel);
+                                                    companyCode: _loginUser
+                                                        .companyCode,
+                                                    noticeDocumentID:
+                                                    noticeUid,
+                                                    comment:
+                                                    _commnetModel);
                                               } else {
                                                 //print("답글 선택 ====> " + _commentId);
 
@@ -936,43 +936,43 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                                   // 답글 입력 클릭시
                                                   _commentList =
                                                       CommentListModel(
-                                                    comments:
+                                                        comments:
                                                         _noticeComment.text,
-                                                    createDate:
+                                                        createDate:
                                                         Timestamp.now(),
-                                                    commentsUser: _commentMap,
-                                                  );
+                                                        commentsUser: _commentMap,
+                                                      );
                                                   FirebaseRepository()
                                                       .addNoticeComments(
-                                                          companyCode:
-                                                              _loginUser
-                                                                  .companyCode,
-                                                          noticeDocumentID:
-                                                              noticeUid,
-                                                          commntDocumentID:
-                                                              _commentId,
-                                                          comment:
-                                                              _commentList);
+                                                      companyCode:
+                                                      _loginUser
+                                                          .companyCode,
+                                                      noticeDocumentID:
+                                                      noticeUid,
+                                                      commntDocumentID:
+                                                      _commentId,
+                                                      comment:
+                                                      _commentList);
                                                 } else if (crudType == 2) {
                                                   // 수정 클릭시
                                                   _commentList =
                                                       CommentListModel(
-                                                    comments:
+                                                        comments:
                                                         _noticeComment.text,
-                                                    updateDate:
+                                                        updateDate:
                                                         Timestamp.now(),
-                                                    commentsUser: _commentMap,
-                                                  );
+                                                        commentsUser: _commentMap,
+                                                      );
                                                   FirebaseRepository()
                                                       .updateNoticeComment(
                                                     companyCode: _loginUser
                                                         .companyCode,
                                                     noticeDocumentID:
-                                                        noticeUid,
+                                                    noticeUid,
                                                     commntDocumentID:
-                                                        _commentId,
+                                                    _commentId,
                                                     comment:
-                                                        _noticeComment.text,
+                                                    _noticeComment.text,
                                                   );
                                                 } else if (crudType == 3) {
                                                   // 대댓글 수정
