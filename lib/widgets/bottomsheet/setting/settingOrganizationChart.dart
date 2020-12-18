@@ -92,10 +92,7 @@ SettingOrganizationChart({BuildContext context, double statusBarHeight}) {
                 ),
                 emptySpace,
                 Expanded(
-                  child: Container(
-                    color: Colors.grey,
-                    child: OrganizationChartPage(),
-                  ),
+                  child: OrganizationChartPage(),
                 ),
               ],
             ),
