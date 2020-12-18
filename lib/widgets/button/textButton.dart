@@ -126,7 +126,7 @@ InkWell manualOnWorkBtn({BuildContext context, String btnText, Function btnActio
         borderRadius: BorderRadius.circular(
             SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
         ),
-        border: Border.all(color: textFieldUnderLine),
+        border: Border.all(color: mainColor),
       ),
       padding: EdgeInsets.symmetric(
         horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
@@ -134,7 +134,11 @@ InkWell manualOnWorkBtn({BuildContext context, String btnText, Function btnActio
       alignment: Alignment.center,
       child: Text(
         btnText,
-        style: containerChipStyle,
+        style: customStyle(
+          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
+          fontColor: isSelect ? whiteColor : mainColor,
+          fontWeightName: "Regular",
+        ),
       )
     ),
     onTap: btnAction,

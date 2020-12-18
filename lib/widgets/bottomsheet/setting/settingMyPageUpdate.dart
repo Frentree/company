@@ -650,264 +650,274 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
               });
             }
 
-            return Container(
-              height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
-              padding: EdgeInsets.only(
-                left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
-                right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
-                top: 2.0.h,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
-                  topRight: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+            return GestureDetector(
+              onTap: (){
+                FocusScope.of(context).unfocus();
+              },
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                color: whiteColor,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: 6.0.h,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 6.0.h,
-                          width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-                          child: IconButton(
-                            constraints: BoxConstraints(),
-                            padding: EdgeInsets.zero,
-                            icon: Icon(
-                              Icons.keyboard_arrow_left_sharp,
-                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
-                              color: mainColor,
-                            ),
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                word.companyInfomation() + " " + word.update(),
-                                style: defaultMediumStyle,
-                              )
-                          ),
-                        )
-                      ],
-                    ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
+                  padding: EdgeInsets.only(
+                    left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                    right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                    top: 2.0.h,
                   ),
-                  emptySpace,
-                  Expanded(
-                    child: StreamBuilder(
-                      stream: FirebaseRepository().getCompanyInfos(companyCode: _loginUser.companyCode),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) return SizedBox();
-                        return Padding(
-                          padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                child: Container(
-                                    color: whiteColor,
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
-                                    height: SizerUtil.deviceType == DeviceType.Tablet ? 11.25.w : 15.0.w,
-                                    child: FittedBox(
-                                      fit: BoxFit.contain,
-                                      child: Image.network(_profileImageURL),
-                                    )
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                      topRight: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                    ),
+                    color: whiteColor,
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 6.0.h,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 6.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_left_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
                                 ),
-                                onTap: (){
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return SimpleDialog(
-                                          title: Text(
-                                            word.select(),
-                                            style: defaultMediumStyle,
-                                          ),
-                                          children: [
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _uploadImageToStorage(ImageSource.camera);
-                                              },
-                                              child: Text(
-                                                word.camera(),
-                                                style: defaultRegularStyle,
-                                              ),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _uploadImageToStorage(ImageSource.gallery);
-                                              },
-                                              child: Text(
-                                                word.gallery(),
-                                                style: defaultRegularStyle,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                  );
+                                onPressed: (){
+                                  Navigator.pop(context);
                                 },
                               ),
-                              emptySpace,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                    child: Text(
-                                      word.companyName(),
-                                      style: defaultRegularStyle,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                    child: TextFormField(
-                                      controller: _companyNameTextCon,
-                                      style: defaultRegularStyle,
-                                      decoration: InputDecoration(
-                                        isDense: true,
-                                        contentPadding: textFormPadding,
-                                        hintText: snapshot.data["companyName"],
-                                        hintStyle: defaultRegularStyle,
-                                        border: InputBorder.none,
-                                      ),
-                                    )
-                                  ),
-                                ],
+                            ),
+                            Expanded(
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    word.companyInfomation() + " " + word.update(),
+                                    style: defaultMediumStyle,
+                                  )
                               ),
-                              emptySpace,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                    child: Text(
-                                      word.address(),
-                                      style: defaultRegularStyle,
-                                    ),
-                                  ),
-                                  Container(
-                                      width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                      child: TextFormField(
-                                        controller: _companyAddrTextCon,
-                                        style: defaultRegularStyle,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: textFormPadding,
-                                          hintText: snapshot.data["companyAddr"],
-                                          hintStyle: defaultRegularStyle,
-                                          border: InputBorder.none,
-                                        ),
-                                      )
-                                  ),
-                                ],
-                              ),
-                              emptySpace,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                    child: Text(
-                                      word.phone(),
-                                      style: defaultRegularStyle,
-                                    ),
-                                  ),
-                                  Container(
-                                      width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                      child: TextFormField(
-                                        controller: _companyPhoneTextCon,
-                                        style: defaultRegularStyle,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: textFormPadding,
-                                          hintText: snapshot.data["companyPhone"],
-                                          hintStyle: defaultRegularStyle,
-                                          border: InputBorder.none,
-                                        ),
-                                      )
-                                  ),
-                                ],
-                              ),
-                              emptySpace,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                    child: Text(
-                                      word.webAddress(),
-                                      style: defaultRegularStyle,
-                                    ),
-                                  ),
-                                  Container(
-                                      width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                                      child: TextFormField(
-                                        controller: _companyWebTextCon,
-                                        style: defaultRegularStyle,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: textFormPadding,
-                                          hintText: snapshot.data["companyWeb"] != "" ? snapshot.data["companyWeb"] :  "${word.ex()}) www.company.com",
-                                          hintStyle: defaultRegularStyle,
-                                          border: InputBorder.none,
-                                        ),
-                                      )
-                                  ),
-                                ],
-                              ),
-                              emptySpace,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                            )
+                          ],
+                        ),
+                      ),
+                      emptySpace,
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: FirebaseRepository().getCompanyInfos(companyCode: _loginUser.companyCode),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) return SizedBox();
+                            return Padding(
+                              padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
                                     child: Container(
-                                      height: 4.0.h,
-                                      width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
-                                      decoration: BoxDecoration(
-                                        color: blueColor,
-                                        borderRadius: BorderRadius.circular(
-                                            SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
-                                        ),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        word.update(),
-                                        style: defaultMediumWhiteStyle,
-                                      ),
+                                        color: whiteColor,
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                                        height: SizerUtil.deviceType == DeviceType.Tablet ? 11.25.w : 15.0.w,
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: Image.network(_profileImageURL),
+                                        )
                                     ),
                                     onTap: (){
-                                      FirebaseRepository().updateCompany(
-                                        companyCode: _loginUser.companyCode,
-                                        companyName: _companyNameTextCon.text.trim() != "" ? _companyNameTextCon.text : snapshot.data["companyName"],
-                                        companyAddr: _companyAddrTextCon.text.trim() != "" ? _companyAddrTextCon.text : snapshot.data["companyAddr"],
-                                        companyPhone: _companyPhoneTextCon.text.trim() != "" ? _companyPhoneTextCon.text : snapshot.data["companyPhone"],
-                                        companyWeb: _companyWebTextCon.text.trim() != "" ? _companyWebTextCon.text : snapshot.data["companyWeb"],
-                                        url: _profileImageURL.trim() != "" ? _profileImageURL : snapshot.data["companyPhoto"],
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return SimpleDialog(
+                                              title: Text(
+                                                word.select(),
+                                                style: defaultMediumStyle,
+                                              ),
+                                              children: [
+                                                SimpleDialogOption(
+                                                  onPressed: () {
+                                                    _uploadImageToStorage(ImageSource.camera);
+                                                  },
+                                                  child: Text(
+                                                    word.camera(),
+                                                    style: defaultRegularStyle,
+                                                  ),
+                                                ),
+                                                SimpleDialogOption(
+                                                  onPressed: () {
+                                                    _uploadImageToStorage(ImageSource.gallery);
+                                                  },
+                                                  child: Text(
+                                                    word.gallery(),
+                                                    style: defaultRegularStyle,
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
                                       );
-                                      Navigator.pop(context);
                                     },
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                        child: Text(
+                                          word.companyName(),
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                        child: TextFormField(
+                                          controller: _companyNameTextCon,
+                                          style: defaultRegularStyle,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: textFormPadding,
+                                            hintText: snapshot.data["companyName"],
+                                            hintStyle: defaultRegularStyle,
+                                            border: InputBorder.none,
+                                          ),
+                                        )
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                        child: Text(
+                                          word.address(),
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                      Container(
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                          child: TextFormField(
+                                            controller: _companyAddrTextCon,
+                                            style: defaultRegularStyle,
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              contentPadding: textFormPadding,
+                                              hintText: snapshot.data["companyAddr"],
+                                              hintStyle: defaultRegularStyle,
+                                              border: InputBorder.none,
+                                            ),
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                        child: Text(
+                                          word.phone(),
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                      Container(
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                          child: TextFormField(
+                                            controller: _companyPhoneTextCon,
+                                            style: defaultRegularStyle,
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              contentPadding: textFormPadding,
+                                              hintText: snapshot.data["companyPhone"],
+                                              hintStyle: defaultRegularStyle,
+                                              border: InputBorder.none,
+                                            ),
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                        child: Text(
+                                          word.webAddress(),
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                      Container(
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                          child: TextFormField(
+                                            controller: _companyWebTextCon,
+                                            style: defaultRegularStyle,
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              contentPadding: textFormPadding,
+                                              hintText: snapshot.data["companyWeb"] != "" ? snapshot.data["companyWeb"] :  "${word.ex()}) www.company.com",
+                                              hintStyle: defaultRegularStyle,
+                                              border: InputBorder.none,
+                                            ),
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                          height: 4.0.h,
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+                                          decoration: BoxDecoration(
+                                            color: blueColor,
+                                            borderRadius: BorderRadius.circular(
+                                                SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            word.update(),
+                                            style: defaultMediumWhiteStyle,
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          FirebaseRepository().updateCompany(
+                                            companyCode: _loginUser.companyCode,
+                                            companyName: _companyNameTextCon.text.trim() != "" ? _companyNameTextCon.text : snapshot.data["companyName"],
+                                            companyAddr: _companyAddrTextCon.text.trim() != "" ? _companyAddrTextCon.text : snapshot.data["companyAddr"],
+                                            companyPhone: _companyPhoneTextCon.text.trim() != "" ? _companyPhoneTextCon.text : snapshot.data["companyPhone"],
+                                            companyWeb: _companyWebTextCon.text.trim() != "" ? _companyWebTextCon.text : snapshot.data["companyWeb"],
+                                            url: _profileImageURL.trim() != "" ? _profileImageURL : snapshot.data["companyPhoto"],
+                                          );
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             );
           },

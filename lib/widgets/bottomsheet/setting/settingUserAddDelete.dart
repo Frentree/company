@@ -1,10 +1,7 @@
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/screens/home/homeMain.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/approvalModel.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -13,7 +10,6 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/i18n/word.dart';
-import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -21,7 +17,6 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 
 final word = Words();
 final _formKeyEnteredDate = GlobalKey<FormState>();
@@ -37,10 +32,8 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
   Future<List<DocumentSnapshot>> searchResults;
 
   showModalBottomSheet(
-
     isScrollControlled: true,
     context: context,
-    
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(pageRadiusW.w),
@@ -105,7 +98,7 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                 alignment: Alignment.center,
                                 child: Text(
                                   word.userAddRquestAndDelete(),
-                                  style: defaultMediumStyle,
+
                                 )
                             ),
                           )
@@ -225,199 +218,158 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                         return StatefulBuilder(
                                                           builder: (context, setState) {
                                                             return SimpleDialog(
-                                                              title: Text(
-                                                                "[${_approval.name}] ${word.forAddUser()}",
-                                                                style: customStyle(
-                                                                  fontSize: 15.0.sp,
+                                                              title: Center(
+                                                                child: Text(
+                                                                  "[${_approval.name}] ${word.forAddUser()}",
+                                                                  style: defaultMediumStyle,
                                                                 ),
                                                               ),
                                                               children: [
-                                                                Padding(
-                                                                  padding: EdgeInsets.symmetric(
-                                                                      vertical: 1.0.h,
-                                                                      horizontal: 8.0.w
-                                                                  ),
-                                                                  child: Column(
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children: [
-                                                                      Text(
-                                                                        "${word.name()} : ${_approval.name}",
-                                                                        style: customStyle(
-                                                                          fontSize: 12.0.sp,
+                                                                Container(
+                                                                  child: Padding(
+                                                                    padding: cardPadding,
+                                                                    child: Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      children: [
+                                                                        Text(
+                                                                          "${word.name()} : ${_approval.name}",
+                                                                          style: defaultRegularStyle,
                                                                         ),
-                                                                      ),
-                                                                      Container(
-                                                                          height: 1.5.h
-                                                                      ),
-                                                                      Text(
-                                                                        "${word.email()} : ${_approval.mail}",
-                                                                        style: customStyle(
-                                                                          fontSize: 12.0.sp,
+                                                                        emptySpace,
+                                                                        Text(
+                                                                          "${word.email()} : ${_approval.mail}",
+                                                                          style: defaultRegularStyle,
                                                                         ),
-                                                                      ),
-                                                                      Container(
-                                                                          height:1.5.h
-                                                                      ),
-                                                                      Text(
-                                                                        "${word.birthDay()} : ${_approval.birthday}",
-                                                                        style: customStyle(
-                                                                          fontSize: 12.0.sp,
+                                                                        emptySpace,
+                                                                        Text(
+                                                                          "${word.birthDay()} : ${_approval.birthday}",
+                                                                          style: defaultRegularStyle,
                                                                         ),
-                                                                      ),
-                                                                      Container(
-                                                                        height: 1.5.h,
-                                                                      ),
-                                                                      Text(
-                                                                        "${word.phone()} : ${_approval.phone}",
-                                                                        style: customStyle(
-                                                                          fontSize: 12.0.sp,
+                                                                        emptySpace,
+                                                                        Text(
+                                                                          "${word.phone()} : ${_approval.phone}",
+                                                                          style: defaultRegularStyle,
                                                                         ),
-                                                                      ),
-                                                                      Container(
-                                                                        height: 1.5.h,
-                                                                      ),
-                                                                      Text(
-                                                                        "${word.requestDate()} : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
-                                                                        style: customStyle(
-                                                                          fontSize: 12.0.sp,
+                                                                        emptySpace,
+                                                                        Text(
+                                                                          "${word.requestDate()} : ${_format.dateToString(_format.timeStampToDateTime(_approval.requestDate))}",
+                                                                          style: defaultRegularStyle,
                                                                         ),
-                                                                      ),
-                                                                      Row(
-                                                                        children: [
-                                                                          Text(
-                                                                            "${word.team()} : ",
-                                                                            style: customStyle(
-                                                                              fontSize: 12.0.sp,
+                                                                        emptySpace,
+                                                                        Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              "${word.team()} : ",
+                                                                              style: defaultRegularStyle,
                                                                             ),
-                                                                          ),
-                                                                          StreamBuilder(
-                                                                            stream: _repository.getTeamList(companyCode: _loginUser.companyCode),
-                                                                            builder: (context, snapshot) {
-                                                                              if(!snapshot.hasData) return Text("");
+                                                                            StreamBuilder(
+                                                                              stream: _repository.getTeamList(companyCode: _loginUser.companyCode),
+                                                                              builder: (context, snapshot) {
+                                                                                if(!snapshot.hasData) return Text("");
 
-                                                                              List<DocumentSnapshot> list = snapshot.data.documents;
+                                                                                List<DocumentSnapshot> list = snapshot.data.documents;
 
-                                                                              List<String> buttonList = List();
-                                                                              buttonList.add(word.notSelect());
-                                                                              list.map((value) {
-                                                                                buttonList.add(value['teamName']);
-                                                                              }).toList();
+                                                                                List<String> buttonList = List();
+                                                                                buttonList.add(word.notSelect());
+                                                                                list.map((value) {
+                                                                                  buttonList.add(value['teamName']);
+                                                                                }).toList();
 
-                                                                              return DropdownButton(
-                                                                                value: dropDownTeamValue,
+                                                                                return DropdownButton(
+                                                                                  value: dropDownTeamValue,
 
-                                                                                onChanged: (value) {
-                                                                                  setState(() {
-                                                                                    dropDownTeamValue = value;
-                                                                                  });
-                                                                                },
-                                                                                items: buttonList.map<DropdownMenuItem<String>>((value) {
-                                                                                  return DropdownMenuItem<String>(
-                                                                                    value: value,
-                                                                                    child: Text(value,
-                                                                                      style: customStyle(
-                                                                                        fontSize: 12.0.sp,
+                                                                                  onChanged: (value) {
+                                                                                    setState(() {
+                                                                                      dropDownTeamValue = value;
+                                                                                    });
+                                                                                  },
+                                                                                  items: buttonList.map<DropdownMenuItem<String>>((value) {
+                                                                                    return DropdownMenuItem<String>(
+                                                                                      value: value,
+                                                                                      child: Text(
+                                                                                        value,
+                                                                                        style: defaultRegularStyle,
                                                                                       ),
-                                                                                    ),
-                                                                                  );
-                                                                                }).toList(),
-                                                                              );
-                                                                            },
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        children: [
-                                                                          Text(
-                                                                            "${word.position()} : ",
-                                                                            style: customStyle(
-                                                                              fontSize: 12.0.sp,
+                                                                                    );
+                                                                                  }).toList(),
+                                                                                );
+                                                                              },
                                                                             ),
-                                                                          ),
-                                                                          StreamBuilder(
-                                                                            stream: _repository.getPositionList(companyCode: _loginUser.companyCode),
-                                                                            builder: (context, snapshot) {
-                                                                              if(!snapshot.hasData) return Text("");
+                                                                          ],
+                                                                        ),
+                                                                        emptySpace,
+                                                                        Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              "${word.position()} : ",
+                                                                              style: defaultRegularStyle,
+                                                                            ),
+                                                                            StreamBuilder(
+                                                                              stream: _repository.getPositionList(companyCode: _loginUser.companyCode),
+                                                                              builder: (context, snapshot) {
+                                                                                if(!snapshot.hasData) return Text("");
 
-                                                                              List<DocumentSnapshot> list = snapshot.data.documents;
+                                                                                List<DocumentSnapshot> list = snapshot.data.documents;
 
-                                                                              List<String> buttonList = List();
-                                                                              buttonList.add(word.notSelect());
-                                                                              list.map((value) {
-                                                                                buttonList.add(value['position']);
-                                                                              }).toList();
+                                                                                List<String> buttonList = List();
+                                                                                buttonList.add(word.notSelect());
+                                                                                list.map((value) {
+                                                                                  buttonList.add(value['position']);
+                                                                                }).toList();
 
-                                                                              return DropdownButton(
-                                                                                value: dropDownPositionValue,
+                                                                                return DropdownButton(
+                                                                                  value: dropDownPositionValue,
 
-                                                                                onChanged: (value) {
-                                                                                  setState(() {
-                                                                                    dropDownPositionValue = value;
-                                                                                  });
-                                                                                },
-                                                                                items: buttonList.map<DropdownMenuItem<String>>((value) {
-                                                                                  return DropdownMenuItem<String>(
-                                                                                    value: value,
-                                                                                    child: Text(value,
-                                                                                      style: customStyle(
-                                                                                        fontSize: 12.0.sp,
+                                                                                  onChanged: (value) {
+                                                                                    setState(() {
+                                                                                      dropDownPositionValue = value;
+                                                                                    });
+                                                                                  },
+                                                                                  items: buttonList.map<DropdownMenuItem<String>>((value) {
+                                                                                    return DropdownMenuItem<String>(
+                                                                                      value: value,
+                                                                                      child: Text(value,
+                                                                                        style: defaultRegularStyle,
                                                                                       ),
-                                                                                    ),
-                                                                                  );
-                                                                                }).toList(),
-                                                                              );
-                                                                            },
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        children: [
-                                                                          Text(
-                                                                            "${word.enteredDate()} : ",
-                                                                            style: customStyle(
-                                                                              fontSize: 12.0.sp,
+                                                                                    );
+                                                                                  }).toList(),
+                                                                                );
+                                                                              },
                                                                             ),
-                                                                          ),
-                                                                          Expanded(
-                                                                            child: Form(
-                                                                              key: _formKeyEnteredDate,
+                                                                          ],
+                                                                        ),
+                                                                        emptySpace,
+                                                                        Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              "${word.enteredDate()} : ",
+                                                                              style: defaultRegularStyle,
+                                                                            ),
+                                                                            Expanded(
                                                                               child: TextFormField(
                                                                                 controller: _enteredDateController,
-                                                                                style: customStyle(
-                                                                                  fontSize: 12.0.sp,
-                                                                                ),
+                                                                                style: defaultRegularStyle,
                                                                                 decoration: InputDecoration(
+                                                                                  isDense: true,
+                                                                                  contentPadding: textFormPadding,
                                                                                   hintText: word.enteredDateCon(),
+                                                                                  hintStyle: hintStyle,
                                                                                   border: InputBorder.none,
                                                                                 ),
                                                                               ),
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                      Container(
-                                                                        height: 3.0.h,
-                                                                      ),
-                                                                      Container(
-                                                                        height: 4.0.h,
-                                                                        width: 100.0.w,
-                                                                        child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Container(
-                                                                              width: 20.0.w,
-                                                                              child: RaisedButton(
-                                                                                elevation: 0.0,
-                                                                                color: blueColor,
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        emptySpace,
+                                                                        Container(
+                                                                          height: 4.0.h,
+                                                                          child: Row(
+                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                            children: [
+                                                                              FlatButton(
                                                                                 child: Text(
-                                                                                  word.accept(),
-                                                                                  style: customStyle(
-                                                                                    fontColor: whiteColor,
-                                                                                    fontSize: 12.0.sp,
-                                                                                  ),
-                                                                                ),
-                                                                                shape: RoundedRectangleBorder(
-                                                                                  borderRadius: BorderRadius.circular(12),
+                                                                                  word.refusal(),
+                                                                                  style: buttonBlueStyle,
                                                                                 ),
                                                                                 onPressed: () async {
                                                                                   _approval.state = 1;
@@ -429,33 +381,20 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                                                     approvalModel: _approval,
                                                                                   );
                                                                                   await _loginRepository.userApproval(
-                                                                                    context: context,
-                                                                                    approvalUserMail: _approval.mail,
-                                                                                    position: dropDownPositionValue,
-                                                                                    teamName: dropDownTeamValue,
-                                                                                    enteredDate: _enteredDateController.text
+                                                                                      context: context,
+                                                                                      approvalUserMail: _approval.mail,
+                                                                                      position: dropDownPositionValue,
+                                                                                      teamName: dropDownTeamValue,
+                                                                                      enteredDate: _enteredDateController.text
                                                                                   );
                                                                                   Navigator.pop(context);
                                                                                 },
                                                                               ),
-                                                                            ),
-                                                                            Container(
-                                                                              width: 10.0.w,
-                                                                            ),
-                                                                            Container(
-                                                                              width: 20.0.w,
-                                                                              child: RaisedButton(
-                                                                                elevation: 0.0,
-                                                                                color: blueColor,
+                                                                              cardSpace,
+                                                                              FlatButton(
                                                                                 child: Text(
-                                                                                  word.refusal(),
-                                                                                  style: customStyle(
-                                                                                    fontColor: whiteColor,
-                                                                                    fontSize: 12.0.sp,
-                                                                                  ),
-                                                                                ),
-                                                                                shape: RoundedRectangleBorder(
-                                                                                  borderRadius: BorderRadius.circular(12),
+                                                                                  "cancel",
+                                                                                  style: buttonBlueStyle,
                                                                                 ),
                                                                                 onPressed: () async {
                                                                                   _approval.state = 2;
@@ -470,34 +409,11 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                                                   Navigator.pop(context);
                                                                                 },
                                                                               ),
-                                                                            ),
-                                                                            /*Container(
-                                                                            width: 10.0.w,
+                                                                            ],
                                                                           ),
-                                                                          Container(
-                                                                            width: 20.0.w,
-                                                                            child: RaisedButton(
-                                                                              elevation: 0.0,
-                                                                              color: blueColor,
-                                                                              child: Text(
-                                                                                word.cencel(),
-                                                                                style: customStyle(
-                                                                                  fontColor: whiteColor,
-                                                                                  fontSize: 12.0.sp,
-                                                                                ),
-                                                                              ),
-                                                                              shape: RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(12),
-                                                                              ),
-                                                                              onPressed: () async {
-                                                                                Navigator.pop(context);
-                                                                              },
-                                                                            ),
-                                                                          )*/
-                                                                          ],
-                                                                        ),
-                                                                      )
-                                                                    ],
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -629,6 +545,90 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                   ),
                                                 ),
                                               ),
+                                              onTap: (){
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return SimpleDialog(
+                                                        title: Center(
+                                                          child: Text(
+                                                            "[${searchCompanyUserResult[index].name}] ${word.resignationProcess()}",
+                                                            style: defaultMediumStyle,
+                                                          ),
+                                                        ),
+                                                        children: [
+                                                          Padding(
+                                                            padding: cardPadding,
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  "${word.name()} : ${searchCompanyUserResult[index].name}",
+                                                                  style: defaultRegularStyle,
+                                                                ),
+                                                                emptySpace,
+                                                                Text(
+                                                                  "${word.email()} : ${searchCompanyUserResult[index].mail}",
+                                                                    style: defaultRegularStyle,
+                                                                ),
+                                                                emptySpace,
+                                                                Text(
+                                                                  "${word.birthDay()} : ${searchCompanyUserResult[index].birthday}",
+                                                                  style: defaultRegularStyle,
+                                                                ),
+                                                                emptySpace,
+                                                                Text(
+                                                                  "${word.phone()} : ${searchCompanyUserResult[index].phone}",
+                                                                  style: defaultRegularStyle,
+                                                                ),
+                                                                emptySpace,
+                                                                Container(
+                                                                  height: 4.0.h,
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    children: [
+                                                                      FlatButton(
+                                                                        child: Text(
+                                                                          word.confirm(),
+                                                                          style: buttonBlueStyle,
+                                                                        ),
+                                                                        onPressed: () async {
+                                                                          await _repository.deleteCompanyUser(companyCode: _loginUser.companyCode, companyUserModel: searchCompanyUserResult[index]);
+                                                                          await _loginRepository.userLeave(
+                                                                              context: context,
+                                                                              leaveUserMail: searchCompanyUserResult[index].mail
+                                                                          );
+                                                                          Future<List<DocumentSnapshot>> result = _repository.searchCompanyUser(
+                                                                            loginUserMail: _loginUser.mail,
+                                                                            companyUserName: _retireeNameCon.text,
+                                                                            companyCode: _loginUser.companyCode,
+                                                                          );
+                                                                          setState((){
+                                                                            searchResults = result;
+                                                                          });
+                                                                          Navigator.pop(context);
+                                                                        },
+                                                                      ),
+                                                                      cardSpace,
+                                                                      FlatButton(
+                                                                        child: Text(
+                                                                          word.cencel(),
+                                                                          style: buttonBlueStyle,
+                                                                        ),
+                                                                        onPressed: () async {
+                                                                          Navigator.pop(context);
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
+                                              },
                                             );
                                           },
                                         );

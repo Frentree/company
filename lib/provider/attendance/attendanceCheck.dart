@@ -176,12 +176,21 @@ class AttendanceCheck extends ChangeNotifier {
       barrierDismissible: false, //취소 버튼을 통해서만 알림박스를 끌 수 있다.
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("퇴근처리", style: customStyle(fontSize: 15.0.sp,),),
-          content: Text("퇴근 하시겠습니까?", style: customStyle(fontSize: 13.0.sp,)),
+          title: Text(
+            "퇴근처리",
+            style: defaultMediumStyle,
+          ),
+          content: Text(
+            "퇴근 하시겠습니까?",
+            style: defaultRegularStyle,
+          ),
           actions: <Widget>[
-            textBtn(
-              btnText: "확인",
-              btnAction: () {
+            FlatButton(
+              child: Text(
+                "확인",
+                style: buttonBlueStyle,
+              ),
+              onPressed: (){
                 _attendance.status = 3;
                 _attendance.endTime = _format.dateTimeToTimeStamp(nowTime);
                 _repository.updateAttendance(
@@ -193,9 +202,12 @@ class AttendanceCheck extends ChangeNotifier {
                 Navigator.pop(context, "OK");
               },
             ),
-            textBtn(
-              btnText: "취소",
-              btnAction: () {
+            FlatButton(
+              child: Text(
+                "취소",
+                style: buttonBlueStyle,
+              ),
+              onPressed: (){
                 Navigator.pop(context, "NO");
               },
             ),
@@ -220,7 +232,6 @@ class AttendanceCheck extends ChangeNotifier {
                 style: defaultMediumStyle,
               ),
               content: Container(
-                color: Colors.pink,
                 height: 10.0.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,33 +287,27 @@ class AttendanceCheck extends ChangeNotifier {
                 ),
               ),
               actions: <Widget>[
-
-                Container(
-                  color: Colors.pink,
-                  child: FlatButton(
-                    padding: EdgeInsets.zero,
-                    //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    child: Text(
-                      "확인",
-                      style: buttonBlueStyle,
-                    ),
-                    onPressed: isSelect.contains(true) ? () {
-                      if (isSelect[0] == true) {
-                        _attendance.status = 2;
-                      } else {
-                        _attendance.status = 1;
-                      }
-                      _attendance.attendTime =
-                          _format.dateTimeToTimeStamp(nowTime);
-                      _repository.updateAttendance(
-                        attendanceModel: _attendance,
-                        documentId: _attendance.id,
-                        companyCode: _loginUser.companyCode,
-                      );
-                      notifyListeners();
-                      Navigator.pop(context, "OK");
-                    } : null,
+                FlatButton(
+                  child: Text(
+                    "확인",
+                    style: buttonBlueStyle,
                   ),
+                  onPressed: isSelect.contains(true) ? () {
+                    if (isSelect[0] == true) {
+                      _attendance.status = 2;
+                    } else {
+                      _attendance.status = 1;
+                    }
+                    _attendance.attendTime =
+                        _format.dateTimeToTimeStamp(nowTime);
+                    _repository.updateAttendance(
+                      attendanceModel: _attendance,
+                      documentId: _attendance.id,
+                      companyCode: _loginUser.companyCode,
+                    );
+                    notifyListeners();
+                    Navigator.pop(context, "OK");
+                  } : null,
                 ),
                 FlatButton(
                   child: Text(

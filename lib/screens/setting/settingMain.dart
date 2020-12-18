@@ -207,7 +207,10 @@ class SettingMainPageState extends State<SettingMainPage> {
                               ),
                             ),
                             onTap: (){
-                              SettingOrganizationChart(context);
+                              SettingOrganizationChart(
+                                context: context,
+                                statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top
+                              );
                             },
                           ),
                           GestureDetector(
