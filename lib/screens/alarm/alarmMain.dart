@@ -1,6 +1,7 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/provider/screen/alarmScreenChange.dart';
 import 'package:MyCompany/screens/alarm/alarmNotice.dart';
 import 'package:MyCompany/screens/alarm/signBox.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
@@ -21,6 +22,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    AlarmScreenChangeProvider provider = AlarmScreenChangeProvider();
     return Scaffold(
       body: Column(
           children: <Widget>[

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:MyCompany/provider/screen/alarmScreenChange.dart';
 import 'package:MyCompany/provider/screen/companyScreenChange.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/provider/attendance/attendanceCheck.dart';
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
                 ),
                 ChangeNotifierProvider<CompanyScreenChangeProvider>(
                   create: (_) => CompanyScreenChangeProvider(),
+                ),
+                ChangeNotifierProvider<AlarmScreenChangeProvider>(
+                  create: (_) => AlarmScreenChangeProvider(),
                 ),
                 ChangeNotifierProvider<FirebaseAuthProvider>(
                   create: (_) => FirebaseAuthProvider(),
