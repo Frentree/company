@@ -13,7 +13,6 @@ import 'package:MyCompany/models/commentListModel.dart';
 class CommentModel {
   String commentid;
   String comment; // 댓글 내용
-  List<CommentListModel> commentList;
   Map<String,String> createUser;
   Timestamp createDate;
   Timestamp updateDate;
@@ -22,7 +21,6 @@ class CommentModel {
   CommentModel({
     this.commentid,
     this.comment,
-    this.commentList,
     this.createUser,
     this.createDate,
     this.updateDate
@@ -31,7 +29,6 @@ class CommentModel {
   CommentModel.fromMap(Map snapshot, String id) :
         commentid = id ?? "",
         comment = snapshot["comment"] ?? "",
-        commentList = snapshot["commentList"] ?? "",
         createUser = snapshot["createUser"] ?? "",
         createDate = snapshot["createUser"] ?? "",
         updateDate = snapshot["createUser"] ?? "";
@@ -39,10 +36,9 @@ class CommentModel {
   toJson(){
     return {
       "comment": comment,
-      "commentList": commentList,
       "createUser": createUser,
       "createDate": createDate,
-      "updateDate": updateDate,
+      "updateDate": Timestamp.now(),
     };
   }
 }

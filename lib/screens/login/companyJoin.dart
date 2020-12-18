@@ -1,7 +1,7 @@
 //Flutter
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/screens/login/companySearch.dart';
-import 'package:MyCompany/main.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -70,7 +70,7 @@ class CompanyJoinPageState extends State<CompanyJoinPage> {
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: textFormPadding,
-                    hintText: word.companyName(),
+                    hintText: Words.word.companyName(),
                     hintStyle: hintStyle,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
