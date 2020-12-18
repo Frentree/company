@@ -1,3 +1,4 @@
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -17,17 +18,24 @@ Future<void> getErrorDialog({BuildContext context, String text}) {
       return AlertDialog(
         title: Text(
           word.alarm(),
+          style: defaultMediumStyle,
         ),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text(text)
+              Text(
+                text,
+                style: defaultRegularStyle,
+              )
             ],
           ),
         ),
         actions: [
           FlatButton(
-            child: Text(word.confirm()),
+            child: Text(
+              word.confirm(),
+              style: buttonBlueStyle,
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },

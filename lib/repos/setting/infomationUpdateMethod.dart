@@ -1,6 +1,7 @@
 //Flutter
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/login/loginRepository.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:flutter/material.dart';
@@ -89,27 +90,17 @@ class myInfomationMethod{
           return AlertDialog(
             title: Text(
               pwdMsgTitle,
-              style: customStyle(
-                  fontColor: redColor,
-                  fontSize: 13,
-                  fontWeightName: 'Bold'
-              ),
+              style: defaultMediumStyle,
             ),
             content: Text(
               pwdMsgCon,
-              style: customStyle(
-                  fontColor: mainColor,
-                  fontSize: 13,
-                  fontWeightName: 'Regular'),
+              style: defaultRegularStyle,
             ),
             actions: isPwd == true? <Widget>[
               FlatButton(
                 child: Text(
                   "예",
-                  style: customStyle(
-                      fontColor: blueColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'),
+                  style: buttonBlueStyle,
                 ),
                 onPressed: () async {
                   signUpEmailResult = await _firebaseAuthProvider.updatePassword(
@@ -123,10 +114,7 @@ class myInfomationMethod{
               FlatButton(
                 child: Text(
                   "아니오",
-                  style: customStyle(
-                      fontColor: blueColor,
-                      fontSize: 15,
-                      fontWeightName: 'Bold'),
+                  style: buttonBlueStyle,
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -138,10 +126,7 @@ class myInfomationMethod{
             FlatButton(
               child: Text(
                 "확인",
-                style: customStyle(
-                    fontColor: blueColor,
-                    fontSize: 15,
-                    fontWeightName: 'Bold'),
+                style: buttonBlueStyle,
               ),
               onPressed: () {
                 signUpEmailResult = false;

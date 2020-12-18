@@ -1,6 +1,8 @@
 //Flutter
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 
@@ -117,24 +119,22 @@ Container filterBtn({BuildContext context, double heightSize, double widthSize, 
 InkWell manualOnWorkBtn({BuildContext context, String btnText, Function btnAction, bool isSelect}) {
   return InkWell(
     child: Container(
-      width: 18.0.w,
       height: 4.0.h,
+      width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
       decoration: BoxDecoration(
         color: isSelect ? mainColor : whiteColor,
-        borderRadius: BorderRadius.circular(3.0.w),
-        border: Border.all(
-          color: mainColor,
-        )
-      ),
-      child: Center(
-        child: Text(
-          btnText,
-          style: customStyle(
-              fontSize: 12.0.sp,
-              fontWeightName: "Regular",
-              fontColor: isSelect ? whiteColor : mainColor
-          ),
+        borderRadius: BorderRadius.circular(
+            SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
         ),
+        border: Border.all(color: textFieldUnderLine),
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        btnText,
+        style: containerChipStyle,
       )
     ),
     onTap: btnAction,

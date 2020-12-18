@@ -86,533 +86,513 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
               });
             }
 
-            return Container(
-              height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
-              padding: EdgeInsets.only(
-                left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
-                right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
-                top: 2.0.h,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
-                  topRight: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+            return GestureDetector(
+              onTap: (){
+                FocusScope.of(context).unfocus();
+              },
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                color: whiteColor,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: 6.0.h,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 6.0.h,
-                          width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-                          child: IconButton(
-                            constraints: BoxConstraints(),
-                            padding: EdgeInsets.zero,
-                            icon: Icon(
-                              Icons.keyboard_arrow_left_sharp,
-                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
-                              color: mainColor,
-                            ),
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                word.myInfomationUpdate(),
-                                style: defaultMediumStyle,
-                              )
-                          ),
-                        )
-                      ],
-                    ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
+                  padding: EdgeInsets.only(
+                    left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                    right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                    top: 2.0.h,
                   ),
-                  emptySpace,
-                  Expanded(
-                    child: StreamBuilder(
-                      stream: FirebaseRepository().getCompanyInfos(companyCode: _loginUser.companyCode),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) return SizedBox();
-                        return Padding(
-                          padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                      topRight: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                    ),
+                    color: whiteColor,
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 6.0.h,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 6.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_left_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    word.myInfomationUpdate(),
+                                    style: defaultMediumStyle,
+                                  )
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      emptySpace,
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: FirebaseRepository().getCompanyInfos(companyCode: _loginUser.companyCode),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) return SizedBox();
+                            return Padding(
+                              padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w, bottom: 2.0.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GestureDetector(
-                                    child: Container(
-                                      color: whiteColor,
-                                      alignment: Alignment.center,
-                                      child: profilePhoto(loginUser: _loginUser)
-                                    ),
-                                    onTap: (){
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return SimpleDialog(
-                                            title: Text(
-                                              word.select(),
-                                              style: defaultMediumStyle,
-                                            ),
-                                            children: [
-                                              SimpleDialogOption(
-                                                onPressed: () {
-                                                  _uploadImageToStorage(ImageSource.camera);
-                                                },
-                                                child: Text(
-                                                  word.camera(),
-                                                  style: defaultRegularStyle,
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                          color: whiteColor,
+                                          alignment: Alignment.center,
+                                          child: profilePhoto(loginUser: _loginUser)
+                                        ),
+                                        onTap: (){
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SimpleDialog(
+                                                title: Text(
+                                                  word.select(),
+                                                  style: defaultMediumStyle,
                                                 ),
-                                              ),
-                                              SimpleDialogOption(
-                                                onPressed: () {
-                                                  _uploadImageToStorage(ImageSource.gallery);
-                                                },
-                                                child: Text(
-                                                  word.gallery(),
-                                                  style: defaultRegularStyle,
-                                                ),
-                                              ),
-                                            ],
+                                                children: [
+                                                  SimpleDialogOption(
+                                                    onPressed: () {
+                                                      _uploadImageToStorage(ImageSource.camera);
+                                                    },
+                                                    child: Text(
+                                                      word.camera(),
+                                                      style: defaultRegularStyle,
+                                                    ),
+                                                  ),
+                                                  SimpleDialogOption(
+                                                    onPressed: () {
+                                                      _uploadImageToStorage(ImageSource.gallery);
+                                                    },
+                                                    child: Text(
+                                                      word.gallery(),
+                                                      style: defaultRegularStyle,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
                                           );
                                         },
-                                      );
-                                    },
+                                      ),
+                                      cardSpace,
+                                      cardSpace,
+                                      cardSpace,
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w,
+                                        child: Text(
+                                          _loginUser.name,
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  cardSpace,
-                                  cardSpace,
-                                  cardSpace,
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w,
-                                    child: Text(
-                                      _loginUser.name,
-                                      style: defaultRegularStyle,
-                                    ),
-                                  ),
-                                ],
-                              ),
 
-                              emptySpace,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
-                                    child: Text(
-                                      word.currentPassword(),
-                                      style: defaultRegularStyle,
-                                    ),
-                                  ),
-                                  cardSpace,
-                                  Expanded(
-                                    child: Container(
-                                      child: TextFormField(
-                                        controller: _passwordNowConfirmTextCon,
-                                        obscureText: true,
-                                        style: defaultRegularStyle,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: textFormPadding,
-                                          hintText: word.currentPassword() + " " + word.input(),
-                                          hintStyle: defaultRegularStyle,
-                                          border: InputBorder.none,
-                                        ),
-                                      )
-                                    ),
-                                  ),
-                                  cardSpace,
-                                  GestureDetector(
-                                    child: Container(
-                                      height: 4.0.h,
-                                      decoration: BoxDecoration(
-                                        color: blueColor,
-                                        borderRadius: BorderRadius.circular(
-                                            SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
+                                        child: Text(
+                                          word.currentPassword(),
+                                          style: defaultRegularStyle,
                                         ),
                                       ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        word.confirm(),
-                                        style: defaultMediumWhiteStyle,
-                                      ),
-                                    ),
-                                    onTap: () async {
-                                      FocusScope.of(context).unfocus();
-                                      bool isChk = await _loginRepository.InfomationConfirmWithFirebaseAuth(
-                                          context: context,
-                                          mail: _loginUser.mail,
-                                          password: _passwordNowConfirmTextCon.text.trim(),
-                                          name: _loginUser.name);
-                                      if (isChk) {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext context) {
-                                            // return object of type Dialog
-                                            return AlertDialog(
-                                              title: Text(
-                                                word.authentication() + " " + word.confirm(),
-                                                style: defaultMediumStyle,
-                                              ),
-                                              content: Text(
-                                                word.authenticationSuccessCon(),
-                                                style: defaultRegularStyle,
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text(
-                                                    word.confirm(),
-                                                    style: buttonBlueStyle,
-                                                  ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      isPwdConfirm = isChk;
-                                                      _passwordNowConfirmTextCon.selection;
-                                                    });
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext context) {
-                                            // return object of type Dialog
-                                            return AlertDialog(
-                                              title: Text(
-                                                word.authentication() + " " + word.failed(),
-                                                style: defaultMediumStyle,
-                                              ),
-                                              content: Text(
-                                                word.authenticationFailCon(),
-                                                style: defaultRegularStyle,
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text(
-                                                    word.confirm(),
-                                                    style: buttonBlueStyle,
-                                                  ),
-                                                  onPressed: () {
-                                                    isPwdConfirm = isChk;
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Visibility(
-                                visible: isPwdConfirm,
-                                child: Column(
-                                  children: [
-                                    emptySpace,
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
-                                          child: Text(
-                                            word.newPassword(),
+                                      cardSpace,
+                                      Expanded(
+                                        child: Container(
+                                          child: TextFormField(
+                                            controller: _passwordNowConfirmTextCon,
+                                            obscureText: true,
                                             style: defaultRegularStyle,
-                                          ),
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              contentPadding: textFormPadding,
+                                              hintText: word.currentPassword() + " " + word.input(),
+                                              hintStyle: defaultRegularStyle,
+                                              border: InputBorder.none,
+                                            ),
+                                          )
                                         ),
-                                        cardSpace,
-                                        Expanded(
-                                          child: Container(
-                                              child: TextFormField(
-                                                controller: _passwordNewTextCon,
-                                                obscureText: true,
-                                                style: defaultRegularStyle,
-                                                decoration: InputDecoration(
-                                                  isDense: true,
-                                                  contentPadding: textFormPadding,
-                                                  hintText: '********',
-                                                  hintStyle: defaultRegularStyle,
-                                                  border: InputBorder.none,
-                                                ),
-                                              )
+                                      ),
+                                      cardSpace,
+                                      GestureDetector(
+                                        child: Container(
+                                          height: 4.0.h,
+                                          decoration: BoxDecoration(
+                                            color: blueColor,
+                                            borderRadius: BorderRadius.circular(
+                                                SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    emptySpace,
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                          ),
+                                          alignment: Alignment.center,
                                           child: Text(
-                                            word.newPasswordConfirm(),
-                                            style: defaultRegularStyle,
+                                            word.confirm(),
+                                            style: defaultMediumWhiteStyle,
                                           ),
                                         ),
-                                        cardSpace,
-                                        Expanded(
-                                          child: Container(
-                                              child: TextFormField(
-                                                controller: _passwordNewConfirmTextCon,
-                                                obscureText: true,
-                                                style: defaultRegularStyle,
-                                                decoration: InputDecoration(
-                                                  isDense: true,
-                                                  contentPadding: textFormPadding,
-                                                  hintText: '********',
-                                                  hintStyle: defaultRegularStyle,
-                                                  border: InputBorder.none,
-                                                ),
-                                              )
-                                          ),
-                                        ),
-                                        cardSpace,
-                                        GestureDetector(
-                                          child: Container(
-                                            height: 4.0.h,
-                                            decoration: BoxDecoration(
-                                              color: blueColor,
-                                              borderRadius: BorderRadius.circular(
-                                                  SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
-                                              ),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
-                                            ),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              word.update(),
-                                              style: defaultMediumWhiteStyle,
-                                            ),
-                                          ),
-                                          onTap: () async {
-                                           await _loginRepository.InfomationUpdateWithFirebaseAuth(
-                                                context: context,
-                                                mail: _loginUser.mail,
-                                                name: _loginUser.name,
-                                                newPassword: _passwordNewTextCon.text.trim(),
-                                                newPasswordConfirm: _passwordNewConfirmTextCon.text.trim());
-                                            _loginUserInfoProvider.logoutUesr();
+                                        onTap: () async {
+                                          FocusScope.of(context).unfocus();
+                                          bool isChk = await _loginRepository.InfomationConfirmWithFirebaseAuth(
+                                              context: context,
+                                              mail: _loginUser.mail,
+                                              password: _passwordNowConfirmTextCon.text.trim(),
+                                              name: _loginUser.name);
+                                          if (isChk) {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                // return object of type Dialog
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    word.authentication() + " " + word.confirm(),
+                                                    style: defaultMediumStyle,
+                                                  ),
+                                                  content: Text(
+                                                    word.authenticationSuccessCon(),
+                                                    style: defaultRegularStyle,
+                                                  ),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text(
+                                                        word.confirm(),
+                                                        style: buttonBlueStyle,
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          isPwdConfirm = isChk;
+                                                          _passwordNowConfirmTextCon.selection;
+                                                        });
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
                                           }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  Visibility(
+                                    visible: isPwdConfirm,
+                                    child: Column(
+                                      children: [
+                                        emptySpace,
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
+                                              child: Text(
+                                                word.newPassword(),
+                                                style: defaultRegularStyle,
+                                              ),
+                                            ),
+                                            cardSpace,
+                                            Expanded(
+                                              child: Container(
+                                                  child: TextFormField(
+                                                    controller: _passwordNewTextCon,
+                                                    obscureText: true,
+                                                    style: defaultRegularStyle,
+                                                    decoration: InputDecoration(
+                                                      isDense: true,
+                                                      contentPadding: textFormPadding,
+                                                      hintText: '********',
+                                                      hintStyle: defaultRegularStyle,
+                                                      border: InputBorder.none,
+                                                    ),
+                                                  )
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        emptySpace,
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
+                                              child: Text(
+                                                word.newPasswordConfirm(),
+                                                style: defaultRegularStyle,
+                                              ),
+                                            ),
+                                            cardSpace,
+                                            Expanded(
+                                              child: Container(
+                                                  child: TextFormField(
+                                                    controller: _passwordNewConfirmTextCon,
+                                                    obscureText: true,
+                                                    style: defaultRegularStyle,
+                                                    decoration: InputDecoration(
+                                                      isDense: true,
+                                                      contentPadding: textFormPadding,
+                                                      hintText: '********',
+                                                      hintStyle: defaultRegularStyle,
+                                                      border: InputBorder.none,
+                                                    ),
+                                                  )
+                                              ),
+                                            ),
+                                            cardSpace,
+                                            GestureDetector(
+                                              child: Container(
+                                                height: 4.0.h,
+                                                decoration: BoxDecoration(
+                                                  color: blueColor,
+                                                  borderRadius: BorderRadius.circular(
+                                                      SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  word.update(),
+                                                  style: defaultMediumWhiteStyle,
+                                                ),
+                                              ),
+                                              onTap: () async {
+                                               await _loginRepository.InfomationUpdateWithFirebaseAuth(
+                                                    context: context,
+                                                    mail: _loginUser.mail,
+                                                    name: _loginUser.name,
+                                                    newPassword: _passwordNewTextCon.text.trim(),
+                                                    newPasswordConfirm: _passwordNewConfirmTextCon.text.trim());
+                                                _loginUserInfoProvider.logoutUesr();
+                                              }
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              emptySpace,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
-                                    child: Text(
-                                      word.phone(),
-                                      style: defaultRegularStyle,
-                                    ),
                                   ),
-                                  cardSpace,
-                                  Expanded(
-                                    child: Container(
-                                      child: TextFormField(
-                                        controller: _phoneEdit,
-                                        style: defaultRegularStyle,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: textFormPadding,
-                                          hintText: "${word.ex()}) 01012345678",
-                                          hintStyle: defaultRegularStyle,
-                                          border: InputBorder.none,
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
+                                        child: Text(
+                                          word.phone(),
+                                          style: defaultRegularStyle,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    child: Container(
-                                      height: 4.0.h,
-                                      width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
-                                      decoration: BoxDecoration(
-                                        color: blueColor,
-                                        borderRadius: BorderRadius.circular(
-                                            SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                      cardSpace,
+                                      Expanded(
+                                        child: Container(
+                                          child: TextFormField(
+                                            controller: _phoneEdit,
+                                            style: defaultRegularStyle,
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              contentPadding: textFormPadding,
+                                              hintText: "${word.ex()}) 01012345678",
+                                              hintStyle: defaultRegularStyle,
+                                              border: InputBorder.none,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                      GestureDetector(
+                                        child: Container(
+                                          height: 4.0.h,
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+                                          decoration: BoxDecoration(
+                                            color: blueColor,
+                                            borderRadius: BorderRadius.circular(
+                                                SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            word.update(),
+                                            style: defaultMediumWhiteStyle,
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          RegExp phoneRegExp = RegExp(r'^[0-9]{11}$');
+                                          if (_phoneEdit.text.trim() == "") {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                // return object of type Dialog
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    word.phoneChangeFiled(),
+                                                    style: defaultMediumStyle,
+                                                  ),
+                                                  content: Text(
+                                                    word.phoneChangeFiledNoneCon(),
+                                                    style: defaultRegularStyle,
+                                                  ),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text(
+                                                        word.confirm(),
+                                                        style: buttonBlueStyle,
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else if (_phoneEdit.text.trim() == _loginUser.phone) {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                // return object of type Dialog
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    word.phoneChangeFiled(),
+                                                    style: defaultMediumStyle,
+                                                  ),
+                                                  content: Text(
+                                                    word.phoneChangeFiledSameCon(),
+                                                    style: defaultRegularStyle,
+                                                  ),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text(
+                                                        word.confirm(),
+                                                        style: buttonBlueStyle,
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else if (!phoneRegExp.hasMatch(_phoneEdit.text.trim())) {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                // return object of type Dialog
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    word.phoneChangeFiled(),
+                                                    style: defaultMediumStyle,
+                                                  ),
+                                                  content: Text(
+                                                    word.phoneChangeFiledTyepCon(),
+                                                    style: defaultRegularStyle,
+                                                  ),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text(
+                                                        word.confirm(),
+                                                        style: buttonBlueStyle,
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                // return object of type Dialog
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    word.phoneChange(),
+                                                    style: defaultMediumStyle,
+                                                  ),
+                                                  content: Text(
+                                                    "${_phoneEdit.text}\n${word.phoneChangeCon()}",
+                                                    style: defaultRegularStyle,
+                                                  ),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text(
+                                                        word.yes(),
+                                                        style: buttonBlueStyle,
+                                                      ),
+                                                      onPressed: () {
+                                                        FirebaseRepository().updatePhone(
+                                                            companyCode: _loginUser.companyCode, mail: _loginUser.mail, phone: _phoneEdit.text);
+                                                        setState(() {
+                                                          _loginUser.phone = _phoneEdit.text;
+                                                          _loginUserInfoProvider.setLoginUser(_loginUser);
+                                                          _phoneEdit.text = "";
+                                                        });
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                    FlatButton(
+                                                      child: Text(
+                                                        word.no(),
+                                                        style: buttonBlueStyle,
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
                                       ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        word.update(),
-                                        style: defaultMediumWhiteStyle,
-                                      ),
-                                    ),
-                                    onTap: (){
-                                      RegExp phoneRegExp = RegExp(r'^[0-9]{11}$');
-                                      if (_phoneEdit.text.trim() == "") {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext context) {
-                                            // return object of type Dialog
-                                            return AlertDialog(
-                                              title: Text(
-                                                word.phoneChangeFiled(),
-                                                style: defaultMediumStyle,
-                                              ),
-                                              content: Text(
-                                                word.phoneChangeFiledNoneCon(),
-                                                style: defaultRegularStyle,
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text(
-                                                    word.confirm(),
-                                                    style: buttonBlueStyle,
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      } else if (_phoneEdit.text.trim() == _loginUser.phone) {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext context) {
-                                            // return object of type Dialog
-                                            return AlertDialog(
-                                              title: Text(
-                                                word.phoneChangeFiled(),
-                                                style: defaultMediumStyle,
-                                              ),
-                                              content: Text(
-                                                word.phoneChangeFiledSameCon(),
-                                                style: defaultRegularStyle,
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text(
-                                                    word.confirm(),
-                                                    style: buttonBlueStyle,
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      } else if (!phoneRegExp.hasMatch(_phoneEdit.text.trim())) {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext context) {
-                                            // return object of type Dialog
-                                            return AlertDialog(
-                                              title: Text(
-                                                word.phoneChangeFiled(),
-                                                style: defaultMediumStyle,
-                                              ),
-                                              content: Text(
-                                                word.phoneChangeFiledTyepCon(),
-                                                style: defaultRegularStyle,
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text(
-                                                    word.confirm(),
-                                                    style: buttonBlueStyle,
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (BuildContext context) {
-                                            // return object of type Dialog
-                                            return AlertDialog(
-                                              title: Text(
-                                                word.phoneChange(),
-                                                style: defaultMediumStyle,
-                                              ),
-                                              content: Text(
-                                                "${_phoneEdit.text}\n${word.phoneChangeCon()}",
-                                                style: defaultRegularStyle,
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text(
-                                                    word.yes(),
-                                                    style: buttonBlueStyle,
-                                                  ),
-                                                  onPressed: () {
-                                                    FirebaseRepository().updatePhone(
-                                                        companyCode: _loginUser.companyCode, mail: _loginUser.mail, phone: _phoneEdit.text);
-                                                    setState(() {
-                                                      _loginUser.phone = _phoneEdit.text;
-                                                      _loginUserInfoProvider.setLoginUser(_loginUser);
-                                                      _phoneEdit.text = "";
-                                                    });
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                                FlatButton(
-                                                  child: Text(
-                                                    word.no(),
-                                                    style: customStyle(fontColor: blueColor, fontSize: 15.0.sp, fontWeightName: 'Bold'),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-            ]),
+                            );
+                          },
+                        ),
+                      ),
+                ]),
+                ),
+              ),
             );
           },
         );
