@@ -1,3 +1,4 @@
+/*
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -92,9 +93,9 @@ List<Widget> getSearchWorkDataList(List<DocumentSnapshot> documents, BuildContex
                 child: Text(
                   documents[index].data()['type'],
                   style: customStyle(
-                      fontSize: typeFontSize,
+                      fontSize: 14,
                       fontWeightName: "Regular",
-                      fontColor: fontColor
+                      fontColor: mainColor
                   ),
                 ),
               ),
@@ -141,3 +142,4 @@ List<Widget> getSearchWorkDataList(List<DocumentSnapshot> documents, BuildContex
 
   return widgets;
 }
+*/

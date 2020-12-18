@@ -22,7 +22,7 @@ const double pageRadiusW = 8.0;
 const double pageNameSizeH = 6.0;
 
 //위젯 사이 간격
-const double widgetDistanceH = 2.0;
+const double widgetDistanceHT = 2.0;
 
 //위젯 버튼사이 간격
 const double widgetButtonDistanceH = 4.0;

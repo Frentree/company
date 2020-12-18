@@ -1,22 +1,20 @@
 //Const
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
-import 'package:MyCompany/i18n/app_localizations.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/repos/tableCalendar/table_calendar.dart';
 
 //Model
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/models/userModel.dart';
-import 'package:intl/locale.dart';
 
 //Provider
 import 'package:provider/provider.dart';
@@ -29,7 +27,6 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/card/workScheduleCard.dart';
 
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
@@ -42,20 +39,20 @@ class HomeSchedulePage extends StatefulWidget {
 class HomeSchedulePageState extends State<HomeSchedulePage> {
   Widget _buildEventMarker(DateTime date, List events) {
     return AnimatedContainer(
+      width: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+      height: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+      alignment: Alignment.center,
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         color: _calendarController.isSelected(date) ? bottomColor : mainColor,
       ),
-      width: 4.0.w,
-      height: 3.0.h,
-      child: Center(
-        child: Text(
-          '${events.length}',
-          style: TextStyle().copyWith(
-            color: Colors.white,
-            fontSize: 12.0.sp,
-          ),
+      child: Text(
+        '${events.length}',
+        style: TextStyle().copyWith(
+          color: Colors.white,
+          fontSize:
+              SizerUtil.deviceType == DeviceType.Tablet ? 8.0.sp : 10.0.sp,
         ),
       ),
     );
@@ -103,7 +100,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   var elementData = element.data();
                   if (elementData["createUid"] == _loginUser.mail ||
                       elementData["attendees"] != null &&
-                          elementData["attendees"].keys
+                          elementData["attendees"]
+                              .keys
                               .contains(_loginUser.mail)) {
                     DateTime _startDate =
                         _format.timeStampToDateTime(elementData["startDate"]);
@@ -132,8 +130,13 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                           .setCalendarFormat(CalendarFormat.week);
                     });
                   },
-                  //locale: 'ko_KR',
+                  headerStyle: HeaderStyle(),
                   calendarStyle: CalendarStyle(
+                    weekdayStyle: customStyle(
+                        fontSize: SizerUtil.deviceType == DeviceType.Tablet
+                            ? 11.0.sp
+                            : 13.0.sp,
+                        fontWeightName: "Regular"),
                     selectedColor: mainColor,
                     selectedStyle: customStyle(
                       fontSize: 13.0.sp,
@@ -146,7 +149,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                       List<Widget> children = [];
                       if (events.isNotEmpty) {
                         children.add(Positioned(
-                          left: 7.0.w,
+                          left: 6.0.w,
                           top: 3.5.h,
                           child: _buildEventMarker(date, events),
                         ));
@@ -175,7 +178,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                 var elementData = element.data();
                 if (elementData["createUid"] == _loginUser.mail ||
                     (elementData["attendees"] != null &&
-                    elementData["attendees"].keys
+                        elementData["attendees"]
+                            .keys
                             .contains(_loginUser.mail))) {
                   _companyWork.add(element);
                 }
@@ -187,29 +191,17 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                     children: [
                       Card(
                         elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(cardRadiusW.w),
-                          side: BorderSide(
-                            width: 1,
-                            color: boarderColor,
+                        shape: cardShape,
+                        child: Padding(
+                          padding: cardPadding,
+                          child: Container(
+                            height: scheduleCardDefaultSizeH.h,
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.noSchedule(),
+                              style: cardTitleStyle,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: cardPaddingW.w,
-                                vertical: cardPaddingH.h,),
-                              child: Container(
-                                height: 6.0.h,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  word.noSchedule(),
-                                  style: customStyle(
-                                      fontColor: blackColor,
-                                      fontSize: cardTitleFontSize.sp,
-                                      fontWeightName: "Medium"),
-                                ),
-                              )),
                         ),
                       ),
                     ],

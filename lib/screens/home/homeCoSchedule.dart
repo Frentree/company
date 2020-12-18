@@ -1,6 +1,8 @@
 //Const
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
@@ -182,14 +184,14 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
 
                   return Expanded(
                     child: Container(
-                      color: Colors.white,
+                      color: whiteColor,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 1.0.h),
+                        padding: EdgeInsets.symmetric(horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w, vertical: 1.0.h),
                         child: SingleChildScrollView(
                           child: Table(
                             border: TableBorder.all(width: 0.1,),
                             columnWidths: {
-                              5: FixedColumnWidth(23.0.w)
+                              5: FixedColumnWidth(SizerUtil.deviceType == DeviceType.Tablet ? 23.0.w : 21.0.w)
                             },
                             children: childRow,
                           ),
@@ -205,23 +207,22 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
                       child: Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(cardRadiusW.w),
+                          borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? buttonRadiusTW.w : buttonRadiusMW.w),
                           side: BorderSide(
                             width: 1,
                             color: blueColor,
                           ),
                         ),
-                        child: Center(
-                          child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: cardPaddingH.h,),
-                              child: Text(
-                                word.colleagueTimeSchedule(),
-                                style: customStyle(
-                                    fontColor: blackColor,
-                                    fontSize: homePageDefaultFontSize.sp,
-                                    fontWeightName: "Regular",),
-                              )),
+                        child: Padding(
+                          padding: cardPadding,
+                          child: Container(
+                            height: scheduleCardDefaultSizeH.h,
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.colleagueTimeSchedule(),
+                              style: cardTitleStyle,
+                            ),
+                          ),
                         ),
                       ),
                       onTap: (){

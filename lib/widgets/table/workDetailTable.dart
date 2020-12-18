@@ -1,10 +1,10 @@
 //Const
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
-
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -18,10 +18,6 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
-
-const double heightSize = 0.08;
-const double sizedBoxHeight = 0.01;
-const double workChipHeightSize = 0.025;
 
 List<Map<int, List<dynamic>>> dataFetch(List<dynamic> companyWork) {
   Format _format = Format();
@@ -53,20 +49,23 @@ List<Map<int, List<dynamic>>> dataFetch(List<dynamic> companyWork) {
 List<List<dynamic>> scheduleDataFetch(List<dynamic> companyWork) {
   Format _format = Format();
   List<List<dynamic>> scheduleData = [];
-  for(int i = 0; i < 5; i++){
+  for (int i = 0; i < 5; i++) {
     scheduleData.add([]);
   }
   companyWork.forEach((element) {
     var elementData = element.data();
     int week = _format.timeStampToDateTime(elementData["startDate"]).weekday;
-    scheduleData[week-1].add(element);
+    scheduleData[week - 1].add(element);
   });
 
   return scheduleData;
 }
 
 TableRow workDetailTableRow(
-    {BuildContext context, List<dynamic> companyWork, String name, String loginUserMail}) {
+    {BuildContext context,
+    List<dynamic> companyWork,
+    String name,
+    String loginUserMail}) {
   List<Map<int, List<dynamic>>> companyWorkList = dataFetch(companyWork);
   List<Container> tableRow = List();
   List<List<dynamic>> scheduleData = scheduleDataFetch(companyWork);
@@ -74,8 +73,7 @@ TableRow workDetailTableRow(
   companyWorkList.forEach((element) {
     tableRow.add(Container(
       height: 10.0.h,
-      padding: EdgeInsets.symmetric(
-          horizontal: 1.0.w),
+      padding: EdgeInsets.symmetric(horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w),
       child: GestureDetector(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -100,7 +98,8 @@ TableRow workDetailTableRow(
                     context: context,
                     name: name,
                     loginUserMail: loginUserMail,
-                    scheduleData: scheduleData[companyWorkList.indexOf(element)],
+                    scheduleData:
+                        scheduleData[companyWorkList.indexOf(element)],
                   );
                 }
               : null),
@@ -109,10 +108,12 @@ TableRow workDetailTableRow(
 
   tableRow.add(Container(
     height: 10.0.h,
-    padding: EdgeInsets.symmetric(
-        horizontal: 1.0.w),
+    padding: EdgeInsets.symmetric(horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w),
     child: Center(
-      child: Text(name, style: customStyle(fontSize: 13.0.sp, fontWeightName: "Medium"),),
+      child: Text(
+        name,
+        style: defaultMediumStyle,
+      ),
     ),
   ));
 
@@ -125,29 +126,30 @@ Container workChip({BuildContext context, dynamic companyWork, int count}) {
     child: Row(
       children: [
         Container(
-          height:
-              customHeight(context: context, heightSize: workChipHeightSize),
+          height: 3.0.h,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-              //borderRadius: BorderRadius.circular(8),
               color: companyWork.data()["type"] == "미팅"
                   ? blueColor
                   : companyWork.data()["type"] == "외근"
                       ? workTypeOut
                       : workTypeRest),
-          child: Center(
-            child: Text(
-              companyWork.data()["type"],
-              style: customStyle(
-                  fontColor: whiteColor,
-                  fontWeightName: "Regular",
-                  fontSize: 9.0.sp),
-            ),
+          child: Text(
+            companyWork.data()["type"],
+            style: customStyle(
+                fontColor: whiteColor,
+                fontWeightName: "Regular",
+                fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 6.75.sp : 9.0.sp),
           ),
         ),
         (count - 1) != 0
             ? Text(
                 "+${count - 1}",
-                style: TextStyle(fontSize: 9.0.sp),
+                style: customStyle(
+                  fontColor: mainColor,
+                  fontWeightName: "Regular",
+                  fontSize: 7.0.sp,
+                ),
               )
             : Text("")
       ],
@@ -158,6 +160,6 @@ Container workChip({BuildContext context, dynamic companyWork, int count}) {
 //빈칩
 Container emptyChip({BuildContext context}) {
   return Container(
-    height: customHeight(context: context, heightSize: workChipHeightSize),
+      height: 3.0.h,
   );
 }
