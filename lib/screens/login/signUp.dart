@@ -579,6 +579,7 @@ class SignUpPageState extends State<SignUpPage> {
                             style: buttonWhiteStyle,
                           ),
                           onPressed: !(isFormValidation.contains(false) /*|| _smsCode.contains("")*/) ? () async {
+                            FocusScope.of(context).unfocus();
                             await _loginRepository.signUpWithFirebaseAuth(
                               context: context,
                               /*smsCode: _smsCode.join(),*/

@@ -109,6 +109,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                       ),
                       tabIndex[0] == false ? Container() : getCompanyInfomationCard(
                         context: context, user: _loginUser,
+                        statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top,
                       )
                     ],
                   ),
@@ -377,7 +378,10 @@ class SettingMainPageState extends State<SettingMainPage> {
                           )
                         ],
                       ),
-                      tabIndex[2] == false ? Container() : getMyInfomationCard(context: context, user: _loginUser),
+                      tabIndex[2] == false ? Container() : getMyInfomationCard(
+                        context: context, user: _loginUser,
+                        statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top,
+                      ),
                     ],
                   ),
                 ),

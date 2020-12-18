@@ -55,7 +55,6 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
           _loginUser = _loginUserInfoProvider.getLoginUser();
           return GestureDetector(
             onTap: (){
-              print(statusBarHeight);
               FocusScope.of(context).unfocus();
             },
             child: SingleChildScrollView(
@@ -82,10 +81,6 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                       height: 6.0.h,
                       padding: EdgeInsets.symmetric(
                           horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? tabRadiusTW.w : tabRadiusMW.w),
-                        color: tabColor,
                       ),
                       child: Row(
                         children: [

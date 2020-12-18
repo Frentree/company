@@ -24,7 +24,7 @@ import 'package:sizer/sizer.dart';
 final word = Words();
 
 // 내 정보 화면
-Widget getMyInfomationCard({BuildContext context, User user}) {
+Widget getMyInfomationCard({BuildContext context, User user, double statusBarHeight}) {
   return FutureBuilder(
     future: FirebaseFirestore.instance
         .collection("company")
@@ -54,9 +54,9 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
                   Row(
                     children: [
                       Container(
-                          color: whiteColor,
-                          alignment: Alignment.center,
-                          child: profilePhoto(loginUser: user)
+                        color: whiteColor,
+                        alignment: Alignment.center,
+                        child: profilePhoto(loginUser: user)
                       ),
                       cardSpace,
                       cardSpace,
@@ -99,7 +99,10 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
                       ),
                     ),
                     onTap: (){
-                      SettingMyPageUpdate(context);
+                      SettingMyPageUpdate(
+                        context: context,
+                        statusBarHeight: statusBarHeight,
+                      );
                     },
                   ),
                 ],
@@ -235,7 +238,7 @@ Widget getMyInfomationCard({BuildContext context, User user}) {
 }
 
 // 회사 정보
-Widget getCompanyInfomationCard({BuildContext context, User user}) {
+Widget getCompanyInfomationCard({BuildContext context, User user, double statusBarHeight}) {
   String imageUrl = "";
   return Container(
     child: Padding(
@@ -285,7 +288,11 @@ Widget getCompanyInfomationCard({BuildContext context, User user}) {
                       ),
                     ),
                     onTap: (){
-                      SettingCompanyPageUpdate(context, imageUrl);
+                      SettingCompanyPageUpdate(
+                        context: context,
+                        imageUrl: imageUrl,
+                        statusBarHeight: statusBarHeight,
+                      );
                     },
                   ),
                 ],

@@ -66,10 +66,16 @@ TextStyle cardContentsStyle = customStyle(
   fontWeightName: "Regular",
 );
 
-TextStyle cardBlueStyle = customStyle(
+/*TextStyle cardBlueStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? cardTimeSizeT.sp : cardTimeSizeM.sp,
   fontWeightName: "Regular",
   fontColor: blueColor
+);*/
+
+TextStyle cardBlueStyle = customStyle(
+    fontSize: SizerUtil.deviceType == DeviceType.Tablet ? cardTimeSizeT.sp : cardTimeSizeM.sp,
+    fontWeightName: "Regular",
+    fontColor: blueColor
 );
 
 TextStyle containerChipStyle = customStyle(

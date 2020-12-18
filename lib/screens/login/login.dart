@@ -141,6 +141,7 @@ class LoginPageState extends State<LoginPage> {
                       style: buttonBlueStyle,
                     ),
                     onPressed: () {
+                      FocusScope.of(context).unfocus();
                       Navigator.pushNamed(context, "/SignUp");
                     },
                   ),

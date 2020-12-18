@@ -186,19 +186,25 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               });
               if (_companyWork.length == 0) {
                 isDetail = [];
-                return Card(
-                  elevation: 0,
-                  shape: cardShape,
-                  child: Padding(
-                    padding: cardPadding,
-                    child: Container(
-                      height: scheduleCardDefaultSizeH.h,
-                      alignment: Alignment.center,
-                      child: Text(
-                        word.noSchedule(),
-                        style: cardTitleStyle,
+                return Expanded(
+                  child: ListView(
+                    children: [
+                      Card(
+                        elevation: 0,
+                        shape: cardShape,
+                        child: Padding(
+                          padding: cardPadding,
+                          child: Container(
+                            height: scheduleCardDefaultSizeH.h,
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.noSchedule(),
+                              style: cardTitleStyle,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 );
               } else {
