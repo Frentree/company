@@ -162,6 +162,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               );
             },
           ),
+          emptySpace,
           StreamBuilder(
             stream: _repository.getSelectedDateCompanyWork(
                 companyCode: _loginUser.companyCode,

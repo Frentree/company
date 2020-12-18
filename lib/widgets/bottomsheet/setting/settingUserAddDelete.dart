@@ -588,7 +588,6 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                         }
                                         List<CompanyUser> searchCompanyUserResult = [];
                                         snapshot.data.forEach((doc){
-                                          print(doc.data());
                                           CompanyUser _companyUser = CompanyUser.fromMap(doc.data(), doc.documentID);
                                           searchCompanyUserResult.add(_companyUser);
                                         });
@@ -613,14 +612,10 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                   padding: cardPadding,
                                                   child: Row(
                                                     children: [
-                                                      Container(
-                                                        height: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-                                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-                                                        color: whiteColor,
-                                                        child: FittedBox(
-                                                          fit: BoxFit.cover,
-                                                          child: Image.network( searchCompanyUserResult[index].profilePhoto),
-                                                        )
+                                                      CircleAvatar(
+                                                      backgroundColor: whiteColor,
+                                                      radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                                      backgroundImage: NetworkImage( searchCompanyUserResult[index].profilePhoto),
                                                       ),
                                                       cardSpace,
                                                       cardSpace,

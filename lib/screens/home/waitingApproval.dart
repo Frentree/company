@@ -1,20 +1,13 @@
 //Flutter
-import 'package:MyCompany/consts/universalString.dart';
-import 'package:MyCompany/models/userModel.dart';
+import 'package:provider/provider.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 
 //Const
 import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 
-//Screen
-import 'package:MyCompany/screens/login/login.dart';
-import 'package:MyCompany/screens/login/signUp.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 final word = Words();
 class WaitingApprovalPage extends StatelessWidget {
@@ -29,23 +22,17 @@ class WaitingApprovalPage extends StatelessWidget {
         child: AlertDialog(
           title: Text(
             word.singUpWaiting(),
-            style: customStyle(
-                    fontColor: blueColor,
-                    fontSize: 13,
-                    fontWeightName: 'Bold'
-                ),
+            style: defaultMediumStyle,
           ),
           content: Text(
             word.singUpWaitingCon(),
-                style: customStyle(
-                    fontColor: mainColor, fontSize: 13, fontWeightName: 'Regular'),
+            style: defaultRegularStyle,
           ),
           actions: <Widget>[
             FlatButton(
               child: Text(
                 word.loginPageGo(),
-                style: customStyle(
-                        fontColor: blueColor, fontSize: 15, fontWeightName: 'Bold'),
+                style: buttonBlueStyle,
               ),
               onPressed: () {
                 _loginUserInfoProvider.logoutUesr();

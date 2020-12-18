@@ -1,3 +1,4 @@
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -18,6 +19,8 @@ final word = Words();
 
 WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID,
     String noticeTitle, String noticeContent) async {
+  bool result = false;
+
   TextEditingController _noticeTitle = TextEditingController();
   TextEditingController _noticeContent = TextEditingController();
 
@@ -34,186 +37,152 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID,
   }
 
   await showModalBottomSheet(
-      isScrollControlled: false,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(3.0.w),
-            topLeft: Radius.circular(3.0.w),
-      )),
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            LoginUserInfoProvider _loginUserInfoProvider =
-                Provider.of<LoginUserInfoProvider>(context);
-            _loginUser = _loginUserInfoProvider.getLoginUser();
-            _noticeUser
-                .addAll({"mail": _loginUser.mail, "name": _loginUser.name});
-            return Padding(
-              padding: MediaQuery.of(context).viewInsets,
-              child: Listener(
-                onPointerDown: (_) {
-                  FocusScopeNode currentFocus = FocusScope.of(context);
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.focusedChild.unfocus();
-                  }
-                },
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.only(
-                      top: 2.0.h,
-                      left: 1.0.w,
-                      right: 1.0.w,
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(children: <Widget>[
-                    IntrinsicHeight(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: 30.0.w,
-                            child: Chip(
-                              padding: EdgeInsets.zero,
-                              backgroundColor: chipColorGreen,
-                              label: Text(
-                                word.notice(),
-                                style: customStyle(
-                                  fontSize: 11.0.sp,
-                                  fontColor: mainColor,
-                                  fontWeightName: 'Regular',
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 1.0.w),
-                          ),
-                          Container(
-                            width: 40.0.w,
-                            child: TextFormField(
-                              style: customStyle(
-                                fontSize: 13.0.sp,
-                                fontColor: mainColor,
-                                fontWeightName: "Regular",
-                              ),
-                              autofocus: true,
-                              controller: _noticeTitle,
-                              onFieldSubmitted: (value) =>
-                                  _noticeFocusNode.requestFocus(),
-                              decoration: InputDecoration(
-                                hintText: word.pleaseTitle(),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 3.0.w),
-                    ),
-                          CircleAvatar(
-                              radius: 5.0.w,
-                              backgroundColor: _noticeTitle.text == ''
-                                  ? Colors.black12
-                                  : _noticeContent.text == ''
-                                      ? Colors.black12
-                                      : Colors.blue,
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Icon(Icons.arrow_upward, size: 6.0.w,),
-                                onPressed: () {
-                                  if (_noticeTitle.text != '' &&
-                                      _noticeContent.text != '') {
-                                    if (noticeDocumentID == "") {
-                                      _notice = NoticeModel(
-                                        noticeTitle: _noticeTitle.text,
-                                        noticeContent: _noticeContent.text,
-                                        noticeCreateUser: _noticeUser,
-                                        noticeCreateDate: Timestamp.now(),
-                                        caseSearch: SearchFormat.setSearchParam(
-                                            _noticeTitle.text),
-                                        //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
-                                      );
-                                      FirebaseRepository().addNotice(
-                                          companyCode: _loginUser.companyCode,
-                                          notice: _notice);
-                                    } else {
-                                      Firestore.instance
-                                          .collection('company')
-                                          .document(_loginUser.companyCode)
-                                          .collection("notice")
-                                          .document(noticeDocumentID)
-                                          .updateData({
-                                        "noticeTitle": _noticeTitle.text,
-                                        "noticeContent": _noticeContent.text,
-                                        "caseSearch":
-                                            SearchFormat.setSearchParam(
-                                                _noticeTitle.text),
-                                      });
-                                    }
-                                    Navigator.pop(context);
-                                  } else if (_noticeTitle.text == '') {
-                                    // 제목 미입력
-
-                                  } else {
-                                    // 내용 미입력
-
-                                  }
-                                },
-                              )),
-                        ],
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.only(bottom: 4.0.h,)),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(padding: EdgeInsets.only(left: 3.0.w),),
-                        InkWell(
-                          child: Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.chat_bubble_outline,
-                                  size: 6.0.w,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 3.0.w),),
-                                Text(
-                                  word.content(),
-                                  style: customStyle(
-                                    fontSize: 12.0.sp,
-                                    fontColor: mainColor,
-                                    fontWeightName: 'Regular',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () {},
-                        ),
-                        SizedBox(
-                          height: 1.0.h,
-                        ),
-                        TextFormField(
-                          focusNode: _noticeFocusNode,
-                          controller: _noticeContent,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 5,
-                          maxLengthEnforced: true,
-                          style: customStyle(
-                            fontSize: 12.0.sp,
-                          ),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: word.contentCon(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2.0.h,
-                        ),
-                      ],
-                    )
-                  ]),
-                ),
+    isScrollControlled: true,
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+          _loginUser = _loginUserInfoProvider.getLoginUser();
+          _noticeUser.addAll({"mail": _loginUser.mail, "name": _loginUser.name});
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                top: 2.0.h,
+                bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
-            );
-          },
-        );
-      });
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: 6.0.h,
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                        decoration: BoxDecoration(
+                          color: chipColorGreen,
+                          borderRadius: BorderRadius.circular(
+                              SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          word.notice(),
+                          style: defaultMediumStyle,
+                        ),
+                      ),
+                      cardSpace,
+                      Expanded(
+                        child: TextFormField(
+                          style: defaultRegularStyle,
+                          controller: _noticeTitle,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: textFormPadding,
+                            border: InputBorder.none,
+                            hintText: word.pleaseTitle(),
+                            hintStyle: hintStyle,
+                          ),
+                        ),
+                      ),
+                      cardSpace,
+                      CircleAvatar(
+                        radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                        backgroundColor: _noticeTitle.text == "" ? disableUploadBtn : blueColor,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.arrow_upward,
+                            color: whiteColor,
+                            size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                          ),
+                          onPressed: _noticeTitle.text == '' ? () {} : () async {
+                            if (_noticeTitle.text != '' &&
+                                _noticeContent.text != '') {
+                              if (noticeDocumentID == "") {
+                                _notice = NoticeModel(
+                                  noticeTitle: _noticeTitle.text,
+                                  noticeContent: _noticeContent.text,
+                                  noticeCreateUser: _noticeUser,
+                                  noticeCreateDate: Timestamp.now(),
+                                  caseSearch: SearchFormat.setSearchParam(
+                                      _noticeTitle.text),
+                                  //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
+                                );
+                                await FirebaseRepository().addNotice(
+                                    companyCode: _loginUser.companyCode,
+                                    notice: _notice);
+                              } else {
+                                await FirebaseFirestore.instance
+                                    .collection('company')
+                                    .doc(_loginUser.companyCode)
+                                    .collection("notice")
+                                    .doc(noticeDocumentID)
+                                    .update({
+                                  "noticeTitle": _noticeTitle.text,
+                                  "noticeContent": _noticeContent.text,
+                                  "caseSearch":
+                                      SearchFormat.setSearchParam(
+                                          _noticeTitle.text),
+                                });
+                              }
+                              result = true;
+                              Navigator.of(context).pop(result);
+                              return result;;
+                            }
+                          },
+                        )
+                      ),
+                    ],
+                  ),
+                emptySpace,
+                Container(
+                  height: 6.0.h,
+                  width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.chat_bubble_outline,
+                        size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                      ),
+                      cardSpace,
+                      Text(
+                        word.content(),
+                        style: defaultRegularStyle,
+                      ),
+                    ],
+                  ),
+                ),
+                emptySpace,
+                TextFormField(
+                  controller: _noticeContent,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 5,
+                  maxLengthEnforced: true,
+                  style: defaultRegularStyle,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: textFormPadding,
+                    border: OutlineInputBorder(),
+                    hintText: word.contentCon(),
+                    hintStyle: hintStyle,
+                  ),
+                ),
+                emptySpace,
+              ]),
+            ),
+          );
+        },
+      );
+    },
+  );
+  return result;
 }

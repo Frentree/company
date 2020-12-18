@@ -60,7 +60,7 @@ Container titleCard({BuildContext context, String companyCode, WorkModel workMod
         ),
         //업무 타입입
         Container(
-          height: 3.0.h,
+          height: 4.0.h,
           width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
           decoration: containerChipDecoration,
           padding: EdgeInsets.symmetric(
@@ -109,14 +109,20 @@ Column workDetailContents({BuildContext context, String companyCode, WorkModel w
     children: <Widget>[
       titleCard(context: context, companyCode: companyCode, workModel: workModel, isDetail: isDetail),
       emptySpace,
-      Padding(
-        padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w),
-        child: Text(
-          workModel.contents,
-          style: cardContentsStyle,
+      Visibility(
+        visible: workModel.contents != "",
+        child: Padding(
+          padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w),
+          child: Text(
+            workModel.contents,
+            style: cardContentsStyle,
+          ),
         ),
       ),
-      emptySpace,
+      Visibility(
+        visible: workModel.contents != "",
+        child: emptySpace,
+      ),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

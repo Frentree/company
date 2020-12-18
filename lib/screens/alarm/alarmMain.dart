@@ -51,6 +51,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                       ),
                     ),
                     onTap: (){
+                      NotImplementedScreen(context);
                       setState(() {
                         tabIndex = 0;
                       });

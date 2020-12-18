@@ -1,5 +1,7 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/work/workContent.dart';
 import 'package:MyCompany/widgets/bottomsheet/expense/expenseMain.dart';
@@ -46,7 +48,10 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
       case 9: // 급여 명세 조회
         break;
       case 10: // 공지사항
-        WorkNoticeBottomSheet(context, "", "", "");
+        result = await WorkNoticeBottomSheet(context, "", "", "");
+        if (result) {
+          Navigator.of(context).pop();
+        }
         break;
       default:
         NotImplementedFunction(context);
@@ -73,45 +78,50 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
               _isStaffMethod(grade);
 
               return Container(
-                height: 35.0.h,
-                padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w),
+                height: 27.0.h,
+                padding: EdgeInsets.only(
+                  left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  top: 2.0.h,
+                ),
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 2.0.h),
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Container(
+                      height: 6.0.h,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
+                      ),
+                      child: Row(
                         children: [
-                          Expanded(
-                            flex: 1,
+                          Container(
+                            height: 6.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
                             child: IconButton(
-                              icon: Icon(Icons.arrow_downward_sharp),
-                              onPressed: () {
+                              constraints: BoxConstraints(),
+                              padding: EdgeInsets.zero,
+                              icon: Icon(
+                                Icons.keyboard_arrow_down_sharp,
+                                size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                color: mainColor,
+                              ),
+                              onPressed: (){
                                 Navigator.pop(context);
                               },
                             ),
                           ),
                           Expanded(
-                            flex: 5,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
+                            child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
                                   word.addSheduleSelect(),
-                                  style: customStyle(
-                                      fontSize: homePageDefaultFontSize.sp,
-                                      fontWeightName: 'Regular',
-                                      fontColor: grayColor),
-                                ),
-                              ],
+                                  style: defaultMediumStyle,
+                                )
                             ),
-                          ),
-                          Expanded(flex: 1, child: Container())
-                        ]),
-                    Padding(
-                      padding: EdgeInsets.only(top: 2.0.h),
+                          )
+                        ],
+                      ),
                     ),
+                    emptySpace,
 
                     /// 개발 미완료로 인한 숨김 처리
                     /*Row(
@@ -138,49 +148,74 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        ActionChip(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: chipColorBlue,
-                          label: Text(
-                            word.workInSchedule(),
-                            style: customStyle(
-                                fontSize: 11.0.sp,
-                                fontWeightName: 'Regular',
-                                fontColor: mainColor),
+                        GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorBlue,
+                              borderRadius: BorderRadius.circular(
+                                SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.workInSchedule(),
+                              style: defaultMediumStyle,
+                            ),
                           ),
-                          onPressed: () {
+                          onTap: (){
                             _workBottomMove(1);
                           },
                         ),
-                        ActionChip(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: chipColorBlue,
-                          label: Text(
-                            word.workOutSchedule(),
-                            style: customStyle(
-                                fontSize: 11.0.sp,
-                                fontWeightName: 'Regular',
-                                fontColor: mainColor),
+                        cardSpace,
+                        GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorBlue,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.workOutSchedule(),
+                              style: defaultMediumStyle,
+                            ),
                           ),
-                          onPressed: () {
+                          onTap: (){
                             _workBottomMove(2);
                           },
                         ),
-                        ActionChip(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: chipColorBlue,
-                          label: Text(
-                            word.meetingSchedule(),
-                            style: customStyle(
-                                fontSize: 11.0.sp,
-                                fontWeightName: 'Regular',
-                                fontColor: mainColor),
+                        cardSpace,
+                        GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorBlue,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.meetingSchedule(),
+                              style: defaultMediumStyle,
+                            ),
                           ),
-                          onPressed: () {
+                          onTap: (){
                             _workBottomMove(3);
                           },
                         ),
-
                         /// 개발 미완료로 인한 숨김 처리
                         /*ActionChip(
                           backgroundColor: chipColorBlue,
@@ -198,6 +233,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                         ),*/
                       ],
                     ),
+                    emptySpace,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -232,21 +268,30 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                             _workBottomMove(6);
                           },
                         ),*/
-                        ActionChip(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: chipColorRed,
-                          label: Text(
-                            word.settlement(),
-                            style: customStyle(
-                                fontSize: 11.0.sp,
-                                fontWeightName: 'Regular',
-                                fontColor: mainColor),
+
+                        GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorRed,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.settlement(),
+                              style: defaultMediumStyle,
+                            ),
                           ),
-                          onPressed: () {
+                          onTap: (){
                             _workBottomMove(7);
                           },
                         ),
-
+                        cardSpace,
                         /// 개발 미완료로 인한 숨김 처리
                         /*ActionChip(
                           backgroundColor: chipColorRed,
@@ -262,37 +307,51 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                             //_workBottomMove(8);
                           },
                         ),*/
-
-                        if (!_isStaff) ActionChip(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: chipColorGreen,
-                          label: Text(
-                            word.payroll(),
-                            style: customStyle(
-                                fontSize: 11.0.sp,
-                                fontWeightName: 'Regular',
-                                fontColor: mainColor
+                        if (!_isStaff) GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorGreen,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.payroll(),
+                              style: defaultMediumStyle,
                             ),
                           ),
-                          onPressed: () {
+                          onTap: (){
                             _workBottomMove(9);
                           },
                         ),
-
-                        if (!_isStaff) ActionChip(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: chipColorGreen,
-                          label: Text(
-                            word.notice(),
-                            style: customStyle(
-                                fontSize: 11.0.sp,
-                                fontWeightName: 'Regular',
-                                fontColor: mainColor),
+                        cardSpace,
+                        if (!_isStaff) GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorGreen,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              word.notice(),
+                              style: defaultMediumStyle,
+                            ),
                           ),
-                          onPressed: () {
+                          onTap: (){
                             _workBottomMove(10);
                           },
-                        )
+                        ),
                       ],
                     ),
                   ],

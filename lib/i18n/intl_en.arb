@@ -721,7 +721,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "participant": "Participant",
+  "participant": "Attendant",
   "@participant": {
     "description": "participant message",
     "type": "text",

@@ -58,7 +58,7 @@ Container titleCard({BuildContext context, String loginUserMail, String companyC
         //업무 타입입
         Container(
           width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
-          height: 3.0.h,
+          height: 4.0.h,
           decoration:containerChipDecoration,
           padding: EdgeInsets.symmetric(
             horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
@@ -97,14 +97,20 @@ Column meetingDetailContents({BuildContext context, String loginUserMail, String
     children: <Widget>[
       titleCard(context: context, companyCode: companyCode, loginUserMail: loginUserMail, meetingModel: meetingModel, isDetail: isDetail),
       emptySpace,
-      Padding(
-        padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w),
-        child: Text(
-          meetingModel.contents,
-          style: cardContentsStyle,
+      Visibility(
+        visible: meetingModel.contents != "",
+        child: Padding(
+          padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w),
+          child: Text(
+            meetingModel.contents,
+            style: cardContentsStyle,
+          ),
         ),
       ),
-      emptySpace,
+      Visibility(
+        visible: meetingModel.contents != "",
+        child: emptySpace,
+      ),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

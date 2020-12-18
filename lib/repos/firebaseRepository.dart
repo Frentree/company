@@ -23,24 +23,26 @@ class FirebaseRepository {
       _firebaseMethods.getExpense(companyCode, uid);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
-    userModel: userModel,
-  );
+        userModel: userModel,
+      );
 
   Future<User> getUser({String userMail}) => _firebaseMethods.getUser(
-    userMail: userMail,
-  );
+        userMail: userMail,
+      );
 
   Future<void> updateUser({User userModel}) => _firebaseMethods.updateUser(
-    userModel: userModel,
-  );
+        userModel: userModel,
+      );
 
   Future<void> saveCompany({Company companyModel}) =>
       _firebaseMethods.saveCompany(
         companyModel: companyModel,
       );
 
-  Future<void> deleteCompanyUser({String companyCode, CompanyUser companyUserModel}) =>
-      _firebaseMethods.deleteCompanyUser(companyCode: companyCode, companyUserModel: companyUserModel);
+  Future<void> deleteCompanyUser(
+          {String companyCode, CompanyUser companyUserModel}) =>
+      _firebaseMethods.deleteCompanyUser(
+          companyCode: companyCode, companyUserModel: companyUserModel);
 
   Future<List<DocumentSnapshot>> getCompany({String companyName}) =>
       _firebaseMethods.getCompany(
@@ -48,7 +50,7 @@ class FirebaseRepository {
       );
 
   Future<List<DocumentSnapshot>> searchCompanyUser(
-      {String companyUserName, String companyCode, String loginUserMail}) =>
+          {String companyUserName, String companyCode, String loginUserMail}) =>
       _firebaseMethods.searchCompanyUser(
         companyCode: companyCode,
         companyUserName: companyUserName,
@@ -100,32 +102,37 @@ class FirebaseRepository {
       );
 
   Stream<QuerySnapshot> getSelectedDateCompanyWork(
-      {String companyCode, Timestamp selectedDate}) =>
+          {String companyCode, Timestamp selectedDate}) =>
       _firebaseMethods.getSelectedDateCompanyWork(
         companyCode: companyCode,
         selectedDate: selectedDate,
       );
 
   Stream<QuerySnapshot> getSelectedWeekCompanyWork(
-      {String companyCode, List<Timestamp> selectedWeek}) =>
+          {String companyCode, List<Timestamp> selectedWeek}) =>
       _firebaseMethods.getSelectedWeekCompanyWork(
         companyCode: companyCode,
         selectedWeek: selectedWeek,
       );
 
   Future<Map<String, String>> getColleague(
-      {String loginUserMail, String companyCode}) =>
+          {String loginUserMail, String companyCode}) =>
       _firebaseMethods.getColleague(
           loginUserMail: loginUserMail, companyCode: companyCode);
 
+  Stream<QuerySnapshot> getColleagueInfo(
+          {String companyCode}) =>
+      _firebaseMethods.getColleagueInfo(companyCode: companyCode);
+
   Future<DocumentReference> saveAttendance(
-      {Attendance attendanceModel, String companyCode}) => _firebaseMethods.saveAttendance(
-    attendanceModel: attendanceModel,
-    companyCode: companyCode,
-  );
+          {Attendance attendanceModel, String companyCode}) =>
+      _firebaseMethods.saveAttendance(
+        attendanceModel: attendanceModel,
+        companyCode: companyCode,
+      );
 
   Future<QuerySnapshot> getMyTodayAttendance(
-      {String companyCode, String loginUserMail, Timestamp today}) =>
+          {String companyCode, String loginUserMail, Timestamp today}) =>
       _firebaseMethods.getMyTodayAttendance(
         companyCode: companyCode,
         loginUserMail: loginUserMail,
@@ -133,23 +140,27 @@ class FirebaseRepository {
       );
 
   Stream<QuerySnapshot> getColleagueNowAttendance(
-      {String companyCode, String loginUserMail, Timestamp today}) => _firebaseMethods.getColleagueNowAttendance(
-    companyCode: companyCode,
-    loginUserMail: loginUserMail,
-    today: today,
-  );
+          {String companyCode, String loginUserMail, Timestamp today}) =>
+      _firebaseMethods.getColleagueNowAttendance(
+        companyCode: companyCode,
+        loginUserMail: loginUserMail,
+        today: today,
+      );
 
   Future<void> updateAttendance(
-      {Attendance attendanceModel, String documentId ,String companyCode}) => _firebaseMethods.updateAttendance(
-    attendanceModel: attendanceModel,
-    documentId: documentId,
-    companyCode: companyCode,
-  );
+          {Attendance attendanceModel,
+          String documentId,
+          String companyCode}) =>
+      _firebaseMethods.updateAttendance(
+        attendanceModel: attendanceModel,
+        documentId: documentId,
+        companyCode: companyCode,
+      );
 
   Future<void> saveApproval(
-      {String companyCode,
-        String appManagerMail,
-        Approval approvalModel}) =>
+          {String companyCode,
+          String appManagerMail,
+          Approval approvalModel}) =>
       _firebaseMethods.saveApproval(
         companyCode: companyCode,
         approvalModel: approvalModel,
@@ -168,22 +179,30 @@ class FirebaseRepository {
   Stream<DocumentSnapshot> getCompanyInfos({String companyCode}) =>
       _firebaseMethods.getCompanyInfos(companyCode);
 
-  Future<void> updateApproval(
-      {Approval approvalModel, String companyCode}) =>
+  Future<void> updateApproval({Approval approvalModel, String companyCode}) =>
       _firebaseMethods.updateApproval(
         approvalModel: approvalModel,
         companyCode: companyCode,
       );
 
-  Future<void> updateCompany({String companyCode, String companyName, String companyNo, String companyAddr, String companyPhone, String companyWeb, String url}) =>
-      _firebaseMethods.updateCompany(companyCode, companyName, companyNo, companyAddr, companyPhone, companyWeb, url);
+  Future<void> updateCompany(
+          {String companyCode,
+          String companyName,
+          String companyNo,
+          String companyAddr,
+          String companyPhone,
+          String companyWeb,
+          String url}) =>
+      _firebaseMethods.updateCompany(companyCode, companyName, companyNo,
+          companyAddr, companyPhone, companyWeb, url);
 
   // 프로필 이미지 갖고오기
   Future<DocumentSnapshot> photoProfile(String companyCode, String mail) =>
       _firebaseMethods.photoProfile(companyCode, mail);
 
   // 프로필 이미지 변경
-  Future<void> updatePhotoProfile({String companyCode, String mail, String url}) =>
+  Future<void> updatePhotoProfile(
+          {String companyCode, String mail, String url}) =>
       _firebaseMethods.updatePhotoProfile(companyCode, mail, url);
 
   // 프로필 핸드폰번호 변경
@@ -202,7 +221,8 @@ class FirebaseRepository {
   Future<void> addGrade(String companyCode, String gradeName, int gradeID) =>
       _firebaseMethods.addGrade(companyCode, gradeName, gradeID);
 
-  Future<void> updateGradeName(String documentID, String gradeName, String companyCode) =>
+  Future<void> updateGradeName(
+          String documentID, String gradeName, String companyCode) =>
       _firebaseMethods.updateGradeName(documentID, gradeName, companyCode);
 
   // 권한 삭제
@@ -210,7 +230,8 @@ class FirebaseRepository {
       _firebaseMethods.deleteGrade(documentID, companyCode);
 
   // 권한 삭제시 유저 권한 없애기
-  Future<void> deleteUserGrade(String documentID, String companyCode, int level) =>
+  Future<void> deleteUserGrade(
+          String documentID, String companyCode, int level) =>
       _firebaseMethods.deleteUserGrade(documentID, companyCode, level);
 
   // 등급 권한 유저 갖고오기
@@ -226,11 +247,13 @@ class FirebaseRepository {
       _firebaseMethods.getGreadeUserDelete(companyCode, level);
 
   // 권한 - 사용자 추가
-  Future<void> addGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
+  Future<void> addGradeUser(
+          String companyCode, List<Map<String, dynamic>> user) =>
       _firebaseMethods.addGradeUser(companyCode, user);
 
   // 권한 - 사용자 추가
-  Future<void> deleteGradeUser(String companyCode, List<Map<String,dynamic>> user) =>
+  Future<void> deleteGradeUser(
+          String companyCode, List<Map<String, dynamic>> user) =>
       _firebaseMethods.deleteGradeUser(companyCode, user);
 
   // 공지사항 - 추가
@@ -246,44 +269,79 @@ class FirebaseRepository {
       _firebaseMethods.getNoticeList(companyCode);
 
   // 공지사항 - 댓글
-  Stream<QuerySnapshot> getNoticeCommentList({String companyCode, String documentID}) =>
+  Stream<QuerySnapshot> getNoticeCommentList(
+          {String companyCode, String documentID}) =>
       _firebaseMethods.getNoticeCommentList(companyCode, documentID);
 
   // 공지사항 - 대댓글
-  Stream<QuerySnapshot> getNoticeCommentsList({String companyCode, String noticeDocumentID, String commntDocumentID}) =>
-      _firebaseMethods.getNoticeCommentsList(companyCode, noticeDocumentID, commntDocumentID);
+  Stream<QuerySnapshot> getNoticeCommentsList(
+          {String companyCode,
+          String noticeDocumentID,
+          String commntDocumentID}) =>
+      _firebaseMethods.getNoticeCommentsList(
+          companyCode, noticeDocumentID, commntDocumentID);
 
   // 공지사항 - 댓글 추가
-  Future<void> addNoticeComment({String companyCode, String noticeDocumentID, CommentModel comment}) =>
+  Future<void> addNoticeComment(
+          {String companyCode,
+          String noticeDocumentID,
+          CommentModel comment}) =>
       _firebaseMethods.addNoticeComment(companyCode, noticeDocumentID, comment);
 
   // 공지사항 - 댓글 수정
-  Future<void> updateNoticeComment({String companyCode, String noticeDocumentID, String commntDocumentID, String comment}) =>
-      _firebaseMethods.updateNoticeComment(companyCode, noticeDocumentID, commntDocumentID, comment);
+  Future<void> updateNoticeComment(
+          {String companyCode,
+          String noticeDocumentID,
+          String commntDocumentID,
+          String comment}) =>
+      _firebaseMethods.updateNoticeComment(
+          companyCode, noticeDocumentID, commntDocumentID, comment);
 
   // 공지사항 - 댓글 삭제
-  Future<void> deleteNoticeComment({String companyCode, String noticeDocumentID, String commntDocumentID}) =>
-      _firebaseMethods.deleteNoticeComment(companyCode, noticeDocumentID, commntDocumentID);
+  Future<void> deleteNoticeComment(
+          {String companyCode,
+          String noticeDocumentID,
+          String commntDocumentID}) =>
+      _firebaseMethods.deleteNoticeComment(
+          companyCode, noticeDocumentID, commntDocumentID);
 
   // 공지사항 - 대댓글 추가
-  Future<void> addNoticeComments({String companyCode, String noticeDocumentID, String commntDocumentID, CommentListModel comment}) =>
-      _firebaseMethods.addNoticeComments(companyCode, noticeDocumentID, commntDocumentID, comment);
+  Future<void> addNoticeComments(
+          {String companyCode,
+          String noticeDocumentID,
+          String commntDocumentID,
+          CommentListModel comment}) =>
+      _firebaseMethods.addNoticeComments(
+          companyCode, noticeDocumentID, commntDocumentID, comment);
 
   // 공지사항 - 대댓글 수정
-  Future<void> updateNoticeComments({String companyCode, String noticeDocumentID, String commntDocumentID, String commntsDocumentID, String comment}) =>
-      _firebaseMethods.updateNoticeComments(companyCode, noticeDocumentID, commntDocumentID, commntsDocumentID, comment);
+  Future<void> updateNoticeComments(
+          {String companyCode,
+          String noticeDocumentID,
+          String commntDocumentID,
+          String commntsDocumentID,
+          String comment}) =>
+      _firebaseMethods.updateNoticeComments(companyCode, noticeDocumentID,
+          commntDocumentID, commntsDocumentID, comment);
 
   // 공지사항 - 대댓글 삭제
-  Future<void> deleteNoticeComments({String companyCode, String noticeDocumentID, String commntDocumentID, String commntsDocumentID}) =>
-      _firebaseMethods.deleteNoticeComments(companyCode, noticeDocumentID, commntDocumentID, commntsDocumentID);
+  Future<void> deleteNoticeComments(
+          {String companyCode,
+          String noticeDocumentID,
+          String commntDocumentID,
+          String commntsDocumentID}) =>
+      _firebaseMethods.deleteNoticeComments(
+          companyCode, noticeDocumentID, commntDocumentID, commntsDocumentID);
 
   // 팀추가
   Future<void> addOrganizationChart({String companyCode, String teamName}) =>
       _firebaseMethods.addOrganizationChart(companyCode, teamName);
 
   // 팀명 수정
-  Future<void> modifyOrganizationChartName({String companyCode, String teamName, String documentID}) =>
-      _firebaseMethods.modifyOrganizationChartName(companyCode, teamName, documentID);
+  Future<void> modifyOrganizationChartName(
+          {String companyCode, String teamName, String documentID}) =>
+      _firebaseMethods.modifyOrganizationChartName(
+          companyCode, teamName, documentID);
 
   //팀 불러오기
   Stream<QuerySnapshot> getTeamList({String companyCode}) =>
@@ -294,15 +352,19 @@ class FirebaseRepository {
       _firebaseMethods.getUserTeam(companyCode, teamName);
 
   //팀 삭제
-  Future<void> deleteUserOrganizationChart({String documentID, String companyCode, String teamName}) async =>
-      _firebaseMethods.deleteUserOrganizationChart(documentID, companyCode, teamName);
+  Future<void> deleteUserOrganizationChart(
+          {String documentID, String companyCode, String teamName}) async =>
+      _firebaseMethods.deleteUserOrganizationChart(
+          documentID, companyCode, teamName);
 
   // 팀 - 사용자 추가
-  Future<void> addTeamUser({String companyCode, List<Map<String, dynamic>> user}) =>
+  Future<void> addTeamUser(
+          {String companyCode, List<Map<String, dynamic>> user}) =>
       _firebaseMethods.addTeamUser(companyCode, user);
 
   // 팀 - 사용자 삭제 데이터 갖고오기
-  Stream<QuerySnapshot> getTeamUserDelete(String companyCode, String teamName) =>
+  Stream<QuerySnapshot> getTeamUserDelete(
+          String companyCode, String teamName) =>
       _firebaseMethods.getTeamUserDelete(companyCode, teamName);
 
   // 직급추가
@@ -310,7 +372,8 @@ class FirebaseRepository {
       _firebaseMethods.addPosition(companyCode, position);
 
   // 직급명 수정
-  Future<void> modifyPositionName({String companyCode, String position, String documentID}) =>
+  Future<void> modifyPositionName(
+          {String companyCode, String position, String documentID}) =>
       _firebaseMethods.modifyPositionName(companyCode, position, documentID);
 
   //직급 불러오기
@@ -318,19 +381,23 @@ class FirebaseRepository {
       _firebaseMethods.getPositionList(companyCode);
 
   //직급 유저 불러오기
-  Stream<QuerySnapshot> getUserPosition({String companyCode, String position}) =>
+  Stream<QuerySnapshot> getUserPosition(
+          {String companyCode, String position}) =>
       _firebaseMethods.getUserPosition(companyCode, position);
 
   //직급 삭제
-  Future<void> deleteUserPosition({String documentID, String companyCode, String position}) async =>
+  Future<void> deleteUserPosition(
+          {String documentID, String companyCode, String position}) async =>
       _firebaseMethods.deleteUserPosition(documentID, companyCode, position);
 
   // 직급 - 사용자 추가
-  Future<void> addPositionUser({String companyCode, List<Map<String, dynamic>> user}) =>
+  Future<void> addPositionUser(
+          {String companyCode, List<Map<String, dynamic>> user}) =>
       _firebaseMethods.addPositionUser(companyCode, user);
 
   // 직급 - 사용자 삭제 데이터 갖고오기
-  Stream<QuerySnapshot> getPositionUserDelete(String companyCode, String position) =>
+  Stream<QuerySnapshot> getPositionUserDelete(
+          String companyCode, String position) =>
       _firebaseMethods.getPositionUserDelete(companyCode, position);
 
   // 계정삭제
@@ -340,5 +407,4 @@ class FirebaseRepository {
   // 회사가입된 유저 정보 갖고오기
   Future<CompanyUser> getComapnyUser({String companyCode, String mail}) =>
       _firebaseMethods.getComapnyUser(companyCode, mail);
-
 }
