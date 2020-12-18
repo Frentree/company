@@ -4,7 +4,6 @@ import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/i18n/word.dart';
-import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/commentListModel.dart';
 import 'package:MyCompany/models/commentModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -36,10 +35,8 @@ NoticeContentDetails(
     String noticeContent,
     String noticeCreateDate,
     String noticeCreateUser}) {
-
   CommentModel _commnetModel;
   CommentListModel _commentList;
-
 
   User _loginUser;
 
@@ -57,22 +54,23 @@ NoticeContentDetails(
         LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
         _loginUser = _loginUserInfoProvider.getLoginUser();
 
-        return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-          return Container(
-              height: 90.0.h,
-              padding: EdgeInsets.symmetric(
-                horizontal: 3.0.w,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(pageRadiusW.w),
-                  topRight: Radius.circular(pageRadiusW.w),
+        return SingleChildScrollView(
+          child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+            return Container(
+                height: 90.0.h,
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 3.0.w,
                 ),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Row(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(pageRadiusW.w),
+                    topRight: Radius.circular(pageRadiusW.w),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
                         Container(
                           width: 10.0.w,
@@ -132,10 +130,7 @@ NoticeContentDetails(
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    flex: 9,
-                    child: Column(
+                    Stack(
                       children: [
                         Column(
                           children: [
@@ -176,7 +171,8 @@ NoticeContentDetails(
                                         height: 2.0.h,
                                       ),
                                       StreamBuilder(
-                                        stream: FirebaseRepository().getNoticeCommentList(companyCode: _loginUser.companyCode, documentID: noticeUid),
+                                        stream:
+                                            FirebaseRepository().getNoticeCommentList(companyCode: _loginUser.companyCode, documentID: noticeUid),
                                         builder: (context, snapshot) {
                                           if (!snapshot.hasData) {
                                             return CircularProgressIndicator();
@@ -185,14 +181,10 @@ NoticeContentDetails(
                                           return ListView(
                                             shrinkWrap: true,
                                             physics: const NeverScrollableScrollPhysics(),
-                                            children: documents.map(
-                                                    (data) => getCommentList(
-                                                    context: context,
-                                                    document: data,
-                                                    user: _loginUser,
-                                                    noticeID: noticeUid
-                                                )
-                                            ).toList(),
+                                            children: documents
+                                                .map((data) =>
+                                                    getCommentList(context: context, document: data, user: _loginUser, noticeID: noticeUid))
+                                                .toList(),
                                           );
                                         },
                                       ),
@@ -201,175 +193,175 @@ NoticeContentDetails(
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        /* 하위 버튼 */
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: _commentId != "",
-                              child: Opacity(
-                                opacity: 0.75,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  height: 4.0.h,
-                                  decoration: BoxDecoration(
-                                    color: blueColor,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        crudType == 1 ? commnetUser + " ${word.commentsTo()}" : "${word.commnetsUpate()}",
-                                        style: customStyle(fontWeightName: 'Bold', fontColor: whiteColor, fontSize: 12.0.sp),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Visibility(
+                                  visible: _commentId != "",
+                                  child: Opacity(
+                                    opacity: 0.75,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: double.infinity,
+                                      height: 4.0.h,
+                                      decoration: BoxDecoration(
+                                        color: blueColor,
                                       ),
-                                      Padding(padding: EdgeInsets.only(left: 3.0.w)),
-                                      InkWell(
-                                        child: Text(
-                                          word.cencel(),
-                                          style: TextStyle(
-                                            color: whiteColor,
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 12.0.sp,
-                                            decoration: TextDecoration.underline,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            crudType == 1 ? commnetUser + " ${word.commentsTo()}" : "${word.commnetsUpate()}",
+                                            style: customStyle(fontWeightName: 'Bold', fontColor: whiteColor, fontSize: 12.0.sp),
                                           ),
+                                          Padding(padding: EdgeInsets.only(left: 3.0.w)),
+                                          InkWell(
+                                            child: Text(
+                                              word.cencel(),
+                                              style: TextStyle(
+                                                color: whiteColor,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 12.0.sp,
+                                                decoration: TextDecoration.underline,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                _commentId = "";
+                                                commnetUser = "";
+                                                _noticeComment.text = "";
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  color: whiteColor,
+                                  height: 10.0.h,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 0.1.h,
+                                        width: double.infinity,
+                                        color: grayColor,
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 2.0.h,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: 80.0.w,
+                                                  height: 6.0.h,
+                                                  child: TextFormField(
+                                                    focusNode: _commnetFocusNode,
+                                                    textAlignVertical: TextAlignVertical.bottom,
+                                                    controller: _noticeComment,
+                                                    style: customStyle(
+                                                      fontSize: 13.0.sp,
+                                                    ),
+                                                    decoration: InputDecoration(
+                                                      border: OutlineInputBorder(),
+                                                      hintText: word.commnetsInput(),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: 3.0.w,
+                                                ),
+                                                Container(
+                                                  width: 10.0.w,
+                                                  height: 6.0.h,
+                                                  child: CircleAvatar(
+                                                      radius: 4.0.w,
+                                                      backgroundColor: _noticeComment.text == '' ? Colors.black12 : Colors.blue,
+                                                      child: IconButton(
+                                                        padding: EdgeInsets.zero,
+                                                        icon: Icon(
+                                                          Icons.arrow_upward,
+                                                          size: iconSizeW.w,
+                                                        ),
+                                                        onPressed: () {
+                                                          Map<String, String> _commentMap = {"name": _loginUser.name, "mail": _loginUser.mail};
+
+                                                          setState(() {
+                                                            if (_noticeComment.text.trim() != "") {
+                                                              if (_commentId.trim() == "") {
+                                                                //print("답글 미선택 ====> " + _commentId);
+                                                                _commnetModel = CommentModel(
+                                                                  comment: _noticeComment.text,
+                                                                  createUser: _commentMap,
+                                                                  createDate: Timestamp.now(),
+                                                                );
+                                                                FirebaseRepository().addNoticeComment(
+                                                                    companyCode: _loginUser.companyCode,
+                                                                    noticeDocumentID: noticeUid,
+                                                                    comment: _commnetModel);
+                                                              } else {
+                                                                //print("답글 선택 ====> " + _commentId);
+
+                                                                if (crudType == 1) {
+                                                                  // 답글 입력 클릭시
+                                                                  _commentList = CommentListModel(
+                                                                    comments: _noticeComment.text,
+                                                                    createDate: Timestamp.now(),
+                                                                    commentsUser: _commentMap,
+                                                                  );
+                                                                  FirebaseRepository().addNoticeComments(
+                                                                      companyCode: _loginUser.companyCode,
+                                                                      noticeDocumentID: noticeUid,
+                                                                      commntDocumentID: _commentId,
+                                                                      comment: _commentList);
+                                                                } else if (crudType == 2) {
+                                                                  // 수정 클릭시
+                                                                  _commentList = CommentListModel(
+                                                                    comments: _noticeComment.text,
+                                                                    updateDate: Timestamp.now(),
+                                                                    commentsUser: _commentMap,
+                                                                  );
+                                                                  FirebaseRepository().updateNoticeComment(
+                                                                    companyCode: _loginUser.companyCode,
+                                                                    noticeDocumentID: noticeUid,
+                                                                    commntDocumentID: _commentId,
+                                                                    comment: _noticeComment.text,
+                                                                  );
+                                                                } else if (crudType == 3) {
+                                                                }
+                                                              }
+                                                              _commentId = "";
+                                                              _noticeComment.text = "";
+                                                            }
+                                                          });
+                                                        },
+                                                      )),
+                                                )
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        onTap: () {
-                                          setState(() {
-                                            _commentId = "";
-                                            commnetUser = "";
-                                            _noticeComment.text = "";
-                                          });
-                                        },
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ),
-                            Container(
-                              color: whiteColor,
-                              height: 10.0.h,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 0.1.h,
-                                    width: double.infinity,
-                                    color: grayColor,
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 2.0.h,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 80.0.w,
-                                              height: 6.0.h,
-                                              child: TextFormField(
-                                                focusNode: _commnetFocusNode,
-                                                textAlignVertical: TextAlignVertical.bottom,
-                                                controller: _noticeComment,
-                                                style: customStyle(
-                                                  fontSize: 13.0.sp,
-                                                ),
-                                                decoration: InputDecoration(
-                                                  border: OutlineInputBorder(),
-                                                  hintText: word.commnetsInput(),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 3.0.w,
-                                            ),
-                                            Container(
-                                              width: 10.0.w,
-                                              height: 6.0.h,
-                                              child: CircleAvatar(
-                                                  radius: 4.0.w,
-                                                  backgroundColor: _noticeComment.text == '' ? Colors.black12 : Colors.blue,
-                                                  child: IconButton(
-                                                    padding: EdgeInsets.zero,
-                                                    icon: Icon(
-                                                      Icons.arrow_upward,
-                                                      size: iconSizeW.w,
-                                                    ),
-                                                    onPressed: () {
-                                                      Map<String, String> _commentMap = {"name": _loginUser.name, "mail": _loginUser.mail};
-
-                                                      setState(() {
-                                                        if (_noticeComment.text.trim() != "") {
-                                                          if (_commentId.trim() == "") {
-                                                            //print("답글 미선택 ====> " + _commentId);
-                                                            _commnetModel = CommentModel(
-                                                              comment: _noticeComment.text,
-                                                              createUser: _commentMap,
-                                                              createDate: Timestamp.now(),
-                                                            );
-                                                            FirebaseRepository().addNoticeComment(
-                                                                companyCode: _loginUser.companyCode,
-                                                                noticeDocumentID: noticeUid,
-                                                                comment: _commnetModel);
-                                                          } else {
-                                                            //print("답글 선택 ====> " + _commentId);
-
-                                                            if (crudType == 1) {
-                                                              // 답글 입력 클릭시
-                                                              _commentList = CommentListModel(
-                                                                comments: _noticeComment.text,
-                                                                createDate: Timestamp.now(),
-                                                                commentsUser: _commentMap,
-                                                              );
-                                                              FirebaseRepository().addNoticeComments(
-                                                                  companyCode: _loginUser.companyCode,
-                                                                  noticeDocumentID: noticeUid,
-                                                                  commntDocumentID: _commentId,
-                                                                  comment: _commentList);
-                                                            } else if (crudType == 2) {
-                                                              // 수정 클릭시
-                                                              _commentList = CommentListModel(
-                                                                comments: _noticeComment.text,
-                                                                updateDate: Timestamp.now(),
-                                                                commentsUser: _commentMap,
-                                                              );
-                                                              FirebaseRepository().updateNoticeComment(
-                                                                companyCode: _loginUser.companyCode,
-                                                                noticeDocumentID: noticeUid,
-                                                                commntDocumentID: _commentId,
-                                                                comment: _noticeComment.text,
-                                                              );
-                                                            } else if (crudType == 3) {
-                                                            }
-                                                          }
-                                                          _commentId = "";
-                                                          _noticeComment.text = "";
-                                                        }
-                                                      });
-                                                    },
-                                                  )),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              ],
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ));
-        });
+                  ],
+                )
+            );
+          }),
+        );
       });
 }
 
@@ -384,9 +376,7 @@ Widget getCommentList({BuildContext context, DocumentSnapshot document, User use
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FutureBuilder(
-                future: FirebaseRepository().photoProfile(
-                    user.companyCode,
-                    comment.createUser['mail'].toString()),
+                future: FirebaseRepository().photoProfile(user.companyCode, comment.createUser['mail'].toString()),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Icon(Icons.person_outline);
@@ -444,8 +434,7 @@ Widget getCommentList({BuildContext context, DocumentSnapshot document, User use
                 InkWell(
                   child: Text(
                     word.enterComments(),
-                    style: customStyle(
-                        fontColor: blueColor, fontSize: 10.0.sp, fontWeightName: 'Medium'),
+                    style: customStyle(fontColor: blueColor, fontSize: 10.0.sp, fontWeightName: 'Medium'),
                   ),
                   onTap: () {
                     setState(() {
@@ -458,100 +447,80 @@ Widget getCommentList({BuildContext context, DocumentSnapshot document, User use
                     });
                   },
                 ),
-                SizedBox(
-                  width: 6.0.w
-                ),
-                ( comment.createUser['mail'].toString() == user.mail) ?
-                InkWell(
-                  child: Text(
-                    word.update(),
-                    style: customStyle(
-                        fontColor: blueColor,
-                        fontSize: 10.0.sp,
-                        fontWeightName: 'Medium'),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      crudType = 2;
-                      _commentId = comment.reference.id;
-                      print("_commentId >>> " + _commentId);
-                      _noticeComment.text = comment.comment.toString();
-                      _commnetFocusNode.requestFocus();
-                    });
-                  },
-                ) : null,
-                SizedBox(
-                    width: 6.0.w
-                ),
-                (comment.createUser['mail'].toString() == user.mail) ?
-                InkWell(
-                  child: Text(
-                    word.delete(),
-                    style: customStyle(
-                        fontColor: redColor,
-                        fontSize: 10.0.sp,
-                        fontWeightName: 'Medium'),
-                  ),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        // return object of type Dialog
-                        return AlertDialog(
-                          title: Text(
-                            "${word.comments()} ${word.delete()}",
-                            style: customStyle(
-                                fontColor: redColor,
-                                fontSize: homePageDefaultFontSize.sp,
-                                fontWeightName: 'Medium'),
-                          ),
-                          content: Text(
-                            word.commentsDeleteCon(),
-                            style: customStyle(
-                                fontColor: mainColor,
-                                fontSize: 12.0.sp,
-                                fontWeightName: 'Regular'),
-                          ),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text(
-                                word.yes(),
-                                style: customStyle(
-                                    fontColor: blueColor,
-                                    fontSize: homePageDefaultFontSize.sp,
-                                    fontWeightName: 'Medium'),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _commentId = comment.reference.id;
-                                  FirebaseRepository().deleteNoticeComment(
-                                    companyCode: user.companyCode,
-                                    noticeDocumentID: noticeID,
-                                    commntDocumentID: _commentId,
-                                  );
-                                  _commentId = "";
-                                  Navigator.pop(context);
-                                });
-                              },
-                            ),
-                            FlatButton(
-                              child: Text(
-                                word.no(),
-                                style: customStyle(
-                                    fontColor: blueColor,
-                                    fontSize: homePageDefaultFontSize.sp,
-                                    fontWeightName: 'Medium'),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ) : null,
+                SizedBox(width: 6.0.w),
+                (comment.createUser['mail'].toString() == user.mail)
+                    ? InkWell(
+                        child: Text(
+                          word.update(),
+                          style: customStyle(fontColor: blueColor, fontSize: 10.0.sp, fontWeightName: 'Medium'),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            crudType = 2;
+                            _commentId = comment.reference.id;
+                            print("_commentId >>> " + _commentId);
+                            _noticeComment.text = comment.comment.toString();
+                            _commnetFocusNode.requestFocus();
+                          });
+                        },
+                      )
+                    : SizedBox(),
+                SizedBox(width: 6.0.w),
+                (comment.createUser['mail'].toString() == user.mail)
+                    ? InkWell(
+                        child: Text(
+                          word.delete(),
+                          style: customStyle(fontColor: redColor, fontSize: 10.0.sp, fontWeightName: 'Medium'),
+                        ),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              // return object of type Dialog
+                              return AlertDialog(
+                                title: Text(
+                                  "${word.comments()} ${word.delete()}",
+                                  style: customStyle(fontColor: redColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
+                                ),
+                                content: Text(
+                                  word.commentsDeleteCon(),
+                                  style: customStyle(fontColor: mainColor, fontSize: 12.0.sp, fontWeightName: 'Regular'),
+                                ),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text(
+                                      word.yes(),
+                                      style: customStyle(fontColor: blueColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _commentId = comment.reference.id;
+                                        FirebaseRepository().deleteNoticeComment(
+                                          companyCode: user.companyCode,
+                                          noticeDocumentID: noticeID,
+                                          commntDocumentID: _commentId,
+                                        );
+                                        _commentId = "";
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                  ),
+                                  FlatButton(
+                                    child: Text(
+                                      word.no(),
+                                      style: customStyle(fontColor: blueColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : SizedBox(),
               ],
             ),
           ),
@@ -568,12 +537,10 @@ Widget getCommentList({BuildContext context, DocumentSnapshot document, User use
               List<DocumentSnapshot> commentsDoc = snapshot.data.documents;
               if (commentsDoc.length != 0) {
                 return ConfigurableExpansionTile(
-                  animatedWidgetFollowingHeader:
-                  Icon(
+                  animatedWidgetFollowingHeader: Icon(
                     Icons.expand_more,
                     size: 6.0.w,
-                    color: const Color(
-                        0xFF707070),
+                    color: const Color(0xFF707070),
                   ),
                   headerExpanded: Text(
                     "${word.commentsCountHeadCon()} " + commentsDoc.length.toString() + " ${word.commentsCountTailCon()}",
@@ -589,13 +556,10 @@ Widget getCommentList({BuildContext context, DocumentSnapshot document, User use
                     Container(
                       width: 100.0.w,
                       child: Column(
-                        children:commentsDoc.map((data) => getCommentsList(
-                            context: context,
-                            document: data,
-                            noticeID: noticeID,
-                            user: user,
-                            documentID: comment.reference.id
-                        )).toList(),
+                        children: commentsDoc
+                            .map((data) =>
+                                getCommentsList(context: context, document: data, noticeID: noticeID, user: user, documentID: comment.reference.id))
+                            .toList(),
                       ),
                     )
                   ],
@@ -636,9 +600,7 @@ Widget getCommentsList({BuildContext context, DocumentSnapshot document, String 
                 ),
               ),
               FutureBuilder(
-                future: FirebaseRepository().photoProfile(
-                    user.companyCode,
-                    comments.commentsUser['mail'].toString()),
+                future: FirebaseRepository().photoProfile(user.companyCode, comments.commentsUser['mail'].toString()),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Icon(Icons.person_outline);
@@ -663,11 +625,7 @@ Widget getCommentsList({BuildContext context, DocumentSnapshot document, String 
                     Container(
                       child: Text(
                         comments.commentsUser['name'].toString(),
-                        style: customStyle(
-                            fontSize: cardTitleFontSize.sp,
-                            fontWeightName: 'Medium',
-                            fontColor: mainColor
-                        ),
+                        style: customStyle(fontSize: cardTitleFontSize.sp, fontWeightName: 'Medium', fontColor: mainColor),
                       ),
                     ),
                     Text(
@@ -685,28 +643,23 @@ Widget getCommentsList({BuildContext context, DocumentSnapshot document, String 
           ),
           Row(
             children: [
-              SizedBox(
-                 width: 10.0.w
-              ),
+              SizedBox(width: 10.0.w),
               Column(
                 children: [
                   Text(
-                    Format().timeStampToDateTimeString(
-                        comments.createDate),
+                    Format().timeStampToDateTimeString(comments.createDate),
                     style: customStyle(
                       fontSize: 11.0.sp,
                       fontWeightName: 'Regular',
-                      fontColor: grayColor,),
+                      fontColor: grayColor,
+                    ),
                   ),
                   Row(
                     children: [
                       InkWell(
                         child: Text(
                           word.enterComments(),
-                          style: customStyle(
-                              fontColor: blueColor,
-                              fontSize: 10.0.sp,
-                              fontWeightName: 'Medium'),
+                          style: customStyle(fontColor: blueColor, fontSize: 10.0.sp, fontWeightName: 'Medium'),
                         ),
                         onTap: () {
                           setState(() {
@@ -718,68 +671,62 @@ Widget getCommentsList({BuildContext context, DocumentSnapshot document, String 
                           });
                         },
                       ),
-                      SizedBox(
-                          width: 6.0.w
-                      ),
-                      ( comments.commentsUser['mail'].toString() == user.mail) ?
-                      InkWell(
-                        child: Text(
-                          word.delete(),
-                          style: customStyle(
-                              fontColor: redColor,
-                              fontSize: 10.0.sp,
-                              fontWeightName: 'Medium'),
-                        ),
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              // return object of type Dialog
-                              return AlertDialog(
-                                title: Text(
-                                  "${word.comments()} ${word.delete()}",
-                                  style: customStyle(fontColor: redColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
-                                ),
-                                content: Text(
-                                  word.commentsDeleteCon(),
-                                  style: customStyle(fontColor: mainColor, fontSize: 12.0.sp, fontWeightName: 'Regular'),
-                                ),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text(
-                                      word.yes(),
-                                      style: customStyle(fontColor: blueColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _commentId = comments.reference.id;
-                                        FirebaseRepository().deleteNoticeComments(
-                                            companyCode: user.companyCode,
-                                            noticeDocumentID: noticeID,
-                                            commntDocumentID: documentID,
-                                            commntsDocumentID: comments.reference.id );
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  FlatButton(
-                                    child: Text(
-                                      word.no(),
-                                      style: customStyle(fontColor: blueColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      ) : null,
-                      SizedBox(
-                          width: 6.0.w
-                      ),
+                      SizedBox(width: 6.0.w),
+                      (comments.commentsUser['mail'].toString() == user.mail)
+                          ? InkWell(
+                              child: Text(
+                                word.delete(),
+                                style: customStyle(fontColor: redColor, fontSize: 10.0.sp, fontWeightName: 'Medium'),
+                              ),
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    // return object of type Dialog
+                                    return AlertDialog(
+                                      title: Text(
+                                        "${word.comments()} ${word.delete()}",
+                                        style: customStyle(fontColor: redColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
+                                      ),
+                                      content: Text(
+                                        word.commentsDeleteCon(),
+                                        style: customStyle(fontColor: mainColor, fontSize: 12.0.sp, fontWeightName: 'Regular'),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text(
+                                            word.yes(),
+                                            style: customStyle(fontColor: blueColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _commentId = comments.reference.id;
+                                              FirebaseRepository().deleteNoticeComments(
+                                                  companyCode: user.companyCode,
+                                                  noticeDocumentID: noticeID,
+                                                  commntDocumentID: documentID,
+                                                  commntsDocumentID: comments.reference.id);
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text(
+                                            word.no(),
+                                            style: customStyle(fontColor: blueColor, fontSize: homePageDefaultFontSize.sp, fontWeightName: 'Medium'),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            )
+                          : SizedBox(),
+                      SizedBox(width: 6.0.w),
                     ],
                   ),
                 ],
@@ -797,7 +744,7 @@ Widget getCommentsList({BuildContext context, DocumentSnapshot document, String 
 
 class CommentData {
   final String comment;
-  final Map<String,dynamic> createUser;
+  final Map<String, dynamic> createUser;
   final Timestamp createDate;
   final DocumentReference reference;
 
@@ -814,7 +761,7 @@ class CommentData {
 
 class CommentsData {
   final String comments;
-  final Map<String,dynamic> commentsUser;
+  final Map<String, dynamic> commentsUser;
   final Timestamp createDate;
   final DocumentReference reference;
 
