@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/widgets/bottomsheet/alarm/noticeContentDetails.dart';
+import 'package:MyCompany/screens/alarm/alarmNoticeDetails.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
@@ -281,10 +281,10 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                   style: cardBlueStyle,
                                                 ),
                                                 onTap: () {
-                                                  /*Navigator.push(
+                                                  Navigator.push(
                                                       context,
                                                       MaterialPageRoute(builder: (context) =>
-                                                          AlarmNoticeDetailPage(
+                                                          NoticeDetailsPage(
                                                             noticeUid: documents[index].id,
                                                             noticeTitle: documents[index].data()['noticeTitle'].toString(),
                                                             noticeContent: documents[index].data()['noticeContent'].toString(),
@@ -292,8 +292,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                             noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
                                                           ),
                                                       )
-                                                  );*/
-                                                  NoticeContentDetails(
+                                                  );
+                                                  /*NoticeContentDetails(
                                                     context: context,
                                                     noticeUid: documents[index].id,
                                                     companyCode: _loginUser.companyCode,
@@ -301,7 +301,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                     noticeContent: documents[index].data()['noticeContent'].toString(),
                                                     noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
                                                     noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
-                                                  );
+                                                  );*/
                                                 },
                                               ),
                                             ],
@@ -359,7 +359,19 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                 ],
                               ),
                               onPressed: () {
-                                NoticeContentDetails(
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>
+                                        NoticeDetailsPage(
+                                          noticeUid: documents[index].id,
+                                          noticeTitle: documents[index].data()['noticeTitle'].toString(),
+                                          noticeContent: documents[index].data()['noticeContent'].toString(),
+                                          noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
+                                          noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
+                                        ),
+                                    )
+                                );
+                                /*NoticeContentDetails(
                                   context: context,
                                   noticeUid: documents[index].id,
                                   companyCode: _loginUser.companyCode,
@@ -367,7 +379,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   noticeContent: documents[index].data()['noticeContent'].toString(),
                                   noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
                                   noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
-                                );
+                                );*/
                               },
                             ),
                           ),
