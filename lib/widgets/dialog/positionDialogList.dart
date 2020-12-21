@@ -1,11 +1,14 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 final word = Words();
 
@@ -381,66 +384,57 @@ Future<void> addPositionDialog({BuildContext context, String companyCode}) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Container(
-          height: 50,
-          color: mainColor,
-          child: Center(
-            child: Text(
-              word.positionAdd(),
-              style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
+        title: Text(
+          word.positionAdd(),
+          style: defaultMediumStyle,
+        ),
+        content: Container(
+          width: SizerUtil.deviceType == DeviceType.Tablet ? 40.0.w : 30.0.w,
+          child: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                  controller: _positionController,
+                  style: defaultRegularStyle,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: textFormPadding,
+                    icon: Icon(
+                      Icons.group_add_rounded,
+                      size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                    ),
+                    labelText: word.positionAddCon(),
+                    labelStyle: defaultRegularStyle,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-        titlePadding: EdgeInsets.all(0.0),
-        content: Container(
-          height: customHeight(context: context, heightSize: 0.2),
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.group_add_rounded),
-                  labelText: word.positionAddCon(),
-                ),
-                controller: _positionController,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
-                        color: mainColor,
-                        child: Text(
-                          word.confirm(),
-                          style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-                        ),
-                        onPressed: () {
-                          FirebaseRepository().addPosition(
-                            companyCode: companyCode,
-                            position: _positionController.text
-                          );
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: RaisedButton(
-                      color: mainColor,
-                      child: Text(
-                        word.cencel(),
-                        style: customStyle(fontColor: whiteColor, fontSize: 15, fontWeightName: 'Bold'),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
+        actions: [
+          FlatButton(
+            child: Text(
+              word.confirm(),
+              style: buttonBlueStyle,
+            ),
+            onPressed: () {
+              FirebaseRepository().addPosition(
+                  companyCode: companyCode,
+                  position: _positionController.text
+              );
+              Navigator.pop(context);
+            },
           ),
-        ),
+          FlatButton(
+            child: Text(
+              word.cencel(),
+              style: buttonBlueStyle,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
       );
     },
   );

@@ -1,3 +1,5 @@
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/screens/setting/organizationChart.dart';
 import 'package:MyCompany/screens/setting/position.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,13 +21,12 @@ import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 
 final word = Words();
 
-SettingPosition(BuildContext context) {
+SettingPosition({BuildContext context, double statusBarHeight}) {
   User _loginUser;
 
   showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(pageRadiusW.w),
@@ -40,67 +41,57 @@ SettingPosition(BuildContext context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return Container(
-            height: 90.0.h,
-            padding: EdgeInsets.symmetric(
-              horizontal: 3.0.w,
+            height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
+            padding: EdgeInsets.only(
+              left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+              right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+              top: 2.0.h,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(pageRadiusW.w),
-                topRight: Radius.circular(pageRadiusW.w),
+                topLeft: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
+                topRight: Radius.circular(SizerUtil.deviceType == DeviceType.Tablet ? pageRadiusTW.w : pageRadiusMW.w),
               ),
+              color: whiteColor,
             ),
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 1.0.h),
-                ),
                 Container(
-                  height: 7.0.h,
+                  height: 6.0.h,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w
+                  ),
                   child: Row(
                     children: [
                       Container(
-                        width: 10.0.w,
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: iconSizeW.w,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                        height: 6.0.h,
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                        child: IconButton(
+                          constraints: BoxConstraints(),
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                            color: mainColor,
                           ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
                       ),
-                      Container(
-                        width: 15.0.w,
-                        child: Center(
-                            child: Icon(
-                          Icons.account_box_outlined,
-                          size: iconSizeW.w,
-                        )),
-                      ),
-                      Container(
-                        width: 50.0.w,
-                        child: Text(
-                          word.positionManagerment(),
-                          style: customStyle(
-                            fontSize: homePageDefaultFontSize.sp,
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            word.positionManagerment(),
+                            style: defaultMediumStyle,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: customHeight(context: context, heightSize: 0.01),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 2.0.w,
-                  ),
-                ),
+                emptySpace,
                 Expanded(
                   child: PositionPage(),
                 ),
