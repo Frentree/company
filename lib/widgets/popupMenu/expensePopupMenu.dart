@@ -68,7 +68,11 @@ PopupMenuItem getPopupItem({BuildContext context, IconData icons, int value, Str
         Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
         Text(
           text,
-          style: popupMenuStyle,
+          style: customStyle(
+            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.0.sp : 12.0.sp,
+            fontColor: mainColor,
+            fontWeightName: "Medium",
+          ),
         )
       ],
     ),

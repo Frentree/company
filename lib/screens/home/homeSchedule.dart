@@ -51,8 +51,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
         '${events.length}',
         style: TextStyle().copyWith(
           color: Colors.white,
-          fontSize:
-              SizerUtil.deviceType == DeviceType.Tablet ? 8.0.sp : 9.0.sp,
+          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.0.sp : 9.0.sp,
         ),
       ),
     );
@@ -176,6 +175,11 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                       fontColor: Colors.red[200],
                       fontWeightName: "Regular",
                     ),
+                    eventDayStyle: customStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                    fontColor: mainColor,
+                    fontWeightName: "Regular",
+                  ),
                   ),
 
                   builders: CalendarBuilders(

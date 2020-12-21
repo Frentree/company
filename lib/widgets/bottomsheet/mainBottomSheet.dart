@@ -128,7 +128,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                     ),
                     emptySpace,
                     /// 개발 미완료로 인한 숨김 처리
+<<<<<<< HEAD
                     /*Row(
+=======
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+>>>>>>> minji
                       children: [
                         GestureDetector(
                           child: Container(
@@ -156,7 +161,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                     ),
                     emptySpace,*/
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         GestureDetector(
                           child: Container(
@@ -245,7 +250,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                     ),
                     emptySpace,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
 
                         /// 개발 미완료로 인한 숨김 처리

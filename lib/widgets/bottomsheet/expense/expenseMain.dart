@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:intl/intl.dart';
 
@@ -20,10 +21,11 @@ import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/form/customInputFormatter.dart';
 import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
+import 'package:sizer/sizer.dart';
 
 ExpenseMain(BuildContext context) {
   FirebaseRepository _reposistory = FirebaseRepository();
-  final Firestore _db = Firestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   LoginUserInfoProvider _loginUserInfoProvider;
@@ -84,37 +86,12 @@ ExpenseMain(BuildContext context) {
   }
 
   /// 금액 입력 텍스트 위젯
-  Widget _buildExpenseSizedBox() {
-    return SizedBox(
-        width: customWidth(context: context, widthSize: 0.5),
-        height: customHeight(context: context, heightSize: 0.1),
-        child: TextFormField(
-          textAlign: TextAlign.right,
-          textAlignVertical: TextAlignVertical.center,
-          style: customStyle(
-            fontSize: 14,
-            fontColor: mainColor,
-            fontWeightName: 'Regular',
-          ),
-          controller: _expenseController,
-          keyboardType:
-              TextInputType.numberWithOptions(signed: true, decimal: true),
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-            CustomTextInputFormatter(),
-          ],
-          decoration: InputDecoration(
-            suffixText: '원',
-            suffixStyle: TextStyle(color: Colors.black),
-            hintText: "금액을 입력하세요",
-            hintStyle: customStyle(
-              fontSize: 14,
-              fontColor: mainColor,
-              fontWeightName: 'Regular',
-            ),
-          ),
-        ));
-  }
+/*  Widget _buildExpenseSizedBox() {
+    return Container(
+      width: 100,
+      child:
+    );
+  }*/
 
   /// 설정한 경비 데이터들을 파이어스토어에 저장하고 URL을 변수에 저장하는 메서드
   saveExpense() {
@@ -142,15 +119,11 @@ ExpenseMain(BuildContext context) {
 
   /// 경비 품의 바텀시트
   showModalBottomSheet(
-      isScrollControlled: false,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-
             /// iOS용 데이트 피커 위젯
             buildCupertinoDatePicker(BuildContext context) {
               showModalBottomSheet(
@@ -286,58 +259,49 @@ ExpenseMain(BuildContext context) {
             }
 
             // 경비 품의 바텀시트 드로잉
-            return Padding(
-              padding: MediaQuery.of(context).viewInsets,
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
-                    top: 10,
-                    left: 20,
-                    right: 20,
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                  left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  top: 2.0.h,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                            flex: 2,
-                            child: Chip(
-                              backgroundColor: chipColorBlue,
-                              label: Text(
-                                "경비 정산",
-                                style: customStyle(
-                                  fontSize: 14,
-                                  fontColor: mainColor,
-                                  fontWeightName: 'Regular',
-                                ),
+                          Container(
+                            height: 6.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 28.0.w,
+                            decoration: BoxDecoration(
+                              color: chipColorBlue,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
                               ),
                             ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "경비 정산",
+                              style: defaultMediumStyle,
+                            ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5),
-                          ),
+                          cardSpace,
                           Expanded(
-                              flex: 5,
                               child: PopupMenuButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  side: BorderSide(
-                                    width: 1,
-                                    color: boarderColor,
-                                  ),
-                                ),
-                                padding: EdgeInsets.only(
-                                    right: customWidth(
-                                        context: context, widthSize: 0.04)),
                                 child: RaisedButton(
-                                  disabledColor: Colors.white,
+                                  disabledColor: whiteColor,
                                   child: Text(
                                     _buildChosenItem(_chosenItem),
-                                    style: customStyle(
-                                        fontSize: 14,
-                                        fontWeightName: "regular",
-                                        fontColor: mainColor),
+                                    style: defaultRegularStyle,
                                   ),
                                 ),
                                 onSelected: (value) async {
@@ -347,308 +311,301 @@ ExpenseMain(BuildContext context) {
                                 },
                                 itemBuilder: (BuildContext context) => [
                                   PopupMenuItem(
+                                    height: 7.0.h,
                                     value: 1,
                                     child: Row(
                                       children: [
-                                        //Icon(Icons.edit),
-                                        SizedBox(width: 3),
-                                        Text("중식비",
-                                            style: TextStyle(fontSize: 14))
+                                        cardSpace,
+                                        Text(
+                                          "중식비",
+                                          style: defaultRegularStyle,
+                                        ),
                                       ],
                                     ),
                                   ),
                                   PopupMenuItem(
+                                    height: 7.0.h,
                                     value: 2,
                                     child: Row(
                                       children: [
                                         //Icon(Icons.delete),
-                                        SizedBox(width: 3),
-                                        Text("석식비",
-                                            style: TextStyle(fontSize: 14))
+                                        cardSpace,
+                                        Text(
+                                          "석식비",
+                                          style: defaultRegularStyle,
+                                        ),
                                       ],
                                     ),
                                   ),
                                   PopupMenuItem(
+                                    height: 7.0.h,
                                     value: 3,
                                     child: Row(
                                       children: [
                                         //Icon(Icons.edit),
-                                        SizedBox(width: 3),
-                                        Text("교통비",
-                                            style: TextStyle(fontSize: 14))
+                                        cardSpace,
+                                        Text(
+                                          "교통비",
+                                          style: defaultRegularStyle,
+                                        ),
                                       ],
                                     ),
                                   ),
                                   PopupMenuItem(
+                                    height: 7.0.h,
                                     value: 4,
                                     child: Row(
                                       children: [
                                         //Icon(Icons.edit),
-                                        SizedBox(width: 3),
-                                        Text("기타",
-                                            style: TextStyle(fontSize: 14))
+                                        cardSpace,
+                                        Text(
+                                          "기타",
+                                          style: defaultRegularStyle,
+                                        ),
                                       ],
                                     ),
                                   ),
                                 ],
                               )),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: CircleAvatar(
-                                radius: 20,
-                                backgroundColor:
-                                    _expenseController.text == '' ||
-                                            _chosenItem == 0
-                                        ? disableUploadBtn
-                                        : blueColor,
-                                child: IconButton(
-                                  icon: Icon(Icons.arrow_upward),
-                                  onPressed: () {
-                                    bool _isInput =
-                                        !(_expenseController.text == '' ||
-                                            _chosenItem == 0);
-                                    _isInput
-                                        ? saveExpense()
-                                        : InvalidData(context);
-                                  },
-                                )),
+                          cardSpace,
+                          CircleAvatar(
+                            radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                            backgroundColor: _expenseController.text == "" ? disableUploadBtn : blueColor,
+                            child: IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.arrow_upward,
+                                  color: whiteColor,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                ),
+                              onPressed: () {
+                                bool _isInput =
+                                !(_expenseController.text == '' ||
+                                    _chosenItem == 0);
+                                _isInput
+                                    ? saveExpense()
+                                    : InvalidData(context);
+                              },
+                            ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                      ),
-                      InkWell(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: customWidth(
-                                    context: context, widthSize: 0.37),
-                                child: Row(children: [
-                                  Icon(Icons.calendar_today, color: mainColor),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 5),
-                                  ),
-                                  Text(
-                                    "지출 일자",
-                                    style: customStyle(
-                                        fontSize: 14,
-                                        fontWeightName: "regular",
-                                        fontColor: mainColor),
-                                  )
-                                ]),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(selectedDate),
-                                    style: customStyle(
-                                        fontSize: 14,
-                                        fontWeightName: "regular",
-                                        fontColor: mainColor),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 22),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                        onTap: () async {
-                          _selectDate(context);
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                      ),
+                      emptySpace,
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          InkWell(
-                            child: Row(children: [
-                              SizedBox(
-                                width: customWidth(
-                                    context: context, widthSize: 0.37),
-                                child: Row(children: [
-                                  Icon(Icons.art_track, color: mainColor),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 5),
-                                  ),
-                                  Text(
-                                    "지출 금액",
-                                    style: customStyle(
-                                        fontSize: 14,
-                                        fontWeightName: "regular",
-                                        fontColor: mainColor),
-                                  )
-                                ]),
-                              ),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [_buildExpenseSizedBox()]),
-                            ]),
-                            onTap: () {
-                              _buildExpenseSizedBox();
-                            },
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _detailClicked = !_detailClicked;
-                          setState(() {});
-                        },
-                        child: Column(
-                          children: [
-                            Row(
+                        children: [
+                          Container(
+                            height: 6.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                            child: Row(
                               children: [
-                                SizedBox(
-                                  height: 22.0,
-                                  width: 22.0,
-                                  child: IconButton(
-                                    padding: EdgeInsets.all(0.0),
-                                    icon: _detailClicked == true
-                                        ? Icon(Icons.keyboard_arrow_up)
-                                        : Icon(Icons.keyboard_arrow_down),
-                                  ),
+                                Icon(
+                                  Icons.calendar_today,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 8),
-                                ),
+                                cardSpace,
                                 Text(
-                                  "추가 항목(옵션)",
-                                  style: customStyle(
-                                      fontSize: 14,
-                                      fontWeightName: "regular",
-                                      fontColor: mainColor),
+                                  "지출 일자",
+                                  style: defaultRegularStyle,
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 8),
-                                ),
-                                Visibility(
-                                    visible:
-                                        _detailClicked == true ? true : false,
-                                    child: Container(
-                                      width: customWidth(
-                                          context: context, widthSize: 0.5),
-                                      child: TextField(
-                                        controller: _detailController,
-                                        keyboardType: TextInputType.multiline,
-                                        style: customStyle(
-                                          fontSize: 14,
-                                          fontColor: mainColor,
-                                          fontWeightName: 'regular',
-                                        ),
-                                        decoration: InputDecoration(
-                                          hintText: "상세 내용을 입력하세요",
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                    )),
                               ],
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 20),
+                          ),
+                          cardSpace,
+                          Expanded(
+                            child: InkWell(
+                              child: Text(
+                                DateFormat('yyyy-MM-dd').format(selectedDate),
+                                style: defaultRegularStyle,
+                              ),
+                              onTap: () {
+                                _selectDate(context);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      emptySpace,
+                      Row(
+                        children: [
+                          Container(
+                            height: 6.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.art_track,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                ),
+                                cardSpace,
+                                Text(
+                                  "지출 금액",
+                                  style: defaultRegularStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          cardSpace,
+                          Expanded(
+                            child: TextFormField(
+                              textAlign: TextAlign.right,
+                              style: defaultRegularStyle,
+                              controller: _expenseController,
+                              keyboardType:
+                              TextInputType.numberWithOptions(signed: true, decimal: true),
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                CustomTextInputFormatter(),
+                              ],
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: textFormPadding,
+                                  suffixText: '원',
+                                  suffixStyle: defaultRegularStyle,
+                                  hintText: "금액을 입력하세요",
+                                  hintStyle: hintStyle
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      cardSpace,
+                      Container(
+                        child: Row(
+                          children: [
+                            Container(
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                              height: 6.0.h,
+                              child: Checkbox(
+                                value: _detailClicked,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _detailClicked = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            cardSpace,
+                            Text(
+                              word.addItem(),
+                              style: defaultRegularStyle,
                             ),
                           ],
                         ),
                       ),
                       Visibility(
-                        visible: _detailClicked == true ? true : false,
-                        child: InkWell(
-                          child: Column(children: [
+                        visible: _detailClicked,
+                        child: emptySpace,
+                      ),
+                      Visibility(
+                        visible: _detailClicked,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: customWidth(
-                                        context: context, widthSize: 0.37),
-                                    child: Row(children: [
-                                      Icon(
-                                        Icons.receipt_outlined,
-                                        color: mainColor,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 8),
-                                      ),
-                                      Text(
-                                        "영수증 첨부",
-                                        style: customStyle(
-                                            fontSize: 14,
-                                            fontWeightName: "regular",
-                                            fontColor: mainColor),
-                                      ),
-                                    ]),
-                                  ),
-                                  SizedBox(
-                                      child: Row(children: [
-                                    Icon(
-                                      Icons.linked_camera,
-                                      color: mainColor,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 15),
-                                    ),
-                                    Icon(
-                                      Icons.image_outlined,
-                                      color: mainColor,
-                                    ),
-                                  ]))
-                                ]),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                            ),
-                          ]),
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SimpleDialog(
-                                    title: Text(
-                                      "선택",
-                                      style: customStyle(
-                                          fontColor: mainColor,
-                                          fontSize: 14
-                                      ),
-                                    ),
+                              children: [
+                                Container(
+                                  height: 6.0.h,
+                                  width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                                  child: Row(
                                     children: [
-                                      SimpleDialogOption(
-                                        onPressed: () {
-                                          _uploadImageToStorage(ImageSource.camera);
-                                        },
-                                        child: Text(
-                                          "카메라",
-                                          style: customStyle(
-                                              fontColor: mainColor,
-                                              fontSize: 13
-                                          ),
-                                        ),
+                                      Icon(
+                                        Icons.chat_bubble_outline,
+                                        size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                                       ),
-                                      SimpleDialogOption(
-                                        onPressed: () {
-                                          _uploadImageToStorage(ImageSource.gallery);
-                                        },
-                                        child:Text(
-                                          "갤러리",
-                                          style: customStyle(
-                                              fontColor: mainColor,
-                                              fontSize: 13
-                                          ),
-                                        ),
+                                      cardSpace,
+                                      Text(
+                                        word.content(),
+                                        style: defaultRegularStyle,
                                       ),
                                     ],
-                                  );
-                                });
-                          },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          Icons.receipt_outlined,
+                                          size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                          color: mainColor,
+                                        ),
+                                        cardSpace,
+                                        Text(
+                                          word.content(),
+                                          style: defaultRegularStyle,
+                                        ),
+                                        cardSpace,
+                                        cardSpace,
+                                        Icon(
+                                          Icons.linked_camera,
+                                          size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                          color: mainColor,
+                                        ),
+                                        cardSpace,
+                                        Icon(
+                                          Icons.image_outlined,
+                                          size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                          color: mainColor,
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: (){
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SimpleDialog(
+                                            title: Text(
+                                              word.select(),
+                                              style: defaultMediumStyle,
+                                            ),
+                                            children: [
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _uploadImageToStorage(ImageSource.camera);
+                                                },
+                                                child: Text(
+                                                  word.camera(),
+                                                  style: defaultRegularStyle,
+                                                ),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _uploadImageToStorage(ImageSource.gallery);
+                                                },
+                                                child: Text(
+                                                  word.gallery(),
+                                                  style: defaultRegularStyle,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            emptySpace,
+                            TextFormField(
+                              maxLines: 5,
+                              maxLengthEnforced: true,
+                              controller: _detailController,
+                              style: defaultRegularStyle,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                border: OutlineInputBorder(),
+                                contentPadding: textFormPadding,
+                                hintText: word.contentCon(),
+                                hintStyle: hintStyle,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      emptySpace,
                     ]),
               ),
             );
