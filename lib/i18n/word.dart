@@ -316,5 +316,8 @@ class Words {
   String singUpWaiting() => Intl.message("승인 대기", name: "singUpWaiting", args: [], desc: "singUpWaiting message");
   String singUpWaitingCon() => Intl.message("회원가입 승인 대기 상태입니다.\n승인 완료 후 이용 가능합니다.", name: "singUpWaitingCon", args: [], desc: "singUpWaiting message");
   
-  String nowShedules() => Intl.message("최근 일정에서 복사 생성", name: "singUpWaitingCon", args: [], desc: "singUpWaiting message");
+  String workState() => Intl.message("근무상태", name: "workState", args: [], desc: "singUpWaiting message");
+  String copyScheduleCon() => Intl.message("복사할 일정을 선택하세요", name: "copyScheduleCon", args: [], desc: "copyScheduleCon message");
+  String currentWorkStatus() => Intl.message("현재 동료 근무 현황", name: "currentWorkStatus", args: [], desc: "Current status of co-workers message");
+  String nowScheduleBring() => Intl.message("더 보기", name: "nowScheduleBring", args: [], desc: "Current status of co-workers message");
 }

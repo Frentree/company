@@ -54,6 +54,7 @@ class myInfomationMethod{
   }
 
   Future<bool> InfomationUpdateWithFirebaseAuth({BuildContext context, String mail, String newPassword, String newPasswordConfirm, String name}) async {
+    LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
     LoginRepository _loginRepository = LoginRepository();
 
     String pwdMsg = _loginRepository.validationRegExpCheckMessage(
@@ -66,7 +67,6 @@ class myInfomationMethod{
     bool isPwd = false;
     bool signUpEmailResult;
     FirebaseAuthProvider _firebaseAuthProvider = Provider.of<FirebaseAuthProvider>(context, listen: false);
-    LoginScreenChangeProvider _loginScreenChangeProvider = Provider.of<LoginScreenChangeProvider>(context, listen: false);
 
     if(newPassword == ""){  // 패스워드 입력 안함
       pwdMsgTitle = "비밀번호 변경 실패";
@@ -83,7 +83,7 @@ class myInfomationMethod{
       isPwd = true;
     }
 
-      showDialog(
+    await showDialog(
         context: context,
         builder: (BuildContext context) {
           // return object of type Dialog
@@ -108,6 +108,7 @@ class myInfomationMethod{
                       password: newPassword,
                       name: name
                   );
+
                   Navigator.pop(context);
                 },
               ),
@@ -117,6 +118,7 @@ class myInfomationMethod{
                   style: buttonBlueStyle,
                 ),
                 onPressed: () {
+                  signUpEmailResult = false;
                   Navigator.pop(context);
                 },
               ),

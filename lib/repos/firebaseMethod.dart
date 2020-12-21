@@ -903,6 +903,17 @@ class FirebaseMethods {
     return CompanyUser.fromMap(doc.data(), doc.id);
   }
 
+  Stream<QuerySnapshot> getCopyMyShedule(String companyCode, String mail, int count) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("createUid", isEqualTo: mail)
+        .orderBy("createDate")
+        .limit(count)
+        .snapshots();
+  }
+
   /*Future<String> firebaseStorege(String companyCode, String mail) async {
     String data = await firestorage.ref("profile/${mail}").getDownloadURL().catchError({
 
@@ -971,4 +982,5 @@ class FirestoreApi {
   Future<void> setDocument(Map data, String id) {
     return ref.document(id).setData(data);
   }
+
 }

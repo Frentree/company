@@ -1,36 +1,24 @@
 //Flutter
 import 'dart:ui';
 
-import 'package:MyCompany/consts/screenSize/size.dart';
-import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/screens/alarm/alarmNoticeDetails.dart';
-import 'package:MyCompany/widgets/photo/profilePhoto.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/main.dart';
-import 'package:MyCompany/models/noticeModel.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/repos/firebasecrud/crudRepository.dart';
-import 'package:MyCompany/screens/alarm/alarmNoticeComment.dart';
-import 'package:MyCompany/screens/alarm/alarmNoticeDetail.dart';
+import 'package:MyCompany/screens/alarm/alarmNoticeDetails.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workNotice.dart';
-import 'package:MyCompany/widgets/popupMenu/expensePopupMenu.dart';
-import 'package:MyCompany/i18n/word.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:MyCompany/widgets/photo/profilePhoto.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
-
-final word = Words();
 
 class AlarmNoticePage extends StatefulWidget {
   @override
@@ -141,7 +129,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                       // return object of type Dialog
                                                       return AlertDialog(
                                                         title: Text(
-                                                          word.noticeDelete(),
+                                                          Words.word.noticeDelete(),
                                                           style: customStyle(
                                                               fontColor: mainColor,
                                                               fontSize: homePageDefaultFontSize.sp,
@@ -149,7 +137,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                           ),
                                                         ),
                                                         content: Text(
-                                                          word.noticeDeleteCon(),
+                                                          Words.word.noticeDeleteCon(),
                                                           style: customStyle(
                                                               fontColor: mainColor,
                                                               fontSize: 12.0.sp,
@@ -158,7 +146,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                         ),
                                                         actions: <Widget>[
                                                           FlatButton(
-                                                            child: Text(word.yes(),
+                                                            child: Text(Words.word.yes(),
                                                               style: customStyle(
                                                                   fontColor: blueColor,
                                                                   fontSize: homePageDefaultFontSize.sp,
@@ -176,7 +164,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                             },
                                                           ),
                                                           FlatButton(
-                                                            child: Text(word.no(),
+                                                            child: Text(Words.word.no(),
                                                               style: customStyle(
                                                                   fontColor: blueColor,
                                                                   fontSize: homePageDefaultFontSize.sp,
@@ -207,7 +195,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                       ),
                                                       Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
                                                       Text(
-                                                        word.update(),
+                                                        Words.word.update(),
                                                         style: popupMenuStyle,
                                                       )
                                                     ],
@@ -224,7 +212,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                       ),
                                                       Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
                                                       Text(
-                                                        word.delete(),
+                                                        Words.word.delete(),
                                                         style: popupMenuStyle,
                                                       )
                                                     ],
@@ -276,7 +264,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                               //더보기 글씨
                                               InkWell(
                                                 child: Text(
-                                                  word.moreDetails(),
+                                                  Words.word.moreDetails(),
                                                   maxLines: 3,
                                                   style: cardBlueStyle,
                                                 ),
@@ -338,7 +326,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   cardSpace,
                                   cardSpace,
                                   Text(
-                                    word.comments(),
+                                    Words.word.comments(),
                                     style: cardTitleStyle,
                                   ),
                                   cardSpace,

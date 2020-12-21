@@ -53,7 +53,7 @@ class LoginRepository {
           context: context, mail: mail, password: password, name: name);
 
   // 패스워드 변경
-  Future<void> InfomationUpdateWithFirebaseAuth(
+  Future<bool> InfomationUpdateWithFirebaseAuth(
       {BuildContext context,
         String mail,
         String newPassword,

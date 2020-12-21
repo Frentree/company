@@ -102,6 +102,7 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
                       SettingMyPageUpdate(
                         context: context,
                         statusBarHeight: statusBarHeight,
+                        user: user,
                       );
                     },
                   ),

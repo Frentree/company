@@ -105,7 +105,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                             child: Container(
                               alignment: Alignment.center,
                               child: Text(
-                                nowTime + " 현재 동료 근무 현황",
+                                nowTime + " " + Words.word.currentWorkStatus(),
                                 style: defaultMediumStyle,
                               ),
                             ),
@@ -124,7 +124,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                               alignment: Alignment.center,
                               child: Text(
-                                "이름",
+                                Words.word.name(),
                                 style: cardBlueStyle,
                               ),
                             ),
@@ -133,7 +133,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                               alignment: Alignment.center,
                               child: Text(
-                                "부서",
+                                Words.word.team(),
                                 style: cardBlueStyle,
                               ),
                             ),
@@ -142,7 +142,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                               alignment: Alignment.center,
                               child: Text(
-                                "근무상태",
+                                Words.word.workState(),
                                 style: cardBlueStyle,
                               ),
                             ),
@@ -151,7 +151,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                               alignment: Alignment.center,
                               child: Text(
-                                "기타",
+                                Words.word.etc(),
                                 style: cardBlueStyle,
                               ),
                             ),
@@ -234,7 +234,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                               alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                                               child: Text(
-                                               ( _attendance == null || _attendance.status == 0) ? "출근전" : _attendance.status == 1 ? "내근" : _attendance.status == 2 ? "외근" : "퇴근",
+                                                ( _attendance == null || _attendance.status == 0) ? Words.word.beforeWork() : _attendance.status == 1 ? Words.word.workIn() : _attendance.status == 2 ? Words.word.workOut() : Words.word.leaveWork(),
                                                 style: containerChipStyle,
                                               ),
                                             ),

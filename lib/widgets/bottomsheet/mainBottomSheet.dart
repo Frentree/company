@@ -6,6 +6,7 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/work/workContent.dart';
 import 'package:MyCompany/widgets/bottomsheet/expense/expenseMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/purchase/purchaseMain.dart';
+import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workNotice.dart';
 import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
@@ -17,11 +18,15 @@ import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 final word = Words();
 
-MainBottomSheet({BuildContext context, String companyCode, String mail}) {
+MainBottomSheet({BuildContext context, String companyCode, String mail, double statusBarHeight}) {
   bool result = false;
   void _workBottomMove(int type) async {
     switch (type) {
       case 0: // 최근 일정에서 생성
+        result = await CopySchedule(context: context, statusBarHeight: 0.0);
+        if (result) {
+          Navigator.of(context).pop();
+        }
         break;
       case 1: // 내근 일정 생성
       case 2: // 외근 일정 생성
@@ -123,7 +128,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                     ),
                     emptySpace,
                     /// 개발 미완료로 인한 숨김 처리
-                    Row(
+                    /*Row(
                       children: [
                         GestureDetector(
                           child: Container(
@@ -139,17 +144,17 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              "최근일정생성",
+                              Words.word.copySchedule(),
                               style: defaultMediumStyle,
                             ),
                           ),
                           onTap: (){
-                            _workBottomMove(1);
+                            _workBottomMove(0);
                           },
                         ),
                       ],
                     ),
-                    emptySpace,
+                    emptySpace,*/
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[

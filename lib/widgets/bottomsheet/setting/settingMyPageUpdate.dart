@@ -26,8 +26,8 @@ import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
-  User _loginUser;
+SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
+  bool result = false;
   bool isPwdConfirm = false;
   LoginRepository _loginRepository = LoginRepository();
   File _image;
@@ -50,15 +50,20 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
       ),
       context: context,
       builder: (BuildContext context) {
-        LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-        _loginUser = _loginUserInfoProvider.getLoginUser();
+
+        LoginUserInfoProvider userInfoProvider = Provider.of<LoginUserInfoProvider>(context);
 
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
+            LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
+            if(result){
+              _loginUserInfoProvider.logoutUesr();
+              Navigator.of(context).pop();
+            }
             // 프로필 사진을 업로드할 경로와 파일명을 정의. 사용자의 uid를 이용하여 파일명의 중복 가능성 제거
-            Reference storageReference = _firebaseStorage.ref().child("profile/${_loginUser.mail}");
 
             void _uploadImageToStorage(ImageSource source) async {
+              Reference storageReference = _firebaseStorage.ref().child("profile/${user.mail}");
               File image = await ImagePicker.pickImage(source: source);
 
               if (image == null) return;
@@ -76,13 +81,13 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
               // 업로드한 사진의 URL 획득
               String downloadURL = await storageReference.getDownloadURL();
 
-              FirebaseRepository().updatePhotoProfile(companyCode: _loginUser.companyCode, mail: _loginUser.mail, url: downloadURL);
+              FirebaseRepository().updatePhotoProfile(companyCode: user.companyCode, mail: user.mail, url: downloadURL);
 
               // 업로드된 사진의 URL을 페이지에 반영
               setState(() {
-                _loginUser.profilePhoto = downloadURL;
-                _loginUserInfoProvider.setLoginUser(_loginUser);
-                _loginUser = _loginUserInfoProvider.getLoginUser();
+                user.profilePhoto = downloadURL;
+                userInfoProvider.setLoginUser(user);
+                user = userInfoProvider.getLoginUser();
               });
             }
 
@@ -148,7 +153,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                       emptySpace,
                       Expanded(
                         child: StreamBuilder(
-                          stream: FirebaseRepository().getCompanyInfos(companyCode: _loginUser.companyCode),
+                          stream: FirebaseRepository().getCompanyInfos(companyCode: user.companyCode),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) return SizedBox();
                             return Padding(
@@ -162,7 +167,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                         child: Container(
                                           color: whiteColor,
                                           alignment: Alignment.center,
-                                          child: profilePhoto(loginUser: _loginUser)
+                                          child: profilePhoto(loginUser: user)
                                         ),
                                         onTap: (){
                                           showDialog(
@@ -204,7 +209,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                       Container(
                                         width: SizerUtil.deviceType == DeviceType.Tablet ? 9.75.w : 13.0.w,
                                         child: Text(
-                                          _loginUser.name,
+                                          user.name,
                                           style: defaultRegularStyle,
                                         ),
                                       ),
@@ -262,9 +267,9 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                           FocusScope.of(context).unfocus();
                                           bool isChk = await _loginRepository.InfomationConfirmWithFirebaseAuth(
                                               context: context,
-                                              mail: _loginUser.mail,
+                                              mail: user.mail,
                                               password: _passwordNowConfirmTextCon.text.trim(),
-                                              name: _loginUser.name);
+                                              name: user.name);
                                           if (isChk) {
                                             showDialog(
                                               context: context,
@@ -385,13 +390,13 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                                 ),
                                               ),
                                               onTap: () async {
-                                               await _loginRepository.InfomationUpdateWithFirebaseAuth(
+                                                result = await _loginRepository.InfomationUpdateWithFirebaseAuth(
                                                     context: context,
-                                                    mail: _loginUser.mail,
-                                                    name: _loginUser.name,
+                                                    mail: user.mail,
+                                                    name: user.name,
                                                     newPassword: _passwordNewTextCon.text.trim(),
                                                     newPasswordConfirm: _passwordNewConfirmTextCon.text.trim());
-                                                _loginUserInfoProvider.logoutUesr();
+
                                               }
                                             ),
                                           ],
@@ -476,7 +481,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                                 );
                                               },
                                             );
-                                          } else if (_phoneEdit.text.trim() == _loginUser.phone) {
+                                          } else if (_phoneEdit.text.trim() == user.phone) {
                                             showDialog(
                                               context: context,
                                               barrierDismissible: false,
@@ -557,10 +562,10 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
                                                       ),
                                                       onPressed: () {
                                                         FirebaseRepository().updatePhone(
-                                                            companyCode: _loginUser.companyCode, mail: _loginUser.mail, phone: _phoneEdit.text);
+                                                            companyCode: user.companyCode, mail: user.mail, phone: _phoneEdit.text);
                                                         setState(() {
-                                                          _loginUser.phone = _phoneEdit.text;
-                                                          _loginUserInfoProvider.setLoginUser(_loginUser);
+                                                          user.phone = _phoneEdit.text;
+                                                          userInfoProvider.setLoginUser(user);
                                                           _phoneEdit.text = "";
                                                         });
                                                         Navigator.pop(context);
@@ -600,7 +605,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight}) {
 }
 
 SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBarHeight}) {
-  User _loginUser;
+  User user;
   LoginRepository _loginRepository = LoginRepository();
   File _image;
   String _profileImageURL = imageUrl;
@@ -623,13 +628,13 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
       ),
       context: context,
       builder: (BuildContext context) {
-        LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-        _loginUser = _loginUserInfoProvider.getLoginUser();
+        LoginUserInfoProvider userInfoProvider = Provider.of<LoginUserInfoProvider>(context);
+        user = userInfoProvider.getLoginUser();
 
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             // 프로필 사진을 업로드할 경로와 파일명을 정의. 사용자의 uid를 이용하여 파일명의 중복 가능성 제거
-            Reference storageReference = _firebaseStorage.ref().child("company/${_loginUser.companyCode}");
+            Reference storageReference = _firebaseStorage.ref().child("company/${user.companyCode}");
 
             void _uploadImageToStorage(ImageSource source) async {
               File image = await ImagePicker.pickImage(source: source);
@@ -712,7 +717,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                       emptySpace,
                       Expanded(
                         child: StreamBuilder(
-                          stream: FirebaseRepository().getCompanyInfos(companyCode: _loginUser.companyCode),
+                          stream: FirebaseRepository().getCompanyInfos(companyCode: user.companyCode),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) return SizedBox();
                             return Padding(
@@ -897,7 +902,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                         ),
                                         onTap: (){
                                           FirebaseRepository().updateCompany(
-                                            companyCode: _loginUser.companyCode,
+                                            companyCode: user.companyCode,
                                             companyName: _companyNameTextCon.text.trim() != "" ? _companyNameTextCon.text : snapshot.data["companyName"],
                                             companyAddr: _companyAddrTextCon.text.trim() != "" ? _companyAddrTextCon.text : snapshot.data["companyAddr"],
                                             companyPhone: _companyPhoneTextCon.text.trim() != "" ? _companyPhoneTextCon.text : snapshot.data["companyPhone"],

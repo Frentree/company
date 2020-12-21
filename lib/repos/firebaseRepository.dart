@@ -407,4 +407,8 @@ class FirebaseRepository {
   // 회사가입된 유저 정보 갖고오기
   Future<CompanyUser> getComapnyUser({String companyCode, String mail}) =>
       _firebaseMethods.getComapnyUser(companyCode, mail);
+
+  // 최근일정 갖고오기
+  Stream<QuerySnapshot> getCopyMyShedule({String companyCode, String mail, int count}) =>
+      _firebaseMethods.getCopyMyShedule(companyCode, mail, count);
 }
