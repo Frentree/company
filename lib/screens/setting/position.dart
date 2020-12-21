@@ -81,6 +81,7 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot, String 
                     },
                   ),
                 ),
+                emptySpace,
               ],
             ),
             childCount: 1),
@@ -132,7 +133,7 @@ Widget _buildUserList(BuildContext context, PositionData postion, String company
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 20.0.w,
               child: Text(
                 postion.position,
                 style: defaultMediumStyle,
@@ -144,6 +145,7 @@ Widget _buildUserList(BuildContext context, PositionData postion, String company
               width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
               alignment: Alignment.topCenter,
               child: PopupMenuButton(
+                padding: EdgeInsets.zero,
                 icon: Icon(
                   Icons.more_horiz,
                   size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
@@ -183,8 +185,8 @@ Widget _buildUserList(BuildContext context, PositionData postion, String company
                 },
               ),
             ),
+            cardSpace,
             Expanded(
-              flex: 3,
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseRepository().getUserPosition(companyCode: companyCode, position: postion.position),
                 builder: (context, snapshot) {
@@ -220,13 +222,10 @@ Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String co
           children: [
             Row(
               children: [
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: CircleAvatar(
-                    backgroundColor: whiteColor,
-                    backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
-                  ),
+                CircleAvatar(
+                  radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.0.w : 4.0.w,
+                  backgroundColor: whiteColor,
+                  backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
                 ),
                 /*Draggable(
                   data: map,
@@ -245,27 +244,18 @@ Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String co
                     ),
                   ),
                 ),*/
-                Padding(
-                  padding: const EdgeInsets.only(right: 10, left: 5),
-                  child: Text(
-                    snapshot.data['name'] + " " + snapshot.data['position'],
-                    style: customStyle(
-                      fontWeightName: 'Medium',
-                      fontSize: 13,
-                      fontColor: mainColor
-                    ),
-                  ),
+                cardSpace,
+                Text(
+                  snapshot.data['name'] + " " + snapshot.data['position'],
+                  style: defaultRegularStyle,
                 ),
               ],
             ),
-            SizedBox(
-              height: 1.0.h,
-            )
+            emptySpace,
           ],
         );
       },
     );
-
 }
 
 class PositionData {

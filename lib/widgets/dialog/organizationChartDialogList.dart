@@ -214,8 +214,7 @@ Future<void> addTeamUserDialog(
               stream: FirebaseRepository().getGreadeUserAdd(companyCode),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return LinearProgressIndicator();
-                return _getUserTeamListAdd(
-                    context, snapshot.data.documents, teamName, companyCode);
+                return _getUserTeamListAdd(context, snapshot.data.documents, teamName, companyCode);
               },
             ),
           ),
@@ -272,9 +271,7 @@ Widget _getUserTeamListAdd(BuildContext context,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    snapshot[index]['name'].toString() +
-                        " " +
-                        snapshot[index]['position'].toString(),
+                    snapshot[index]['name'].toString() + " " + snapshot[index]['position'].toString(),
                     style: defaultRegularStyle,
                   ),
                   Text(
@@ -377,7 +374,6 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
     String teamName, String companyCode) {
   return ListView.builder(
     itemCount: snapshot.length,
-    scrollDirection: Axis.vertical,
     itemBuilder: (context, index) {
       bool isChk = false;
       return StatefulBuilder(
@@ -396,9 +392,7 @@ Widget _getUserListDelete(BuildContext context, List<DocumentSnapshot> snapshot,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  snapshot[index]['name'].toString() +
-                      " " +
-                      snapshot[index]['position'].toString(),
+                  snapshot[index]['name'].toString() + " " + snapshot[index]['position'].toString(),
                   style: defaultRegularStyle,
                 ),
                 Text(

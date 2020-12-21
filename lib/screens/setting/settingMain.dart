@@ -315,7 +315,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                               ),
                             ),
                             onTap: (){
-                              SettingUserManager(context);
+                              SettingUserManager(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
                             },
                           ),
                           emptySpace,

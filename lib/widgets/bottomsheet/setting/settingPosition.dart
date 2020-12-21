@@ -70,7 +70,7 @@ SettingPosition({BuildContext context, double statusBarHeight}) {
                           constraints: BoxConstraints(),
                           padding: EdgeInsets.zero,
                           icon: Icon(
-                            Icons.arrow_back_ios,
+                            Icons.keyboard_arrow_left_sharp,
                             size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                             color: mainColor,
                           ),
