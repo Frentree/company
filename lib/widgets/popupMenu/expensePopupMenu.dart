@@ -1,7 +1,10 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 Container expensePopupMenu(BuildContext context){
 
@@ -52,19 +55,20 @@ Container expensePopupMenu(BuildContext context){
 
 PopupMenuItem getPopupItem({BuildContext context, IconData icons, int value, String text}) {
   return PopupMenuItem(
+    height: 7.0.h,
     value: value,
     child: Row(
       children: [
-        Icon(
-           icons
+        Container(
+          child: Icon(
+            icons,
+            size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+          ),
         ),
+        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
         Text(
           text,
-          style: customStyle(
-              fontColor: mainColor,
-              fontSize: 13,
-              fontWeightName: 'Bold'
-          ),
+          style: popupMenuStyle,
         )
       ],
     ),

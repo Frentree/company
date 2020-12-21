@@ -1,5 +1,7 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/screenSize/size.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -30,6 +32,7 @@ class PositionPageState extends State<PositionPage> {
     _loginUser = _loginUserInfoProvider.getLoginUser();
 
     return Scaffold(
+      backgroundColor: whiteColor,
       body: _buildBody(context, _loginUser),
     );
   }
@@ -58,17 +61,28 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot, String 
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(
-            (context, index) => Container(
-                  alignment: Alignment.centerLeft,
+            (context, index) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                emptySpace,
+                Container(
+                  height: buttonSizeH.h,
+                  width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 20.0.w,
                   child: RaisedButton(
                     color: whiteColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: mainColor)),
-                    child: Icon(Icons.add),
+                    shape: raisedButtonBlueShape,
+                    child: Icon(
+                      Icons.add,
+                      size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                      color: blueColor,
+                    ),
                     onPressed: () {
                       addPositionDialog(companyCode: companyCode, context: context);
                     },
                   ),
                 ),
+              ],
+            ),
             childCount: 1),
       ),
     ],
@@ -85,6 +99,8 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data, String compan
   final team = PositionData.fromSnapshow(data);
 
   return Container(
+    padding: cardPadding,
+    height: 20.0.h,
     decoration: BoxDecoration(
       border: Border(
         bottom: BorderSide(
@@ -92,112 +108,97 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data, String compan
         )
       )
     ),
-    child: Row(
-      children: [
-        _buildUserList(context, team, companyCode)
-      ],
-    ),
+    child: _buildUserList(context, team, companyCode),
   );
 }
 
 Widget _buildUserList(BuildContext context, PositionData postion, String companyCode) {
   List<Map<String,dynamic>> gradeList = List();
-  return Expanded(
-    child: Container(
-      height: customHeight(context: context, heightSize: 0.15),
-      child: Container(
-        height: customHeight(context: context, heightSize: 1),
-        child: DragTarget<Map<String, dynamic>>(
-            onAccept: (receivedItem) {
-              print(receivedItem);
-              //getErrorDialog(context: context, text: word.updateFail());
-              NotImplementedFunction(context);
-              if (receivedItem["documentID"] == postion.reference.documentID) {
-                //print("기존 위치");
-              } else {}
-            },
-            onLeave: (receivedItem) {},
-            onWillAccept: (receivedItem) {
-              return true;
-            },
-            builder: (context, acceptedItems, rejectedItems) {
-              return Container(
-                width: customWidth(context: context, widthSize: 1),
-                height: customHeight(context: context, heightSize: 1),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Row(
-                        children: [
-                          Icon(Icons.web_outlined),
-                          Text(
-                            postion.position,
-                            style: customStyle(fontSize: 14, fontWeightName: 'Medium', fontColor: mainColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: PopupMenuButton(
-                        icon: Icon(Icons.more_horiz),
-                        itemBuilder: (context) => [
-                          getPopupItem(context: context, icons: Icons.update, text: word.positionUpdate(), value: 1),
-                          //getPopupItem(context: context, icons: Icons.edit, text: word.parentDepartmentCreate(), value: 2),
-                          //getPopupItem(context: context, icons: Icons.edit, text: word.subDepartmentCreate(), value: 3),
-                          getPopupItem(context: context, icons: Icons.delete, text: word.positionDelete(), value: 4),
-                          getPopupItem(context: context, icons: Icons.add, text: word.addMember(), value: 5),
-                          getPopupItem(context: context, icons: Icons.delete, text: word.deleteMember(), value: 6),
-                        ],
-                        onSelected: (value) {
-                          switch (value) {
-                            case 1:
-                              getPositionUpadateDialog(
-                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
-                              break;
-                            case 2: case 3:
-                              break;
-                            case 4:
-                              getPositionDeleteDialog(
-                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
-                              break;
-                            case 5:
-                              addPositionUserDialog(
-                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
-                              break;
-                            case 6:
-                              dropPositionUserDialog(
-                                  context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
-                              break;
-                            default:
-
-                              break;
-                          }
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseRepository().getUserPosition(companyCode: companyCode, position: postion.position),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) return LinearProgressIndicator();
-
-                          return ListView(
-                              scrollDirection: Axis.vertical,
-                              children: snapshot.data.documents.map((data) => _buildUserListItem(context, data, companyCode)).toList());
-                        },
-                      ),
-                    ),
-                  ],
+  return DragTarget<Map<String, dynamic>>(
+      onAccept: (receivedItem) {
+        print(receivedItem);
+        //getErrorDialog(context: context, text: word.updateFail());
+        NotImplementedFunction(context);
+        if (receivedItem["documentID"] == postion.reference.documentID) {
+          //print("기존 위치");
+        } else {}
+      },
+      onLeave: (receivedItem) {},
+      onWillAccept: (receivedItem) {
+        return true;
+      },
+      builder: (context, acceptedItems, rejectedItems) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+              child: Text(
+                postion.position,
+                style: defaultMediumStyle,
+              ),
+            ),
+            cardSpace,
+            Container(
+              height: 5.0.h,
+              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+              alignment: Alignment.topCenter,
+              child: PopupMenuButton(
+                icon: Icon(
+                  Icons.more_horiz,
+                  size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                 ),
-              );
-            }),
-      ),
-    ),
-  );
+                itemBuilder: (context) => [
+                  getPopupItem(context: context, icons: Icons.update, text: word.positionUpdate(), value: 1),
+                  //getPopupItem(context: context, icons: Icons.edit, text: word.parentDepartmentCreate(), value: 2),
+                  //getPopupItem(context: context, icons: Icons.edit, text: word.subDepartmentCreate(), value: 3),
+                  getPopupItem(context: context, icons: Icons.delete, text: word.positionDelete(), value: 4),
+                  getPopupItem(context: context, icons: Icons.add, text: word.addMember(), value: 5),
+                  getPopupItem(context: context, icons: Icons.delete, text: word.deleteMember(), value: 6),
+                ],
+                onSelected: (value) {
+                  switch (value) {
+                    case 1:
+                      getPositionUpadateDialog(
+                          context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
+                      break;
+                    case 2: case 3:
+                      break;
+                    case 4:
+                      getPositionDeleteDialog(
+                          context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
+                      break;
+                    case 5:
+                      addPositionUserDialog(
+                          context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
+                      break;
+                    case 6:
+                      dropPositionUserDialog(
+                          context: context, documentID: postion.reference.id, position: postion.position, companyCode: companyCode);
+                      break;
+                    default:
+
+                      break;
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseRepository().getUserPosition(companyCode: companyCode, position: postion.position),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return LinearProgressIndicator();
+
+                  return ListView(
+                      scrollDirection: Axis.vertical,
+                      children: snapshot.data.documents.map((data) => _buildUserListItem(context, data, companyCode)).toList());
+                },
+              ),
+            ),
+          ],
+        );
+      });
 }
 
 Widget _buildUserListItem(BuildContext context, DocumentSnapshot data, String companyCode) {

@@ -78,7 +78,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
               _isStaffMethod(grade);
 
               return Container(
-                height: 27.0.h,
+                height: 35.0.h,
                 padding: EdgeInsets.only(
                   left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
@@ -122,29 +122,34 @@ MainBottomSheet({BuildContext context, String companyCode, String mail}) {
                       ),
                     ),
                     emptySpace,
-
                     /// 개발 미완료로 인한 숨김 처리
-                    /*Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 13),
-                        ),
-                        ActionChip(
-                          backgroundColor: chipColorBlue,
-                          label: Text(
-                            "최근 일정에서 생성",
-                            style: customStyle(
-                                fontSize: 14,
-                                fontWeightName: 'Regular',
-                                fontColor: mainColor),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorBlue,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "최근일정생성",
+                              style: defaultMediumStyle,
+                            ),
                           ),
-                          onPressed: () {
-                            _workBottomMove(0);
+                          onTap: (){
+                            _workBottomMove(1);
                           },
                         ),
                       ],
-                    ),*/
+                    ),
+                    emptySpace,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
