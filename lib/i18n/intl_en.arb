@@ -829,7 +829,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "permissionDetails": "Privilege Detail Description",
+  "permissionDetails": "Details",
   "@permissionDetails": {
     "description": "Privilege Detail Description message",
     "type": "text",
@@ -868,6 +868,234 @@
   "buttonCon": "Please click the Cencel button to exit",
   "@buttonCon": {
     "description": "Please click the button to exit. message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "beforeWork": "before working",
+  "@beforeWork": {
+    "description": "before going to work message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leaveWork": "leave work",
+  "@leaveWork": {
+    "description": "leave work message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leaveWorkPro": "leave work processing",
+  "@leaveWorkPro": {
+    "description": "leave-of-work processing message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leaveWorkProCon": "Would you like to go home?",
+  "@leaveWorkProCon": {
+    "description": " message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "organizationChart": "Organization chart",
+  "@organizationChart": {
+    "description": "Organization chart message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentAdd": "Add Department",
+  "@departmentAdd": {
+    "description": "departmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentAddCon": "Please enter department name",
+  "@departmentAddCon": {
+    "description": "departmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentUpdate": "Modify department name",
+  "@departmentUpdate": {
+    "description": "To amend the department name message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "parentDepartmentCreate": "create a parent department",
+  "@parentDepartmentCreate": {
+    "description": "Create a parent department message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "subDepartmentCreate": "create a sub department",
+  "@subDepartmentCreate": {
+    "description": "Create a sub department message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentDelete": "Delete Department",
+  "@departmentDelete": {
+    "description": "departmentDelete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addMember": "Add Member",
+  "@addMember": {
+    "description": "Add Members message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteMember": "Delete Member",
+  "@deleteMember": {
+    "description": "Delete Members message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteTeamCon": "Are you sure you want to delete the department?",
+  "@deleteTeamCon": {
+    "description": "deleteTeamCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "team": "Team",
+  "@team": {
+    "description": "team message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "position": "Position",
+  "@position": {
+    "description": "position message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionCon": "Please enter your position",
+  "@positionCon": {
+    "description": "positionCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notSelect": "Select Later",
+  "@notSelect": {
+    "description": "notSelect message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionManagerment": "Position management",
+  "@positionManagerment": {
+    "description": "positionManagerment message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionAdd": "Add Position",
+  "@positionAdd": {
+    "description": "departmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionAddCon": "Please enter your position name of position",
+  "@positionAddCon": {
+    "description": "tdepartmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionUpdate": "Modify position name",
+  "@positionUpdate": {
+    "description": "To amend the department name message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionDelete": "Delete Position",
+  "@positionDelete": {
+    "description": "departmentDelete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePositionCon": "Are you sure you want to delete the position?",
+  "@deletePositionCon": {
+    "description": "deleteTeamCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enteredDate": "join date",
+  "@enteredDate": {
+    "description": "Entered date message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enteredDateCon": "Please enter the date of joining the company.",
+  "@enteredDateCon": {
+    "description": "Entered date message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountCon": "Are you sure you want to delete the account?",
+  "@dropAccountCon": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "passwordFail": "The password is wrong",
+  "@passwordFail": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountFail": "Failed to delete account",
+  "@dropAccountFail": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountGradeFail": "Unable to delete because you are a super administrator and app administrator ",
+  "@dropAccountGradeFail": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountCompltedDialog": "Your account has been deleted",
+  "@dropAccountCompltedDialog": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginPageGo": "Go to the login screen",
+  "@loginPageGo": {
+    "description": "loginPageGo message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "singUpWaiting": "Awaiting Approval",
+  "@singUpWaiting": {
+    "description": "singUpWaiting message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "singUpWaitingCon": "Waiting for membership approval.\n It is available after approval is completed.",
+  "@singUpWaitingCon": {
+    "description": "singUpWaiting message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workState": "Working Status",
+  "@workState": {
+    "description": "singUpWaiting message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "copyScheduleCon": "Please select a schedule to copy",
+  "@copyScheduleCon": {
+    "description": "copyScheduleCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "currentWorkStatus": "Current status of co-workers",
+  "@currentWorkStatus": {
+    "description": "Current status of co-workers message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nowScheduleBring": "more",
+  "@nowScheduleBring": {
+    "description": "Current status of co-workers message",
     "type": "text",
     "placeholders": {}
   }

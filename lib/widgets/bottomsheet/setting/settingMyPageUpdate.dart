@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/widgets/dialog/accountDialogList.dart';
+import 'package:MyCompany/widgets/dialog/gradeDialogList.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -583,6 +586,47 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                                   ],
                                                 );
                                               },
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                          height: 4.0.h,
+                                          decoration: BoxDecoration(
+                                            color: blueColor,
+                                            borderRadius: BorderRadius.circular(
+                                                SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            word.accountSecession(),
+                                            style: defaultMediumWhiteStyle,
+                                          ),
+                                        ),
+                                        onTap: () async {
+                                          CompanyUser comUser = await FirebaseRepository().getComapnyUser(companyCode: user.companyCode, mail: user.mail);
+                                          List<String> list = List();
+                                          comUser.level.map((value) => list.add(value.toString())).toList();
+
+                                          if (list.contains("9") || list.contains("8")) {
+                                            getErrorDialog(context: context, text: word.dropAccountGradeFail());
+                                          } else {
+                                            dropAccountDialog(
+                                              context: context,
+                                              companyCode: user.companyCode,
+                                              mail: user.mail,
+                                              name: user.name,
                                             );
                                           }
                                         },

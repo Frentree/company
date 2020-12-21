@@ -360,7 +360,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                             width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              word.myInfomation(), // 회사 정보
+                              word.myInfomation(), // 내 정보
                               style: defaultMediumStyle,
                             ),
                           ),

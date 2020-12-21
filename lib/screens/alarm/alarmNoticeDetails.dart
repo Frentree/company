@@ -113,7 +113,7 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                     child: Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "댓글 ${commentCount == null ? 0 : commentCount}",
+                          "${Words.word.comments()} ${commentCount == null ? 0 : commentCount}",
                           style: defaultMediumWhiteStyle,
                         )
                     ),

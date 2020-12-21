@@ -110,7 +110,6 @@ class FirebaseMethods {
       {String companyUserName, String companyCode, String loginUserMail}) async {
     List<DocumentSnapshot> result = [];
     List<String> findString = companyUserName.split("");
-    print(findString);
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
         .doc(companyCode)
@@ -521,7 +520,6 @@ class FirebaseMethods {
   Future<void> addGradeUser(
       String companyCode, List<Map<String, dynamic>> user) async {
     for (int i = 0; i < user.length; i++) {
-      print("추가 ====> " + user[i]['mail']);
       await firestore
           .collection(COMPANY)
           .doc(companyCode)
@@ -537,7 +535,6 @@ class FirebaseMethods {
   Future<void> deleteGradeUser(
       String companyCode, List<Map<String, dynamic>> user) async {
     for (int i = 0; i < user.length; i++) {
-      print("삭제 ====> " + user[i]['mail']);
       await firestore
           .collection(COMPANY)
           .doc(companyCode)

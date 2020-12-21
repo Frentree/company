@@ -870,5 +870,234 @@
     "description": "Please click the button to exit. message",
     "type": "text",
     "placeholders": {}
+  },
+  "beforeWork": "출근전",
+  "@beforeWork": {
+    "description": "before going to work message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leaveWork": "퇴근",
+  "@leaveWork": {
+    "description": "leave work message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leaveWorkPro": "퇴근처리",
+  "@leaveWorkPro": {
+    "description": "leave-of-work processing message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leaveWorkProCon": "퇴근 하시겠습니까?",
+  "@leaveWorkProCon": {
+    "description": " message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "organizationChart": "조직도",
+  "@organizationChart": {
+    "description": "Organization chart message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentAdd": "부서 추가하기",
+  "@departmentAdd": {
+    "description": "departmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentAddCon": "부서명을 입력해주세요",
+  "@departmentAddCon": {
+    "description": "departmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentUpdate": "부서명 수정하기",
+  "@departmentUpdate": {
+    "description": "To amend the department name message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "parentDepartmentCreate": "상위 부서 생성하기",
+  "@parentDepartmentCreate": {
+    "description": "Create a parent department message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "subDepartmentCreate": "하위 부서 생성하기",
+  "@subDepartmentCreate": {
+    "description": "Create a sub department message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "departmentDelete": "부서 삭제하기",
+  "@departmentDelete": {
+    "description": "departmentDelete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addMember": "구성원 추가하기",
+  "@addMember": {
+    "description": "Add Members message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteMember": "구성원 삭제하기",
+  "@deleteMember": {
+    "description": "Delete Members message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteTeamCon": "부서를 삭제 하시겠습니까?",
+  "@deleteTeamCon": {
+    "description": "deleteTeamCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "team": "팀",
+  "@team": {
+    "description": "team message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "position": "직급",
+  "@position": {
+    "description": "position message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionCon": "직급을 입력해주세요",
+  "@positionCon": {
+    "description": "positionCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notSelect": "나중에 선택",
+  "@notSelect": {
+    "description": "notSelect message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionManagerment": "직급관리",
+  "@positionManagerment": {
+    "description": "positionManagerment message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionAdd": "직급 추가하기",
+  "@positionAdd": {
+    "description": "departmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionAddCon": "직급명을 입력해주세요",
+  "@positionAddCon": {
+    "description": "tdepartmentAdd message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionUpdate": "직급명 수정하기",
+  "@positionUpdate": {
+    "description": "To amend the department name message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "positionDelete": "직급 삭제하기",
+  "@positionDelete": {
+    "description": "departmentDelete message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePositionCon": "직급을 삭제 하시겠습니까?",
+  "@deletePositionCon": {
+    "description": "deleteTeamCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enteredDate": "입사일",
+  "@enteredDate": {
+    "description": "Entered date message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enteredDateCon": "입사일을 입력해주세요",
+  "@enteredDateCon": {
+    "description": "Entered date message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountCon": "계정을 정말로 삭제 하시겠습니까?",
+  "@dropAccountCon": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "passwordFail": "패스워드가 틀렸습니다.",
+  "@passwordFail": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountFail": "계정 삭제를 실패하였습니다.",
+  "@dropAccountFail": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountGradeFail": "최고 및 앱 관리자이므로 삭제 불가능합니다. ",
+  "@dropAccountGradeFail": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropAccountCompltedDialog": "계정이 삭제되었습니다.",
+  "@dropAccountCompltedDialog": {
+    "description": "dropAccountCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginPageGo": "로그인 화면으로 이동",
+  "@loginPageGo": {
+    "description": "loginPageGo message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "singUpWaiting": "승인 대기",
+  "@singUpWaiting": {
+    "description": "singUpWaiting message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "singUpWaitingCon": "회원가입 승인 대기 상태입니다.\n승인 완료 후 이용 가능합니다.",
+  "@singUpWaitingCon": {
+    "description": "singUpWaiting message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workState": "근무상태",
+  "@workState": {
+    "description": "singUpWaiting message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "copyScheduleCon": "복사할 일정을 선택하세요",
+  "@copyScheduleCon": {
+    "description": "copyScheduleCon message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "currentWorkStatus": "현재 동료 근무 현황",
+  "@currentWorkStatus": {
+    "description": "Current status of co-workers message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nowScheduleBring": "더 보기",
+  "@nowScheduleBring": {
+    "description": "Current status of co-workers message",
+    "type": "text",
+    "placeholders": {}
   }
+
 }

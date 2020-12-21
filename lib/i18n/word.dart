@@ -301,7 +301,7 @@ class Words {
   String positionAddCon() => Intl.message("직급명을 입력해주세요", name: "positionAddCon", args: [], desc: "tdepartmentAdd message");
   String positionUpdate() => Intl.message("직급명 수정하기", name: "positionUpdate", args: [], desc: "To amend the department name message");
   String positionDelete() => Intl.message("직급 삭제하기", name: "positionDelete", args: [], desc: "departmentDelete message");
-  String deletePositionCon() => Intl.message("직급을 삭제 하시겠습니까?", name: "deletePsitionCon", args: [], desc: "deleteTeamCon message");
+  String deletePositionCon() => Intl.message("직급을 삭제 하시겠습니까?", name: "deletePositionCon", args: [], desc: "deleteTeamCon message");
 
   String enteredDate() => Intl.message("입사일", name: "enteredDate", args: [], desc: "Entered date message");
   String enteredDateCon() => Intl.message("입사일을 입력해주세요", name: "enteredDateCon", args: [], desc: "Entered date message");
