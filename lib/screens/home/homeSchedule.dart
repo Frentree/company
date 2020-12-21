@@ -39,8 +39,8 @@ class HomeSchedulePage extends StatefulWidget {
 class HomeSchedulePageState extends State<HomeSchedulePage> {
   Widget _buildEventMarker(DateTime date, List events) {
     return AnimatedContainer(
-      width: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
-      height: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+      width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 3.5.w,
+      height: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 3.5.w,
       alignment: Alignment.center,
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
@@ -52,7 +52,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
         style: TextStyle().copyWith(
           color: Colors.white,
           fontSize:
-              SizerUtil.deviceType == DeviceType.Tablet ? 8.0.sp : 10.0.sp,
+              SizerUtil.deviceType == DeviceType.Tablet ? 8.0.sp : 9.0.sp,
         ),
       ),
     );
@@ -130,33 +130,66 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                           .setCalendarFormat(CalendarFormat.week);
                     });
                   },
-                  headerStyle: HeaderStyle(),
+                  headerStyle: HeaderStyle(
+                    titleTextStyle: defaultMediumStyle,
+                    headerPadding: EdgeInsets.symmetric(vertical: 2.0.h),
+                  ),
                   calendarStyle: CalendarStyle(
-                    weekdayStyle: customStyle(
-                        fontSize: SizerUtil.deviceType == DeviceType.Tablet
-                            ? 11.0.sp
-                            : 13.0.sp,
-                        fontWeightName: "Regular"),
                     selectedColor: mainColor,
-                    selectedStyle: customStyle(
-                      fontSize: 13.0.sp,
+                    todayStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
                       fontWeightName: "Bold",
                       fontColor: whiteColor,
                     ),
+                    weekdayStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: "Regular",
+                    ),
+                    saturdayStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                      fontColor: blueColor,
+                      fontWeightName: "Regular",
+                    ),
+                    weekendStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                      fontColor: redColor,
+                      fontWeightName: "Regular",
+                    ),
+                    selectedStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                      fontWeightName: "Bold",
+                      fontColor: whiteColor,
+                    ),
+                    outsideStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                      fontColor: Colors.black26,
+                      fontWeightName: "Regular",
+                    ),
+                    outsideSaturdayStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                      fontColor: Colors.blue[200],
+                      fontWeightName: "Regular",
+                    ),
+                    outsideWeekendStyle: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                      fontColor: Colors.red[200],
+                      fontWeightName: "Regular",
+                    ),
                   ),
+
                   builders: CalendarBuilders(
                     markersBuilder: (context, date, events, holidays) {
                       List<Widget> children = [];
                       if (events.isNotEmpty) {
                         children.add(Positioned(
-                          left: 6.0.w,
-                          top: 3.5.h,
+                          left: SizerUtil.deviceType == DeviceType.Tablet ? 8.0.w : 7.0.w,
+                          top: SizerUtil.deviceType == DeviceType.Tablet ? 5.5.h : 4.5.h,
                           child: _buildEventMarker(date, events),
                         ));
                       }
                       return children;
                     },
-                    //selectedDayBuilder: ()
                   ),
                 ),
               );
