@@ -315,4 +315,6 @@ class Words {
 
   String singUpWaiting() => Intl.message("승인 대기", name: "singUpWaiting", args: [], desc: "singUpWaiting message");
   String singUpWaitingCon() => Intl.message("회원가입 승인 대기 상태입니다.\n승인 완료 후 이용 가능합니다.", name: "singUpWaitingCon", args: [], desc: "singUpWaiting message");
+  
+  String nowShedules() => Intl.message("최근 일정에서 복사 생성", name: "singUpWaitingCon", args: [], desc: "singUpWaiting message");
 }
