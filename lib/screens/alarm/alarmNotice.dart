@@ -1,24 +1,35 @@
 //Flutter
 import 'dart:ui';
 
-import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/screens/alarm/alarmNoticeDetails.dart';
+import 'package:MyCompany/widgets/photo/profilePhoto.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
+import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/main.dart';
+import 'package:MyCompany/models/noticeModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/screens/alarm/alarmNoticeDetails.dart';
+import 'package:MyCompany/repos/firebasecrud/crudRepository.dart';
+import 'package:MyCompany/screens/alarm/alarmNoticeDetail.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workNotice.dart';
-import 'package:MyCompany/widgets/photo/profilePhoto.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:MyCompany/widgets/popupMenu/expensePopupMenu.dart';
+import 'package:MyCompany/i18n/word.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
+
+final word = Words();
 
 class AlarmNoticePage extends StatefulWidget {
   @override
@@ -33,6 +44,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
 
   User _loginUser;
 
+  String commentCountNum = "";
 
   // 댓글 카운트
   Future<String> countDocuments(String companyCode, String documentId) async {
@@ -45,8 +57,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
         .get();
     List<DocumentSnapshot> _commentCount = commentCount.docs;
 
-    print(_commentCount.length);  // Count of Documents in Collection
-
+    print(_commentCount.length);
     return await _commentCount.length.toString();
   }
 
@@ -54,7 +65,6 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
   Widget build(BuildContext context) {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-
 
     return StreamBuilder(
         stream: FirebaseRepository().getNoticeList(companyCode: _loginUser.companyCode),
@@ -89,149 +99,154 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                             children: <Widget>[
                               Container(
                                 height: 8.0.h,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 67.0.w : 55.0.w,
-                                          height: 5.0.h,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            documents[index].data()['noticeTitle'].toString(),
-                                            style: cardTitleStyle,
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: documents[index].data()['noticeCreateUser']['mail'] == _loginUser.mail,
-                                          child: Container(
-                                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-                                            height: 5.0.h,
-                                            alignment: Alignment.center,
-                                            child: PopupMenuButton(
-                                              padding: EdgeInsets.zero,
-                                              icon: Icon(
-                                                Icons.more_vert_sharp,
-                                                size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                child: StreamBuilder<Object>(
+                                    stream: null,
+                                    builder: (context, snapshot) {
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: SizerUtil.deviceType == DeviceType.Tablet ? 67.0.w : 55.0.w,
+                                                height: 5.0.h,
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  documents[index].data()['noticeTitle'].toString(),
+                                                  style: cardTitleStyle,
+                                                ),
                                               ),
-                                              onSelected: (value) {
-                                                if(value == 1){  // 수정하기 버튼 클릭시
-                                                  WorkNoticeBottomSheet(context,
-                                                      documents[index].id,
-                                                      documents[index].data()['noticeTitle'],
-                                                      documents[index].data()['noticeContent']
-                                                  );
-                                                } else if(value == 2) { // 삭제 버튼 클릭시
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext context) {
-                                                      // return object of type Dialog
-                                                      return AlertDialog(
-                                                        title: Text(
-                                                          Words.word.noticeDelete(),
-                                                          style: customStyle(
-                                                              fontColor: mainColor,
-                                                              fontSize: homePageDefaultFontSize.sp,
-                                                              fontWeightName: 'Medium'
-                                                          ),
-                                                        ),
-                                                        content: Text(
-                                                          Words.word.noticeDeleteCon(),
-                                                          style: customStyle(
-                                                              fontColor: mainColor,
-                                                              fontSize: 12.0.sp,
-                                                              fontWeightName: 'Regular'
-                                                          ),
-                                                        ),
-                                                        actions: <Widget>[
-                                                          FlatButton(
-                                                            child: Text(Words.word.yes(),
-                                                              style: customStyle(
-                                                                  fontColor: blueColor,
-                                                                  fontSize: homePageDefaultFontSize.sp,
-                                                                  fontWeightName: 'Medium'
+                                              Visibility(
+                                                visible: documents[index].data()['noticeCreateUser']['mail'] == _loginUser.mail,
+                                                child: Container(
+                                                  width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                                  height: 5.0.h,
+                                                  alignment: Alignment.center,
+                                                  child: PopupMenuButton(
+                                                    padding: EdgeInsets.zero,
+                                                    icon: Icon(
+                                                      Icons.more_vert_sharp,
+                                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                                    ),
+                                                    onSelected: (value) {
+                                                      if(value == 1){  // 수정하기 버튼 클릭시
+                                                        WorkNoticeBottomSheet(context,
+                                                            documents[index].id,
+                                                            documents[index].data()['noticeTitle'],
+                                                            documents[index].data()['noticeContent']
+                                                        );
+                                                      } else if(value == 2) { // 삭제 버튼 클릭시
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) {
+                                                            // return object of type Dialog
+                                                            return AlertDialog(
+                                                              title: Text(
+                                                                word.noticeDelete(),
+                                                                style: customStyle(
+                                                                    fontColor: mainColor,
+                                                                    fontSize: homePageDefaultFontSize.sp,
+                                                                    fontWeightName: 'Medium'
+                                                                ),
                                                               ),
-                                                            ),
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                FirebaseRepository().deleteNotice(
-                                                                    companyCode: _loginUser.companyCode,
-                                                                    documentID: documents[index].documentID
-                                                                );
-                                                              });
-                                                              Navigator.pop(context);
-                                                            },
-                                                          ),
-                                                          FlatButton(
-                                                            child: Text(Words.word.no(),
-                                                              style: customStyle(
-                                                                  fontColor: blueColor,
-                                                                  fontSize: homePageDefaultFontSize.sp,
-                                                                  fontWeightName: 'Medium'
+                                                              content: Text(
+                                                                word.noticeDeleteCon(),
+                                                                style: customStyle(
+                                                                    fontColor: mainColor,
+                                                                    fontSize: 12.0.sp,
+                                                                    fontWeightName: 'Regular'
+                                                                ),
                                                               ),
-                                                            ),
-                                                            onPressed: () {
-                                                              Navigator.pop(context);
-                                                            },
-                                                          ),
-                                                        ],
-                                                      );
+                                                              actions: <Widget>[
+                                                                FlatButton(
+                                                                  child: Text(word.yes(),
+                                                                    style: customStyle(
+                                                                        fontColor: blueColor,
+                                                                        fontSize: homePageDefaultFontSize.sp,
+                                                                        fontWeightName: 'Medium'
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    setState(() {
+                                                                      FirebaseRepository().deleteNotice(
+                                                                          companyCode: _loginUser.companyCode,
+                                                                          documentID: documents[index].documentID
+                                                                      );
+                                                                    });
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                ),
+                                                                FlatButton(
+                                                                  child: Text(word.no(),
+                                                                    style: customStyle(
+                                                                        fontColor: blueColor,
+                                                                        fontSize: homePageDefaultFontSize.sp,
+                                                                        fontWeightName: 'Medium'
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      }
                                                     },
-                                                  );
-                                                }
-                                              },
-                                              itemBuilder: (BuildContext context) => [
-                                                PopupMenuItem(
-                                                  height: 7.0.h,
-                                                  value: 1,
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        child: Icon(
-                                                          Icons.edit,
-                                                          size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+                                                    itemBuilder: (BuildContext context) => [
+                                                      PopupMenuItem(
+                                                        height: 7.0.h,
+                                                        value: 1,
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              child: Icon(
+                                                                Icons.edit,
+                                                                size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+                                                              ),
+                                                            ),
+                                                            Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+                                                            Text(
+                                                              word.update(),
+                                                              style: popupMenuStyle,
+                                                            )
+                                                          ],
                                                         ),
                                                       ),
-                                                      Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                                                      Text(
-                                                        Words.word.update(),
-                                                        style: popupMenuStyle,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                                PopupMenuItem(
-                                                  height: 7.0.h,
-                                                  value: 2,
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.delete,
-                                                        size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+                                                      PopupMenuItem(
+                                                        height: 7.0.h,
+                                                        value: 2,
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.delete,
+                                                              size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+                                                            ),
+                                                            Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+                                                            Text(
+                                                              word.delete(),
+                                                              style: popupMenuStyle,
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
-                                                      Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                                                      Text(
-                                                        Words.word.delete(),
-                                                        style: popupMenuStyle,
-                                                      )
                                                     ],
                                                   ),
                                                 ),
-                                              ],
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            height: 3.0.h,
+                                            child: Text(
+                                              _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
+                                              style: cardSubTitleStyle,
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      height: 3.0.h,
-                                      child: Text(
-                                        _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
-                                        style: cardSubTitleStyle,
-                                      ),
-                                    ),
-                                  ],
+                                        ],
+                                      );
+                                    }
                                 ),
                               ),
                               Column(
@@ -264,11 +279,12 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                               //더보기 글씨
                                               InkWell(
                                                 child: Text(
-                                                  Words.word.moreDetails(),
+                                                  word.moreDetails(),
                                                   maxLines: 3,
                                                   style: cardBlueStyle,
                                                 ),
-                                                onTap: () {
+                                                onTap: () async {
+                                                  commentCountNum = await countDocuments(_loginUser.companyCode, documents[index].id);
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(builder: (context) =>
@@ -278,6 +294,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                                             noticeContent: documents[index].data()['noticeContent'].toString(),
                                                             noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
                                                             noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
+                                                            commentCount: commentCountNum,
                                                           ),
                                                       )
                                                   );
@@ -326,7 +343,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   cardSpace,
                                   cardSpace,
                                   Text(
-                                    Words.word.comments(),
+                                    word.comments(),
                                     style: cardTitleStyle,
                                   ),
                                   cardSpace,
@@ -346,7 +363,8 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                   ),
                                 ],
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                commentCountNum = await countDocuments(_loginUser.companyCode, documents[index].id);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) =>
@@ -356,6 +374,7 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
                                           noticeContent: documents[index].data()['noticeContent'].toString(),
                                           noticeCreateUser: documents[index].data()['noticeCreateUser']['mail'].toString(),
                                           noticeCreateDate: _format.timeStampToDateTimeString(documents[index].data()['noticeCreateDate']).toString(),
+                                          commentCount: commentCountNum,
                                         ),
                                     )
                                 );
