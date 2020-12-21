@@ -427,10 +427,16 @@ class _TableCalendarState extends State<TableCalendar> with SingleTickerProvider
       child: Column(
         children: [
           Text(
-            widget.calendarController._getFormatButtonText()
+            widget.calendarController._getFormatButtonText(),
+            style: customStyle(
+              fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.sp : 10.0.sp,
+              fontColor: mainColor,
+              fontWeightName: "Medium",
+            ),
           ),
           Icon(
-            widget.calendarController.calendarFormat == CalendarFormat.week ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up
+            widget.calendarController.calendarFormat == CalendarFormat.week ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+            size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
           ),
         ],
       ),
@@ -567,7 +573,19 @@ class _TableCalendarState extends State<TableCalendar> with SingleTickerProvider
         return Center(
           child: Text(
             weekdayString,
-            style: isWeekend ? isSaturday ? widget.daysOfWeekStyle.saturdayStyle : widget.daysOfWeekStyle.weekendStyle : widget.daysOfWeekStyle.weekdayStyle,
+            style: isWeekend ? isSaturday ? customStyle(
+              fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+              fontColor: blueColor,
+              fontWeightName: "Regular",
+            ) : customStyle(
+              fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+              fontColor: redColor,
+              fontWeightName: "Regular",
+            ) : customStyle(
+              fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+              fontColor: mainColor,
+              fontWeightName: "Regular",
+            ),
           ),
         );
       }).toList(),
@@ -586,8 +604,9 @@ class _TableCalendarState extends State<TableCalendar> with SingleTickerProvider
     return LayoutBuilder(
       builder: (context, constraints) => ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: widget.rowHeight ?? constraints.maxWidth,
-          minHeight: widget.rowHeight ?? constraints.maxWidth,
+          maxHeight: SizerUtil.deviceType == DeviceType.Tablet ? 9.0.h : 6.5.h,
+          //maxHeight: widget.rowHeight ?? constraints.maxWidth,
+          //minHeight: widget.rowHeight ?? constraints.maxWidth,
         ),
         child: _buildCell(date),
       ),

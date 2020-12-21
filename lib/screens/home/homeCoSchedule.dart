@@ -93,20 +93,58 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               },
               //locale: 'ko_KR',
               headerStyle: HeaderStyle(
+                titleTextStyle: defaultMediumStyle,
+                headerPadding: EdgeInsets.symmetric(vertical: 2.0.h),
                 formatButtonVisible: false,
               ),
               calendarStyle: CalendarStyle(
                 selectedColor: mainColor,
                 selectedStyle: customStyle(
-                    fontSize: 13.0.sp,
-                    fontWeightName: "Bold",
-                    fontColor: whiteColor),
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                  fontWeightName: "Bold",
+                  fontColor: whiteColor,
+                ),
+                todayStyle: customStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                  fontWeightName: "Bold",
+                  fontColor: whiteColor,
+                ),
+                weekdayStyle: customStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                  fontColor: mainColor,
+                  fontWeightName: "Regular",
+                ),
+                saturdayStyle: customStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                  fontColor: blueColor,
+                  fontWeightName: "Regular",
+                ),
+                weekendStyle: customStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                  fontColor: redColor,
+                  fontWeightName: "Regular",
+                ),
+                outsideStyle: customStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                  fontColor: Colors.black26,
+                  fontWeightName: "Regular",
+                ),
+                outsideSaturdayStyle: customStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                  fontColor: Colors.blue[200],
+                  fontWeightName: "Regular",
+                ),
+                outsideWeekendStyle: customStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                  fontColor: Colors.red[200],
+                  fontWeightName: "Regular",
+                ),
               ),
             ),
           ),
           Container(
-            width: 100.0.w,
-            color: Colors.white,
+            alignment: Alignment.center,
+            color: whiteColor,
             child: GestureDetector(
               onTap: () {
                 setState(() {
@@ -115,10 +153,19 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               },
               child: Column(
                 children: [
-                  Text(isTable ? word.daily() : word.details()),
+                  Text(
+                    isTable ? word.daily() : word.details(),
+                    style: customStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.sp : 10.0.sp,
+                      fontColor: mainColor,
+                      fontWeightName: "Medium",
+                    ),
+                  ),
                   Icon(isTable
                       ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down),
+                      : Icons.keyboard_arrow_down,
+                    size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                  ),
                 ],
               ),
             ),

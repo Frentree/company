@@ -98,7 +98,7 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                 alignment: Alignment.center,
                                 child: Text(
                                   word.userAddRquestAndDelete(),
-
+                                  style: defaultMediumStyle,
                                 )
                             ),
                           )
