@@ -81,6 +81,7 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot, String 
                     },
                   ),
                 ),
+                emptySpace,
               ],
             ),
             childCount: 1),
@@ -132,7 +133,7 @@ Widget _buildUserList(BuildContext context, TeamData team, String companyCode) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 20.0.w,
               child: Text(
                 team.teamName,
                 style: defaultMediumStyle,
@@ -175,120 +176,12 @@ Widget _buildUserList(BuildContext context, TeamData team, String companyCode) {
                   }
                 },
                 itemBuilder: (BuildContext context) => [
-                  PopupMenuItem(
-                    height: 7.0.h,
-                    value: 1,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Icon(
-                            Icons.update,
-                            size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                        Text(
-                          word.departmentUpdate(),
-                          style: popupMenuStyle,
-                        )
-                      ],
-                    ),
-                  ),
-                 /* PopupMenuItem(
-                    height: 7.0.h,
-                    value: 2,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Icon(
-                            Icons.edit,
-                            size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                        Text(
-                          word.parentDepartmentCreate(),
-                          style: popupMenuStyle,
-                        )
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    height: 7.0.h,
-                    value: 3,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Icon(
-                            Icons.edit,
-                            size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                        Text(
-                          word.subDepartmentCreate(),
-                          style: popupMenuStyle,
-                        )
-                      ],
-                    ),
-                  ),*/
-                  PopupMenuItem(
-                    height: 7.0.h,
-                    value: 4,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Icon(
-                            Icons.delete,
-                            size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                        Text(
-                          word.departmentDelete(),
-                          style: popupMenuStyle,
-                        )
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    height: 7.0.h,
-                    value: 5,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Icon(
-                            Icons.add,
-                            size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                        Text(
-                          word.addMember(),
-                          style: popupMenuStyle,
-                        )
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    height: 7.0.h,
-                    value: 6,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Icon(
-                            Icons.delete,
-                            size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-                        Text(
-                          word.deleteMember(),
-                          style: popupMenuStyle,
-                        )
-                      ],
-                    ),
-                  ),
+                  getPopupItem(context: context, icons: Icons.update, text: word.departmentUpdate(), value: 1),
+                  //getPopupItem(context: context, icons: Icons.edit, text: word.parentDepartmentCreate(), value: 2),
+                  //getPopupItem(context: context, icons: Icons.edit, text: word.subDepartmentCreate(), value: 3),
+                  getPopupItem(context: context, icons: Icons.delete, text: word.departmentDelete(), value: 4),
+                  getPopupItem(context: context, icons: Icons.add, text: word.addMember(), value: 5),
+                  getPopupItem(context: context, icons: Icons.delete, text: word.deleteMember(), value: 6),
                 ],
               ),
             ),
