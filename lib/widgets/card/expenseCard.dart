@@ -76,7 +76,9 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                   style: containerChipStyle,
                 ),
               ),
-              _popupMenu(context),
+
+              /// 기능 미구현으로 인한 숨김 처리
+              //_popupMenu(context),
             ],
           )
         )

@@ -44,7 +44,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       alignment: Alignment.center,
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
+        shape: BoxShape.circle,
         color: _calendarController.isSelected(date) ? bottomColor : mainColor,
       ),
       child: Text(

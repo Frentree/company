@@ -47,13 +47,13 @@ class _CellWidget extends StatelessWidget {
 
   Decoration _buildCellDecoration() {
     if (isSelected && calendarStyle.renderSelectedFirst && calendarStyle.highlightSelected) {
-      return BoxDecoration(/*borderRadius: BorderRadius.circular(12),*/ color: calendarStyle.selectedColor);
+      return BoxDecoration(borderRadius: BorderRadius.circular(100), color: calendarStyle.selectedColor);
     } else if (isToday && calendarStyle.highlightToday) {
-      return BoxDecoration(/*borderRadius: BorderRadius.circular(12),*/ color: calendarStyle.todayColor);
+      return BoxDecoration(borderRadius: BorderRadius.circular(100), color: calendarStyle.todayColor);
     } else if (isSelected && calendarStyle.highlightSelected) {
-      return BoxDecoration(/*borderRadius: BorderRadius.circular(12),*/ color: calendarStyle.selectedColor);
+      return BoxDecoration(borderRadius: BorderRadius.circular(100), color: calendarStyle.selectedColor);
     } else {
-      return BoxDecoration(borderRadius: BorderRadius.circular(12));
+      return BoxDecoration(borderRadius: BorderRadius.circular(100));
     }
   }
 
