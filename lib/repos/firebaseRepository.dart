@@ -44,10 +44,13 @@ class FirebaseRepository {
       _firebaseMethods.deleteCompanyUser(
           companyCode: companyCode, companyUserModel: companyUserModel);
 
-  Future<List<DocumentSnapshot>> getCompany({String companyName}) =>
+  /*Future<List<DocumentSnapshot>> getCompany({String companyName}) =>
       _firebaseMethods.getCompany(
         companyName: companyName,
-      );
+      );*/
+
+  Future<List<DocumentSnapshot>> getCompany() =>
+      _firebaseMethods.getCompany();
 
   Future<List<DocumentSnapshot>> searchCompanyUser(
           {String companyUserName, String companyCode, String loginUserMail}) =>

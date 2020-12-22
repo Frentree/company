@@ -48,7 +48,10 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
         NotImplementedFunction(context);
         break;
       case 7: // 경비 품의 생성
-        ExpenseMain(context);
+        result = await ExpenseMain(context);
+        if (result) {
+          Navigator.of(context).pop();
+        }
         break;
       case 9: // 급여 명세 조회
         break;
