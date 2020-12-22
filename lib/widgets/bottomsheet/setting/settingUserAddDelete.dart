@@ -368,7 +368,7 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                                             children: [
                                                                               FlatButton(
                                                                                 child: Text(
-                                                                                  word.refusal(),
+                                                                                  word.accept(),
                                                                                   style: buttonBlueStyle,
                                                                                 ),
                                                                                 onPressed: () async {

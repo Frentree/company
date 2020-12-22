@@ -62,12 +62,12 @@ class FirebaseAuthProvider with ChangeNotifier {
         return '인증 코드를 다시 확인해 주세요.';
         break;
 
-      case "ERROR_EMAIL_ALREADY_IN_USE" :
+      case "email-already-in-use" :
         return '이미 사용 중인 이메일 입니다.';
         break;
 
-      case 'ERROR_WRONG_PASSWORD' :
-      case 'ERROR_USER_NOT_FOUND' :
+      case 'wrong-password' :
+      case 'invalid-email' :
         return '이메일 또는 비밀번호가 올바르지 않습니다';
         break;
 
@@ -93,7 +93,8 @@ class FirebaseAuthProvider with ChangeNotifier {
 
       return false;
 
-    } on PlatformException catch (e) {
+    } on FirebaseAuthException catch (e) {
+      print("min ${e.code}");
       setLastFirebaseMessage(message: e.code);
       return false;
     }
@@ -101,9 +102,7 @@ class FirebaseAuthProvider with ChangeNotifier {
 
   //이메일로 로그인
   Future<bool> singInWithEmail({String mail, String password}) async {
-    debugPrint("signInWithEmail has been executed");
     try{
-      debugPrint("try initiated");
       var result = await _firebaseAuth.signInWithEmailAndPassword(
           email: mail,
           password: password
@@ -113,7 +112,9 @@ class FirebaseAuthProvider with ChangeNotifier {
         return true;
       }
       return false;
-    } on PlatformException catch (e) {
+    } on FirebaseAuthException catch (e) {
+      print("min ${e.code}");
+
       setLastFirebaseMessage(message: e.code);
       return false;
     }
@@ -121,10 +122,8 @@ class FirebaseAuthProvider with ChangeNotifier {
 
   //핸드폰 번호 인증
   Future<bool> verifyPhone({String phoneNumber}) async {
-    print("min");
     //핸드폰 번호 인증이 실패했을 때
     final PhoneVerificationFailed verificationFailed = (FirebaseAuthException authException){
-      print("인증 실패");
       setLastFirebaseMessage(message: authException.message);
       return false;
     };
@@ -135,7 +134,6 @@ class FirebaseAuthProvider with ChangeNotifier {
 
     //인증번호 전송
     final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
-      print("코드 전송");
       verificationId = verId;
       _isPhoneVerify =  true;
       notifyListeners();
@@ -178,7 +176,7 @@ class FirebaseAuthProvider with ChangeNotifier {
         return true;
       }
       return false;
-    } on PlatformException catch (e){
+    } on FirebaseAuthException catch (e){
       setLastFirebaseMessage(message: e.code);
       return false;
     }
@@ -252,7 +250,7 @@ class FirebaseAuthProvider with ChangeNotifier {
 
       return true;
 
-    } on PlatformException catch (e) {
+    } on FirebaseAuthException catch (e) {
       setLastFirebaseMessage(message: e.code);
       return false;
     }
