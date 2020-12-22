@@ -23,7 +23,7 @@ import 'package:MyCompany/widgets/form/customInputFormatter.dart';
 import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
 import 'package:sizer/sizer.dart';
 
-ExpenseMain(BuildContext context) {
+ExpenseMain(BuildContext context) async {
   FirebaseRepository _reposistory = FirebaseRepository();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
@@ -41,6 +41,8 @@ ExpenseMain(BuildContext context) {
   TextEditingController _expenseController = TextEditingController();
 
   bool _detailClicked = false;
+  bool result = false;
+
   int _chosenItem = 0;
   String _documentID;
   String _downloadUrl;
@@ -118,7 +120,7 @@ ExpenseMain(BuildContext context) {
   }
 
   /// 경비 품의 바텀시트
-  showModalBottomSheet(
+  await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
@@ -378,13 +380,13 @@ ExpenseMain(BuildContext context) {
                                   color: whiteColor,
                                   size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                                 ),
-                              onPressed: () {
-                                bool _isInput =
-                                !(_expenseController.text == '' ||
-                                    _chosenItem == 0);
-                                _isInput
-                                    ? saveExpense()
-                                    : InvalidData(context);
+                              onPressed: () async {
+                                bool _isInput = !(_expenseController.text == '' || _chosenItem == 0);
+                                await _isInput ? saveExpense() : InvalidData(context);
+
+                                result = true;
+                                Navigator.of(context).pop(result);
+                                return result;
                               },
                             ),
                           ),
@@ -611,7 +613,9 @@ ExpenseMain(BuildContext context) {
             );
           },
         );
-      });
+      }
+      );
+  return result;
 }
 
 /// 경비 항목 선택 메뉴

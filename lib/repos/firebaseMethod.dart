@@ -78,7 +78,7 @@ class FirebaseMethods {
         .set(companyModel.toJson());
   }
 
-  Future<List<DocumentSnapshot>> getCompany({String companyName}) async {
+  Future<List<DocumentSnapshot>> getCompany2({String companyName}) async {
     List<DocumentSnapshot> result = [];
     List<String> findString = companyName.split("");
     QuerySnapshot querySnapshot = await firestore
@@ -102,6 +102,19 @@ class FirebaseMethods {
           }
         }
       }
+    });
+    return result;
+  }
+
+  Future<List<DocumentSnapshot>> getCompany() async {
+    List<DocumentSnapshot> result = [];
+    //List<String> findString = companyName.split("");
+    QuerySnapshot querySnapshot = await firestore
+        .collection(COMPANY)
+        .get();
+
+    querySnapshot.docs.forEach((element) {
+      result.add(element);
     });
     return result;
   }

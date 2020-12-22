@@ -38,7 +38,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
   Widget build(BuildContext context) {
     if (_companyNameCon.text == "" && widget.company != null) {
       _companyNameCon.text = widget.company.companyName;
-      searchResults = _repository.getCompany(companyName: _companyNameCon.text);
+      searchResults = _repository.getCompany();
     }
     return Scaffold(
       body: SafeArea(
@@ -75,16 +75,17 @@ class CompanySearchPageState extends State<CompanySearchPage> {
                   Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 60.0.w : 80.0.w,
                     child: TextFormField(
+                      readOnly: true,
                       controller: _companyNameCon,
                       style: defaultRegularStyle,
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: textFormPadding,
-                        hintText: "회사명 검색",
+                        hintText: "회사명 선택",
                         hintStyle: hintStyle,
                         border: InputBorder.none,
                       ),
-                      onFieldSubmitted: ((value) {
+                      /*onFieldSubmitted: ((value) {
                         if (value == "") {
                           searchResults = null;
                         } else {
@@ -94,13 +95,13 @@ class CompanySearchPageState extends State<CompanySearchPage> {
                             searchResults = result;
                           });
                         }
-                      }),
+                      }),*/
                     ),
                   ),
                 ],
               ),
             ),
-            searchResults == null
+            /*searchResults == null
                 ? Expanded(
                     child: Center(
                       child: Column(
@@ -127,9 +128,9 @@ class CompanySearchPageState extends State<CompanySearchPage> {
                       ),
                     ),
                   )
-                : Expanded(
+                : */Expanded(
                     child: FutureBuilder(
-                      future: searchResults,
+                      future: _repository.getCompany(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return Center(
@@ -143,7 +144,7 @@ class CompanySearchPageState extends State<CompanySearchPage> {
                           searchCompanyResult.add(_company);
                         });
 
-                        if (_companyNameCon.text == "" ||
+                        if (/*_companyNameCon.text == "" ||*/
                             searchCompanyResult.length == 0) {
                           return Expanded(
                             child: Center(
