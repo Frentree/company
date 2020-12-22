@@ -129,7 +129,20 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                   Container(
                     height: 8.0.h,
                     alignment: Alignment.center,
-                    child: profilePhoto(loginUser: _loginUser),
+                    child: FutureBuilder(
+                      future: FirebaseRepository().photoProfile(_loginUser.companyCode, noticeCreateUser),
+                      builder: (context, snapshot){
+                        if (!snapshot.hasData) {
+                          return CircularProgressIndicator();
+                        }
+                        else
+                          return CircleAvatar(
+                            backgroundColor: whiteColor,
+                            radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                            backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+                          );
+                      },
+                    ),
                   ),
                   cardSpace,
                   Column(
@@ -376,7 +389,20 @@ Widget getCommentList({BuildContext context, DocumentSnapshot document, User use
             Container(
               height: 8.0.h,
               alignment: Alignment.center,
-              child: profilePhoto(loginUser: user),
+              child: FutureBuilder(
+                future: FirebaseRepository().photoProfile(user.companyCode, comment.createUser['mail']),
+                builder: (context, snapshot){
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  }
+                  else
+                    return CircleAvatar(
+                      backgroundColor: whiteColor,
+                      radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                      backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+                    );
+                },
+              ),
             ),
             cardSpace,
             Expanded(
@@ -595,7 +621,20 @@ Widget getCommentsList({BuildContext context,
           Container(
             height: 8.0.h,
             alignment: Alignment.center,
-            child: profilePhoto(loginUser: user),
+            child: FutureBuilder(
+              future: FirebaseRepository().photoProfile(user.companyCode, comments.commentsUser['mail']),
+              builder: (context, snapshot){
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
+                else
+                  return CircleAvatar(
+                    backgroundColor: whiteColor,
+                    radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                    backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+                  );
+              },
+            ),
           ),
           cardSpace,
           Expanded(
