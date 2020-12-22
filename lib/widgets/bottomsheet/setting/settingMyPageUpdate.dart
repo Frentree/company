@@ -54,8 +54,6 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
       context: context,
       builder: (BuildContext context) {
 
-        LoginUserInfoProvider userInfoProvider = Provider.of<LoginUserInfoProvider>(context);
-
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
@@ -89,8 +87,8 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
               // 업로드된 사진의 URL을 페이지에 반영
               setState(() {
                 user.profilePhoto = downloadURL;
-                userInfoProvider.setLoginUser(user);
-                user = userInfoProvider.getLoginUser();
+                _loginUserInfoProvider.setLoginUser(user);
+                user = _loginUserInfoProvider.getLoginUser();
               });
             }
 
@@ -568,7 +566,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                                             companyCode: user.companyCode, mail: user.mail, phone: _phoneEdit.text);
                                                         setState(() {
                                                           user.phone = _phoneEdit.text;
-                                                          userInfoProvider.setLoginUser(user);
+                                                          _loginUserInfoProvider.setLoginUser(user);
                                                           _phoneEdit.text = "";
                                                         });
                                                         Navigator.pop(context);

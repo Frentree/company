@@ -18,7 +18,6 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 
-final word = Words();
 final _formKeyEnteredDate = GlobalKey<FormState>();
 
 settingUserAddDelete({BuildContext context, double statusBarHeight}) {
@@ -368,7 +367,7 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                                             children: [
                                                                               FlatButton(
                                                                                 child: Text(
-                                                                                  word.refusal(),
+                                                                                  Words.word.accept(),
                                                                                   style: buttonBlueStyle,
                                                                                 ),
                                                                                 onPressed: () async {
@@ -393,7 +392,7 @@ settingUserAddDelete({BuildContext context, double statusBarHeight}) {
                                                                               cardSpace,
                                                                               FlatButton(
                                                                                 child: Text(
-                                                                                  "cancel",
+                                                                                  Words.word.refusal(),
                                                                                   style: buttonBlueStyle,
                                                                                 ),
                                                                                 onPressed: () async {
