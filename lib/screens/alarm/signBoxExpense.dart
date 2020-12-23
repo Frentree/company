@@ -81,7 +81,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     ),
                     cardSpace,
                     Container(
-                      width: SizerUtil.deviceType == DeviceType.Tablet ? 11.0.w : 9.0.w,
+                      width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
                       alignment: Alignment.center,
                       child: Text(
                         word.receipt(),

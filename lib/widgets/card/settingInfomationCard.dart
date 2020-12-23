@@ -284,26 +284,6 @@ Widget getCompanyInfomationCard({BuildContext context, User user, double statusB
                   Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                     child: Text(
-                      word.businessNumber(),
-                      style: defaultRegularStyle,
-                    ),
-                  ),
-                  Container(
-                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                    child: Text(
-                      snapshot.data["companyNo"],
-                      style: defaultRegularStyle,
-                    ),
-                  ),
-                ],
-              ),
-              emptySpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
-                    child: Text(
                       word.address(),
                       style: defaultRegularStyle,
                     ),
