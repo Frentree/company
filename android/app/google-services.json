@@ -54,7 +54,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:35952526312:android:e3933c6bae642ad0601a5d",
         "android_client_info": {
-          "package_name": "minji.companyplaylist"
+          "package_name": "com.frentree.mycompanyone"
         }
       },
       "oauth_client": [
@@ -62,7 +62,7 @@
           "client_id": "35952526312-3it28t471u1disds5ajutcb7366a35vf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "minji.companyplaylist",
+            "package_name": "com.frentree.mycompanyone",
             "certificate_hash": "0aa1a25ffc9a6d2a11218fd37eb3a35999d4e58e"
           }
         },
@@ -70,7 +70,7 @@
           "client_id": "35952526312-musipt41b9o7f0k00b4cd3u41gr19m3i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "minji.companyplaylist",
+            "package_name": "com.frentree.mycompanyone",
             "certificate_hash": "6fec542e51647f96b81423f5f7fcb6e6291c271b"
           }
         },
@@ -78,7 +78,7 @@
           "client_id": "35952526312-vd76t1lnuqlho7pd5hhn8535b5pm6fk1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "minji.companyplaylist",
+            "package_name": "com.frentree.mycompanyone",
             "certificate_hash": "49f73846af6120825c4a7fb4c308389b68e006b1"
           }
         },
