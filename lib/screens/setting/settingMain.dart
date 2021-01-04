@@ -547,7 +547,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                                   style: defaultMediumStyle,
                                 ),
                                 Text(
-                                  "pe.jeon87@frentree.com", // 회사 정보
+                                  "frentreedev@frentree.com", // 회사 정보
                                   style: hintStyle,
                                 ),
                               ],
@@ -589,7 +589,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                                   style: defaultMediumStyle,
                                 ),
                                 Text(
-                                  "0.01", // 회사 정보
+                                  "1.0.0", // 회사 정보
                                   style: hintStyle,
                                 ),
                               ],

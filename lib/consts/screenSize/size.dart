@@ -52,4 +52,4 @@ const double cardPaddingH = 1.0;
 const double buttonSizeH = 6.0;
 const double cardTitleSizeH = 4.0;
 const double cardSubTitleSizeH = 3.0;
-const double scheduleCardDefaultSizeH = 6.0;
+const double scheduleCardDefaultSizeH = 5.0;
