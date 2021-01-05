@@ -6,6 +6,7 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -16,7 +17,7 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
-meetingMain({BuildContext context, MeetingModel meetingModel}) async {
+meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}) async {
   MeetingModel _meetingModel = meetingModel;
   bool result = false;
   bool isChk = false;
@@ -41,6 +42,12 @@ meetingMain({BuildContext context, MeetingModel meetingModel}) async {
     _contentController.text = _meetingModel.contents;
     attendees = _meetingModel.attendees;
     startTime = _format.timeStampToDateTime(_meetingModel.startTime);
+  }
+
+  if (workData != null) {
+    _titleController.text = workData.title;
+    _contentController.text = workData.contents;
+    startTime = _format.timeStampToDateTime(workData.startTime);
   }
 
   await showModalBottomSheet(

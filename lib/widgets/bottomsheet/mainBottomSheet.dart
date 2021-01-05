@@ -86,7 +86,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
               _isStaffMethod(grade);
 
               return Container(
-                height: 35.0.h,
+                height: 34.0.h,
                 padding: EdgeInsets.only(
                   left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
@@ -131,11 +131,8 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                     ),
                     emptySpace,
                     /// 개발 미완료로 인한 숨김 처리
-                    /*Row(
-
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
                           child: Container(
@@ -161,9 +158,9 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                         ),
                       ],
                     ),
-                    emptySpace,*/
+                    emptySpace,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         GestureDetector(
                           child: Container(
@@ -171,7 +168,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                             decoration: BoxDecoration(
                               color: chipColorBlue,
                               borderRadius: BorderRadius.circular(
-                                SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
                               ),
                             ),
                             padding: EdgeInsets.symmetric(
@@ -187,7 +184,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                             _workBottomMove(1);
                           },
                         ),
-                        cardSpace,
+                        //cardSpace,
                         GestureDetector(
                           child: Container(
                             height: 6.0.h,
@@ -210,7 +207,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                             _workBottomMove(2);
                           },
                         ),
-                        cardSpace,
+                        //cardSpace,
                         GestureDetector(
                           child: Container(
                             height: 6.0.h,
@@ -252,7 +249,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                     ),
                     emptySpace,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
 
                         /// 개발 미완료로 인한 숨김 처리
@@ -308,7 +305,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                             _workBottomMove(7);
                           },
                         ),
-                        cardSpace,
+                        //cardSpace,
                         /// 개발 미완료로 인한 숨김 처리
                         /*ActionChip(
                           backgroundColor: chipColorRed,
@@ -324,7 +321,10 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                             //_workBottomMove(8);
                           },
                         ),*/
-                        if (!_isStaff) GestureDetector(
+
+
+                        /// 개발 미구현으로 인한 숨김 처리
+                        /*if (!_isStaff) GestureDetector(
                           child: Container(
                             height: 6.0.h,
                             decoration: BoxDecoration(
@@ -346,7 +346,9 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                             _workBottomMove(9);
                           },
                         ),
-                        cardSpace,
+                        cardSpace,*/
+
+
                         if (!_isStaff) GestureDetector(
                           child: Container(
                             height: 6.0.h,

@@ -28,6 +28,8 @@ class MeetingModel {
   Timestamp startDate;
   Timestamp startTime;
   int timeSlot;
+  int level;
+  String location;
 
   MeetingModel({
     this.id,
@@ -56,7 +58,9 @@ class MeetingModel {
         lastModDate = snapshot["lastModDate"] ?? null,
         startDate = snapshot["startDate"] ?? null,
         startTime = snapshot["startTime"] ?? null,
-        timeSlot = snapshot["timeSlot"];
+        timeSlot = snapshot["timeSlot"],
+        location = snapshot["location"],
+        level = snapshot["level"];
 
   toJson() {
     return {
@@ -71,6 +75,8 @@ class MeetingModel {
       "startDate": startDate,
       "startTime": startTime,
       "timeSlot": timeSlot,
+      "location": "",
+      "level": 2,
     };
   }
 }
