@@ -1,5 +1,6 @@
 const String COMPANY = "company";
 const String WORK = "work";
+const String ALARM= "alarm";
 const String EXPENSE = "expense";
 const String USER = "user";
 const String NOTICE = "notice";
