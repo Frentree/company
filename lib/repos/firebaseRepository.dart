@@ -1,3 +1,4 @@
+import 'package:MyCompany/models/alarmModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/models/approvalModel.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
@@ -62,6 +63,12 @@ class FirebaseRepository {
 
   Future<void> saveCompanyUser({CompanyUser companyUserModel}) =>
       _firebaseMethods.saveCompanyUser(companyUserModel: companyUserModel);
+
+  Future<void> saveAlarm({Alarm alarmModel, String companyCode, String mail}) => _firebaseMethods.saveAlarm(
+    alarmModel: alarmModel,
+    companyCode: companyCode,
+    mail: mail
+  );
 
   Future<void> saveWork({WorkModel workModel, String companyCode}) =>
       _firebaseMethods.saveWork(

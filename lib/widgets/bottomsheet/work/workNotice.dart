@@ -1,4 +1,5 @@
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/models/alarmModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -117,9 +118,16 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID,
                                       _noticeTitle.text),
                                   //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
                                 );
+                                /*Alarm _alarm = Alarm(
+
+                                );*/
                                 await FirebaseRepository().addNotice(
                                     companyCode: _loginUser.companyCode,
-                                    notice: _notice);
+                                    notice: _notice,
+                                );
+                                await FirebaseRepository().saveAlarm(
+
+                                );
                               } else {
                                 await FirebaseFirestore.instance
                                     .collection('company')
