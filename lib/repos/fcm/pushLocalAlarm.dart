@@ -3,9 +3,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-Future dailyAtTimeNotification(DateTime alarmTime) async {
-  final notiTitle = 'title';
-  final notiDesc = 'description';
+Future dailyAtTimeNotification(
+    {DateTime alarmTime, String title, String contents}) async {
+  final notiTitle = title;
+  final notiDesc = contents;
 
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final result = await flutterLocalNotificationsPlugin

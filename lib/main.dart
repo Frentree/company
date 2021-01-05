@@ -11,10 +11,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:MyCompany/provider/screen/loginScreenChange.dart';
 import 'package:MyCompany/provider/firebase/firebaseAuth.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+void _initNotiSetting() async {
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final initSettingsAndroid = AndroidInitializationSettings('@mipmap/launcher_icon');
+  final initSettingsIOS = IOSInitializationSettings(
+    requestSoundPermission: false,
+    requestBadgePermission: false,
+    requestAlertPermission: false,
+  );
+  final initSettings = InitializationSettings(
+    android: initSettingsAndroid,
+    iOS: initSettingsIOS,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    initSettings,
+  );
+}
 
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -24,6 +41,7 @@ void main() async {
   };
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  _initNotiSetting();
   runApp(MyApp());
 }
 

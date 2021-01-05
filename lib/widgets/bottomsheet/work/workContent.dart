@@ -6,6 +6,7 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'file:///M:/Flutter/AndroidProject/company/lib/repos/fcm/pushLocalAlarm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -147,6 +148,11 @@ workContent({BuildContext context, int type, WorkModel workModel}) async {
                                   await _repository.saveWork(
                                     workModel: _workModel,
                                     companyCode: _loginUser.companyCode,
+                                  );
+                                  dailyAtTimeNotification(
+                                    alarmTime: startTime,
+                                    title: "일정이 있습니다.",
+                                    contents: "일정 내용 : ${_titleController.text}"
                                   );
                                 }
                                 else {
