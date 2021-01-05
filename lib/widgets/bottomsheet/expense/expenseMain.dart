@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/screens/alarm/signBoxExpensePickDate.dart';
+import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:intl/intl.dart';
 
@@ -419,8 +421,13 @@ ExpenseMain(BuildContext context) async {
                                 DateFormat('yyyy-MM-dd').format(selectedDate),
                                 style: defaultRegularStyle,
                               ),
-                              onTap: () {
-                                _selectDate(context);
+                              onTap: () async {
+                                //_selectDate(context);
+                                selectedDate = await pickDate(
+                                  context,
+                                  selectedDate
+                                );
+                                setState((){});
                               },
                             ),
                           ),

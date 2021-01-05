@@ -1,5 +1,3 @@
-//내근 및 외근 스케줄을 입력하는 bottom sheet 입니다.
-
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
@@ -12,7 +10,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:MyCompany/consts/widgetSize.dart';
 
-workDatePage({BuildContext context, DateTime startTime}) async {
+pickDate(BuildContext context, DateTime startTime) async {
 
   DateTime date = DateTime.now();
 
@@ -32,23 +30,22 @@ workDatePage({BuildContext context, DateTime startTime}) async {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                     DateTimePickerWidget(
-                       minuteDivider: 5,
-                       initDateTime: startTime != null ? startTime : DateTime.now().minute < 30 ? DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,00) : DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,30),
-                       locale: DateTimePickerLocale.ko,
-                       dateFormat: "yyyy년 MM월 dd일 HH:mm",
-                       onConfirm: (dateTime, selectedIndex) {
-                         date= dateTime;
-                       },
-                       pickerTheme: DateTimePickerTheme(
-                         titleHeight: 5.0.h,
-                         cancelTextStyle: hintStyle,
-                         confirmTextStyle: defaultRegularStyle,
-                         pickerHeight: 40.0.h,
-                         itemTextStyle: defaultRegularStyle,
-                         itemHeight: 7.0.h,
-                       ),
-                     ),
+                    DateTimePickerWidget(
+                      initDateTime: startTime != null ? startTime : DateTime.now().minute < 30 ? DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,00) : DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,30),
+                      locale: DateTimePickerLocale.ko,
+                      dateFormat: "yyyy년 MM월 dd일",
+                      onConfirm: (dateTime, selectedIndex) {
+                        date= dateTime;
+                      },
+                      pickerTheme: DateTimePickerTheme(
+                        titleHeight: 5.0.h,
+                        cancelTextStyle: hintStyle,
+                        confirmTextStyle: defaultRegularStyle,
+                        pickerHeight: 40.0.h,
+                        itemTextStyle: defaultRegularStyle,
+                        itemHeight: 7.0.h,
+                      ),
+                    ),
                   ]
               ),
             );
