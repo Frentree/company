@@ -1,4 +1,5 @@
 //Firebase
+import 'package:MyCompany/models/alarmModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/approvalModel.dart';
@@ -76,34 +77,6 @@ class FirebaseMethods {
         .collection(COMPANY)
         .doc(companyModel.companyCode)
         .set(companyModel.toJson());
-  }
-
-  Future<List<DocumentSnapshot>> getCompany2({String companyName}) async {
-    List<DocumentSnapshot> result = [];
-    List<String> findString = companyName.split("");
-    QuerySnapshot querySnapshot = await firestore
-        .collection(COMPANY)
-        .where("companySearch", arrayContains: findString[0])
-        .get();
-
-    querySnapshot.docs.forEach((element) {
-      if (findString.length == 1) {
-        result.add(element);
-      } else {
-        int firstIndex = element.data()["companySearch"].indexOf(findString[0]);
-        for (int i = 1; i < findString.length; i++) {
-          if (element.data()["companySearch"][firstIndex + i] !=
-              findString[i]) {
-            break;
-          } else {
-            if (i == (findString.length - 1)) {
-              result.add(element);
-            }
-          }
-        }
-      }
-    });
-    return result;
   }
 
   Future<List<DocumentSnapshot>> getCompany() async {
@@ -198,8 +171,16 @@ class FirebaseMethods {
         .orderBy("name")
         .snapshots();
   }
+  //알람 데이터 관련
+  Future<void> saveAlarm({Alarm alarmModel, String companyCode, String mail}) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode).collection(USER).doc(mail)
+        .collection(ALARM)
+        .add(alarmModel.toJson());
+  }
 
-  //내외근 데이터 관련 관련
+  //내외근 데이터 관련
   Future<void> saveWork({WorkModel workModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
