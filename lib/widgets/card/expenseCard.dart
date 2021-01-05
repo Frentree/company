@@ -55,7 +55,7 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
               ),
               cardSpace,
               Container(
-                width: SizerUtil.deviceType == DeviceType.Tablet ? 11.0.w : 9.0.w,
+                width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
                 alignment: Alignment.center,
                 child: GestureDetector(
                   onTap: () {
@@ -76,7 +76,9 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
                   style: containerChipStyle,
                 ),
               ),
-              _popupMenu(context),
+
+              /// 기능 미구현으로 인한 숨김 처리
+              //_popupMenu(context),
             ],
           )
         )

@@ -56,7 +56,9 @@ class _SignBoxState extends State<SignBox> {
                   },
                 ),
                 cardSpace,
-                InkWell(
+
+                /// 기능 미구현으로 인한 숨김 처리
+                /*InkWell(
                   child: Container(
                     height: 5.0.h,
                     width: 42.0.w,
@@ -79,7 +81,9 @@ class _SignBoxState extends State<SignBox> {
                       tabIndex = 1;
                     });
                   },
-                ),
+                ),*/
+
+
               ],
             ),
           ),

@@ -1,13 +1,13 @@
 /*MOBILE TEXT SIZE*/
-const double defaultSizeM = 13.0;
+const double defaultSizeM = 11.0;
 const double appNameSizeM = 25.0;
 const double appVersionSizeM = 15.0;
 const double pageNameSizeM = 14.0;
 const double cardTitleSizeM = 12.0;
 const double cardSubTitleSizeM = 11.0;
 const double cardContentsSizeM = 11.0;
-const double cardTimeSizeM = 11.0;
-const double containerChipSizeM = 10.5;
+const double cardTimeSizeM = 10.0;
+const double containerChipSizeM = 9.5;
 const double popupMenuSizeM = 12.0;
 
 /*MOBILE WIDGET SIZE*/

@@ -129,7 +129,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                     child: GestureDetector(
                       child: profilePhoto(loginUser: _loginUser),
                       onTap: () {
-                        _loginUserInfoProvider.logoutUesr();
+                        //_loginUserInfoProvider.logoutUesr();
                       },
                     ),
                   ),
