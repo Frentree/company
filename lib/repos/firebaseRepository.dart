@@ -19,8 +19,13 @@ class FirebaseRepository {
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
 
+  // 경비 항목 조회 메서드
   Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
       _firebaseMethods.getExpense(companyCode, uid);
+
+  // 경비 항목 삭제 메서드
+  Future<void> deleteExpense(String companyCode, String documentID, String uid) =>
+      _firebaseMethods.deleteExpense(companyCode, documentID, uid);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
         userModel: userModel,

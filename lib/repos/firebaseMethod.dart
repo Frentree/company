@@ -1,4 +1,5 @@
 //Firebase
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/approvalModel.dart';
@@ -45,6 +46,19 @@ class FirebaseMethods {
         .collection(EXPENSE)
         .orderBy("buyDate", descending: true)
         .snapshots();
+  }
+
+  // 경비 저장 항목 삭제 메서드
+  Future<void> deleteExpense(
+      String companyCode, String documentID, String uid) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(uid)
+        .collection(EXPENSE)
+        .doc(documentID)
+        .delete();
   }
 
   //사용자 데이터 관련
