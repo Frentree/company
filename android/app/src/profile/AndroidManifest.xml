@@ -2,6 +2,8 @@
     package="com.frentree.mycompanyone"
     android:versionCode="3"
     android:versionName="1.0.0">
+    <application
+        android:requestLegacyExternalStorage="true"/>
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->

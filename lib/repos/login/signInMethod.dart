@@ -27,17 +27,13 @@ class SignInMethod{
       if(_signInEmailResult == true){
         _loginUser = await _repository.getUser(userMail: mail);
         _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
-      }
-
-      else{
+      } else{
         showLastFirebaseMessage(
           context: context,
           lastFirebaseMessage: _firebaseAuthProvider.manageErrorMessage()
         );
       }
-    }
-
-    else{
+    } else{
       showFunctionErrorMessage(
         context: context,
         errorMessage: "로그인 정보를 입력하세요!"
