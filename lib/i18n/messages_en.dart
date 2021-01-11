@@ -45,7 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticationFailCon" : MessageLookupByLibrary.simpleMessage("Authentication failed"),
     "authenticationSuccessCon" : MessageLookupByLibrary.simpleMessage("Authentication completed successfully.\nPlease enter the password that will be changed."),
     "beforeWork" : MessageLookupByLibrary.simpleMessage("before working"),
-    "birthDay" : MessageLookupByLibrary.simpleMessage("BirthDay"),
+    "birthDay" : MessageLookupByLibrary.simpleMessage("BirthDay(Option: 1999.01.01)"),
     "businessNumber" : MessageLookupByLibrary.simpleMessage("BusinessNumber"),
     "businessNumberCon" : MessageLookupByLibrary.simpleMessage("Please enter the business license number"),
     "buttonCon" : MessageLookupByLibrary.simpleMessage("Please click the Cencel button to exit"),
