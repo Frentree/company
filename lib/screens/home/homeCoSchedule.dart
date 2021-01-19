@@ -3,20 +3,16 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
-import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:MyCompany/widgets/table/workDetailTable.dart';
 import 'package:MyCompany/i18n/word.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/repos/tableCalendar/table_calendar.dart';
 
 //Model
-import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 
 //Provider
@@ -27,14 +23,8 @@ import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 
 //Widget
-import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:MyCompany/widgets/card/workCoScheduleCard.dart';
-
-
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
-
 import 'package:MyCompany/widgets/bottomsheet/work/attendance.dart';
 
 final word = Words();
