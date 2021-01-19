@@ -24,7 +24,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    AlarmScreenChangeProvider provider = AlarmScreenChangeProvider();
+    /*AlarmScreenChangeProvider provider = AlarmScreenChangeProvider();*/
     return Scaffold(
       body: Column(
           children: <Widget>[

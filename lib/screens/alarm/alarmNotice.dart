@@ -56,8 +56,6 @@ class AlarmNoticePageState extends State<AlarmNoticePage> {
         .collection("comment")
         .get();
     List<DocumentSnapshot> _commentCount = commentCount.docs;
-
-    print(_commentCount.length);
     return await _commentCount.length.toString();
   }
 

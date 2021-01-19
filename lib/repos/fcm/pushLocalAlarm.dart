@@ -1,51 +1,155 @@
-import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:io' show File, Platform;
+
+import 'package:rxdart/rxdart.dart';
+
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-Future dailyAtTimeNotification(
-    {DateTime alarmTime, String title, String contents}) async {
-  final notiTitle = title;
-  final notiDesc = contents;
 
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final result = await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-      IOSFlutterLocalNotificationsPlugin>()
-      ?.requestPermissions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+class NotificationPlugin {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
+  final BehaviorSubject<ReceivedNotification> didReceivedLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
+  var initializationSettings;
 
-  var android = AndroidNotificationDetails('id', notiTitle, notiDesc,
-      importance: Importance.max, priority: Priority.max);
-  var ios = IOSNotificationDetails();
-  var detail = NotificationDetails(android: android, iOS: ios);
-  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.deleteNotificationChannelGroup('id');
+  NotificationPlugin._() {
+    init();
+  }
 
-  await flutterLocalNotificationsPlugin.zonedSchedule(
-    0,
-    notiTitle,
-    notiDesc,
-    _setNotiTime(alarmTime),
-    detail,
-    androidAllowWhileIdle: true,
-    uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-    matchDateTimeComponents: DateTimeComponents.time,
-  );
+  init() async {
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    if (Platform.isIOS) {
+      _requestIOSPermission();
+    }
+
+    initializePlatformSpecifics();
+  }
+
+  initializePlatformSpecifics() {
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/launcher_icon');
+    var initializetionSettingsIOS = IOSInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: false,
+        onDidReceiveLocalNotification: (id, title, body, payload) async {
+          ReceivedNotification receivedNotification = ReceivedNotification(
+              id: id, title: title, body: body, payload: payload);
+          didReceivedLocalNotificationSubject.add(receivedNotification);
+        });
+
+    initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializetionSettingsIOS);
+  }
+
+  _requestIOSPermission() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin>()
+        .requestPermissions(
+      alert: false,
+      badge: true,
+      sound: true,
+    );
+  }
+
+  setListenerForLowerVersions(Function onNotificationInLowerVersions) {
+    didReceivedLocalNotificationSubject.listen((receivedNotification) {
+      onNotificationInLowerVersions(receivedNotification);
+    });
+  }
+
+  setOnNotificationClick(Function onNotificationClick) async {
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (String payload) async {
+          onNotificationClick(payload);
+        });
+  }
+
+  Future<void> showNotification() async {
+    var androidChannelSpecifics = AndroidNotificationDetails(
+      'CHANNEL_ID',
+      'CHANNEL_NAME',
+      'CHANNEL_DESCRIPTION',
+      importance: Importance.max,
+      priority: Priority.max,
+      playSound: true,
+      styleInformation: DefaultStyleInformation(true, true),
+    );
+    var iosChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidChannelSpecifics, iOS: iosChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      "Test Title",
+      "Test Body",
+      platformChannelSpecifics,
+      payload: "Test Playload",
+    );
+  }
+
+  Future<void> scheduleNotification({int alarmId, DateTime alarmTime, String title, String contents, String payload}) async {
+    var androidChannelSpecifics = AndroidNotificationDetails(
+      'CHANNEL_ID 1',
+      title,
+      contents,
+      importance: Importance.max,
+      priority: Priority.max,
+      playSound: true,
+    );
+    var iosChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidChannelSpecifics, iOS: iosChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      alarmId,
+      title,
+      contents,
+      _setNotiTime(alarmTime),
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload:payload,
+    );
+  }
+
+  tz.TZDateTime _setNotiTime(DateTime alarmTime) {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
+
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduledDate = tz.TZDateTime(tz.local, alarmTime.year, alarmTime.month, alarmTime.day,
+        alarmTime.hour, alarmTime.minute);
+
+    return scheduledDate;
+  }
+
 }
 
-tz.TZDateTime _setNotiTime(DateTime alarmTime) {
-  tz.initializeTimeZones();
-  tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
+NotificationPlugin notificationPlugin = NotificationPlugin._();
 
-  final now = tz.TZDateTime.now(tz.local);
-  var scheduledDate = tz.TZDateTime(tz.local, alarmTime.year, alarmTime.month, alarmTime.day,
-      alarmTime.hour, alarmTime.minute);
+class ReceivedNotification {
+  final int id;
+  final String title;
+  final String body;
+  final String payload;
 
-  return scheduledDate;
+  ReceivedNotification({
+    @required this.id,
+    @required this.title,
+    @required this.body,
+    @required this.payload,
+  });
 }
+
+
+
+
+
+
 
 
