@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/expenseModel.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/alarm/expenseImageDialog.dart';
 import 'package:MyCompany/i18n/word.dart';
@@ -14,9 +15,11 @@ import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
+Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model, String uid, String id) {
+
   Format _format = Format();
   var returnString = NumberFormat("###,###", "en_US");
+
 
   return Card(
     elevation: 0,
@@ -24,118 +27,147 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model) {
     child: Padding(
         padding: cardPadding,
         child: Container(
-          height: scheduleCardDefaultSizeH.h,
-          child: Row(
-            children: [
-              Container(
-                width: SizerUtil.deviceType == DeviceType.Tablet ? 19.0.w : 17.0.w,
-                alignment: Alignment.center,
-                child: Text(
-                  _format.dateFormatForExpenseCard(model.buyDate),
-                  style: containerChipStyle,
-                ),
-              ),
-              cardSpace,
-              Container(
-                width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
-                alignment: Alignment.center,
-                child: Text(
-                  model.contentType == "석식비" ? word.dinner(): model.contentType == "중식비" ? word.lunch() : model.contentType == "교통비" ? word.transportation() : word.etc(),
-                  style: containerChipStyle,
-                ),
-              ),
-              cardSpace,
-              Container(
-                width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
-                alignment: Alignment.centerRight,
-                child: Text(
-                  returnString.format(model.cost),
-                  style: containerChipStyle,
-                ),
-              ),
-              cardSpace,
-              Container(
-                width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () {
-                    ExpenseImageDialog(context, model.imageUrl);
-                  },
-                  child: model.imageUrl == "" ? Container() : Icon(
-                    Icons.receipt_long_outlined,
-                    size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+            height: scheduleCardDefaultSizeH.h,
+            child: Row(
+              children: [
+                Container(
+                  width: SizerUtil.deviceType == DeviceType.Tablet
+                      ? 16.0.w
+                      : 17.0.w,
+                  alignment: Alignment.center,
+                  child: Text(
+                    _format.dateFormatForExpenseCard(model.buyDate),
+                    style: containerChipStyle,
                   ),
                 ),
-              ),
-              cardSpace,
-              Container(
-                width: SizerUtil.deviceType == DeviceType.Tablet ? 11.0.w : 9.0.w,
-                alignment: Alignment.center,
-                child: Text(
-                  model.status.toString(),
-                  style: containerChipStyle,
+                cardSpace,
+                Container(
+                  width: SizerUtil.deviceType == DeviceType.Tablet
+                      ? 15.0.w
+                      : 13.0.w,
+                  alignment: Alignment.center,
+                  child: Text(
+                    model.contentType == "석식비"
+                        ? word.dinner()
+                        : model.contentType == "중식비"
+                            ? word.lunch()
+                            : model.contentType == "교통비"
+                                ? word.transportation()
+                                : word.etc(),
+                    style: containerChipStyle,
+                  ),
                 ),
-              ),
-
-              /// 기능 미구현으로 인한 숨김 처리
-              //_popupMenu(context),
-            ],
-          )
-        )
-    ),
+                cardSpace,
+                Container(
+                  width: SizerUtil.deviceType == DeviceType.Tablet
+                      ? 15.0.w
+                      : 13.0.w,
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    returnString.format(model.cost),
+                    style: containerChipStyle,
+                  ),
+                ),
+                cardSpace,
+                Container(
+                  width: SizerUtil.deviceType == DeviceType.Tablet
+                      ? 15.0.w
+                      : 13.0.w,
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap: () {
+                      ExpenseImageDialog(context, model.imageUrl);
+                    },
+                    child: model.imageUrl == ""
+                        ? Container()
+                        : Icon(
+                            Icons.receipt_long_outlined,
+                            size: SizerUtil.deviceType == DeviceType.Tablet
+                                ? iconSizeTW.w
+                                : iconSizeMW.w,
+                          ),
+                  ),
+                ),
+                cardSpace,
+                Container(
+                  width:
+                      SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 9.0.w,
+                  alignment: Alignment.center,
+                  child: Text(
+                    model.status.toString(),
+                    style: containerChipStyle,
+                  ),
+                ),
+                _popupMenu(context, companyCode, id, uid),
+              ],
+            ))),
   );
 }
 
-Container _popupMenu(BuildContext context) {
+Container _popupMenu(BuildContext context, String companyCode, String id, String uid) {
+  FirebaseRepository _repository = FirebaseRepository();
   return Container(
-    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-    alignment: Alignment.center,
-    child: PopupMenuButton(
-      icon: Icon(
-        Icons.arrow_forward_ios_sharp,
-        size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
-      ),
-      onSelected: (value) async {
-
-      },
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem(
-          height: 7.0.h,
-          value: 1,
-          child: Row(
-            children: [
-              Container(
-                child: Icon(
-                  Icons.edit,
-                  size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
+      width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 5.0.w,
+      alignment: Alignment.center,
+      child: PopupMenuButton(
+          icon: Icon(
+            Icons.arrow_forward_ios_sharp,
+            size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+          ),
+          onSelected: (value) async {},
+          itemBuilder: (BuildContext context) => [
+                PopupMenuItem(
+                  height: 7.0.h,
+                  value: 1,
+                  child: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.edit,
+                          size: SizerUtil.deviceType == DeviceType.Tablet
+                              ? popupMenuIconSizeTW.w
+                              : popupMenuIconSizeMW.w,
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: SizerUtil.deviceType == DeviceType.Tablet
+                                  ? 1.5.w
+                                  : 2.0.w)),
+                      Text(
+                        word.update(),
+                        style: popupMenuStyle,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-              Text(
-                word.update(),
-                style: popupMenuStyle,
-              )
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          height: 7.0.h,
-          value: 2,
-          child: Row(
-            children: [
-              Icon(
-                Icons.delete,
-                size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-              ),
-              Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
-              Text(
-                word.delete(),
-                style: popupMenuStyle,
-              )
-            ],
-          ),
-        ),
-      ]
-    )
-  );
+                PopupMenuItem(
+                  height: 7.0.h,
+                  value: 2,
+                  child: GestureDetector(
+                    onTap: () {
+                      _repository.deleteExpense(companyCode, id, uid);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          size: SizerUtil.deviceType == DeviceType.Tablet
+                              ? popupMenuIconSizeTW.w
+                              : popupMenuIconSizeMW.w,
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(
+                                left: SizerUtil.deviceType == DeviceType.Tablet
+                                    ? 1.5.w
+                                    : 2.0.w)),
+                        Text(
+                          word.delete(),
+                          style: popupMenuStyle,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ]));
 }

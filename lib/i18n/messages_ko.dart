@@ -45,7 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticationFailCon" : MessageLookupByLibrary.simpleMessage("인증이 실패 하였습니다"),
     "authenticationSuccessCon" : MessageLookupByLibrary.simpleMessage("인증이 완료되었습니다.\n변경될 비밀번호를 입력해주세요"),
     "beforeWork" : MessageLookupByLibrary.simpleMessage("출근전"),
-    "birthDay" : MessageLookupByLibrary.simpleMessage("생년월일"),
+    "birthDay" : MessageLookupByLibrary.simpleMessage("생년월일(옵션: 1999.01.01)"),
     "businessNumber" : MessageLookupByLibrary.simpleMessage("사업자번호"),
     "businessNumberCon" : MessageLookupByLibrary.simpleMessage("사업자번호를 입력해주세요"),
     "buttonCon" : MessageLookupByLibrary.simpleMessage("Cancel 버튼을 클릭하여 종료해주세요"),

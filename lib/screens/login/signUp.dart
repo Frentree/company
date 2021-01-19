@@ -62,7 +62,7 @@ class SignUpPageState extends State<SignUpPage> {
   bool isPhoneVerify = true/*false*/;
 
   //폼 유효성 여부 확인을 위한 List
-  List<bool> isFormValidation = [false, false, false, false, false, false];
+  List<bool> isFormValidation = [false, false, false, false, false];
 
   //인증 코드 저장을 위한 List
   List<String> _smsCode = ["", "", "", "", "", ""];
@@ -103,7 +103,7 @@ class SignUpPageState extends State<SignUpPage> {
     _newUser = User(
       mail: _mailTextCon.text.replaceAll(" ", ""),
       name: _nameTextCon.text.replaceAll(" ", ""),
-      birthday: _birthdayTextCon.text.replaceAll(".", ""),
+      birthday: _birthdayTextCon.text == null ? "" : _birthdayTextCon.text.replaceAll(".", ""),
       phone: _phoneNumberTextCon.text,
     );
 
@@ -284,14 +284,21 @@ class SignUpPageState extends State<SignUpPage> {
                             value: value,
                           );
                         }),
-                        onChanged: ((text){
+                        onChanged: ((text) {
+                          setState(() {
+                          });
+                        })
+
+                        /*onChanged: ((text){
                           bool _result = _loginRepository.isFormValidation(
                             validationFunction: _formKeyBirthday.currentState.validate(),
                           );
                           setState(() {
-                            isFormValidation[4] = _result;
+                            //isFormValidation[4] = _result;
                           });
-                        }),
+                        }),*/
+
+
                       ),
                     ),
                     emptySpace,
@@ -322,7 +329,7 @@ class SignUpPageState extends State<SignUpPage> {
                             validationFunction: _formKeyPhone.currentState.validate(),
                           );
                           setState(() {
-                            isFormValidation[5] = _result;
+                            isFormValidation[4] = _result;
                           });
                         }),
                       ),

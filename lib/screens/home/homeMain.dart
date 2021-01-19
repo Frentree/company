@@ -165,7 +165,7 @@ class HomeMainPageState extends State<HomeMainPage> {
 
       //네비게이션 바
       bottomNavigationBar: Container(
-        height: 12.0.h,
+        height: 10.0.h,
         child: BottomNavigationBar(
           backgroundColor: whiteColor,
           selectedItemColor: mainColor,

@@ -49,6 +49,19 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  // 경비 저장 항목 삭제 메서드
+  Future<void> deleteExpense(
+      String companyCode, String documentID, String uid) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(uid)
+        .collection(EXPENSE)
+        .doc(documentID)
+        .delete();
+  }
+
   //사용자 데이터 관련
   Future<void> saveUser({User userModel}) async {
     return await firestore
