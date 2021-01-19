@@ -10,11 +10,7 @@ import 'package:MyCompany/i18n/word.dart';
 
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
 
-<<<<<<< HEAD
-=======
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
-
->>>>>>> minji
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
