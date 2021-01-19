@@ -3,7 +3,9 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/meetingModel.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
@@ -27,6 +29,7 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/card/workScheduleCard.dart';
 
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
@@ -57,6 +60,14 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
     );
   }
 
+  Widget _buildHolidaysMarker() {
+    return Icon(
+      Icons.cake,
+      size: 20.0,
+      color: Colors.pinkAccent,
+    );
+  }
+
   DateTime selectTime = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day, 21, 00);
   FirebaseRepository _repository = FirebaseRepository();
@@ -66,12 +77,39 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
   Format _format = Format();
 
   List<bool> isDetail = List<bool>();
+  bool isBirthdayDetail = false;
+
+  Map<int, bool> test = {};
   Map<DateTime, List<dynamic>> _events;
+  Map<DateTime, List<dynamic>> _holidays;
+
+  ItemScrollController _scrollController = ItemScrollController();
 
   @override
   void initState() {
     super.initState();
     _calendarController = CalendarController();
+    notificationPlugin.setOnNotificationClick(onNotificationClick);
+
+  }
+
+
+  onNotificationClick(String payload){
+    print('Payload $payload');
+    int index = 0;
+    int i = 0;
+    test.forEach((key, value) {
+      if(key != int.parse(payload)){
+        i++;
+      }
+      else
+        index = i;
+    });
+    print("test $test");
+    setState(() {
+      test[int.parse(payload)] = true;
+    });
+    _scrollController.scrollTo(index: index, duration: Duration(seconds: 1));
   }
 
   @override
@@ -80,8 +118,10 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    print(_calendarController.calendarFormat);
     LoginUserInfoProvider _loginUserInfoProvider =
         Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
@@ -97,13 +137,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               if (snapshot.hasData) {
                 snapshot.data.documents.forEach((element) {
                   var elementData = element.data();
-                  if (elementData["createUid"] == _loginUser.mail ||
-                      elementData["attendees"] != null &&
-                          elementData["attendees"]
-                              .keys
-                              .contains(_loginUser.mail)) {
-                    DateTime _startDate =
-                        _format.timeStampToDateTime(elementData["startDate"]);
+                  if (elementData["createUid"] == _loginUser.mail || elementData["attendees"] != null && elementData["attendees"].keys.contains(_loginUser.mail)) {
+                    DateTime _startDate = _format.timeStampToDateTime(elementData["startDate"]);
                     if (_events[_startDate] == null) {
                       _events.addAll({_startDate: []});
                     }
@@ -111,219 +146,318 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                   }
                 });
               }
-              return Container(
-                color: Colors.white,
-                child: TableCalendar(
-                  events: _events,
-                  calendarController: _calendarController,
-                  initialCalendarFormat: CalendarFormat.week,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  availableCalendarFormats: {
-                    CalendarFormat.week: word.weekly(),
-                    CalendarFormat.month: word.monthly()
-                  },
-                  onDaySelected: (day, events, holidays) {
-                    setState(() {
-                      selectTime = day;
-                      _calendarController
-                          .setCalendarFormat(CalendarFormat.week);
-                    });
-                  },
-                  headerStyle: HeaderStyle(
-                    titleTextStyle: defaultMediumStyle,
-                    headerPadding: EdgeInsets.symmetric(vertical: 2.0.h),
-                  ),
-                  calendarStyle: CalendarStyle(
-                    selectedColor: mainColor,
-                    todayStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                      fontWeightName: "Bold",
-                      fontColor: whiteColor,
-                    ),
-                    weekdayStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                      fontColor: mainColor,
-                      fontWeightName: "Regular",
-                    ),
-                    saturdayStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                      fontColor: blueColor,
-                      fontWeightName: "Regular",
-                    ),
-                    weekendStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                      fontColor: redColor,
-                      fontWeightName: "Regular",
-                    ),
-                    selectedStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                      fontWeightName: "Bold",
-                      fontColor: whiteColor,
-                    ),
-                    outsideStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                      fontColor: Colors.black26,
-                      fontWeightName: "Regular",
-                    ),
-                    outsideSaturdayStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                      fontColor: Colors.blue[200],
-                      fontWeightName: "Regular",
-                    ),
-                    outsideWeekendStyle: customStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                      fontColor: Colors.red[200],
-                      fontWeightName: "Regular",
-                    ),
-                    eventDayStyle: customStyle(
-                    fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                    fontColor: mainColor,
-                    fontWeightName: "Regular",
-                  ),
-                  ),
 
-                  builders: CalendarBuilders(
-                    markersBuilder: (context, date, events, holidays) {
-                      List<Widget> children = [];
-                      if (events.isNotEmpty) {
-                        children.add(Positioned(
-                          left: SizerUtil.deviceType == DeviceType.Tablet ? 8.0.w : 7.0.w,
-                          top: SizerUtil.deviceType == DeviceType.Tablet ? 5.5.h : 4.5.h,
-                          child: _buildEventMarker(date, events),
-                        ));
-                      }
-                      return children;
-                    },
-                  ),
-                ),
+              return FutureBuilder(
+                future: _repository.getBirthday(companyCode: _loginUser.companyCode),
+                builder: (context, snapshot) {
+                  _holidays = {};
+                  _holidays = snapshot.data;
+                  return Container(
+                    color: Colors.white,
+                    child: TableCalendar(
+                      events: _events,
+                      holidays: _holidays,
+                      calendarController: _calendarController,
+                      initialCalendarFormat: CalendarFormat.week,
+                      startingDayOfWeek: StartingDayOfWeek.monday,
+                      availableCalendarFormats: {
+                        CalendarFormat.week: word.weekly(),
+                        CalendarFormat.month: word.monthly()
+                      },
+                      onDaySelected: (day, events, holidays) {
+                        setState(() {
+                          selectTime = day;
+                          _calendarController
+                              .setCalendarFormat(CalendarFormat.week);
+                        });
+                      },
+                      headerStyle: HeaderStyle(
+                        titleTextStyle: defaultMediumStyle,
+                        headerPadding: EdgeInsets.symmetric(vertical: 2.0.h),
+                      ),
+                      calendarStyle: CalendarStyle(
+                        holidayStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                          fontWeightName: "Bold",
+                          fontColor: Colors.pinkAccent,
+                        ),
+                        selectedColor: mainColor,
+                        todayStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                          fontWeightName: "Bold",
+                          fontColor: whiteColor,
+                        ),
+                        weekdayStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                          fontColor: mainColor,
+                          fontWeightName: "Regular",
+                        ),
+                        saturdayStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                          fontColor: blueColor,
+                          fontWeightName: "Regular",
+                        ),
+                        weekendStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                          fontColor: redColor,
+                          fontWeightName: "Regular",
+                        ),
+                        selectedStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                          fontWeightName: "Bold",
+                          fontColor: whiteColor,
+                        ),
+                        outsideStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                          fontColor: Colors.black26,
+                          fontWeightName: "Regular",
+                        ),
+                        outsideSaturdayStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                          fontColor: Colors.blue[200],
+                          fontWeightName: "Regular",
+                        ),
+                        outsideWeekendStyle: customStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                          fontColor: Colors.red[200],
+                          fontWeightName: "Regular",
+                        ),
+                        eventDayStyle: customStyle(
+                        fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                        fontColor: mainColor,
+                        fontWeightName: "Regular",
+                      ),
+                      ),
+
+                      builders: CalendarBuilders(
+                        markersBuilder: (context, date, events, holidays) {
+                          List<Widget> children = [];
+                          if (events.isNotEmpty) {
+                            children.add(Positioned(
+                              left: SizerUtil.deviceType == DeviceType.Tablet ? 8.0.w : 7.0.w,
+                              top: SizerUtil.deviceType == DeviceType.Tablet ? 5.5.h : 4.5.h,
+                              child: _buildEventMarker(date, events),
+                            ));
+                          }
+                          if (holidays.isNotEmpty) {
+                            children.add(
+                              Positioned(
+                                right: -2,
+                                top: -2,
+                                child: _buildHolidaysMarker(),
+                              ),
+                            );
+                          }
+                          return children;
+                        },
+                      ),
+                    ),
+                  );
+                }
               );
             },
           ),
           emptySpace,
-          StreamBuilder(
-            stream: _repository.getSelectedDateCompanyWork(
-                companyCode: _loginUser.companyCode,
-                selectedDate: _format.dateTimeToTimeStamp(selectTime)),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              var _companyWork = [];
-              snapshot.data.documents.forEach((element) {
-                var elementData = element.data();
-                if (elementData["createUid"] == _loginUser.mail ||
-                    (elementData["attendees"] != null &&
-                        elementData["attendees"]
-                            .keys
-                            .contains(_loginUser.mail))) {
-                  _companyWork.add(element);
-                }
-              });
-              if (_companyWork.length == 0) {
-                isDetail = [];
-                return Expanded(
-                  child: ListView(
-                    children: [
-                      Card(
+          Expanded(
+            child: Container(
+              color: Colors.yellow,
+              child: Column(
+                children: [
+                  (_holidays != null && _holidays.containsKey(DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0))) ? GestureDetector(
+                    onTap: (){
+                      if(_calendarController.calendarFormat == CalendarFormat.week){
+                        setState(() {
+                          isBirthdayDetail = !isBirthdayDetail;
+                        });
+                      }
+                    },
+                    child: Container(
+                      color: Colors.pink,
+                      child: Card(
                         elevation: 0,
                         shape: cardShape,
                         child: Padding(
                           padding: cardPadding,
                           child: Container(
-                            height: scheduleCardDefaultSizeH.h,
-                            alignment: Alignment.center,
-                            child: Text(
-                              word.noSchedule(),
-                              style: cardTitleStyle,
-                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "오늘의 생일자 " + _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length.toString() + "명",
+                                  style: cardTitleStyle,
+                                ),
+                                isBirthdayDetail ? ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length,
+                                  itemBuilder: (context, index){
+                                    CompanyUser _companyUser = _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)][index];
+                                    return Container(
+                                      child: Center(
+                                        child: Text(
+                                            _companyUser.team + " " + _companyUser.name + " " + _companyUser.position
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ) : Container(),
+                              ],
+                            )
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                );
-              } else {
-                while (isDetail.length != _companyWork.length) {
-                  isDetail =
-                      List.generate(_companyWork.length, (index) => false);
-                }
-                if (isDetail.length > _companyWork.length) {
-                  if (isDetail.contains(true)) {
-                    isDetail.remove(true);
-                  } else
-                    isDetail = [];
-                }
-                print(isDetail);
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: _companyWork.length,
-                    itemBuilder: (context, index) {
-                      dynamic _companyData;
-                      if (_companyWork[index].data()["type"] == "내근" ||
-                          _companyWork[index].data()["type"] == "외근") {
-                        _companyData = WorkModel.fromMap(
-                            _companyWork[index].data(),
-                            _companyWork[index].documentID);
-                      } else if (_companyWork[index].data()["type"] == "미팅") {
-                        _companyData = MeetingModel.fromMap(
-                            _companyWork[index].data(),
-                            _companyWork[index].documentID);
+                    ),
+                  ) : Container(),
+                  StreamBuilder(
+                    stream: _repository.getSelectedDateCompanyWork(
+                        companyCode: _loginUser.companyCode,
+                        selectedDate: _format.dateTimeToTimeStamp(selectTime)),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.data == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
 
-                      switch (_companyData.type) {
-                        case '내근':
-                        case '외근':
-                          return GestureDetector(
-                            child: workScheduleCard(
-                              context: context,
-                              companyCode: _loginUser.companyCode,
-                              workModel: _companyData,
-                              isDetail: isDetail[index],
-                            ),
-                            onTap: () {
-                              setState(() {
-                                isDetail[index] = !isDetail[index];
-                                for (int i = 0; i < isDetail.length; i++) {
-                                  if (i != index) {
-                                    isDetail[i] = false;
-                                  }
-                                }
-                              });
+                      var _companyWork = [];
+                      snapshot.data.documents.forEach((element) {
+                        var elementData = element.data();
+                        if (elementData["createUid"] == _loginUser.mail || (elementData["attendees"] != null && elementData["attendees"].keys.contains(_loginUser.mail))) {
+                          _companyWork.add(element);
+                        }
+                      });
+                      if (_companyWork.length == 0) {
+                        test = {};
+                        isDetail = [];
+                        return Expanded(
+                          child: ListView(
+                            shrinkWrap:  true,
+                            children: [
+                              Card(
+                                elevation: 0,
+                                shape: cardShape,
+                                child: Padding(
+                                  padding: cardPadding,
+                                  child: Container(
+                                    height: scheduleCardDefaultSizeH.h,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      word.noSchedule(),
+                                      style: cardTitleStyle,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        if (test.length != _companyWork.length) {
+                          test = {};
+                          _companyWork.forEach((element) {
+                            test.addAll({element.data()["alarmId"] : false});
+                          });
+                          isDetail = List.generate(_companyWork.length, (index) => false);
+                        }
+
+                        if((test.length == _companyWork.length) && isDetail.contains(true)){
+                          int i = isDetail.indexOf(true);
+                          if(test[_companyWork[i].data()["alarmId"]] != true){
+                            test = {};
+                            _companyWork.forEach((element) {
+                              test.addAll({element.data()["alarmId"] : false});
+                            });
+                          }
+                        }
+
+                        if (test.length > _companyWork.length) {
+                          if (test.containsValue(true)) {
+                            test.removeWhere((key, value) => value == true);
+                            isDetail.remove(true);
+                          } else{
+                            test = {};
+                            isDetail = [];
+                          }
+
+                        }
+                        print("isDetail $isDetail");
+                        return Expanded(
+                          child: ScrollablePositionedList.builder(
+                            itemScrollController: _scrollController,
+                            itemCount: _companyWork.length,
+                            itemBuilder: (context, index) {
+                              dynamic _companyData;
+                              if (_companyWork[index].data()["type"] == "내근" ||
+                                  _companyWork[index].data()["type"] == "외근") {
+                                _companyData = WorkModel.fromMap(
+                                    _companyWork[index].data(),
+                                    _companyWork[index].documentID);
+                              } else if (_companyWork[index].data()["type"] == "미팅") {
+                                _companyData = MeetingModel.fromMap(
+                                    _companyWork[index].data(),
+                                    _companyWork[index].documentID);
+                              }
+
+                              switch (_companyData.type) {
+                                case '내근':
+                                case '외근':
+                                  return GestureDetector(
+                                    child: workScheduleCard(
+                                      context: context,
+                                      companyCode: _loginUser.companyCode,
+                                      workModel: _companyData,
+                                      isDetail: test[_companyWork[index].data()["alarmId"]],
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        isDetail[index] = !isDetail[index];
+                                        test[_companyWork[index].data()["alarmId"]] = !test[_companyWork[index].data()["alarmId"]];
+                                        for (int i = 0; i < test.length; i++) {
+                                          if (i != index) {
+                                            test[_companyWork[i].data()["alarmId"]] = false;
+                                            isDetail[i] = false;
+                                          }
+                                        }
+                                      });
+                                    },
+                                  );
+                                  break;
+                                case '미팅':
+                                  return GestureDetector(
+                                    child: meetingScheduleCard(
+                                      context: context,
+                                      loginUserMail: _loginUser.mail,
+                                      companyCode: _loginUser.companyCode,
+                                      meetingModel: _companyData,
+                                      isDetail: test[_companyWork[index].data()["alarmId"]],
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        isDetail[index] = !isDetail[index];
+                                        test[_companyWork[index].data()["alarmId"]] = !test[_companyWork[index].data()["alarmId"]];
+                                        for (int i = 0; i < test.length; i++) {
+                                          if (i != index) {
+                                            test[_companyWork[i].data()["alarmId"]] = false;
+                                            isDetail[i] = false;
+                                          }
+                                        }
+                                      });
+                                    },
+                                  );
+                                  break;
+                                default:
+                                  return Container();
+                              }
                             },
-                          );
-                          break;
-                        case '미팅':
-                          return GestureDetector(
-                            child: meetingScheduleCard(
-                              context: context,
-                              loginUserMail: _loginUser.mail,
-                              companyCode: _loginUser.companyCode,
-                              meetingModel: _companyData,
-                              isDetail: isDetail[index],
-                            ),
-                            onTap: () {
-                              setState(() {
-                                isDetail[index] = !isDetail[index];
-                                for (int i = 0; i < isDetail.length; i++) {
-                                  if (i != index) {
-                                    isDetail[i] = false;
-                                  }
-                                }
-                              });
-                            },
-                          );
-                          break;
-                        default:
-                          return Container();
+
+                          ),
+
+                        );
                       }
                     },
                   ),
-                );
-              }
-            },
+                ],
+              ),
+            ),
           ),
         ],
       ),
