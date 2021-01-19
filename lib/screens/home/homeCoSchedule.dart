@@ -343,7 +343,6 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               );
             },
           )
-
         ],
       ),
     );
