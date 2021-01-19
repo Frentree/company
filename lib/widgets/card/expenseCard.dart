@@ -6,20 +6,21 @@ import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/expenseModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/repos/showSnackBarMethod.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/alarm/expenseImageDialog.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/popupMenu/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model, String uid, String id) {
-
+Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model,
+    String uid, String docId) {
   Format _format = Format();
   var returnString = NumberFormat("###,###", "en_US");
-
 
   return Card(
     elevation: 0,
@@ -98,36 +99,107 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model, S
                     style: containerChipStyle,
                   ),
                 ),
-                _popupMenu(context, companyCode, id, uid),
+                _popupMenu(context, companyCode, docId, uid),
               ],
             ))),
   );
 }
 
-Container _popupMenu(BuildContext context, String companyCode, String id, String uid) {
+Container _popupMenu(
+    BuildContext context, String companyCode, String docId, String uid) {
+  bool _checker = true;
   FirebaseRepository _repository = FirebaseRepository();
+  void showToast(String msg, {int duration, int gravity}) {}
+
   return Container(
-      width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 5.0.w,
-      alignment: Alignment.center,
-      child: PopupMenuButton(
-          icon: Icon(
-            Icons.arrow_forward_ios_sharp,
-            size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
-          ),
-          onSelected: (value) async {},
-          itemBuilder: (BuildContext context) => [
-                PopupMenuItem(
-                  height: 7.0.h,
-                  value: 1,
+    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 5.0.w,
+    alignment: Alignment.center,
+    child: PopupMenuButton(
+        icon: Icon(
+          Icons.arrow_forward_ios_sharp,
+          size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+        ),
+        onSelected: (value) async {},
+        itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                height: 7.0.h,
+                value: 1,
+                child: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.edit,
+                        size: SizerUtil.deviceType == DeviceType.Tablet
+                            ? popupMenuIconSizeTW.w
+                            : popupMenuIconSizeMW.w,
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            left: SizerUtil.deviceType == DeviceType.Tablet
+                                ? 1.5.w
+                                : 2.0.w)),
+                    Text(
+                      word.update(),
+                      style: popupMenuStyle,
+                    )
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                height: 7.0.h,
+                value: 2,
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: <Widget>[
+                                Text(
+                                  "삭제하시겠습니까?",
+                                  style: defaultRegularStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text(
+                                "Ok",
+                                style: buttonBlueStyle,
+                              ),
+                              onPressed: () {
+                                _repository.deleteExpense(
+                                    companyCode, docId, uid);
+                                toastDelete(context);
+                                Navigator.pop(context);
+                              },
+                            ),
+                            FlatButton(
+                              child: Text(
+                                "Cancel",
+                                style: buttonBlueStyle,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: Row(
                     children: [
-                      Container(
-                        child: Icon(
-                          Icons.edit,
-                          size: SizerUtil.deviceType == DeviceType.Tablet
-                              ? popupMenuIconSizeTW.w
-                              : popupMenuIconSizeMW.w,
-                        ),
+                      Icon(
+                        Icons.delete,
+                        size: SizerUtil.deviceType == DeviceType.Tablet
+                            ? popupMenuIconSizeTW.w
+                            : popupMenuIconSizeMW.w,
                       ),
                       Padding(
                           padding: EdgeInsets.only(
@@ -135,39 +207,13 @@ Container _popupMenu(BuildContext context, String companyCode, String id, String
                                   ? 1.5.w
                                   : 2.0.w)),
                       Text(
-                        word.update(),
+                        word.delete(),
                         style: popupMenuStyle,
                       )
                     ],
                   ),
                 ),
-                PopupMenuItem(
-                  height: 7.0.h,
-                  value: 2,
-                  child: GestureDetector(
-                    onTap: () {
-                      _repository.deleteExpense(companyCode, id, uid);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.delete,
-                          size: SizerUtil.deviceType == DeviceType.Tablet
-                              ? popupMenuIconSizeTW.w
-                              : popupMenuIconSizeMW.w,
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(
-                                left: SizerUtil.deviceType == DeviceType.Tablet
-                                    ? 1.5.w
-                                    : 2.0.w)),
-                        Text(
-                          word.delete(),
-                          style: popupMenuStyle,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ]));
+              ),
+            ]),
+  );
 }
