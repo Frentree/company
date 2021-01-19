@@ -121,10 +121,10 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(_calendarController.calendarFormat);
     LoginUserInfoProvider _loginUserInfoProvider =
         Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
+
     return Scaffold(
       body: Column(
         children: [
