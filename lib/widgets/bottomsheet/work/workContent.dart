@@ -4,13 +4,12 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
-import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
 
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
 
-import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'file:///M:/Flutter/AndroidProject/company/lib/repos/fcm/pushLocalAlarm.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,8 @@ import 'package:provider/provider.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/consts/screenSize/widgetSize.dart';
+import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
@@ -139,7 +140,6 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                   startTime: _format.dateTimeToTimeStamp(startTime),
                                   timeSlot: _format.timeSlot(startTime),
                                   level: 0,
-                                  alarmId: _workModel.alarmId,
                                 ) : WorkModel(
                                   createUid: _loginUser.mail,
                                   name: _loginUser.name,
@@ -153,7 +153,6 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                   startTime: _format.dateTimeToTimeStamp(startTime),
                                   timeSlot: _format.timeSlot(startTime),
                                   level: 0,
-                                  alarmId: DateTime.now().hashCode,
                                 );
 
                                 if (workModel == null) {
@@ -161,20 +160,11 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     workModel: _workModel,
                                     companyCode: _loginUser.companyCode,
                                   );
-                                  /*dailyAtTimeNotification(
+                                  dailyAtTimeNotification(
                                     alarmTime: startTime,
                                     title: "일정이 있습니다.",
                                     contents: "일정 내용 : ${_titleController.text}"
-                                  );*/
-                                  if(startTime.isAfter(DateTime.now())){
-                                    await notificationPlugin.scheduleNotification(
-                                      alarmId: _workModel.alarmId,
-                                      alarmTime: startTime,
-                                      title: "일정이 있습니다.",
-                                      contents: "일정 내용 : ${_titleController.text}",
-                                      payload: _workModel.alarmId.toString(),
-                                    );
-                                  }
+                                  );
                                 }
                                 else {
                                   await _repository.updateWork(

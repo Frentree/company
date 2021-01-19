@@ -1,7 +1,6 @@
 //Flutter
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -61,19 +60,6 @@ class HomeMainPageState extends State<HomeMainPage> {
     }
   }
 
-  @override
-  void initState(){
-    super.initState();
-    /*notificationPlugin.setOnNotificationClick(onNotificationClick);*/
-  }
-
- /* onNotificationClick(String payload, ){
-    print('Payload $payload');
-    setState(() {
-      _currentPageIndex = int.parse(payload);
-    });
-  }
-*/
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider =

@@ -23,7 +23,6 @@ class WorkModel {
   Timestamp startTime;
   int timeSlot;
   int level;
-  int alarmId;
 
   WorkModel({
     this.id,
@@ -39,7 +38,6 @@ class WorkModel {
     this.startTime,
     this.timeSlot,
     this.level,
-    this.alarmId,
   });
 
   WorkModel.fromMap(Map snapshot, String id)
@@ -55,8 +53,7 @@ class WorkModel {
         startDate = snapshot["startDate"] ?? null,
         startTime = snapshot["startTime"] ?? null,
         timeSlot = snapshot["timeSlot"] ?? 0,
-        level = snapshot["level"] ?? 0,
-        alarmId = snapshot["alarmId"] ?? 0;
+        level = snapshot["level"] ?? 0;
 
   toJson() {
     return {
@@ -72,7 +69,6 @@ class WorkModel {
       "startTime": startTime,
       "timeSlot": timeSlot,
       "level": level,
-      "alarmId": alarmId,
     };
   }
 }

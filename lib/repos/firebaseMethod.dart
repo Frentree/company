@@ -142,26 +142,6 @@ class FirebaseMethods {
         .collection(USER).doc(companyUserModel.id).delete();
   }
 
-  Future<Map<DateTime, List<CompanyUser>>> getBirthday({String companyCode}) async {
-    Map<DateTime, List<CompanyUser>> birthday = {};
-
-    QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection(USER).orderBy("name").get();
-    querySnapshot.docs.forEach((element) {
-      if(element.data()["birthday"] != null){
-        DateTime key = DateTime.parse(element.data()["birthday"]);
-
-        if(birthday[DateTime(DateTime.now().year, key.month, key.day)] == null) {
-          birthday.addAll({DateTime(DateTime.now().year, key.month, key.day) : []});
-        }
-
-        birthday[DateTime(DateTime.now().year, key.month, key.day)].add(CompanyUser.fromMap(element.data(), element.id));
-      }
-    });
-
-    print(birthday);
-    return birthday;
-  }
-
   //회사 직원 관련
   Future<Map<String, String>> getColleague(
       {String loginUserMail, String companyCode}) async {
@@ -287,8 +267,6 @@ class FirebaseMethods {
         .snapshots();
   }
 
-
-
   //출퇴근 관련
   Future<DocumentReference> saveAttendance(
       {Attendance attendanceModel, String companyCode}) async {
@@ -309,8 +287,6 @@ class FirebaseMethods {
         .where("createDate", isEqualTo: today)
         .get();
   }
-
-
 
   Stream<QuerySnapshot> getColleagueNowAttendance(
       {String companyCode, String loginUserMail, Timestamp today}){

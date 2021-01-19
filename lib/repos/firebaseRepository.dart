@@ -125,8 +125,6 @@ class FirebaseRepository {
         selectedWeek: selectedWeek,
       );
 
-  Future<Map<DateTime, List<CompanyUser>>> getBirthday({String companyCode}) => _firebaseMethods.getBirthday(companyCode: companyCode);
-
   Future<Map<String, String>> getColleague(
           {String loginUserMail, String companyCode}) =>
       _firebaseMethods.getColleague(
