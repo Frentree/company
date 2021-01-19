@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/screens/alarm/signBoxExpensePickDate.dart';
+import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:intl/intl.dart';
 
@@ -419,8 +421,13 @@ ExpenseMain(BuildContext context) async {
                                 DateFormat('yyyy-MM-dd').format(selectedDate),
                                 style: defaultRegularStyle,
                               ),
-                              onTap: () {
-                                _selectDate(context);
+                              onTap: () async {
+                                //_selectDate(context);
+                                selectedDate = await pickDate(
+                                  context,
+                                  selectedDate
+                                );
+                                setState((){});
                               },
                             ),
                           ),
@@ -471,7 +478,42 @@ ExpenseMain(BuildContext context) async {
                         ],
                       ),
                       cardSpace,
-                      Container(
+                      GestureDetector(
+                        onTap: () {
+                          _detailClicked = !_detailClicked;
+                          setState(() {});
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                  height: 6.0.h,
+                                  child: IconButton(
+                                    padding: EdgeInsets.all(0.0),
+                                    icon: _detailClicked == true
+                                        ? Icon(Icons.keyboard_arrow_up)
+                                        : Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                ),
+                                Text(
+                                  word.addItem(),
+                                  style: defaultRegularStyle,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8),
+                                ),
+
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      /*Container(
                         child: Row(
                           children: [
                             Container(
@@ -493,7 +535,7 @@ ExpenseMain(BuildContext context) async {
                             ),
                           ],
                         ),
-                      ),
+                      ),*/
                       Visibility(
                         visible: _detailClicked,
                         child: emptySpace,

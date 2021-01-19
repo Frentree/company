@@ -1,6 +1,7 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
@@ -547,7 +548,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                                   style: defaultMediumStyle,
                                 ),
                                 Text(
-                                  "pe.jeon87@frentree.com", // 회사 정보
+                                  "frentreedev@frentree.com", // 회사 정보
                                   style: hintStyle,
                                 ),
                               ],
@@ -589,7 +590,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                                   style: defaultMediumStyle,
                                 ),
                                 Text(
-                                  "0.01", // 회사 정보
+                                  APP_VERSION, // 회사 정보
                                   style: hintStyle,
                                 ),
                               ],

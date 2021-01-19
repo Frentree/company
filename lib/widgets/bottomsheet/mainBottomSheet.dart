@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/work/workContent.dart';
+import 'package:MyCompany/widgets/bottomsheet/annual/annualLeaveMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/expense/expenseMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
@@ -49,6 +50,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
         break;
       case 7: // 경비 품의 생성
         result = await ExpenseMain(context);
+        if (result) {
+          Navigator.of(context).pop();
+        }
+        break;
+      case 8: // 연차 신청 생성
+        result = await AnnualLeaveMain(context);
         if (result) {
           Navigator.of(context).pop();
         }
@@ -303,6 +310,28 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                           ),
                           onTap: (){
                             _workBottomMove(7);
+                          },
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorRed,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "연차 신청",
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          onTap: (){
+                            _workBottomMove(8);
                           },
                         ),
                         //cardSpace,

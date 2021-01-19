@@ -148,7 +148,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                         _expense[index].data(),
                         _expense[index].documentID,
                       );
-                      return ExpenseCard(context, user.companyCode, _expenseData);
+                      return ExpenseCard(context, user.companyCode, _expenseData, user.id, _expense[index].documentID);
                     }
                   )
                 );

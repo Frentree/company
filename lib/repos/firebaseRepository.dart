@@ -1,4 +1,5 @@
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/models/approvalModel.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
@@ -20,8 +21,13 @@ class FirebaseRepository {
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
 
+  // 경비 항목 조회 메서드
   Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
       _firebaseMethods.getExpense(companyCode, uid);
+
+  // 경비 항목 삭제 메서드
+  Future<void> deleteExpense(String companyCode, String documentID, String uid) =>
+      _firebaseMethods.deleteExpense(companyCode, documentID, uid);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
         userModel: userModel,
@@ -222,6 +228,9 @@ class FirebaseRepository {
   Stream<QuerySnapshot> getGrade(String companyCode) =>
       _firebaseMethods.getGrade(companyCode);
 
+  Stream<QuerySnapshot> getGradeUser({String companyCode, int level}) =>
+      _firebaseMethods.getGradeUser(companyCode, level);
+
   Future<void> userGrade(String companyCode, String mail) =>
       _firebaseMethods.userGrade(companyCode, mail);
 
@@ -421,4 +430,10 @@ class FirebaseRepository {
   // 최근일정 갖고오기
   Stream<QuerySnapshot> getCopyMyShedule({String companyCode, String mail, int count}) =>
       _firebaseMethods.getCopyMyShedule(companyCode, mail, count);
+
+  Future<void> createAnnualLeave({String companyCode, WorkApproval workApproval}) =>
+      _firebaseMethods.createAnnualLeave(companyCode, workApproval);
+
+  Stream<QuerySnapshot> requestAnnualLeave({String companyCode, String mail, String orderByType, bool isOrderBy}) =>
+      _firebaseMethods.requestAnnualLeave(companyCode, mail, orderByType, isOrderBy);
 }

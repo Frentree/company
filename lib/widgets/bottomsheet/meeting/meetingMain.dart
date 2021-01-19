@@ -47,7 +47,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
   if (workData != null) {
     _titleController.text = workData.title;
     _contentController.text = workData.contents;
-    startTime = _format.timeStampToDateTime(workData.startTime);
+    //startTime = _format.timeStampToDateTime(workData.startTime);
   }
 
   await showModalBottomSheet(
@@ -274,7 +274,42 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
                     ],
                   ),
                   emptySpace,
-                  Container(
+                  GestureDetector(
+                    onTap: () {
+                      isChk = !isChk;
+                      setState(() {});
+                    },
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                              height: 6.0.h,
+                              child: IconButton(
+                                padding: EdgeInsets.all(0.0),
+                                icon: isChk == true
+                                    ? Icon(Icons.keyboard_arrow_up)
+                                    : Icon(Icons.keyboard_arrow_down),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8),
+                            ),
+                            Text(
+                              word.addItem(),
+                              style: defaultRegularStyle,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 8),
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  /*Container(
                     child: Row(
                       children: [
                         Container(
@@ -296,7 +331,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
                   Visibility(
                     visible: isChk,
                     child: emptySpace,

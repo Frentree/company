@@ -22,3 +22,25 @@ InvalidData(BuildContext context) {
             ]);
       });
 }
+
+FailedData(BuildContext context, String title, String content) {
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+                child: ListBody(children: <Widget>[
+                  Text(content),
+                ])),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("확인"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ]);
+      });
+}

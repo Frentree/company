@@ -4,12 +4,11 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
 
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
-
-import 'file:///M:/Flutter/AndroidProject/company/lib/repos/fcm/pushLocalAlarm.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +25,7 @@ final word = Words();
 
 workContent({BuildContext context, int type, WorkModel workModel, WorkData workData}) async {
   WorkModel _workModel = workModel;
+  bool _detailClicked = false;
   bool result = false;
   bool isChk = false;
 
@@ -52,7 +52,7 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
     _titleController.text = workData.title;
     _locationController.text = workData.location;
     _contentController.text = workData.contents;
-    startTime = _format.timeStampToDateTime(workData.startTime);
+    //startTime = _format.timeStampToDateTime(workData.startTime);
   }
 
   await showModalBottomSheet(
@@ -262,7 +262,43 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                       visible: (type == 2),
                       child: emptySpace,
                     ),
-                    Container(
+
+                    GestureDetector(
+                      onTap: () {
+                        isChk = !isChk;
+                        setState(() {});
+                      },
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                height: 6.0.h,
+                                child: IconButton(
+                                  padding: EdgeInsets.all(0.0),
+                                  icon: isChk == true
+                                      ? Icon(Icons.keyboard_arrow_up)
+                                      : Icon(Icons.keyboard_arrow_down),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 8),
+                              ),
+                              Text(
+                                word.addItem(),
+                                style: defaultRegularStyle,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 8),
+                              ),
+
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    /*Container(
                       child: Row(
                         children: [
                           Container(
@@ -284,7 +320,7 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
                     Visibility(
                       visible: isChk,
                       child: emptySpace,
