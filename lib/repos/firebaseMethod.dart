@@ -1,5 +1,6 @@
 //Firebase
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/approvalModel.dart';
@@ -46,6 +47,19 @@ class FirebaseMethods {
         .collection(EXPENSE)
         .orderBy("buyDate", descending: true)
         .snapshots();
+  }
+
+  // 경비 저장 항목 삭제 메서드
+  Future<void> deleteExpense(
+      String companyCode, String documentID, String uid) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(uid)
+        .collection(EXPENSE)
+        .doc(documentID)
+        .delete();
   }
 
   //사용자 데이터 관련
@@ -424,6 +438,15 @@ class FirebaseMethods {
         .document(companyCode)
         .collection("grade")
         .orderBy("gradeID", descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getGradeUser(String companyCode, int level) {
+    return Firestore.instance
+        .collection("company")
+        .document(companyCode)
+        .collection(USER)
+        .where("level", arrayContains: level)
         .snapshots();
   }
 
@@ -902,6 +925,24 @@ class FirebaseMethods {
         .where("createUid", isEqualTo: mail)
         .orderBy("createDate")
         .limit(count)
+        .snapshots();
+  }
+
+  Future<void> createAnnualLeave(String companyCode, WorkApproval workApproval) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORKAPPROVAL)
+        .add(workApproval.toJson());
+  }
+
+  Stream<QuerySnapshot> requestAnnualLeave(String companyCode, String mail, String orderByType, bool isOrderBy) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORKAPPROVAL)
+        .where("userMail", isEqualTo: mail)
+        .orderBy(orderByType, descending: isOrderBy)
         .snapshots();
   }
 
