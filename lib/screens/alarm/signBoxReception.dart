@@ -11,12 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class SignBoxPurchase extends StatefulWidget {
+class SignBoxReception extends StatefulWidget {
   @override
-  _SignBoxPurchaseState createState() => _SignBoxPurchaseState();
+  _SignBoxReceptionState createState() => _SignBoxReceptionState();
 }
 
-class _SignBoxPurchaseState extends State<SignBoxPurchase> {
+List<WorkApproval> approvalList = List();
+
+class _SignBoxReceptionState extends State<SignBoxReception> {
   String orderByType = "status";
   bool _isOrderBy = true;
   LoginUserInfoProvider _loginUserInfoProvider;
@@ -27,6 +29,10 @@ class _SignBoxPurchaseState extends State<SignBoxPurchase> {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
     user = _loginUserInfoProvider.getLoginUser();
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Text("결재"),
+        onPressed: (){},
+      ),
       body: Column(
         children: [
           Card(
@@ -131,7 +137,7 @@ Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, Us
   return StatefulBuilder(
     builder: (context, setState) {
       return InkWell(
-        child: RequestApprovalCard(
+        child: ApprovalCard(
             context:context,
             companyCode: user.companyCode,
             model: approval
@@ -141,7 +147,7 @@ Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, Us
           switch(approval.approvalType) {
             case "연차" :
             case "반차" :
-              annualLeaveRequestApprovalBottomSheet(
+              annualLeaveApprovalBottomSheet(
                 context: context,
                 companyCode: user.companyCode,
                 model: approval

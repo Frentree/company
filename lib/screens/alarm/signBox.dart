@@ -3,6 +3,7 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/screens/alarm/signBoxExpense.dart';
 import 'package:MyCompany/screens/alarm/signBoxPurchase.dart';
+import 'package:MyCompany/screens/alarm/signBoxReception.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:flutter/material.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
@@ -16,7 +17,7 @@ class SignBox extends StatefulWidget {
 class _SignBoxState extends State<SignBox> {
 
   int tabIndex = 0;
-  List<Widget> _page = [SignBoxExpense(),SignBoxPurchase()];
+  List<Widget> _page = [SignBoxExpense(),SignBoxPurchase(),SignBoxReception()];
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class _SignBoxState extends State<SignBox> {
                 InkWell(
                   child: Container(
                     height: 5.0.h,
-                    width: 42.0.w,
+                    width: 28.0.w,
                     alignment: Alignment.center,
                     decoration: tabIndex == 0 ? BoxDecoration(
                       border: Border(
@@ -61,7 +62,7 @@ class _SignBoxState extends State<SignBox> {
                 InkWell(
                   child: Container(
                     height: 5.0.h,
-                    width: 42.0.w,
+                    width: 28.0.w,
                     alignment: Alignment.center,
                     decoration: tabIndex == 1 ? BoxDecoration(
                         border: Border(
@@ -82,7 +83,33 @@ class _SignBoxState extends State<SignBox> {
                     });
                   },
                 ),
+                cardSpace,
 
+                /// 기능 미구현으로 인한 숨김 처리
+                InkWell(
+                  child: Container(
+                    height: 5.0.h,
+                    width: 28.0.w,
+                    alignment: Alignment.center,
+                    decoration: tabIndex == 2 ? BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                              color: mainColor,
+                              width: 1.0,
+                            )
+                        )
+                    ) : null,
+                    child: Text(
+                      "결재 수신함",
+                      style: defaultMediumStyle,
+                    ),
+                  ),
+                  onTap: (){
+                    setState(() {
+                      tabIndex = 2;
+                    });
+                  },
+                ),
 
               ],
             ),
