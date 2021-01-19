@@ -14,7 +14,6 @@ import 'package:MyCompany/widgets/popupMenu/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-import 'package:toast/toast.dart';
 
 final word = Words();
 
@@ -176,7 +175,7 @@ Container _popupMenu(
                               onPressed: () {
                                 _repository.deleteExpense(
                                     companyCode, docId, uid);
-
+                                toastDelete(context);
                                 Navigator.pop(context);
                               },
                             ),
@@ -186,7 +185,6 @@ Container _popupMenu(
                                 style: buttonBlueStyle,
                               ),
                               onPressed: () {
-                                toastDelete(context);
                                 Navigator.pop(context);
                               },
                             ),
