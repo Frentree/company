@@ -50,9 +50,13 @@ dependencies:
   toast: ^0.1.5
 
   flutter_local_notifications: ^3.0.1+2
+  rxdart: ^0.24.1
+
   flutter_masked_text: ^0.8.0
 
   path_provider: ^1.6.24
+
+  scrollable_positioned_list: ^0.1.8
 
   connectivity: ^0.4.9+3
   wifi: ^0.1.5
