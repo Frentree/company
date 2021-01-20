@@ -260,7 +260,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
           emptySpace,
           Expanded(
             child: Container(
-              color: Colors.yellow,
               child: Column(
                 children: [
                   (_holidays != null && _holidays.containsKey(DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0))) ? GestureDetector(
@@ -272,7 +271,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                       }
                     },
                     child: Container(
-                      color: Colors.pink,
                       child: Card(
                         elevation: 0,
                         shape: cardShape,
@@ -285,21 +283,29 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                   "오늘의 생일자 " + _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length.toString() + "명",
                                   style: cardTitleStyle,
                                 ),
-                                isBirthdayDetail ? ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length,
-                                  itemBuilder: (context, index){
-                                    CompanyUser _companyUser = _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)][index];
-                                    return Container(
-                                      child: Center(
-                                        child: Text(
-                                            _companyUser.team + " " + _companyUser.name + " " + _companyUser.position
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ) : Container(),
+                                Container(
+                                  height: 3.0.h,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length,
+                                    itemBuilder: (context, index){
+                                      CompanyUser _companyUser = _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)][index];
+                                      return Row(
+                                        children: [
+                                          Container(
+                                            child: Center(
+                                              child: Text(
+                                                  _companyUser.team + " " + _companyUser.name + " " + _companyUser.position
+                                              ),
+                                            ),
+                                          ),
+                                          cardSpace,
+
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
                               ],
                             )
                           ),
@@ -330,7 +336,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                         isDetail = [];
                         return Expanded(
                           child: ListView(
-                            shrinkWrap:  true,
                             children: [
                               Card(
                                 elevation: 0,
