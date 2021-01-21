@@ -100,6 +100,7 @@ class _SignBoxPurchaseState extends State<SignBoxPurchase> {
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseRepository().requestAnnualLeave(
               companyCode: user.companyCode,
+              whereUser: "userMail",
               mail: user.mail,
               isOrderBy: _isOrderBy,
               orderByType: orderByType,

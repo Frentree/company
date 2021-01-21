@@ -960,12 +960,12 @@ class FirebaseMethods {
         .add(workApproval.toJson());
   }
 
-  Stream<QuerySnapshot> requestAnnualLeave(String companyCode, String mail, String orderByType, bool isOrderBy) {
+  Stream<QuerySnapshot> requestAnnualLeave(String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy) {
     return firestore
         .collection(COMPANY)
         .doc(companyCode)
         .collection(WORKAPPROVAL)
-        .where("userMail", isEqualTo: mail)
+        .where(whereUser, isEqualTo: mail)
         .orderBy(orderByType, descending: isOrderBy)
         .snapshots();
   }

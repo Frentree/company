@@ -83,27 +83,6 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                 height: cardTitleSizeH.h,
                 child: Row(
                   children: [
-                    Visibility(
-                      visible: model.status == "요청",
-                      child: Container(
-                        width: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.w : 8.0.w,
-                        alignment: Alignment.center,
-                        child: Checkbox(
-                          value: isChk,
-                          onChanged: (value) {
-                            setState(() {
-                              isChk = value;
-                            });
-                            if(isChk){
-                              approvalList.add(model);
-                            } else {
-                              approvalList.remove(model);
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    cardSpace,
                     Container(
                       width: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.w : 8.0.w,
                       alignment: Alignment.center,
@@ -142,7 +121,27 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                       ),
                     ),
                     cardSpace,
-                    /// 기능 미구현으로 인한 숨김 처리
+                    Visibility(
+                      visible: model.status == "요청",
+                      child: Container(
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.w : 8.0.w,
+                        alignment: Alignment.center,
+                        child: Checkbox(
+                          value: isChk,
+                          onChanged: (value) {
+                            setState(() {
+                              isChk = value;
+                            });
+                            if(isChk){
+                              approvalList.add(model);
+                            } else {
+                              approvalList.remove(model);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    cardSpace,
                     //_popupMenu(context),
                   ],
                 )

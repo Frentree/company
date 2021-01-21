@@ -2,6 +2,8 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
+import 'package:MyCompany/models/workModel.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -237,7 +239,7 @@ annualLeaveRequestApprovalBottomSheet({BuildContext context, String companyCode,
                         cardSpace,
                         Expanded(
                           child: Text(
-                            DateFormat('yyyy-MM-dd').format(model.createDate.toDate()).toString(),
+                            DateFormat('yyyy-MM-dd HH:mm').format(model.createDate.toDate()).toString(),
                             style: defaultRegularStyle,
                           ),
                         ),
@@ -297,7 +299,7 @@ annualLeaveRequestApprovalBottomSheet({BuildContext context, String companyCode,
                           visible: model.status != "요청",
                           child: Expanded(
                             child: Text(
-                              DateFormat('yyyy-MM-dd').format(model.approvalDate.toDate()).toString(),
+                              DateFormat('yyyy-MM-dd HH:mm').format(model.approvalDate.toDate()).toString(),
                               style: defaultRegularStyle,
                             ),
                           ),
@@ -418,7 +420,7 @@ annualLeaveRequestApprovalBottomSheet({BuildContext context, String companyCode,
 annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkApproval model}) async {
   Format _format = Format();
   bool result = false;
-
+  DateTime startTime = DateTime.parse(model.requestDate.toDate().toString());
   await showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -640,7 +642,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                         cardSpace,
                         Expanded(
                           child: Text(
-                            DateFormat('yyyy-MM-dd').format(model.createDate.toDate()).toString(),
+                            DateFormat('yyyy-MM-dd HH:mm').format(model.createDate.toDate()).toString(),
                             style: defaultRegularStyle,
                           ),
                         ),
@@ -700,7 +702,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                           visible: model.status != "요청",
                           child: Expanded(
                             child: Text(
-                              DateFormat('yyyy-MM-dd').format(model.approvalDate.toDate()).toString(),
+                              DateFormat('yyyy-MM-dd HH:mm').format(model.approvalDate.toDate()).toString(),
                               style: defaultRegularStyle,
                             ),
                           ),
@@ -781,6 +783,23 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                   "status" : "승인",
                                                   "approvalDate" : Timestamp.now()
                                                 });
+                                                FirebaseRepository().saveWork(
+                                                  companyCode: companyCode,
+                                                  workModel: WorkModel(
+                                                    contents: "",
+                                                    createUid: model.userMail,
+                                                    createDate: Timestamp.now(),
+                                                    startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
+                                                    startTime: model.requestDate,
+                                                    timeSlot: 1,
+                                                    type: model.approvalType,
+                                                    title: model.approvalType,
+                                                    level: 0,
+                                                    location: "",
+                                                    lastModDate: Timestamp.now(),
+                                                    name: model.user,
+                                                  )
+                                                );
                                                 Navigator.of(context).pop(true);
                                               },
                                             ),

@@ -29,6 +29,7 @@ AnnualLeaveMain(BuildContext context) async {
   FirebaseRepository _reposistory = FirebaseRepository();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  bool isChk = false;
 
   LoginUserInfoProvider _loginUserInfoProvider;
 
@@ -37,6 +38,7 @@ AnnualLeaveMain(BuildContext context) async {
   User user = _loginUserInfoProvider.getLoginUser();
   UserData approvalUser;
 
+  TextEditingController _contentController = TextEditingController();
   TextEditingController _expenseController = TextEditingController();
 
   bool result = false;
@@ -285,9 +287,9 @@ AnnualLeaveMain(BuildContext context) async {
                                   requestDate: _format.dateTimeToTimeStamp(selectedDate),
                                   approvalContent: "",
                                   approvalType: _buildAnnualItem(_chosenItem),
-                                  requestContent: "",
+                                  requestContent: _contentController.text,
                                   approvalUser: approvalUser.name,
-                                  approvalMail: approvalUser.mail
+                                  approvalMail: approvalUser.mail,
                                 );
 
                                 FirebaseRepository().createAnnualLeave(
@@ -455,6 +457,108 @@ AnnualLeaveMain(BuildContext context) async {
                               )
                           ),
                         ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          isChk = !isChk;
+                          setState(() {});
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                  height: 6.0.h,
+                                  child: IconButton(
+                                    padding: EdgeInsets.all(0.0),
+                                    icon: isChk == true
+                                        ? Icon(Icons.keyboard_arrow_up)
+                                        : Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                ),
+                                Text(
+                                  word.addItem(),
+                                  style: defaultRegularStyle,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8),
+                                ),
+
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      /*Container(
+                      child: Row(
+                        children: [
+                          Container(
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                            height: 6.0.h,
+                            child: Checkbox(
+                              value: isChk,
+                              onChanged: (value) {
+                                setState(() {
+                                  isChk = value;
+                                });
+                              },
+                            ),
+                          ),
+                          cardSpace,
+                          Text(
+                            word.addItem(),
+                            style: defaultRegularStyle,
+                          ),
+                        ],
+                      ),
+                    ),*/
+                      Visibility(
+                        visible: isChk,
+                        child: emptySpace,
+                      ),
+                      Visibility(
+                        visible: isChk,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 6.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.chat_bubble_outline,
+                                    size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                  ),
+                                  cardSpace,
+                                  Text(
+                                    word.content(),
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            emptySpace,
+                            TextFormField(
+                              maxLines: 5,
+                              maxLengthEnforced: true,
+                              controller: _contentController,
+                              style: defaultRegularStyle,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                border: OutlineInputBorder(),
+                                contentPadding: textFormPadding,
+                                hintText: word.contentCon(),
+                                hintStyle: hintStyle,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       emptySpace,
                     ]),

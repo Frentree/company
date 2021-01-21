@@ -16,13 +16,20 @@ class SignBoxReception extends StatefulWidget {
   _SignBoxReceptionState createState() => _SignBoxReceptionState();
 }
 
-List<WorkApproval> approvalList = List();
+List<WorkApproval> approvalList;
 
 class _SignBoxReceptionState extends State<SignBoxReception> {
   String orderByType = "status";
   bool _isOrderBy = true;
   LoginUserInfoProvider _loginUserInfoProvider;
   User user;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    approvalList = List();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +113,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseRepository().requestAnnualLeave(
               companyCode: user.companyCode,
+              whereUser: "approvalMail",
               mail: user.mail,
               isOrderBy: _isOrderBy,
               orderByType: orderByType,
