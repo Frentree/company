@@ -262,57 +262,71 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
             child: Container(
               child: Column(
                 children: [
-                  (_holidays != null && _holidays.containsKey(DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0))) ? GestureDetector(
-                    onTap: (){
-                      if(_calendarController.calendarFormat == CalendarFormat.week){
-                        setState(() {
-                          isBirthdayDetail = !isBirthdayDetail;
-                        });
-                      }
-                    },
-                    child: Container(
-                      child: Card(
-                        elevation: 0,
-                        shape: cardShape,
-                        child: Padding(
-                          padding: cardPadding,
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Text(
-                                  "오늘의 생일자 " + _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length.toString() + "명",
-                                  style: cardTitleStyle,
-                                ),
-                                Container(
-                                  height: 3.0.h,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length,
-                                    itemBuilder: (context, index){
-                                      CompanyUser _companyUser = _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)][index];
-                                      return Row(
-                                        children: [
-                                          Container(
-                                            child: Center(
-                                              child: Text(
-                                                  _companyUser.team + " " + _companyUser.name + " " + _companyUser.position
-                                              ),
-                                            ),
-                                          ),
-                                          cardSpace,
+                  FutureBuilder(
+                    future: _repository.getBirthday(companyCode: _loginUser.companyCode),
+                    builder: (context, snapshot) {
+                      _holidays = {};
+                      _holidays = snapshot.data;
 
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )
+                      if (snapshot.data == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      return (_holidays.containsKey(DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0))) ? GestureDetector(
+                        onTap: (){
+                          if(_calendarController.calendarFormat == CalendarFormat.week){
+                            setState(() {
+                              isBirthdayDetail = !isBirthdayDetail;
+                            });
+                          }
+                        },
+                        child: Container(
+                          child: Card(
+                            elevation: 0,
+                            shape: cardShape,
+                            child: Padding(
+                              padding: cardPadding,
+                              child: Container(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "오늘의 생일자 " + _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length.toString() + "명",
+                                        style: cardTitleStyle,
+                                      ),
+                                      Container(
+                                        height: 3.0.h,
+                                        alignment: Alignment.center,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)].length,
+                                          itemBuilder: (context, index){
+                                            CompanyUser _companyUser = _holidays[DateTime(selectTime.year, selectTime.month, selectTime.day, 0, 0)][index];
+                                            return Row(
+                                              children: [
+                                                Container(
+                                                  child: Center(
+                                                    child: Text(
+                                                        _companyUser.team + " " + _companyUser.name + " " + _companyUser.position
+                                                    ),
+                                                  ),
+                                                ),
+                                                cardSpace,
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ) : Container(),
+                      ) : Container();
+                    },
+                  ),
                   StreamBuilder(
                     stream: _repository.getSelectedDateCompanyWork(
                         companyCode: _loginUser.companyCode,
