@@ -436,6 +436,6 @@ class FirebaseRepository {
   Future<void> createAnnualLeave({String companyCode, WorkApproval workApproval}) =>
       _firebaseMethods.createAnnualLeave(companyCode, workApproval);
 
-  Stream<QuerySnapshot> requestAnnualLeave({String companyCode, String mail, String orderByType, bool isOrderBy}) =>
-      _firebaseMethods.requestAnnualLeave(companyCode, mail, orderByType, isOrderBy);
+  Stream<QuerySnapshot> requestAnnualLeave({String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy}) =>
+      _firebaseMethods.requestAnnualLeave(companyCode, whereUser, mail, orderByType, isOrderBy);
 }
