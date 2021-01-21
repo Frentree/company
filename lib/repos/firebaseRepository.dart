@@ -223,6 +223,19 @@ class FirebaseRepository {
           {String companyCode, String mail, String url}) =>
       _firebaseMethods.updatePhotoProfile(companyCode, mail, url);
 
+  //FCM 토큰 업데이트
+  Future<void> updateToken({String companyCode, String mail, String token}) => _firebaseMethods.updateToken(
+    companyCode: companyCode,
+    mail: mail,
+    token: token,
+  );
+
+  //FCM 토큰 가져오기
+  Future<List<String>> getTokens({String companyCode, String mail}) => _firebaseMethods.getTokens(
+    companyCode: companyCode,
+    mail: mail
+  );
+
   // 프로필 핸드폰번호 변경
   Future<void> updatePhone({String companyCode, String mail, String phone}) =>
       _firebaseMethods.updatePhone(companyCode, mail, phone);

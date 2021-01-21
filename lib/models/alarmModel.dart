@@ -3,7 +3,7 @@
 
 작성자 이름 <createName>
 작성자 이메일 <createMail>
-항목 <dbName>
+컬렉션 이름 <collectionName>
 읽음여부 <read>
 알림온시간 <alarmDate>
 */
@@ -14,7 +14,7 @@ class Alarm {
   String id; //Document ID
   String createName;
   String createMail;
-  String dbName;
+  String collectionName;
   bool read;
   Timestamp alarmDate;
 
@@ -22,7 +22,7 @@ class Alarm {
     this.id,
     this.createName,
     this.createMail,
-    this.dbName,
+    this.collectionName,
     this.read = false,
     this.alarmDate,
   });
@@ -31,7 +31,7 @@ class Alarm {
       : id = id ?? "",
         createName = snapshot["createName"] ?? "",
         createMail = snapshot["createMail"] ?? "",
-        dbName = snapshot["dbName"] ?? "",
+        collectionName = snapshot["collectionName"] ?? "",
         read = snapshot["read"] ?? false,
         alarmDate = snapshot["alarmDate"] ?? Timestamp.now();
 
@@ -39,7 +39,7 @@ class Alarm {
     return {
       "createName": createName,
       "createMail": createMail,
-      "dbName": dbName,
+      "collectionName": collectionName,
       "read": read,
       "alarmDate": alarmDate,
     };

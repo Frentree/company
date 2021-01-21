@@ -20,9 +20,13 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
+
 final word = Words();
 
 workContent({BuildContext context, int type, WorkModel workModel, WorkData workData}) async {
+  Fcm fcm = Fcm();
   WorkModel _workModel = workModel;
   bool _detailClicked = false;
   bool result = false;
@@ -157,15 +161,30 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                 );
 
                                 if (workModel == null) {
+                                  Alarm _alarmModel = Alarm(
+                                    createName: _loginUser.name,
+                                    createMail: _loginUser.mail,
+                                    collectionName: "work",
+                                    read: false,
+                                    alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  );
+
                                   await _repository.saveWork(
                                     workModel: _workModel,
                                     companyCode: _loginUser.companyCode,
                                   );
-                                  /*dailyAtTimeNotification(
-                                    alarmTime: startTime,
-                                    title: "일정이 있습니다.",
-                                    contents: "일정 내용 : ${_titleController.text}"
-                                  );*/
+
+                                  await _repository.saveAlarm(
+                                    alarmModel: _alarmModel,
+                                    companyCode: _loginUser.companyCode,
+                                    mail: _loginUser.mail,
+                                  ).whenComplete(() async {
+                                    /*List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);*/
+                                    List<String> tokens = ["fvZkNhSPRZO4yo0G0Ew0yC:APA91bHRAcJ-gKybxB-SLx9ZuuPa2Ipv16MGaMFPEb2BxUIOiu4pMNuD_c8_Ius7Lja9DRHxFlRkJFBtBuy27zjFt9xE2Cvrh6qUxG40C2H7ooyZIPx1ee4HhhHUtDNi66vQ7Ckpnkvl"];
+                                    fcm.sendFCMtoSelectedDevice(tokens, "work");
+                                    print(tokens);
+                                  });
+
                                   if(startTime.isAfter(DateTime.now())){
                                     await notificationPlugin.scheduleNotification(
                                       alarmId: _workModel.alarmId,

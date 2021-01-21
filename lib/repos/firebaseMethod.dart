@@ -207,11 +207,15 @@ class FirebaseMethods {
   }
   //알람 데이터 관련
   Future<void> saveAlarm({Alarm alarmModel, String companyCode, String mail}) async {
-    return await firestore
-        .collection(COMPANY)
-        .doc(companyCode).collection(USER).doc(mail)
-        .collection(ALARM)
-        .add(alarmModel.toJson());
+    Map<String, String> colleague = await getColleague(companyCode: companyCode, loginUserMail: mail);
+
+    colleague.keys.forEach((element) async {
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode).collection(USER).doc(element)
+          .collection(ALARM)
+          .add(alarmModel.toJson());
+    });
   }
 
   //내외근 데이터 관련
@@ -402,21 +406,46 @@ class FirebaseMethods {
   }
 
   Future<void> updatePhotoProfile(
-      String companyCode, String mail, String url) async {
+        String companyCode, String mail, String url) async {
+      await firestore
+          .collection(COMPANY)
+          .document(companyCode)
+          .collection(USER)
+          .document(mail)
+          .update({
+        "profilePhoto": url,
+      });
+
+      return firestore.collection(USER).document(mail).update({
+        "profilePhoto": url,
+      });
+  }
+  
+  //FCM 토큰 업데이트 
+  Future<void> updateToken(
+      {String companyCode, String mail, String token}) async {
     await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
-        .document(mail)
+        .doc(mail)
         .update({
-      "profilePhoto": url,
-    });
-
-    return firestore.collection(USER).document(mail).update({
-      "profilePhoto": url,
+      "token": token,
     });
   }
+  
+  //FCM 토큰 가져오기
+  Future<List<String>> getTokens({String companyCode, String mail}) async {
+    List<String> tokenList = [];
+    QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection(USER).where("mail", isNotEqualTo: mail).get();
 
+    querySnapshot.docs.forEach((element) {
+      tokenList.add(element.data()["token"]);
+    });
+
+    return tokenList;
+  }
+  
   Future<void> updateCompany(String companyCode, String companyName, String companyNo, String companyAddr, String companyPhone, String companyWeb, String url) async {
     return await firestore
         .collection(COMPANY)

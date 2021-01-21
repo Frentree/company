@@ -45,6 +45,7 @@ dependencies:
   configurable_expansion_tile: ^1.0.0
   firebase_auth: ^0.18.4+1
   firebase_messaging: ^6.0.16
+  cloud_functions: ^0.7.0
   photo_view: ^0.10.3
   flutter_launcher_icons:
   toast: ^0.1.5
