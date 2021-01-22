@@ -68,7 +68,7 @@ Container titleCard({BuildContext context, String companyCode, WorkModel workMod
           ),
           alignment: Alignment.center,
           child: Text(
-            workModel.type == "내근" ? word.workIn() : word.workOut(),
+            workModel.type == "내근" ? word.workIn() : workModel.type == "외근" ? word.workOut() : workModel.type,
             style: containerChipStyle,
           ),
         ),

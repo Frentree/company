@@ -22,6 +22,7 @@ class WorkApproval {
   final String user;
   final String userMail;
   final String status; // 결재 상태
+  final String location; // 결재 상태
   DocumentReference reference;
 
   WorkApproval({
@@ -37,6 +38,7 @@ class WorkApproval {
     this.user,
     this.userMail,
     this.status,
+    this.location,
   });
 
   WorkApproval.fromMap(Map<String, dynamic> map, {this.reference})
@@ -52,6 +54,7 @@ class WorkApproval {
         assert(map['user'] != null),
         assert(map['userMail'] != null),
         assert(map['status'] != null),
+        assert(map['location'] != null),
         createDate = map['createDate'],
         requestDate = map['requestDate'],
         approvalDate = map['approvalDate'],
@@ -63,7 +66,8 @@ class WorkApproval {
         approvalMail = map['approvalMail'],
         user = map['user'],
         userMail = map['userMail'],
-        status = map['status'];
+        status = map['status'],
+        location = map['location'];
 
   toJson() {
     return {
@@ -79,6 +83,7 @@ class WorkApproval {
       "user": user,
       "userMail": userMail,
       "status": status,
+      "location": location,
     };
   }
 

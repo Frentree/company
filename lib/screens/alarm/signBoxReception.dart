@@ -36,10 +36,10 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
     user = _loginUserInfoProvider.getLoginUser();
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         child: Text("결재"),
         onPressed: (){},
-      ),
+      ),*/
       body: Column(
         children: [
           Card(
@@ -155,6 +155,7 @@ Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, Us
           switch(approval.approvalType) {
             case "연차" :
             case "반차" :
+            case "외근" :
               annualLeaveApprovalBottomSheet(
                 context: context,
                 companyCode: user.companyCode,
