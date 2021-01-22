@@ -100,7 +100,7 @@ AnnualLeaveMain(BuildContext context) async {
                                         ),
                                       ),
                                     ),
-                                    Padding(
+                                    /*Padding(
                                       padding: EdgeInsets.only(left: 5),
                                     ),
                                     Expanded(
@@ -122,7 +122,7 @@ AnnualLeaveMain(BuildContext context) async {
                                               Navigator.pop(context);
                                             },
                                           )),
-                                    ),
+                                    ),*/
                                   ]),
                               Container(
                                 height: MediaQuery.of(context)
@@ -234,6 +234,9 @@ AnnualLeaveMain(BuildContext context) async {
                           ),
                           cardSpace,
                           Expanded(
+                            child: SizedBox(),
+                          ),
+                          /*Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -261,7 +264,7 @@ AnnualLeaveMain(BuildContext context) async {
                               ],
                             )
                           ),
-                          cardSpace,
+                          cardSpace,*/
                           CircleAvatar(
                             radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                             backgroundColor: _expenseController.text == "" ? disableUploadBtn : blueColor,

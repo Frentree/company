@@ -36,10 +36,10 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
     _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
     user = _loginUserInfoProvider.getLoginUser();
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         child: Text("결재"),
         onPressed: (){},
-      ),
+      ),*/
       body: Column(
         children: [
           Card(

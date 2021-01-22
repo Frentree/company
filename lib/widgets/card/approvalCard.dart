@@ -121,7 +121,7 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                       ),
                     ),
                     cardSpace,
-                    Visibility(
+                    /*Visibility(
                       visible: model.status == "요청",
                       child: Container(
                         width: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.w : 8.0.w,
@@ -141,7 +141,7 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                         ),
                       ),
                     ),
-                    cardSpace,
+                    cardSpace,*/
                     //_popupMenu(context),
                   ],
                 )
