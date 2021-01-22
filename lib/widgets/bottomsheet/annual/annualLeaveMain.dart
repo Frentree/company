@@ -290,6 +290,7 @@ AnnualLeaveMain(BuildContext context) async {
                                   requestContent: _contentController.text,
                                   approvalUser: approvalUser.name,
                                   approvalMail: approvalUser.mail,
+                                  location: "",
                                 );
 
                                 FirebaseRepository().createAnnualLeave(

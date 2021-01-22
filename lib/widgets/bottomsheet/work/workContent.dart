@@ -3,17 +3,22 @@ import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/bottomsheet/annual/annualLeaveMain.dart';
 
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
 
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
@@ -33,6 +38,9 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
   TextEditingController _titleController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
+
+  String _approvalUserItem = "선택";
+  UserData approvalUser;
 
   User _loginUser;
 
@@ -125,67 +133,96 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                 size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
                               onPressed: _titleController.text == "" ? () {} : () async {
-                                _workModel = workModel != null ? WorkModel(
-                                  id: workModel.id,
-                                  createUid: workModel.createUid,
-                                  name: workModel.name,
-                                  type: workModel.type,
-                                  title: _titleController.text,
-                                  contents: _contentController.text,
-                                  location: _locationController.text,
-                                  createDate: workModel.createDate,
-                                  lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                  startDate: _format.dateTimeToTimeStamp(DateTime( startTime.year, startTime.month, startTime.day, 21, 00,)),
-                                  startTime: _format.dateTimeToTimeStamp(startTime),
-                                  timeSlot: _format.timeSlot(startTime),
-                                  level: 0,
-                                  alarmId: _workModel.alarmId,
-                                ) : WorkModel(
-                                  createUid: _loginUser.mail,
-                                  name: _loginUser.name,
-                                  type: type == 1 ? "내근" : "외근",
-                                  title: _titleController.text,
-                                  contents: _contentController.text,
-                                  location: _locationController.text,
-                                  createDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                  lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                  startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
-                                  startTime: _format.dateTimeToTimeStamp(startTime),
-                                  timeSlot: _format.timeSlot(startTime),
-                                  level: 0,
-                                  alarmId: DateTime.now().hashCode,
+                              if(workModel != null) { // 수정일 경우
+                                _workModel = WorkModel(
+                                    id: workModel.id,
+                                    createUid: workModel.createUid,
+                                    name: workModel.name,
+                                    type: workModel.type,
+                                    title: _titleController.text,
+                                    contents: _contentController.text,
+                                    location: _locationController.text,
+                                    createDate: workModel.createDate,
+                                    lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                    startDate: _format.dateTimeToTimeStamp(DateTime( startTime.year, startTime.month, startTime.day, 21, 00,)),
+                                    startTime: _format.dateTimeToTimeStamp(startTime),
+                                    timeSlot: _format.timeSlot(startTime),
+                                    level: 0,
+                                    alarmId: _workModel.alarmId,
                                 );
 
-                                if (workModel == null) {
-                                  await _repository.saveWork(
-                                    workModel: _workModel,
-                                    companyCode: _loginUser.companyCode,
-                                  );
-                                  /*dailyAtTimeNotification(
+                                await _repository.updateWork(
+                                  workModel: _workModel,
+                                  companyCode: _loginUser.companyCode,
+                                );
+                              } else {  // 입력단계
+                                switch(type){
+                                  case 1: //내근
+                                    _workModel =  WorkModel(
+                                      createUid: _loginUser.mail,
+                                      name: _loginUser.name,
+                                      type: "내근",
+                                      title: _titleController.text,
+                                      contents: _contentController.text,
+                                      location: _locationController.text,
+                                      createDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                      lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                      startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
+                                      startTime: _format.dateTimeToTimeStamp(startTime),
+                                      timeSlot: _format.timeSlot(startTime),
+                                      level: 0,
+                                      alarmId: DateTime.now().hashCode,
+                                    );
+
+                                    await _repository.saveWork(
+                                      workModel: _workModel,
+                                      companyCode: _loginUser.companyCode,
+                                    );
+                                    /*dailyAtTimeNotification(
                                     alarmTime: startTime,
                                     title: "일정이 있습니다.",
                                     contents: "일정 내용 : ${_titleController.text}"
                                   );*/
-                                  if(startTime.isAfter(DateTime.now())){
-                                    await notificationPlugin.scheduleNotification(
-                                      alarmId: _workModel.alarmId,
-                                      alarmTime: startTime,
-                                      title: "일정이 있습니다.",
-                                      contents: "일정 내용 : ${_titleController.text}",
-                                      payload: _workModel.alarmId.toString(),
+                                    if(startTime.isAfter(DateTime.now())){
+                                      await notificationPlugin.scheduleNotification(
+                                        alarmId: _workModel.alarmId,
+                                        alarmTime: startTime,
+                                        title: "일정이 있습니다.",
+                                        contents: "일정 내용 : ${_titleController.text}",
+                                        payload: _workModel.alarmId.toString(),
+                                      );
+                                    }
+                                    break;
+                                  case 2: //외근
+                                    if(approvalUser == null){
+                                      FailedData(context, "결재자 미선택", "결재자를 선택 후에 신청해주세요");
+                                      break;
+                                    }
+                                    await FirebaseRepository().createAnnualLeave(
+                                        companyCode: _loginUser.companyCode,
+                                        workApproval: WorkApproval(
+                                          title: _titleController.text,
+                                          status: "요청",
+                                          user: _loginUser.name,
+                                          userMail: _loginUser.mail,
+                                          createDate: Timestamp.now(),
+                                          requestDate: _format.dateTimeToTimeStamp(startTime),
+                                          approvalContent: "",
+                                          approvalType: "외근",
+                                          requestContent: _contentController.text,
+                                          approvalUser: approvalUser.name,
+                                          approvalMail: approvalUser.mail,
+                                          location: _locationController.text,
+                                        ),
                                     );
-                                  }
+                                    break;
                                 }
-                                else {
-                                  await _repository.updateWork(
-                                    workModel: _workModel,
-                                    companyCode: _loginUser.companyCode,
-                                  );
-                                }
+                              }
                                 result = true;
                                 Navigator.of(context).pop(result);
                                 return result;
-                              }),
+                              }
+                          ),
                         ),
                       ],
                     ),
@@ -232,38 +269,94 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                     emptySpace,
                     Visibility(
                       visible: (type == 2),
-                      child: Row(
+                      child: Column(
                         children: [
-                          Container(
-                            height: 6.0.h,
-                            width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.location_on_outlined,
-                                  size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                          Row(
+                            children: [
+                              Container(
+                                height: 6.0.h,
+                                width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                    ),
+                                    cardSpace,
+                                    Text(
+                                      word.outLocation(),
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ],
                                 ),
-                                cardSpace,
-                                Text(
-                                  word.outLocation(),
-                                  style: defaultRegularStyle,
-                                ),
-                              ],
-                            ),
-                          ),
-                          cardSpace,
-                          Expanded(
-                            child: TextField(
-                              controller: _locationController,
-                              style: defaultRegularStyle,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: textFormPadding,
-                                border: InputBorder.none,
-                                hintText: word.outCon(),
-                                hintStyle: hintStyle,
                               ),
-                            ),
+                              cardSpace,
+                              Expanded(
+                                child: TextField(
+                                  controller: _locationController,
+                                  style: defaultRegularStyle,
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: textFormPadding,
+                                    border: InputBorder.none,
+                                    hintText: word.outCon(),
+                                    hintStyle: hintStyle,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 6.0.h,
+                                width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person_outline,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                    ),
+                                    cardSpace,
+                                    Text(
+                                      "결재자",
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              cardSpace,
+                              Expanded(
+                                  child: StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseRepository().getGradeUser(
+                                          companyCode: _loginUser.companyCode,
+                                          level: 6
+                                      ),
+                                      builder: (context, snapshot) {
+                                        if(!snapshot.hasData){
+                                          return Text("");
+                                        }
+                                        List<DocumentSnapshot> doc = snapshot.data.docs;
+
+                                        return PopupMenuButton(
+                                            child: RaisedButton(
+                                              disabledColor: whiteColor,
+                                              child: Text(
+                                                _approvalUserItem,
+                                                style: defaultRegularStyle,
+                                              ),
+                                            ),
+                                            onSelected: (value) {
+                                              approvalUser = value;
+                                              _approvalUserItem = userNameChange(value);
+                                              setState(() {});
+                                            },
+                                            itemBuilder: (context) => doc.map((data) => _buildApprovalItem(_loginUser.companyCode, data, context)).toList()
+                                        );
+                                      }
+                                  )
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -387,3 +480,46 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
   );
   return result;
 }
+
+/// 결재자 종류 선택 메뉴
+PopupMenuItem _buildApprovalItem(String companyCode, DocumentSnapshot data, BuildContext context) {
+  final user = UserData.fromSnapshow(data);
+  String approvalUser = userNameChange(user);
+
+  /*if(user.team != "" && user.team != null) {
+    approvalUser = user.team + " " + approvalUser;
+  }
+
+  if(user.position != "" && user.position != null) {
+    approvalUser = approvalUser + " " + user.position;
+  }*/
+
+  return PopupMenuItem(
+    height: 7.0.h,
+    value: user,
+    child: Row(
+      children: [
+        cardSpace,
+        Text(
+          approvalUser,
+          style: defaultRegularStyle,
+        ),
+      ],
+    ),
+  );
+}
+
+String userNameChange (UserData user){
+  String approvalUser = user.name;
+
+  if(user.team != "" && user.team != null) {
+    approvalUser = user.team + " " + approvalUser;
+  }
+
+  if(user.position != "" && user.position != null) {
+    approvalUser = approvalUser + " " + user.position;
+  }
+  return approvalUser;
+}
+
+

@@ -47,7 +47,7 @@ Card RequestApprovalCard({BuildContext context, String companyCode, WorkApproval
                   ),
                 ),
                 Visibility(
-                  visible: model.approvalType == "연차" || model.approvalType == "반차",
+                  visible: model.approvalType == "연차" || model.approvalType == "반차" || model.approvalType == "외근",
                   child: Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 19.0.w : 17.0.w,
                     alignment: Alignment.centerRight,
@@ -110,7 +110,7 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                       ),
                     ),
                     Visibility(
-                      visible: model.approvalType == "연차" || model.approvalType == "반차",
+                      visible: model.approvalType == "연차" || model.approvalType == "반차" || model.approvalType == "외근",
                       child: Container(
                         width: SizerUtil.deviceType == DeviceType.Tablet ? 19.0.w : 17.0.w,
                         alignment: Alignment.centerRight,

@@ -33,7 +33,7 @@ class Format{
         week = word.Sat();
         break;
 
-      case 0 :
+      case 7 :
         week = word.Sun();
         break;
     }
@@ -59,11 +59,7 @@ class Format{
     String dateText;
     DateTime _date = timeStampToDateTime(date);
 
-    dateText = twoDigitsFormat(_date.month) +
-        "." +
-        twoDigitsFormat(_date.day) +
-        " " +
-        weekFormat(_date);
+    dateText = twoDigitsFormat(_date.month) +"." +twoDigitsFormat(_date.day) + " " +  weekFormat(_date);
     return dateText;
   }
 
