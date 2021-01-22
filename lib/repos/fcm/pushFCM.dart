@@ -8,12 +8,13 @@ class Fcm {
     ..timeout = const Duration(seconds: 30);
 
   void sendFCMtoSelectedDevice(List<String> tokenList, String collection) async {
+    print("함수 실행");
     final HttpsCallableResult result = await sendFCM.call(
       <String, dynamic>{
         "token": tokenList,
         "title": "Sample Title",
         "body": "This is a Sample FCM",
-        "collection": collection,
+        /*"collection": collection,*/
       },
     );
   }

@@ -9,6 +9,7 @@ import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -76,6 +77,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   Format _format = Format();
 
+  FirebaseMessaging _fcm = FirebaseMessaging();
+
   List<bool> isDetail = List<bool>();
   bool isBirthdayDetail = false;
 
@@ -91,6 +94,37 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
     _calendarController = CalendarController();
     notificationPlugin.setOnNotificationClick(onNotificationClick);
 
+    _fcm.configure(
+      // 앱이 실행중일 경우
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        notificationPlugin.showNotification();
+      },
+      // 앱이 완전히 종료된 경우
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        notificationPlugin.showNotification();
+      },
+      // 앱이 닫혀있었/*showDialog(
+      //           context: context,
+      //           builder: (context) => AlertDialog(
+      //             content: ListTile(
+      //               title: Text(message["notification"]["title"]),
+      //               subtitle: Text(message["notification"]["body"]),
+      //             ),
+      //             actions: <Widget>[
+      //               FlatButton(
+      //                 child: Text("OK"),
+      //                 onPressed: () => Navigator.of(context).pop(),
+      //               )
+      //             ],
+      //           ),
+      //         );*/으나 백그라운드로 동작중인 경우
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+       /* notificationPlugin.showNotification();*/
+      },
+    );
   }
 
 
@@ -406,7 +440,9 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                             itemBuilder: (context, index) {
                               dynamic _companyData;
                               if (_companyWork[index].data()["type"] == "내근" ||
-                                  _companyWork[index].data()["type"] == "외근") {
+                                  _companyWork[index].data()["type"] == "외근" ||
+                                  _companyWork[index].data()["type"] == "연차" ||
+                                  _companyWork[index].data()["type"] == "반차") {
                                 _companyData = WorkModel.fromMap(
                                     _companyWork[index].data(),
                                     _companyWork[index].documentID);
@@ -433,6 +469,27 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                         for (int i = 0; i < test.length; i++) {
                                           if (i != index) {
                                             test[_companyWork[i].data()["alarmId"]] = false;
+                                            isDetail[i] = false;
+                                          }
+                                        }
+                                      });
+                                    },
+                                  );
+                                  break;
+                                case '연차':
+                                case '반차':
+                                  return GestureDetector(
+                                    child: workScheduleCard(
+                                      context: context,
+                                      companyCode: _loginUser.companyCode,
+                                      workModel: _companyData,
+                                      isDetail: isDetail[index],
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        isDetail[index] = !isDetail[index];
+                                        for (int i = 0; i < isDetail.length; i++) {
+                                          if (i != index) {
                                             isDetail[i] = false;
                                           }
                                         }

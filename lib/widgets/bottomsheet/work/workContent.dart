@@ -28,7 +28,6 @@ final word = Words();
 workContent({BuildContext context, int type, WorkModel workModel, WorkData workData}) async {
   Fcm fcm = Fcm();
   WorkModel _workModel = workModel;
-  bool _detailClicked = false;
   bool result = false;
   bool isChk = false;
 
@@ -180,7 +179,7 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     mail: _loginUser.mail,
                                   ).whenComplete(() async {
                                     /*List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);*/
-                                    List<String> tokens = ["fvZkNhSPRZO4yo0G0Ew0yC:APA91bHRAcJ-gKybxB-SLx9ZuuPa2Ipv16MGaMFPEb2BxUIOiu4pMNuD_c8_Ius7Lja9DRHxFlRkJFBtBuy27zjFt9xE2Cvrh6qUxG40C2H7ooyZIPx1ee4HhhHUtDNi66vQ7Ckpnkvl"];
+                                    List<String> tokens = ["dyen1-iaT8ak5xpsJBHMkZ:APA91bH0oOIyheICpjiiP-gShJNMkH29t9HeKa0bbWU4dSaJMUZNqdazfGjYiZ1cd7NPDRn1jYz8vOMzAFfk42ySzULMVgm_TnF1OPAbsCNafctEtn5YVafE1EgBzKlr0ROUcqU-lcIj"];
                                     fcm.sendFCMtoSelectedDevice(tokens, "work");
                                     print(tokens);
                                   });

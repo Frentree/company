@@ -11,7 +11,13 @@ export const sendFCM = functions.https.onCall((data, context) => {
   var payload = {
     notification: {
       title: title,
-      body: body
+      body: body,
+      clickAction: 'FLUTTER_NOTIFICATION_CLICK'
+    }
+    data: {
+      title: title,
+      body: body,
+
     }
   }
 

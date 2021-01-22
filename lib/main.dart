@@ -54,15 +54,9 @@ void _initNotiSetting() async {
   );
   await flutterLocalNotificationsPlugin.initialize(
     initSettings,
-    onSelectNotification: (String payload) async{
-
-    }
   );
 }
 
-Future notificationSelected(String payload) async {
-  print("화면이동");
-}
 
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
