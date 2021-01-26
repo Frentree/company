@@ -149,6 +149,13 @@ Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, Us
                 model: approval
               );
               break;
+            case "업무" :
+              annualLeaveRequestApprovalBottomSheet(
+                  context: context,
+                  companyCode: user.companyCode,
+                  model: approval
+              );
+              break;
             default :
               break;
           };

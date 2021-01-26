@@ -541,6 +541,35 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                           child: Row(
                             children: [
                               Icon(
+                                Icons.navigation_outlined,
+                                size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                              ),
+                              cardSpace,
+                              Text(
+                                "위치",
+                                style: defaultRegularStyle,
+                              ),
+                            ],
+                          ),
+                        ),
+                        cardSpace,
+                        Expanded(
+                          child: Text(
+                            model.location,
+                            style: defaultRegularStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    cardSpace,
+                    Row(
+                      children: [
+                        Container(
+                          height: 6.0.h,
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                          child: Row(
+                            children: [
+                              Icon(
                                 Icons.stream,
                                 size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),

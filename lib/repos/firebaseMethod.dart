@@ -982,6 +982,16 @@ class FirebaseMethods {
         .document(mail)
         .get();
   }*/
+
+  Stream<QuerySnapshot> getRequestUser(String companyCode, String mail) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("mail", isNotEqualTo: mail)
+        .snapshots();
+  }
+
 }
 
 class FirestoreApi {

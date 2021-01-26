@@ -8,6 +8,7 @@ import 'package:MyCompany/widgets/bottomsheet/annual/annualLeaveMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/expense/expenseMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
+import 'package:MyCompany/widgets/bottomsheet/work/requestWork.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workNotice.dart';
 import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
@@ -43,7 +44,12 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
         }
         break;
       case 4: // 개인 일정 생성
+        break;
       case 5: // 업무 요청 생성
+        result = await requestWork(context: context, type: type);
+        if (result) {
+          Navigator.of(context).pop();
+        }
         break;
       case 6: // 구매 품의 생성
         NotImplementedFunction(context);
@@ -161,6 +167,28 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
                           ),
                           onTap: (){
                             _workBottomMove(0);
+                          },
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            height: 6.0.h,
+                            decoration: BoxDecoration(
+                              color: chipColorBlue,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 8.0.w
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "업무 요청",
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          onTap: (){
+                            _workBottomMove(5);
                           },
                         ),
                       ],
