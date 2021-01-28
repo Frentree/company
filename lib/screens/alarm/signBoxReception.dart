@@ -156,6 +156,7 @@ Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, Us
             case "연차" :
             case "반차" :
             case "외근" :
+            case "업무" :
               annualLeaveApprovalBottomSheet(
                 context: context,
                 companyCode: user.companyCode,

@@ -123,7 +123,7 @@ annualLeaveRequestApprovalBottomSheet({BuildContext context, String companyCode,
                         cardSpace,
                         Expanded(
                           child: Text(
-                            model.approvalType,
+                            model.approvalType=="업무" ? (model.location == "" ? model.approvalType+"_내근" : model.approvalType+"_외근") : model.approvalType,
                             style: defaultRegularStyle,
                           ),
                         ),
@@ -526,7 +526,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                         cardSpace,
                         Expanded(
                           child: Text(
-                            model.approvalType,
+                            model.approvalType=="업무" ? (model.location == "" ? model.approvalType+"_내근" : model.approvalType+"_외근") : model.approvalType,
                             style: defaultRegularStyle,
                           ),
                         ),
@@ -604,7 +604,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                               ),
                               cardSpace,
                               Text(
-                                "사용일",
+                                "대상일",
                                 style: defaultRegularStyle,
                               ),
                             ],
@@ -813,24 +813,49 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                   "approvalDate" : Timestamp.now()
                                                 });
                                                 DateTime requestDate = DateTime.parse(model.requestDate.toDate().toString());
-                                                FirebaseRepository().saveWork(
-                                                  companyCode: companyCode,
-                                                  workModel: WorkModel(
-                                                    alarmId: model.approvalType == "외근" ? DateTime.now().hashCode : 0,
-                                                    contents: model.requestContent,
-                                                    createUid: model.userMail,
-                                                    createDate: Timestamp.now(),
-                                                    startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
-                                                    startTime: model.approvalType != "외근" ? _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 09, 00,)) : model.requestDate,
-                                                    timeSlot: model.approvalType == "외근" ? _format.timeSlot(requestDate) : 1,
-                                                    type: model.approvalType,
-                                                    title: model.approvalType == "외근" ? model.title : model.approvalType,
-                                                    level: 0,
-                                                    location: model.location,
-                                                    lastModDate: Timestamp.now(),
-                                                    name: model.user,
-                                                  )
-                                                );
+                                                switch(model.approvalType){
+                                                  case '업무':
+                                                    FirebaseRepository().saveWork(
+                                                        companyCode: companyCode,
+                                                        workModel: WorkModel(
+                                                          alarmId: DateTime.now().hashCode,
+                                                          contents: model.requestContent,
+                                                          createUid: model.approvalMail,
+                                                          createDate: Timestamp.now(),
+                                                          startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
+                                                          startTime: model.requestDate,
+                                                          timeSlot: _format.timeSlot(requestDate),
+                                                          type: model.approvalType,
+                                                          title: model.location == "" ? "내근" : "외근",
+                                                          level: 0,
+                                                          location: model.location,
+                                                          lastModDate: Timestamp.now(),
+                                                          name: model.approvalUser,
+                                                        )
+                                                    );
+                                                    break;
+                                                  default:
+                                                    FirebaseRepository().saveWork(
+                                                        companyCode: companyCode,
+                                                        workModel: WorkModel(
+                                                          alarmId: model.approvalType == "외근" ? DateTime.now().hashCode : 0,
+                                                          contents: model.requestContent,
+                                                          createUid: model.userMail,
+                                                          createDate: Timestamp.now(),
+                                                          startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
+                                                          startTime: model.approvalType != "외근" ? _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 09, 00,)) : model.requestDate,
+                                                          timeSlot: model.approvalType == "외근" ? _format.timeSlot(requestDate) : 1,
+                                                          type: model.approvalType,
+                                                          title: model.approvalType == "외근" ? model.title : model.approvalType,
+                                                          level: 0,
+                                                          location: model.location,
+                                                          lastModDate: Timestamp.now(),
+                                                          name: model.user,
+                                                        )
+                                                    );
+                                                    break;
+
+                                                }
                                                 Navigator.of(context).pop(true);
                                               },
                                             ),
