@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingAnnualLeave.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingOrganizationChart.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingPosition.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
@@ -25,7 +26,7 @@ class SettingMainPage extends StatefulWidget {
 }
 
 class SettingMainPageState extends State<SettingMainPage> {
-  List<bool> tabIndex = [false, false, false];
+  List<bool> tabIndex = [false, false, false, false];
   User _loginUser;
   bool co_worker_alert = true;
   bool approval_alert = false;
@@ -392,6 +393,111 @@ class SettingMainPageState extends State<SettingMainPage> {
                     ],
                   ),
                 ),
+
+                /*Container(
+                  decoration: tabIndex[3] == false ? BoxDecoration() : BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                        bottom: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                      )
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.event_note_outlined,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
+                            ),
+                          ),
+                          cardSpace,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "내 근태/연차/급여 조회", // 내 정보
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  tabIndex[3] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    tabIndex[3] = !tabIndex[3];
+                                  });
+                                },
+                              )
+                          )
+                        ],
+                      ),
+                      tabIndex[3] == false ? Container() : Column(
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.timelapse_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "연차 사용 내역 조회",
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingAnnualLeave(
+                                  context: context,
+                                  statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),*/
 
                 /// 기능 미구현으로 인한 숨김 처리
                 /*ExpansionTile(

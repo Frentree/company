@@ -970,6 +970,17 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> selectAnnualLeave(String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("createUid", isEqualTo: mail)
+        .where("type", isEqualTo: "연차", isGreaterThanOrEqualTo: "반차", )
+        //.orderBy(orderByType, descending: isOrderBy)
+        .snapshots();
+  }
+
   /*Future<String> firebaseStorege(String companyCode, String mail) async {
     String data = await firestorage.ref("profile/${mail}").getDownloadURL().catchError({
 

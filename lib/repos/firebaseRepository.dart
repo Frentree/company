@@ -441,4 +441,7 @@ class FirebaseRepository {
 
   Stream<QuerySnapshot> getRequestUser({String companyCode, String mail}) =>
       _firebaseMethods.getRequestUser(companyCode, mail);
+
+  Stream<QuerySnapshot> selectAnnualLeave({String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy}) =>
+      _firebaseMethods.selectAnnualLeave(companyCode, whereUser, mail, orderByType, isOrderBy);
 }
