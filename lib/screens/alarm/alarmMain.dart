@@ -4,11 +4,14 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/provider/screen/alarmScreenChange.dart';
 import 'package:MyCompany/screens/alarm/alarmNotice.dart';
 import 'package:MyCompany/screens/alarm/signBox.dart';
+import 'package:MyCompany/screens/home/homeMain.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:MyCompany/widgets/notImplementedPopup.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 
 import 'alarmPage.dart';
 
@@ -19,8 +22,16 @@ class AlarmMainPage extends StatefulWidget {
 }
 
 class AlarmMainPageState extends State<AlarmMainPage> {
-  int tabIndex = 2;
+  int tabIndex = 0;
   List<Widget> _page = [AlarmPage(),SignBox(),AlarmNoticePage()];
+
+  @override
+  void initState() {
+    super.initState();
+    click = true;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -3,12 +3,16 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/meetingModel.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/home/homeMain.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 //Flutter
@@ -34,6 +38,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
+bool click = true;
 
 class HomeSchedulePage extends StatefulWidget {
   @override
@@ -77,7 +82,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   Format _format = Format();
 
-  FirebaseMessaging _fcm = FirebaseMessaging();
+
 
   List<bool> isDetail = List<bool>();
   bool isBirthdayDetail = false;
@@ -88,50 +93,48 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   ItemScrollController _scrollController = ItemScrollController();
 
+  FirebaseMessaging _fcm = FirebaseMessaging();
+
+
   @override
   void initState() {
     super.initState();
     _calendarController = CalendarController();
-    notificationPlugin.setOnNotificationClick(onNotificationClick);
-
     _fcm.configure(
       // 앱이 실행중일 경우
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        notificationPlugin.showNotification();
-      },
-      // 앱이 완전히 종료된 경우
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        notificationPlugin.showNotification();
-      },
-      // 앱이 닫혀있었/*showDialog(
-      //           context: context,
-      //           builder: (context) => AlertDialog(
-      //             content: ListTile(
-      //               title: Text(message["notification"]["title"]),
-      //               subtitle: Text(message["notification"]["body"]),
-      //             ),
-      //             actions: <Widget>[
-      //               FlatButton(
-      //                 child: Text("OK"),
-      //                 onPressed: () => Navigator.of(context).pop(),
-      //               )
-      //             ],
-      //           ),
-      //         );*/으나 백그라운드로 동작중인 경우
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-       /* notificationPlugin.showNotification();*/
-      },
+      onMessage: Fcm.myBackgroundMessageHandler,
+      onBackgroundMessage: Fcm.myBackgroundMessageHandler,
     );
+    notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
   }
 
+  onFCMNotificationClick(String payload) async {
+    print(click);
+    if(click == true){
+      payload = "";
+      click = !click;
+    }
+    if(payload.split(",")[0] == "alarm" && click == false){
+      hpState.setState(() {
+        hpState.currentPageIndex = 2;
+      });
+
+      await _repository.updateReadAlarm(
+        companyCode: _loginUser.companyCode,
+        mail: _loginUser.mail,
+        alarmId: payload.split(",")[1],
+      );
+    }
+  }
 
   onNotificationClick(String payload){
-    print('Payload $payload');
+    click = true;
+    hpState.setState(() {
+      hpState.currentPageIndex = 0;
+    });
     int index = 0;
     int i = 0;
+
     test.forEach((key, value) {
       if(key != int.parse(payload)){
         i++;
@@ -139,10 +142,13 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       else
         index = i;
     });
-    print("test $test");
+
+    print("index = $index");
+
     setState(() {
       test[int.parse(payload)] = true;
     });
+    print("test : $test");
     _scrollController.scrollTo(index: index, duration: Duration(seconds: 1));
   }
 
@@ -158,7 +164,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
     LoginUserInfoProvider _loginUserInfoProvider =
         Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-
     return Scaffold(
       body: Column(
         children: [
@@ -304,7 +309,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
                       if (snapshot.data == null) {
                         return Center(
-                          child: CircularProgressIndicator(),
+                          /*child: CircularProgressIndicator(),*/
                         );
                       }
 

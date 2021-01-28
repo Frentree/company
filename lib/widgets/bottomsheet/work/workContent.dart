@@ -2,6 +2,7 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
@@ -11,6 +12,7 @@ import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
 
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -128,6 +130,11 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                 size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
                               onPressed: _titleController.text == "" ? () {} : () async {
+
+                                var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
+                                CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
+
                                 _workModel = workModel != null ? WorkModel(
                                   id: workModel.id,
                                   createUid: workModel.createUid,
@@ -161,9 +168,12 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
 
                                 if (workModel == null) {
                                   Alarm _alarmModel = Alarm(
+                                    alarmId: DateTime.now().hashCode,
                                     createName: _loginUser.name,
                                     createMail: _loginUser.mail,
+                                    createProfilePhoto: loginUserInfo.profilePhoto,
                                     collectionName: "work",
+                                    alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "일정" + "을 등록 했습니다.",
                                     read: false,
                                     alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
                                   );
@@ -178,10 +188,16 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     companyCode: _loginUser.companyCode,
                                     mail: _loginUser.mail,
                                   ).whenComplete(() async {
-                                    /*List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);*/
-                                    List<String> tokens = ["dyen1-iaT8ak5xpsJBHMkZ:APA91bH0oOIyheICpjiiP-gShJNMkH29t9HeKa0bbWU4dSaJMUZNqdazfGjYiZ1cd7NPDRn1jYz8vOMzAFfk42ySzULMVgm_TnF1OPAbsCNafctEtn5YVafE1EgBzKlr0ROUcqU-lcIj"];
-                                    fcm.sendFCMtoSelectedDevice(tokens, "work");
-                                    print(tokens);
+
+                                    List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+                                    fcm.sendFCMtoSelectedDevice(
+                                      alarmId: _alarmModel.alarmId.toString(),
+                                      tokenList: tokens,
+                                      name: _loginUser.name,
+                                      team: loginUserInfo.team,
+                                      position: loginUserInfo.position,
+                                      collection: "work"
+                                    );
                                   });
 
                                   if(startTime.isAfter(DateTime.now())){

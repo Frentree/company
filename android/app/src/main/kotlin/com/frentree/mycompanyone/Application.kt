@@ -16,6 +16,6 @@ class Application : FlutterApplication(), PluginRegistrantCallback {
     }
 
     override fun registerWith(registry: PluginRegistry?) {
-        io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin.registerWith(registry?.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
+        FirebaseCloudMessagingPluginRegistrant.registerWith(registry!!)
     }
 }

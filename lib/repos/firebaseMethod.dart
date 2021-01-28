@@ -218,6 +218,33 @@ class FirebaseMethods {
     });
   }
 
+  Future<void> deleteAlarm({String companyCode, String mail, String documentID}) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
+        .collection(ALARM)
+        .doc(documentID)
+        .delete();
+  }
+  
+  Future<void> updateReadAlarm({String companyCode, String mail, String alarmId}) async {
+    var doc = await firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).where("alarmId", isEqualTo: int.parse(alarmId)).get();
+    String docId = doc.docs.first.id;
+    return await firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).doc(docId).update({"read": true,});
+  }
+
+  Stream<QuerySnapshot> getNoReadAlarm({String companyCode, String mail}) {
+    return firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).where("read", isEqualTo: false).orderBy("alarmDate").snapshots();
+  }
+
+  Stream<QuerySnapshot> getAllAlarm({String companyCode, String mail}) {
+    return firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).orderBy("alarmDate").snapshots();
+  }
+
+
+
   //내외근 데이터 관련
   Future<void> saveWork({WorkModel workModel, String companyCode}) async {
     return await firestore

@@ -76,6 +76,28 @@ class FirebaseRepository {
     mail: mail
   );
 
+  Future<void> deleteAlarm({String companyCode, String mail, String documentID}) => _firebaseMethods.deleteAlarm(
+    companyCode: companyCode,
+    mail: mail,
+    documentID: documentID,
+  );
+
+  Future<void> updateReadAlarm({String companyCode, String mail, String alarmId}) => _firebaseMethods.updateReadAlarm(
+    companyCode: companyCode,
+    mail: mail,
+    alarmId: alarmId,
+  );
+
+  Stream<QuerySnapshot> getNoReadAlarm({String companyCode, String mail}) => _firebaseMethods.getNoReadAlarm(
+    companyCode: companyCode,
+    mail: mail,
+  );
+
+  Stream<QuerySnapshot> getAllAlarm({String companyCode, String mail}) => _firebaseMethods.getAllAlarm(
+    companyCode: companyCode,
+    mail: mail,
+  );
+
   Future<void> saveWork({WorkModel workModel, String companyCode}) =>
       _firebaseMethods.saveWork(
         workModel: workModel,

@@ -61,14 +61,20 @@ class NotificationPlugin {
     });
   }
 
-  setOnNotificationClick(Function onNotificationClick) async {
+  setOnNotificationClick(Function onNotificationClick, Function onFCMNotificationClick) async {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
-          onNotificationClick(payload);
+          if(payload.substring(0, 5) == "alarm"){
+            onFCMNotificationClick(payload);
+          }
+          else{
+            onNotificationClick(payload);
+          }
         });
   }
 
-  Future<void> showNotification() async {
+  Future<void> showNotification(
+      {int alarmId, String title, String contents, String payload}) async {
     var androidChannelSpecifics = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
@@ -83,11 +89,11 @@ class NotificationPlugin {
         android: androidChannelSpecifics, iOS: iosChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
-      0,
-      "Test Title",
-      "Test Body",
+      alarmId,
+      title,
+      contents,
       platformChannelSpecifics,
-      payload: "Test Playload",
+      payload: payload + "," +alarmId.toString(),
     );
   }
 
