@@ -2,9 +2,12 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
@@ -28,8 +31,8 @@ import 'package:sizer/sizer.dart';
 final word = Words();
 
 workContent({BuildContext context, int type, WorkModel workModel, WorkData workData}) async {
+  Fcm fcm = Fcm();
   WorkModel _workModel = workModel;
-  bool _detailClicked = false;
   bool result = false;
   bool isChk = false;
 
@@ -133,6 +136,10 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                 size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
                               onPressed: _titleController.text == "" ? () {} : () async {
+
+                                var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
+                                CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
                               if(workModel != null) { // 수정일 경우
                                 _workModel = WorkModel(
                                     id: workModel.id,
@@ -155,7 +162,19 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                   workModel: _workModel,
                                   companyCode: _loginUser.companyCode,
                                 );
-                              } else {  // 입력단계
+                              } else {// 입력단계
+
+                                Alarm _alarmModel = Alarm(
+                                  alarmId: DateTime.now().hashCode,
+                                  createName: _loginUser.name,
+                                  createMail: _loginUser.mail,
+                                  createProfilePhoto: loginUserInfo.profilePhoto,
+                                  collectionName: "work",
+                                  alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "일정" + "을 등록 했습니다.",
+                                  read: false,
+                                  alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                );
+
                                 switch(type){
                                   case 1: //내근
                                     _workModel =  WorkModel(
@@ -174,15 +193,30 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                       alarmId: DateTime.now().hashCode,
                                     );
 
+
+
                                     await _repository.saveWork(
                                       workModel: _workModel,
                                       companyCode: _loginUser.companyCode,
                                     );
-                                    /*dailyAtTimeNotification(
-                                    alarmTime: startTime,
-                                    title: "일정이 있습니다.",
-                                    contents: "일정 내용 : ${_titleController.text}"
-                                  );*/
+
+                                    await _repository.saveAlarm(
+                                      alarmModel: _alarmModel,
+                                      companyCode: _loginUser.companyCode,
+                                      mail: _loginUser.mail,
+                                    ).whenComplete(() async {
+
+                                      List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+                                      fcm.sendFCMtoSelectedDevice(
+                                          alarmId: _alarmModel.alarmId.toString(),
+                                          tokenList: tokens,
+                                          name: _loginUser.name,
+                                          team: loginUserInfo.team,
+                                          position: loginUserInfo.position,
+                                          collection: "work"
+                                      );
+                                    });
+
                                     if(startTime.isAfter(DateTime.now())){
                                       await notificationPlugin.scheduleNotification(
                                         alarmId: _workModel.alarmId,
