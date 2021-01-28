@@ -11,6 +11,7 @@ import 'package:MyCompany/screens/alarm/alarmMain.dart';
 import 'package:MyCompany/screens/setting/settingMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:MyCompany/consts/colorCode.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -20,16 +21,17 @@ import 'package:MyCompany/screens/home/homeScheduleMain.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+HomeMainPageState hpState = new HomeMainPageState();
+
 class HomeMainPage extends StatefulWidget {
   @override
-  HomeMainPageState createState() => HomeMainPageState();
+  HomeMainPageState createState() => hpState;
 }
 
 class HomeMainPageState extends State<HomeMainPage> {
   //불러올 페이지 리스트
   List<Widget> _page = [
     HomeScheduleMainPage(),
-
     /// 기능 미구현으로 인한 숨김 처리
     //SearchMainPage(),
     null,
@@ -38,7 +40,7 @@ class HomeMainPageState extends State<HomeMainPage> {
   ];
 
   //현재 페이지 인덱스
-  int _currentPageIndex = 0;
+  int currentPageIndex = 0;
 
   Attendance _attendance = Attendance();
 
@@ -56,7 +58,7 @@ class HomeMainPageState extends State<HomeMainPage> {
     } else {
       setState(() {
         print(pageIndex);
-        _currentPageIndex = pageIndex;
+        currentPageIndex = pageIndex;
       });
     }
   }
@@ -64,16 +66,8 @@ class HomeMainPageState extends State<HomeMainPage> {
   @override
   void initState(){
     super.initState();
-    /*notificationPlugin.setOnNotificationClick(onNotificationClick);*/
   }
 
- /* onNotificationClick(String payload, ){
-    print('Payload $payload');
-    setState(() {
-      _currentPageIndex = int.parse(payload);
-    });
-  }
-*/
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider =
@@ -167,7 +161,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                 child: Column(
                   children: <Widget>[
                     Expanded(
-                      child: _page[_currentPageIndex],
+                      child: _page[currentPageIndex],
                     ),
                   ],
                 ),
@@ -187,10 +181,10 @@ class HomeMainPageState extends State<HomeMainPage> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           onTap: _pageChange,
-          currentIndex: _currentPageIndex,
+          currentIndex: currentPageIndex,
           items: [
             BottomNavigationBarItem(
-              icon: (_currentPageIndex == 0) ? Icon(
+              icon: (currentPageIndex == 0) ? Icon(
                 Icons.calendar_today,
                 size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                 color: blueColor,
@@ -222,7 +216,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                 =
                 title: Text("Search")),*/
             BottomNavigationBarItem(
-              icon: (_currentPageIndex == 1) ? Icon(
+              icon: (currentPageIndex == 1) ? Icon(
                 Icons.add_circle_outline_sharp,
                 size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                 color: blueColor,
@@ -233,7 +227,7 @@ class HomeMainPageState extends State<HomeMainPage> {
               label: "Create",
             ),
             BottomNavigationBarItem(
-              icon: (_currentPageIndex == 2) ? Icon(
+              icon: (currentPageIndex == 2) ? Icon(
                 Icons.notifications_none,
                 size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                 color: blueColor,
@@ -244,7 +238,7 @@ class HomeMainPageState extends State<HomeMainPage> {
               label: "Push",
             ),
             BottomNavigationBarItem(
-              icon: (_currentPageIndex == 3) ? Icon(
+              icon: (currentPageIndex == 3) ? Icon(
                 Icons.menu,
                 size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                 color: blueColor,

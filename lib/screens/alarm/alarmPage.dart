@@ -1,6 +1,7 @@
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/screens/alarm/signBoxExpense.dart';
+import 'package:MyCompany/screens/alarm/allAlarm.dart';
+import 'package:MyCompany/screens/alarm/noReadAlarm.dart';
 import 'package:MyCompany/screens/alarm/signBoxPurchase.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -12,7 +13,7 @@ class AlarmPage extends StatefulWidget {
 class AlarmPageState extends State<AlarmPage> {
 
   int tabIndex = 0;
-  List<Widget> _page = [SignBoxExpense(),SignBoxPurchase()];
+  List<Widget> _page = [NoReadAlarm(),AllAlarm()];
 
   @override
   Widget build(BuildContext context) {

@@ -23,6 +23,7 @@ class CompanyUser {
   String birthday;
   String phone;
   String profilePhoto;
+  String token;
   Timestamp createDate;
   Timestamp lastModDate;
   String enteredDate;
@@ -35,6 +36,7 @@ class CompanyUser {
   CompanyUser({
     this.id,
     this.user,
+    this.token,
     this.createDate,
     this.lastModDate,
     this.enteredDate,
@@ -52,6 +54,7 @@ class CompanyUser {
         birthday = snapshot["birthday"] ?? "",
         phone = snapshot["phone"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
+        token = snapshot["token"] ?? "",
         createDate = snapshot["createDate"] ?? null,
         enteredDate = snapshot["enteredDate"] ?? null,
         lastModDate = snapshot["lastModDate"] ?? null,
@@ -68,6 +71,7 @@ class CompanyUser {
       "birthday": user.birthday,
       "phone": user.phone,
       "profilePhoto": user.profilePhoto,
+      "token": token,
       "createDate": createDate,
       "lastModDate": lastModDate,
       "enteredDate": enteredDate == null ? "" : enteredDate,
