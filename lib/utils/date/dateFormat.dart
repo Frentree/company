@@ -119,9 +119,18 @@ class Format{
 
     return dateTime;
   }
+
   String timeStampToDateTimeString(Timestamp time){
     String dateTime;
     dateTime = DateFormat('yyyy/MM/dd HH:mm:ss').format(
+        DateTime.parse(time.toDate().toString()));
+
+    return dateTime;
+  }
+
+  String yearMonthDay(Timestamp time){
+    String dateTime;
+    dateTime = DateFormat('yyyy/MM/dd').format(
         DateTime.parse(time.toDate().toString()));
 
     return dateTime;

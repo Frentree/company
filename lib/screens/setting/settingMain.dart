@@ -394,7 +394,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                   ),
                 ),
 
-                /*Container(
+                Container(
                   decoration: tabIndex[3] == false ? BoxDecoration() : BoxDecoration(
                       border: Border(
                         top: BorderSide(
@@ -497,7 +497,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                       )
                     ],
                   ),
-                ),*/
+                ),
 
                 /// 기능 미구현으로 인한 숨김 처리
                 /*ExpansionTile(
