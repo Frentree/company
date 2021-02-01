@@ -107,7 +107,9 @@ class HomeMainPageState extends State<HomeMainPage> {
     setState(() {
       currentPageIndex = 0;
     });
+/*
     HomeSchedulePageState().onNotificationClick(payload);
+*/
   }
 
 

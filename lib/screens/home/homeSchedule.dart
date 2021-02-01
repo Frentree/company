@@ -102,21 +102,21 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       onMessage: Fcm.myBackgroundMessageHandler,
       onBackgroundMessage: Fcm.myBackgroundMessageHandler,
     );
-    notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
+    /*notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);*/
   }
 
 
-  onFCMNotificationClick(String payload) async {
+  /*onFCMNotificationClick(String payload) async {
     print(click);
-    /*if(click == true){
+    *//*if(click == true){
       payload = "";
       click = !click;
-    }*/
+    }*//*
   }
 
   onNotificationClick(String payload) async {
     print("함수실행");
-    print("payload : $payload");
+    *//*print("payload : $payload");
     click = true;
 
 
@@ -143,8 +143,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       test[int.parse(payload)] = true;
     });
     print("test : $test");
-    _scrollController.scrollTo(index: index, duration: Duration(seconds: 1));
-  }
+    _scrollController.scrollTo(index: index, duration: Duration(seconds: 1));*//*
+  }*/
 
   @override
   void dispose() {
