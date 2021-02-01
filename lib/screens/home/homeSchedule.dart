@@ -5,10 +5,12 @@ import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/meetingModel.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 //Flutter
 import 'package:flutter/material.dart';
@@ -32,7 +34,10 @@ import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sizer/sizer.dart';
 
+import 'homeMain.dart';
+
 final word = Words();
+bool click = true;
 
 class HomeSchedulePage extends StatefulWidget {
   @override
@@ -76,6 +81,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   Format _format = Format();
 
+  FirebaseMessaging _fcm = FirebaseMessaging();
+
   List<bool> isDetail = List<bool>();
   bool isBirthdayDetail = false;
 
@@ -89,15 +96,42 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
   void initState() {
     super.initState();
     _calendarController = CalendarController();
-    notificationPlugin.setOnNotificationClick(onNotificationClick);
-
+    _fcm.configure(
+      // 앱이 실행중일 경우
+      onMessage: Fcm.myBackgroundMessageHandler,
+      onBackgroundMessage: Fcm.myBackgroundMessageHandler,
+    );
+    notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
   }
 
 
+  onFCMNotificationClick(String payload) async {
+    print(click);
+    if(click == true){
+      payload = "";
+      click = !click;
+    }
+    if(payload.split(",")[0] == "alarm" && click == false){
+      hpState.setState(() {
+        hpState.currentPageIndex = 2;
+      });
+
+      await _repository.updateReadAlarm(
+        companyCode: _loginUser.companyCode,
+        mail: _loginUser.mail,
+        alarmId: payload.split(",")[1],
+      );
+    }
+  }
+
   onNotificationClick(String payload){
-    print('Payload $payload');
+    /*click = true;*/
+    hpState.setState(() {
+      hpState.currentPageIndex = 0;
+    });
     int index = 0;
     int i = 0;
+
     test.forEach((key, value) {
       if(key != int.parse(payload)){
         i++;
@@ -105,10 +139,13 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       else
         index = i;
     });
-    print("test $test");
+
+    print("index = $index");
+
     setState(() {
       test[int.parse(payload)] = true;
     });
+    print("test : $test");
     _scrollController.scrollTo(index: index, duration: Duration(seconds: 1));
   }
 
@@ -122,7 +159,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
   @override
   Widget build(BuildContext context) {
     LoginUserInfoProvider _loginUserInfoProvider =
-        Provider.of<LoginUserInfoProvider>(context);
+    Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
 
     return Scaffold(
@@ -148,112 +185,112 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
               }
 
               return FutureBuilder(
-                future: _repository.getBirthday(companyCode: _loginUser.companyCode),
-                builder: (context, snapshot) {
-                  _holidays = {};
-                  _holidays = snapshot.data;
-                  return Container(
-                    color: Colors.white,
-                    child: TableCalendar(
-                      events: _events,
-                      holidays: _holidays,
-                      calendarController: _calendarController,
-                      initialCalendarFormat: CalendarFormat.week,
-                      startingDayOfWeek: StartingDayOfWeek.monday,
-                      availableCalendarFormats: {
-                        CalendarFormat.week: word.weekly(),
-                        CalendarFormat.month: word.monthly()
-                      },
-                      onDaySelected: (day, events, holidays) {
-                        setState(() {
-                          selectTime = day;
-                          _calendarController
-                              .setCalendarFormat(CalendarFormat.week);
-                        });
-                      },
-                      headerStyle: HeaderStyle(
-                        titleTextStyle: defaultMediumStyle,
-                        headerPadding: EdgeInsets.symmetric(vertical: 2.0.h),
-                      ),
-                      calendarStyle: CalendarStyle(
-                        holidayStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                          fontWeightName: "Bold",
-                          fontColor: Colors.pinkAccent,
-                        ),
-                        selectedColor: mainColor,
-                        todayStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                          fontWeightName: "Bold",
-                          fontColor: whiteColor,
-                        ),
-                        weekdayStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                          fontColor: mainColor,
-                          fontWeightName: "Regular",
-                        ),
-                        saturdayStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                          fontColor: blueColor,
-                          fontWeightName: "Regular",
-                        ),
-                        weekendStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                          fontColor: redColor,
-                          fontWeightName: "Regular",
-                        ),
-                        selectedStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                          fontWeightName: "Bold",
-                          fontColor: whiteColor,
-                        ),
-                        outsideStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                          fontColor: Colors.black26,
-                          fontWeightName: "Regular",
-                        ),
-                        outsideSaturdayStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                          fontColor: Colors.blue[200],
-                          fontWeightName: "Regular",
-                        ),
-                        outsideWeekendStyle: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
-                          fontColor: Colors.red[200],
-                          fontWeightName: "Regular",
-                        ),
-                        eventDayStyle: customStyle(
-                        fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
-                        fontColor: mainColor,
-                        fontWeightName: "Regular",
-                      ),
-                      ),
-
-                      builders: CalendarBuilders(
-                        markersBuilder: (context, date, events, holidays) {
-                          List<Widget> children = [];
-                          if (events.isNotEmpty) {
-                            children.add(Positioned(
-                              left: SizerUtil.deviceType == DeviceType.Tablet ? 8.0.w : 7.0.w,
-                              top: SizerUtil.deviceType == DeviceType.Tablet ? 5.5.h : 4.5.h,
-                              child: _buildEventMarker(date, events),
-                            ));
-                          }
-                          if (holidays.isNotEmpty) {
-                            children.add(
-                              Positioned(
-                                right: -2,
-                                top: -2,
-                                child: _buildHolidaysMarker(),
-                              ),
-                            );
-                          }
-                          return children;
+                  future: _repository.getBirthday(companyCode: _loginUser.companyCode),
+                  builder: (context, snapshot) {
+                    _holidays = {};
+                    _holidays = snapshot.data;
+                    return Container(
+                      color: Colors.white,
+                      child: TableCalendar(
+                        events: _events,
+                        holidays: _holidays,
+                        calendarController: _calendarController,
+                        initialCalendarFormat: CalendarFormat.week,
+                        startingDayOfWeek: StartingDayOfWeek.monday,
+                        availableCalendarFormats: {
+                          CalendarFormat.week: word.weekly(),
+                          CalendarFormat.month: word.monthly()
                         },
+                        onDaySelected: (day, events, holidays) {
+                          setState(() {
+                            selectTime = day;
+                            _calendarController
+                                .setCalendarFormat(CalendarFormat.week);
+                          });
+                        },
+                        headerStyle: HeaderStyle(
+                          titleTextStyle: defaultMediumStyle,
+                          headerPadding: EdgeInsets.symmetric(vertical: 2.0.h),
+                        ),
+                        calendarStyle: CalendarStyle(
+                          holidayStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                            fontWeightName: "Bold",
+                            fontColor: Colors.pinkAccent,
+                          ),
+                          selectedColor: mainColor,
+                          todayStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                            fontWeightName: "Bold",
+                            fontColor: whiteColor,
+                          ),
+                          weekdayStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                            fontColor: mainColor,
+                            fontWeightName: "Regular",
+                          ),
+                          saturdayStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                            fontColor: blueColor,
+                            fontWeightName: "Regular",
+                          ),
+                          weekendStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                            fontColor: redColor,
+                            fontWeightName: "Regular",
+                          ),
+                          selectedStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                            fontWeightName: "Bold",
+                            fontColor: whiteColor,
+                          ),
+                          outsideStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                            fontColor: Colors.black26,
+                            fontWeightName: "Regular",
+                          ),
+                          outsideSaturdayStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                            fontColor: Colors.blue[200],
+                            fontWeightName: "Regular",
+                          ),
+                          outsideWeekendStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+                            fontColor: Colors.red[200],
+                            fontWeightName: "Regular",
+                          ),
+                          eventDayStyle: customStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 8.25.sp : 11.0.sp,
+                            fontColor: mainColor,
+                            fontWeightName: "Regular",
+                          ),
+                        ),
+
+                        builders: CalendarBuilders(
+                          markersBuilder: (context, date, events, holidays) {
+                            List<Widget> children = [];
+                            if (events.isNotEmpty) {
+                              children.add(Positioned(
+                                left: SizerUtil.deviceType == DeviceType.Tablet ? 8.0.w : 7.0.w,
+                                top: SizerUtil.deviceType == DeviceType.Tablet ? 5.5.h : 4.5.h,
+                                child: _buildEventMarker(date, events),
+                              ));
+                            }
+                            if (holidays.isNotEmpty) {
+                              children.add(
+                                Positioned(
+                                  right: -2,
+                                  top: -2,
+                                  child: _buildHolidaysMarker(),
+                                ),
+                              );
+                            }
+                            return children;
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                }
+                    );
+                  }
               );
             },
           ),
@@ -270,7 +307,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
                       if (snapshot.data == null) {
                         return Center(
-                          child: CircularProgressIndicator(),
+                          /*child: CircularProgressIndicator(),*/
                         );
                       }
 
@@ -405,8 +442,11 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                             itemCount: _companyWork.length,
                             itemBuilder: (context, index) {
                               dynamic _companyData;
+                              print(_companyWork[index].data()["type"]);
                               if (_companyWork[index].data()["type"] == "내근" ||
-                                  _companyWork[index].data()["type"] == "외근") {
+                                  _companyWork[index].data()["type"] == "외근" ||
+                                  _companyWork[index].data()["type"] == "연차" ||
+                                  _companyWork[index].data()["type"] == "반차") {
                                 _companyData = WorkModel.fromMap(
                                     _companyWork[index].data(),
                                     _companyWork[index].documentID);
@@ -415,7 +455,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                     _companyWork[index].data(),
                                     _companyWork[index].documentID);
                               }
-
                               switch (_companyData.type) {
                                 case '내근':
                                 case '외근':
@@ -433,6 +472,27 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                         for (int i = 0; i < test.length; i++) {
                                           if (i != index) {
                                             test[_companyWork[i].data()["alarmId"]] = false;
+                                            isDetail[i] = false;
+                                          }
+                                        }
+                                      });
+                                    },
+                                  );
+                                  break;
+                                case '연차':
+                                case '반차':
+                                  return GestureDetector(
+                                    child: workScheduleCard(
+                                      context: context,
+                                      companyCode: _loginUser.companyCode,
+                                      workModel: _companyData,
+                                      isDetail: isDetail[index],
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        isDetail[index] = !isDetail[index];
+                                        for (int i = 0; i < isDetail.length; i++) {
+                                          if (i != index) {
                                             isDetail[i] = false;
                                           }
                                         }

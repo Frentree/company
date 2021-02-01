@@ -2,20 +2,18 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/models/alarmModel.dart';
-import 'package:MyCompany/models/companyUserModel.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
+import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
-import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
-import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/bottomsheet/annual/annualLeaveMain.dart';
-
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
-
-import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,16 +21,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:MyCompany/models/workModel.dart';
-import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
 
-workContent({BuildContext context, int type, WorkModel workModel, WorkData workData}) async {
-  Fcm fcm = Fcm();
+requestWork({BuildContext context, int type, WorkModel workModel, WorkData workData}) async {
   WorkModel _workModel = workModel;
+  bool _detailClicked = false;
   bool result = false;
   bool isChk = false;
 
@@ -42,6 +37,8 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
   TextEditingController _locationController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
 
+  int choseItem = 0;
+  String choseWorkItem = "내근";
   String _approvalUserItem = "선택";
   UserData approvalUser;
 
@@ -106,7 +103,7 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            type == 1 ? word.workInSchedule() : word.workOutSchedule(),
+                            "업무 요청",
                             style: defaultMediumStyle,
                           ),
                         ),
@@ -136,46 +133,36 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                 size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
                               onPressed: _titleController.text == "" ? () {} : () async {
+                                if(choseWorkItem == "외근" && _locationController.text.trim() == ""){
+                                  FailedData(context, "외근지 미입력", "외근지를 입력해주세요");
+                                  return false;
+                                }
+                                if(approvalUser == null){
+                                  FailedData(context, "대상자 미선택 ", "대상자를 선택해주세요");
+                                  return false;
+                                }
 
-                                var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
-                                CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
-
-                              if(workModel != null) { // 수정일 경우
-                                _workModel = WorkModel(
-                                    id: workModel.id,
-                                    createUid: workModel.createUid,
-                                    name: workModel.name,
-                                    type: workModel.type,
-                                    title: _titleController.text,
-                                    contents: _contentController.text,
-                                    location: _locationController.text,
-                                    createDate: workModel.createDate,
-                                    lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                    startDate: _format.dateTimeToTimeStamp(DateTime( startTime.year, startTime.month, startTime.day, 21, 00,)),
-                                    startTime: _format.dateTimeToTimeStamp(startTime),
-                                    timeSlot: _format.timeSlot(startTime),
-                                    level: 0,
-                                    alarmId: _workModel.alarmId,
-                                );
-
-                                await _repository.updateWork(
-                                  workModel: _workModel,
+                                await FirebaseRepository().createAnnualLeave(
                                   companyCode: _loginUser.companyCode,
+                                  workApproval: WorkApproval(
+                                    title: _titleController.text,
+                                    status: "요청",
+                                    user: _loginUser.name,
+                                    userMail: _loginUser.mail,
+                                    createDate: Timestamp.now(),
+                                    requestDate: _format.dateTimeToTimeStamp(startTime),
+                                    approvalContent: "",
+                                    approvalType: "업무",
+                                    requestContent: _contentController.text,
+                                    approvalUser: approvalUser.name,
+                                    approvalMail: approvalUser.mail,
+                                    location: choseWorkItem != "내근" ? _locationController.text : "",
+                                  ),
                                 );
-                              } else {// 입력단계
-
-                                Alarm _alarmModel = Alarm(
-                                  alarmId: DateTime.now().hashCode,
-                                  createName: _loginUser.name,
-                                  createMail: _loginUser.mail,
-                                  createProfilePhoto: loginUserInfo.profilePhoto,
-                                  collectionName: "work",
-                                  alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "일정" + "을 등록 했습니다.",
-                                  read: false,
-                                  alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                );
-
-                                switch(type){
+                                result = true;
+                                Navigator.of(context).pop(result);
+                                return result;
+                                /*switch(type){
                                   case 1: //내근
                                     _workModel =  WorkModel(
                                       createUid: _loginUser.mail,
@@ -193,30 +180,15 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                       alarmId: DateTime.now().hashCode,
                                     );
 
-
-
                                     await _repository.saveWork(
                                       workModel: _workModel,
                                       companyCode: _loginUser.companyCode,
                                     );
-
-                                    await _repository.saveAlarm(
-                                      alarmModel: _alarmModel,
-                                      companyCode: _loginUser.companyCode,
-                                      mail: _loginUser.mail,
-                                    ).whenComplete(() async {
-
-                                      List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
-                                      fcm.sendFCMtoSelectedDevice(
-                                          alarmId: _alarmModel.alarmId.toString(),
-                                          tokenList: tokens,
-                                          name: _loginUser.name,
-                                          team: loginUserInfo.team,
-                                          position: loginUserInfo.position,
-                                          collection: "work"
-                                      );
-                                    });
-
+                                    *//*dailyAtTimeNotification(
+                                    alarmTime: startTime,
+                                    title: "일정이 있습니다.",
+                                    contents: "일정 내용 : ${_titleController.text}"
+                                  );*//*
                                     if(startTime.isAfter(DateTime.now())){
                                       await notificationPlugin.scheduleNotification(
                                         alarmId: _workModel.alarmId,
@@ -229,32 +201,11 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     break;
                                   case 2: //외근
                                     if(approvalUser == null){
-                                      FailedData(context, "결재자 미선택", "결재자를 선택 후에 신청해주세요");
+                                      FailedData(context, "대상자 미선택", "대상자를 선택 후에 신청해주세요");
                                       break;
                                     }
-                                    await FirebaseRepository().createAnnualLeave(
-                                        companyCode: _loginUser.companyCode,
-                                        workApproval: WorkApproval(
-                                          title: _titleController.text,
-                                          status: "요청",
-                                          user: _loginUser.name,
-                                          userMail: _loginUser.mail,
-                                          createDate: Timestamp.now(),
-                                          requestDate: _format.dateTimeToTimeStamp(startTime),
-                                          approvalContent: "",
-                                          approvalType: "외근",
-                                          requestContent: _contentController.text,
-                                          approvalUser: approvalUser.name,
-                                          approvalMail: approvalUser.mail,
-                                          location: _locationController.text,
-                                        ),
-                                    );
-                                    break;
-                                }
-                              }
-                                result = true;
-                                Navigator.of(context).pop(result);
-                                return result;
+
+                              }*/
                               }
                           ),
                         ),
@@ -301,11 +252,79 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                       ],
                     ),
                     emptySpace,
-                    Visibility(
-                      visible: (type == 2),
-                      child: Column(
-                        children: [
-                          Row(
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              height: 6.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.person_outline,
+                                    size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                  ),
+                                  cardSpace,
+                                  Text(
+                                    "근무",
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            cardSpace,
+                            Expanded(
+                                child: PopupMenuButton(
+                                    child: RaisedButton(
+                                      disabledColor: whiteColor,
+                                      child: Text(
+                                        choseWorkItem,
+                                        style: defaultRegularStyle,
+                                      ),
+                                    ),
+                                    onSelected: (value) {
+                                      setState(() {
+                                        choseItem = value;
+                                        choseWorkItem = _buildWorkItem(value);
+                                      });
+                                    },
+                                  //choseItem
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        height: 7.0.h,
+                                        value: 0,
+                                        child: Row(
+                                          children: [
+                                            cardSpace,
+                                            Text(
+                                              "내근",
+                                              style: defaultRegularStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        height: 7.0.h,
+                                        value: 1,
+                                        child: Row(
+                                          children: [
+                                            cardSpace,
+                                            Text(
+                                              "외근",
+                                              style: defaultRegularStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                )
+                            )
+                          ],
+                        ),
+                        Visibility(
+                          visible: choseItem == 1,
+                          child: Row(
                             children: [
                               Container(
                                 height: 6.0.h,
@@ -340,66 +359,62 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 6.0.h,
-                                width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.person_outline,
-                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
-                                    ),
-                                    cardSpace,
-                                    Text(
-                                      "결재자",
-                                      style: defaultRegularStyle,
-                                    ),
-                                  ],
-                                ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              height: 6.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.person_outline,
+                                    size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                  ),
+                                  cardSpace,
+                                  Text(
+                                    "대상자",
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
                               ),
-                              cardSpace,
-                              Expanded(
-                                  child: StreamBuilder<QuerySnapshot>(
-                                      stream: FirebaseRepository().getGradeUser(
-                                          companyCode: _loginUser.companyCode,
-                                          level: 6
-                                      ),
-                                      builder: (context, snapshot) {
-                                        if(!snapshot.hasData){
-                                          return Text("");
-                                        }
-                                        List<DocumentSnapshot> doc = snapshot.data.docs;
-
-                                        return PopupMenuButton(
-                                            child: RaisedButton(
-                                              disabledColor: whiteColor,
-                                              child: Text(
-                                                _approvalUserItem,
-                                                style: defaultRegularStyle,
-                                              ),
-                                            ),
-                                            onSelected: (value) {
-                                              approvalUser = value;
-                                              _approvalUserItem = userNameChange(value);
-                                              setState(() {});
-                                            },
-                                            itemBuilder: (context) => doc.map((data) => _buildApprovalItem(_loginUser.companyCode, data, context)).toList()
-                                        );
+                            ),
+                            cardSpace,
+                            Expanded(
+                                child: StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseRepository().getRequestUser(
+                                        companyCode: _loginUser.companyCode,
+                                        mail: _loginUser.mail
+                                    ),
+                                    builder: (context, snapshot) {
+                                      if(!snapshot.hasData){
+                                        return Text("");
                                       }
-                                  )
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Visibility(
-                      visible: (type == 2),
-                      child: emptySpace,
-                    ),
+                                      List<DocumentSnapshot> doc = snapshot.data.docs;
 
+                                      return PopupMenuButton(
+                                          child: RaisedButton(
+                                            disabledColor: whiteColor,
+                                            child: Text(
+                                              _approvalUserItem,
+                                              style: defaultRegularStyle,
+                                            ),
+                                          ),
+                                          onSelected: (value) {
+                                            approvalUser = value;
+                                            _approvalUserItem = userNameChange(value);
+                                            setState(() {});
+                                          },
+                                          itemBuilder: (context) => doc.map((data) => _buildApprovalItem(_loginUser.companyCode, data, context)).toList()
+                                      );
+                                    }
+                                )
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    ),
                     GestureDetector(
                       onTap: () {
                         isChk = !isChk;
@@ -541,6 +556,17 @@ PopupMenuItem _buildApprovalItem(String companyCode, DocumentSnapshot data, Buil
       ],
     ),
   );
+}
+
+/// 내/외근 종류 선택 메뉴
+String _buildWorkItem(int choseItem) {
+  String _choseItem = choseItem.toString();
+  switch (_choseItem) {
+    case '0':
+      return "내근";
+    case '1':
+      return "외근";
+  }
 }
 
 String userNameChange (UserData user){

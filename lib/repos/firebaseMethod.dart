@@ -207,12 +207,43 @@ class FirebaseMethods {
   }
   //알람 데이터 관련
   Future<void> saveAlarm({Alarm alarmModel, String companyCode, String mail}) async {
+    Map<String, String> colleague = await getColleague(companyCode: companyCode, loginUserMail: mail);
+
+    colleague.keys.forEach((element) async {
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode).collection(USER).doc(element)
+          .collection(ALARM)
+          .add(alarmModel.toJson());
+    });
+  }
+
+  Future<void> deleteAlarm({String companyCode, String mail, String documentID}) async {
     return await firestore
         .collection(COMPANY)
-        .doc(companyCode).collection(USER).doc(mail)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
         .collection(ALARM)
-        .add(alarmModel.toJson());
+        .doc(documentID)
+        .delete();
   }
+  
+  Future<void> updateReadAlarm({String companyCode, String mail, String alarmId}) async {
+    var doc = await firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).where("alarmId", isEqualTo: int.parse(alarmId)).get();
+    String docId = doc.docs.first.id;
+    return await firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).doc(docId).update({"read": true,});
+  }
+
+  Stream<QuerySnapshot> getNoReadAlarm({String companyCode, String mail}) {
+    return firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).where("read", isEqualTo: false).orderBy("alarmDate").snapshots();
+  }
+
+  Stream<QuerySnapshot> getAllAlarm({String companyCode, String mail}) {
+    return firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).orderBy("alarmDate").snapshots();
+  }
+
+
 
   //내외근 데이터 관련
   Future<void> saveWork({WorkModel workModel, String companyCode}) async {
@@ -402,21 +433,46 @@ class FirebaseMethods {
   }
 
   Future<void> updatePhotoProfile(
-      String companyCode, String mail, String url) async {
+        String companyCode, String mail, String url) async {
+      await firestore
+          .collection(COMPANY)
+          .document(companyCode)
+          .collection(USER)
+          .document(mail)
+          .update({
+        "profilePhoto": url,
+      });
+
+      return firestore.collection(USER).document(mail).update({
+        "profilePhoto": url,
+      });
+  }
+  
+  //FCM 토큰 업데이트 
+  Future<void> updateToken(
+      {String companyCode, String mail, String token}) async {
     await firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
-        .document(mail)
+        .doc(mail)
         .update({
-      "profilePhoto": url,
-    });
-
-    return firestore.collection(USER).document(mail).update({
-      "profilePhoto": url,
+      "token": token,
     });
   }
+  
+  //FCM 토큰 가져오기
+  Future<List<String>> getTokens({String companyCode, String mail}) async {
+    List<String> tokenList = [];
+    QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection(USER).where("mail", isNotEqualTo: mail).get();
 
+    querySnapshot.docs.forEach((element) {
+      tokenList.add(element.data()["token"]);
+    });
+
+    return tokenList;
+  }
+  
   Future<void> updateCompany(String companyCode, String companyName, String companyNo, String companyAddr, String companyPhone, String companyWeb, String url) async {
     return await firestore
         .collection(COMPANY)
@@ -970,6 +1026,17 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> selectAnnualLeave(String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("createUid", isEqualTo: mail)
+        .where("type", isEqualTo: "연차", isGreaterThanOrEqualTo: "반차", )
+        //.orderBy(orderByType, descending: isOrderBy)
+        .snapshots();
+  }
+
   /*Future<String> firebaseStorege(String companyCode, String mail) async {
     String data = await firestorage.ref("profile/${mail}").getDownloadURL().catchError({
 
@@ -982,6 +1049,16 @@ class FirebaseMethods {
         .document(mail)
         .get();
   }*/
+
+  Stream<QuerySnapshot> getRequestUser(String companyCode, String mail) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("mail", isNotEqualTo: mail)
+        .snapshots();
+  }
+
 }
 
 class FirestoreApi {

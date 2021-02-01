@@ -373,7 +373,6 @@ AnnualLeaveMain(BuildContext context) async {
                               ),
                               onSelected: (value) {
                                 _chosenItem = value;
-                                print(_chosenItem);
                                 setState(() {});
                               },
                               itemBuilder: (BuildContext context) => [

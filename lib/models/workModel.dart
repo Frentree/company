@@ -24,6 +24,7 @@ class WorkModel {
   int timeSlot;
   int level;
   int alarmId;
+  DocumentReference reference;
 
   WorkModel({
     this.id,
@@ -57,6 +58,34 @@ class WorkModel {
         timeSlot = snapshot["timeSlot"] ?? 0,
         level = snapshot["level"] ?? 0,
         alarmId = snapshot["alarmId"] ?? 0;
+      /*: assert(map['id'] != null),
+        assert(map['createUid'] != null),
+        assert(map['name'] != null),
+        assert(map['title'] != null),
+        assert(map['type'] != null),
+        assert(map['contents'] != null),
+        assert(map['location'] != null),
+        assert(map['createDate'] != null),
+        assert(map['lastModDate'] != null),
+        assert(map['startDate'] != null),
+        assert(map['startTime'] != null),
+        assert(map['timeSlot'] != null),
+        assert(map['level'] != null),
+        assert(map['alarmId'] != null),
+        id = map['id'],
+        createUid = map['createUid'],
+        name = map['name'],
+        title = map['title'],
+        type = map['type'],
+        contents = map['contents'],
+        location = map['location'],
+        createDate = map['createDate'],
+        lastModDate = map['lastModDate'],
+        startDate = map['startDate'],
+        startTime = map['startTime'],
+        timeSlot = map['timeSlot'],
+        level = map['level'],
+        alarmId = map['alarmId'];*/
 
   toJson() {
     return {
@@ -75,4 +104,34 @@ class WorkModel {
       "alarmId": alarmId,
     };
   }
+
+  WorkModel.fromMap2(Map<String, dynamic> map, {this.reference})
+   : assert(map['createUid'] != null),
+        assert(map['name'] != null),
+        assert(map['title'] != null),
+        assert(map['type'] != null),
+        assert(map['contents'] != null),
+        assert(map['location'] != null),
+        assert(map['createDate'] != null),
+        assert(map['lastModDate'] != null),
+        assert(map['startDate'] != null),
+        assert(map['startTime'] != null),
+        assert(map['timeSlot'] != null),
+        assert(map['level'] != null),
+        assert(map['alarmId'] != null),
+        id = map['id'],
+        createUid = map['createUid'],
+        name = map['name'],
+        title = map['title'],
+        type = map['type'],
+        contents = map['contents'],
+        location = map['location'],
+        createDate = map['createDate'],
+        lastModDate = map['lastModDate'],
+        startDate = map['startDate'],
+        startTime = map['startTime'],
+        timeSlot = map['timeSlot'],
+        level = map['level'],
+        alarmId = map['alarmId'];
+  WorkModel.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap2(snapshot.data(), reference: snapshot.reference);
 }
