@@ -10,6 +10,7 @@ import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 //Flutter
@@ -37,7 +38,7 @@ import 'package:sizer/sizer.dart';
 import 'homeMain.dart';
 
 final word = Words();
-bool click = true;
+
 
 class HomeSchedulePage extends StatefulWidget {
   @override
@@ -107,28 +108,23 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   onFCMNotificationClick(String payload) async {
     print(click);
-    if(click == true){
+    /*if(click == true){
       payload = "";
       click = !click;
-    }
-    if(payload.split(",")[0] == "alarm" && click == false){
-      hpState.setState(() {
-        hpState.currentPageIndex = 2;
-      });
-
-      await _repository.updateReadAlarm(
-        companyCode: _loginUser.companyCode,
-        mail: _loginUser.mail,
-        alarmId: payload.split(",")[1],
-      );
-    }
+    }*/
   }
 
-  onNotificationClick(String payload){
-    /*click = true;*/
-    hpState.setState(() {
-      hpState.currentPageIndex = 0;
-    });
+  onNotificationClick(String payload) async {
+    print("함수실행");
+    print("payload : $payload");
+    click = true;
+
+
+    Stream<QuerySnapshot> k =  _repository.getSelectedDateCompanyWork(
+        companyCode: _loginUser.companyCode,
+        selectedDate: _format.dateTimeToTimeStamp(selectTime)
+    );
+
     int index = 0;
     int i = 0;
 
@@ -139,6 +135,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       else
         index = i;
     });
+    print("test = $test");
 
     print("index = $index");
 
