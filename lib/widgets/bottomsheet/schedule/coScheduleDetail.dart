@@ -102,7 +102,7 @@ coScheduleDetail(
                     itemCount: scheduleData.length,
                     itemBuilder: (context, index){
                       dynamic _data;
-                      if(scheduleData[index].data()["type"] == "내근" || scheduleData[index].data()["type"] == "외근"){
+                      if(scheduleData[index].data()["type"] == "내근" || scheduleData[index].data()["type"] == "외근"|| scheduleData[index].data()["type"] == "연차"|| scheduleData[index].data()["type"] == "반차"){
                         _data = WorkModel.fromMap(scheduleData[index].data(), scheduleData[index].documentID);
                       }
                       else if(scheduleData[index].data()["type"] == "미팅"){
@@ -112,6 +112,8 @@ coScheduleDetail(
                       switch(_data.type){
                         case "내근":
                         case "외근":
+                        case "연차":
+                        case "반차":
                           return workDetailContents(
                             context: context,
                             workModel: _data,
