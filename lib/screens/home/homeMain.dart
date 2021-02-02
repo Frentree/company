@@ -23,11 +23,6 @@ import 'package:MyCompany/screens/home/homeScheduleMain.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-
-bool click = true;
-
-
-
 class HomeMainPage extends StatefulWidget {
   @override
   HomeMainPageState createState() => HomeMainPageState();
@@ -55,6 +50,9 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   FirebaseRepository _repository = FirebaseRepository();
 
+
+  bool click = false;
+
   //페이지 이동
   void _pageChange(int pageIndex) {
     if (pageIndex == 1) {
@@ -74,19 +72,16 @@ class HomeMainPageState extends State<HomeMainPage> {
   void initState(){
     super.initState();
     currentPageIndex = 0;
+    click = false;
     notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
   }
 
   onFCMNotificationClick(String payload) async {
-    print("hihi");
-    /*print(click);
-    if(click == true){
+    if(click == false) {
       payload = "";
       click = !click;
-    }*/
-    print(payload.split(",")[0]);
-    print("click ::: $click");
-    if(payload.split(",")[0] == "alarm"){
+    }
+    if(payload.split(",")[0] == "alarm" && click == true){
       setState(() {
         currentPageIndex = 2;
       });
@@ -95,21 +90,18 @@ class HomeMainPageState extends State<HomeMainPage> {
         companyCode: _loginUser.companyCode,
         mail: _loginUser.mail,
         alarmId: payload.split(",")[1],
-      );
+      ).whenComplete((){
+        click = false;
+      });
     }
     else{
       print("실패입니다");
     }
   }
 
-  onNotificationClick(String payload) {
-    /*click = true;*/
-    setState(() {
+  onNotificationClick(String payload) {setState(() {
       currentPageIndex = 0;
     });
-/*
-    HomeSchedulePageState().onNotificationClick(payload);
-*/
   }
 
 

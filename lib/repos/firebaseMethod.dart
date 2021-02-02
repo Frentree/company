@@ -240,7 +240,7 @@ class FirebaseMethods {
   }
 
   Stream<QuerySnapshot> getAllAlarm({String companyCode, String mail}) {
-    return firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).orderBy("alarmDate").snapshots();
+    return firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(mail).collection(ALARM).orderBy("alarmDate",descending: true).snapshots();
   }
 
 
@@ -470,6 +470,19 @@ class FirebaseMethods {
       tokenList.add(element.data()["token"]);
     });
 
+    return tokenList;
+  }
+
+  Future<List<String>> getApprovalUserTokens({String companyCode, String mail}) async {
+    List<String> tokenList = [];
+    QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection(USER).where("mail", isEqualTo: mail).get();
+
+    querySnapshot.docs.forEach((element) {
+      print("토큰 주인 이메일 ${element.data()["mail"]}");
+      tokenList.add(element.data()["token"]);
+    });
+
+    print("토큰 리스트 : ${tokenList}");
     return tokenList;
   }
   

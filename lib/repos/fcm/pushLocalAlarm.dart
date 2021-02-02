@@ -66,11 +66,16 @@ class NotificationPlugin {
         onSelectNotification: (String payload) async {
           if(payload.substring(0, 5) == "alarm"){
             onFCMNotificationClick(payload);
+
           }
           else{
             onNotificationClick(payload);
           }
         });
+  }
+
+  Future<void> deleteNotification({int alarmId}) async {
+    await flutterLocalNotificationsPlugin.cancel(alarmId);
   }
 
   Future<void> showNotification(
