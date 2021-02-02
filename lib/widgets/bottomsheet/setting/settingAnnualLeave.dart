@@ -18,7 +18,6 @@ final word = Words();
 
 SettingAnnualLeave({BuildContext context, double statusBarHeight}) {
   User _loginUser;
-
   showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -33,9 +32,7 @@ SettingAnnualLeave({BuildContext context, double statusBarHeight}) {
             Provider.of<LoginUserInfoProvider>(context);
         _loginUser = _loginUserInfoProvider.getLoginUser();
 
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          return Container(
+        return Container(
             height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
             padding: EdgeInsets.only(
               left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
@@ -78,7 +75,7 @@ SettingAnnualLeave({BuildContext context, double statusBarHeight}) {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            "연차 사용 조회",
+                            "연차 사용 내역 조회",
                             style: defaultMediumStyle,
                           ),
                         ),
@@ -93,7 +90,6 @@ SettingAnnualLeave({BuildContext context, double statusBarHeight}) {
               ],
             ),
           );
-        });
       }
     );
 }

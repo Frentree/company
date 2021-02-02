@@ -2,6 +2,8 @@
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -21,11 +23,14 @@ import 'package:MyCompany/screens/home/homeScheduleMain.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-HomeMainPageState hpState = new HomeMainPageState();
+
+bool click = true;
+
+
 
 class HomeMainPage extends StatefulWidget {
   @override
-  HomeMainPageState createState() => hpState;
+  HomeMainPageState createState() => HomeMainPageState();
 }
 
 class HomeMainPageState extends State<HomeMainPage> {
@@ -48,6 +53,8 @@ class HomeMainPageState extends State<HomeMainPage> {
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   User _loginUser;
 
+  FirebaseRepository _repository = FirebaseRepository();
+
   //페이지 이동
   void _pageChange(int pageIndex) {
     if (pageIndex == 1) {
@@ -66,7 +73,45 @@ class HomeMainPageState extends State<HomeMainPage> {
   @override
   void initState(){
     super.initState();
+    currentPageIndex = 0;
+    notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
   }
+
+  onFCMNotificationClick(String payload) async {
+    print("hihi");
+    /*print(click);
+    if(click == true){
+      payload = "";
+      click = !click;
+    }*/
+    print(payload.split(",")[0]);
+    print("click ::: $click");
+    if(payload.split(",")[0] == "alarm"){
+      setState(() {
+        currentPageIndex = 2;
+      });
+
+      await _repository.updateReadAlarm(
+        companyCode: _loginUser.companyCode,
+        mail: _loginUser.mail,
+        alarmId: payload.split(",")[1],
+      );
+    }
+    else{
+      print("실패입니다");
+    }
+  }
+
+  onNotificationClick(String payload) {
+    /*click = true;*/
+    setState(() {
+      currentPageIndex = 0;
+    });
+/*
+    HomeSchedulePageState().onNotificationClick(payload);
+*/
+  }
+
 
   @override
   Widget build(BuildContext context) {

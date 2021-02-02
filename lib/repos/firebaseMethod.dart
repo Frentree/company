@@ -1026,13 +1026,28 @@ class FirebaseMethods {
         .snapshots();
   }
 
-  Stream<QuerySnapshot> selectAnnualLeave(String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy) {
+  Stream<QuerySnapshot> selectAnnualLeave(String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy, String date) {
+    DateTime now = DateTime.now();
+    final collection = firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK);
+
+    final querySnapshots = Future.wait([
+      collection.where("startTime", isGreaterThan: Timestamp.fromDate(DateTime.parse("${date}-01-01 00:00:01")), isLessThan: Timestamp.fromDate(DateTime.parse("${date}-12-31 23:59:59"))).get(),
+      collection.where("createUid", isEqualTo: mail).get(),
+      collection.where("type", isEqualTo: "연차").get(),
+      collection.where("type", isEqualTo: "반차").get(),
+    ]);
+
     return firestore
         .collection(COMPANY)
         .doc(companyCode)
         .collection(WORK)
+        .where("startTime", isGreaterThan: Timestamp.fromDate(DateTime.parse("${date}-01-01 00:00:01")), isLessThan: Timestamp.fromDate(DateTime.parse("${date}-12-31 23:59:59")))
         .where("createUid", isEqualTo: mail)
-        .where("type", isEqualTo: "연차", isGreaterThanOrEqualTo: "반차", )
+        .where("type", isEqualTo: "연차")
+
         //.orderBy(orderByType, descending: isOrderBy)
         .snapshots();
   }
