@@ -8,6 +8,7 @@ import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/fcm/pushFCM.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -847,9 +848,6 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                     ).whenComplete(() async {
 
                                                       List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: model.userMail);
-                                                      print("요청자 메일 : ${model.userMail}");
-                                                      print("로그인 사용자 회사 코드 : ${_loginUser.companyCode}");
-                                                      print(tokens);
 
                                                       fcm.sendFCMtoSelectedDevice(
                                                           alarmId: _alarmModel.alarmId.toString(),
@@ -860,26 +858,36 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                           collection: "requestWorkOk"
                                                       );
                                                     });
+                                                    WorkModel _workModel = WorkModel(
+                                                      alarmId: DateTime.now().hashCode,
+                                                      contents: model.requestContent,
+                                                      createUid: model.approvalMail,
+                                                      createDate: Timestamp.now(),
+                                                      startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
+                                                      startTime: model.requestDate,
+                                                      timeSlot: _format.timeSlot(requestDate),
+                                                      type: model.location == "" ? "내근" : "외근",
+                                                      title: model.title,
+                                                      level: 0,
+                                                      location: model.location,
+                                                      lastModDate: Timestamp.now(),
+                                                      name: model.approvalUser,
+                                                    );
 
                                                     FirebaseRepository().saveWork(
                                                         companyCode: companyCode,
-                                                        workModel: WorkModel(
-                                                          alarmId: DateTime.now().hashCode,
-                                                          contents: model.requestContent,
-                                                          createUid: model.approvalMail,
-                                                          createDate: Timestamp.now(),
-                                                          startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
-                                                          startTime: model.requestDate,
-                                                          timeSlot: _format.timeSlot(requestDate),
-                                                          type: model.location == "" ? "내근" : "외근",
-                                                          title: model.title,
-                                                          level: 0,
-                                                          location: model.location,
-                                                          lastModDate: Timestamp.now(),
-                                                          name: model.approvalUser,
-                                                        )
+                                                        workModel: _workModel,
                                                     );
 
+                                                    if(_format.timeStampToDateTime(_workModel.startTime).isAfter(DateTime.now())){
+                                                      await notificationPlugin.scheduleNotification(
+                                                        alarmId: _workModel.alarmId,
+                                                        alarmTime: _format.timeStampToDateTime(_workModel.startTime),
+                                                        title: "일정이 있습니다.",
+                                                        contents: "일정 내용 : ${_workModel.title}",
+                                                        payload: _workModel.alarmId.toString(),
+                                                      );
+                                                    }
 
                                                     break;
                                                   default:

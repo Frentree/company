@@ -478,11 +478,9 @@ class FirebaseMethods {
     QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection(USER).where("mail", isEqualTo: mail).get();
 
     querySnapshot.docs.forEach((element) {
-      print("토큰 주인 이메일 ${element.data()["mail"]}");
       tokenList.add(element.data()["token"]);
     });
 
-    print("토큰 리스트 : ${tokenList}");
     return tokenList;
   }
   

@@ -21,7 +21,10 @@ import 'package:flutter/material.dart';
 //Screen
 import 'package:MyCompany/screens/home/homeScheduleMain.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+
+
 
 class HomeMainPage extends StatefulWidget {
   @override
@@ -41,17 +44,15 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   //현재 페이지 인덱스
   int currentPageIndex = 0;
-
+  String payloadOld = "";
   Attendance _attendance = Attendance();
 
   // 프로필
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   User _loginUser;
-
   FirebaseRepository _repository = FirebaseRepository();
 
-
-  bool click = false;
+  bool click = true;
 
   //페이지 이동
   void _pageChange(int pageIndex) {
@@ -70,17 +71,32 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   @override
   void initState(){
+    print("홈메인 페이지 입니다.");
     super.initState();
     currentPageIndex = 0;
     click = false;
     notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
   }
 
+
+
   onFCMNotificationClick(String payload) async {
+    SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
+    print("click1 $click");
+    print("payloadOld1 $payloadOld");
+    print("payload1 $payload");
+    if(_sharedPreferences.getString("payloadOld") != null){
+      payloadOld = _sharedPreferences.getString("payloadOld");
+    }
     if(click == false) {
-      payload = "";
+      if(payloadOld == payload){
+        payload = "";
+      }
       click = !click;
     }
+    print("payloadOld2 $payloadOld");
+    print("payload2 $payload");
+    print("click2 $click");
     if(payload.split(",")[0] == "alarm" && click == true){
       setState(() {
         currentPageIndex = 2;
@@ -94,9 +110,14 @@ class HomeMainPageState extends State<HomeMainPage> {
         click = false;
       });
     }
+
     else{
       print("실패입니다");
     }
+    print("payloadOld3 $payloadOld");
+    print("payload3 $payload");
+    print("click3 $click");
+    _sharedPreferences.setString("payloadOld", payload);
   }
 
   onNotificationClick(String payload) {setState(() {
