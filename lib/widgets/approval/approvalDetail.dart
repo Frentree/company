@@ -829,35 +829,8 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                 DateTime requestDate = DateTime.parse(model.requestDate.toDate().toString());
 
                                                 switch(model.approvalType){
+                                                  //업무 요청
                                                   case '업무':
-                                                    Alarm _alarmModel = Alarm(
-                                                      alarmId: DateTime.now().hashCode,
-                                                      createName: _loginUser.name,
-                                                      createMail: _loginUser.mail,
-                                                      createProfilePhoto: loginUserInfo.profilePhoto,
-                                                      collectionName: "requestWorkOk",
-                                                      alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 업무요청을 수락했습니다.",
-                                                      read: false,
-                                                      alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                                    );
-
-                                                    await _repository.saveAlarm(
-                                                      alarmModel: _alarmModel,
-                                                      companyCode: _loginUser.companyCode,
-                                                      mail: _loginUser.mail,
-                                                    ).whenComplete(() async {
-
-                                                      List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: model.userMail);
-
-                                                      fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: tokens,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo.team,
-                                                          position: loginUserInfo.position,
-                                                          collection: "requestWorkOk"
-                                                      );
-                                                    });
                                                     WorkModel _workModel = WorkModel(
                                                       alarmId: DateTime.now().hashCode,
                                                       contents: model.requestContent,
@@ -874,72 +847,189 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                       name: model.approvalUser,
                                                     );
 
+                                                    await FirebaseRepository().saveWork(
+                                                        companyCode: companyCode,
+                                                        workModel: _workModel,
+                                                    ).whenComplete(() async {
+                                                      Alarm _alarmModel = Alarm(
+                                                        alarmId: _workModel.alarmId,
+                                                        createName: _loginUser.name,
+                                                        createMail: _loginUser.mail,
+                                                        collectionName: "requestWorkOk",
+                                                        alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 업무요청을 수락했습니다.",
+                                                        read: false,
+                                                        alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                                      );
+
+                                                      //알림 스케줄 등록
+                                                      if(startTime.isAfter(DateTime.now())){
+                                                        await notificationPlugin.scheduleNotification(
+                                                          alarmId: _workModel.alarmId,
+                                                          alarmTime: startTime,
+                                                          title: "일정이 있습니다.",
+                                                          contents: "일정 내용 : ${model.title}",
+                                                          payload: _workModel.alarmId.toString(),
+                                                        );
+                                                      }
+
+                                                      //업무 요청자에게 알림 보내기
+                                                      List<String> token = await _repository.getApprovalUserTokens(companyCode: companyCode, mail: model.userMail);
+
+                                                      await _repository.saveOneUserAlarm(
+                                                        alarmModel: _alarmModel,
+                                                        companyCode: _loginUser.companyCode,
+                                                        mail: model.userMail,
+                                                      ).whenComplete(() async {
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel.alarmId.toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo.team,
+                                                            position: loginUserInfo.position,
+                                                            collection: "requestWorkOk"
+                                                        );
+                                                      });
+                                                    });
+
+                                                    break;
+                                                  case '외근':
+                                                    WorkModel _workModel = WorkModel(
+                                                      alarmId: DateTime.now().hashCode,
+                                                      contents: model.requestContent,
+                                                      createUid: model.userMail,
+                                                      createDate: Timestamp.now(),
+                                                      startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
+                                                      startTime: model.requestDate,
+                                                      timeSlot: _format.timeSlot(requestDate),
+                                                      type: model.approvalType,
+                                                      title: model.title,
+                                                      level: 0,
+                                                      location: model.location,
+                                                      lastModDate: Timestamp.now(),
+                                                      name: model.user,
+                                                    );
+
                                                     FirebaseRepository().saveWork(
                                                         companyCode: companyCode,
                                                         workModel: _workModel,
-                                                    );
-
-                                                    if(_format.timeStampToDateTime(_workModel.startTime).isAfter(DateTime.now())){
-                                                      await notificationPlugin.scheduleNotification(
-                                                        alarmId: _workModel.alarmId,
-                                                        alarmTime: _format.timeStampToDateTime(_workModel.startTime),
-                                                        title: "일정이 있습니다.",
-                                                        contents: "일정 내용 : ${_workModel.title}",
-                                                        payload: _workModel.alarmId.toString(),
-                                                      );
-                                                    }
-
-                                                    break;
-                                                  default:
-
-                                                    Alarm _alarmModel = Alarm(
-                                                      alarmId: DateTime.now().hashCode,
-                                                      createName: _loginUser.name,
-                                                      createMail: _loginUser.mail,
-                                                      createProfilePhoto: loginUserInfo.profilePhoto,
-                                                      collectionName: "approvalWorkOk",
-                                                      alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 외근일정 결재를 수락했습니다.",
-                                                      read: false,
-                                                      alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                                    );
-
-                                                    await _repository.saveAlarm(
-                                                      alarmModel: _alarmModel,
-                                                      companyCode: _loginUser.companyCode,
-                                                      mail: _loginUser.mail,
                                                     ).whenComplete(() async {
+                                                      Alarm _alarmModel = Alarm(
+                                                        alarmId: _workModel.alarmId,
+                                                        createName: _loginUser.name,
+                                                        createMail: _loginUser.mail,
+                                                        collectionName: "approvalWorkOk",
+                                                        alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 외근일정 결재를 수락했습니다.",
+                                                        read: false,
+                                                        alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                                      );
 
-                                                      List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: model.userMail);
+                                                      List<String> token = await _repository.getApprovalUserTokens(companyCode: companyCode, mail: model.userMail);
+
+                                                      await _repository.saveOneUserAlarm(
+                                                        alarmModel: _alarmModel,
+                                                        companyCode: _loginUser.companyCode,
+                                                        mail: model.userMail,
+                                                      ).whenComplete(() async {
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel.alarmId.toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo.team,
+                                                            position: loginUserInfo.position,
+                                                            collection: "approvalWorkOk@${startTime}@${model.title}"
+                                                        );
+                                                      });
+
+                                                      var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(model.userMail).get();
+                                                      CompanyUser workCreateUser = CompanyUser.fromMap(doc.data(), doc.id);
+
+                                                      print(model.user);
+
+                                                      Alarm _alarmModel2 = Alarm(
+                                                        alarmId: _workModel.alarmId,
+                                                        createName: model.user,
+                                                        createMail: model.userMail,
+                                                        collectionName: "work",
+                                                        alarmContents: workCreateUser.team + " " + workCreateUser.name + " " + workCreateUser.position + "님이 새로운 " + "일정" + "을 등록 했습니다.",
+                                                        read: false,
+                                                        alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                                      );
+
+
+                                                      List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: model.userMail);
+
                                                       print(tokens);
 
-                                                      fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: tokens,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo.team,
-                                                          position: loginUserInfo.position,
-                                                          collection: "approvalWorkOk"
-                                                      );
+                                                      //알림 DB에 저장
+                                                      await _repository.saveAlarm(
+                                                        alarmModel: _alarmModel2,
+                                                        companyCode: _loginUser.companyCode,
+                                                        mail: model.userMail,
+                                                      ).whenComplete(() async {
+
+                                                        //동료들에게 알림 보내기
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel2.alarmId.toString(),
+                                                            tokenList: tokens,
+                                                            name: workCreateUser.name,
+                                                            team: workCreateUser.team,
+                                                            position: workCreateUser.position,
+                                                            collection: "work"
+                                                        );
+                                                      });
+
                                                     });
+                                                    break;
+                                                    //연반차
+                                                  default:
+                                                    WorkModel _workModel = WorkModel(
+                                                      alarmId: 0,
+                                                      contents: model.requestContent,
+                                                      createUid: model.userMail,
+                                                      createDate: Timestamp.now(),
+                                                      startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
+                                                      startTime: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 09, 00,)),
+                                                      timeSlot: 1,
+                                                      type: model.approvalType,
+                                                      title: model.approvalType,
+                                                      level: 0,
+                                                      location: model.location,
+                                                      lastModDate: Timestamp.now(),
+                                                      name: model.user,
+                                                    );
 
                                                     FirebaseRepository().saveWork(
-                                                        companyCode: companyCode,
-                                                        workModel: WorkModel(
-                                                          alarmId: model.approvalType == "외근" ? DateTime.now().hashCode : 0,
-                                                          contents: model.requestContent,
-                                                          createUid: model.userMail,
-                                                          createDate: Timestamp.now(),
-                                                          startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
-                                                          startTime: model.approvalType != "외근" ? _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 09, 00,)) : model.requestDate,
-                                                          timeSlot: model.approvalType == "외근" ? _format.timeSlot(requestDate) : 1,
-                                                          type: model.approvalType,
-                                                          title: model.approvalType == "외근" ? model.title : model.approvalType,
-                                                          level: 0,
-                                                          location: model.location,
-                                                          lastModDate: Timestamp.now(),
-                                                          name: model.user,
-                                                        )
-                                                    );
+                                                      companyCode: companyCode,
+                                                      workModel: _workModel,
+                                                    ).whenComplete(() async {
+                                                      Alarm _alarmModel = Alarm(
+                                                        alarmId: _workModel.alarmId,
+                                                        createName: _loginUser.name,
+                                                        createMail: _loginUser.mail,
+                                                        collectionName: "annualLeaveOk",
+                                                        alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이" + model.approvalType + "결재를 수락했습니다.",
+                                                        read: false,
+                                                        alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                                      );
+
+                                                      List<String> token = await _repository.getApprovalUserTokens(companyCode: companyCode, mail: model.userMail);
+
+                                                      await _repository.saveOneUserAlarm(
+                                                        alarmModel: _alarmModel,
+                                                        companyCode: _loginUser.companyCode,
+                                                        mail: model.userMail,
+                                                      ).whenComplete(() async {
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel.alarmId.toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo.team,
+                                                            position: loginUserInfo.position,
+                                                            collection: "annualLeaveOk@${model.approvalType}"
+                                                        );
+                                                      });
+                                                    });
+
                                                     break;
 
                                                 }
@@ -1013,28 +1103,25 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                 switch(model.approvalType){
                                                   case '업무':
                                                     Alarm _alarmModel = Alarm(
-                                                      alarmId: DateTime.now().hashCode,
+                                                      alarmId: 0,
                                                       createName: _loginUser.name,
                                                       createMail: _loginUser.mail,
-                                                      createProfilePhoto: loginUserInfo.profilePhoto,
                                                       collectionName: "requestWorkNo",
                                                       alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 업무요청을 거절했습니다.",
                                                       read: false,
                                                       alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
                                                     );
 
-                                                    await _repository.saveAlarm(
+                                                    List<String> token = await _repository.getApprovalUserTokens(companyCode: companyCode, mail: model.userMail);
+
+                                                    await _repository.saveOneUserAlarm(
                                                       alarmModel: _alarmModel,
                                                       companyCode: _loginUser.companyCode,
-                                                      mail: _loginUser.mail,
+                                                      mail: model.userMail,
                                                     ).whenComplete(() async {
-
-                                                      List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: model.userMail);
-                                                      print(tokens);
-
                                                       fcm.sendFCMtoSelectedDevice(
                                                           alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: tokens,
+                                                          tokenList: token,
                                                           name: _loginUser.name,
                                                           team: loginUserInfo.team,
                                                           position: loginUserInfo.position,
@@ -1043,35 +1130,59 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                     });
 
                                                     break;
-                                                  default:
-
+                                                  case '외근':
                                                     Alarm _alarmModel = Alarm(
-                                                      alarmId: DateTime.now().hashCode,
+                                                      alarmId: 0,
                                                       createName: _loginUser.name,
                                                       createMail: _loginUser.mail,
-                                                      createProfilePhoto: loginUserInfo.profilePhoto,
                                                       collectionName: "approvalWorkNo",
                                                       alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 외근일정 결재를 거절했습니다.",
                                                       read: false,
                                                       alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
                                                     );
 
-                                                    await _repository.saveAlarm(
+                                                    List<String> token = await _repository.getApprovalUserTokens(companyCode: companyCode, mail: model.userMail);
+
+                                                    await _repository.saveOneUserAlarm(
                                                       alarmModel: _alarmModel,
                                                       companyCode: _loginUser.companyCode,
-                                                      mail: _loginUser.mail,
+                                                      mail: model.userMail,
                                                     ).whenComplete(() async {
-
-                                                      List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: model.userMail);
-                                                      print(tokens);
-
                                                       fcm.sendFCMtoSelectedDevice(
                                                           alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: tokens,
+                                                          tokenList: token,
                                                           name: _loginUser.name,
                                                           team: loginUserInfo.team,
                                                           position: loginUserInfo.position,
-                                                          collection: "approvalWorkNo"
+                                                          collection: "annualLeaveNo"
+                                                      );
+                                                    });
+                                                    break;
+                                                  default:
+                                                    Alarm _alarmModel = Alarm(
+                                                      alarmId: 0,
+                                                      createName: _loginUser.name,
+                                                      createMail: _loginUser.mail,
+                                                      collectionName: "annualLeaveNo",
+                                                      alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이" + model.approvalType + "결재를 거절했습니다.",
+                                                      read: false,
+                                                      alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                                    );
+
+                                                    List<String> token = await _repository.getApprovalUserTokens(companyCode: companyCode, mail: model.userMail);
+
+                                                    await _repository.saveOneUserAlarm(
+                                                      alarmModel: _alarmModel,
+                                                      companyCode: _loginUser.companyCode,
+                                                      mail: model.userMail,
+                                                    ).whenComplete(() async {
+                                                      fcm.sendFCMtoSelectedDevice(
+                                                          alarmId: _alarmModel.alarmId.toString(),
+                                                          tokenList: token,
+                                                          name: _loginUser.name,
+                                                          team: loginUserInfo.team,
+                                                          position: loginUserInfo.position,
+                                                          collection: "annualLeaveNo@${model.approvalType}"
                                                       );
                                                     });
 

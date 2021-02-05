@@ -84,7 +84,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   FirebaseMessaging _fcm = FirebaseMessaging();
 
-  List<bool> isDetail = List<bool>();
+  List<bool> isDetail = [];
   bool isBirthdayDetail = false;
 
   Map<int, bool> test = {};
@@ -102,49 +102,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       onMessage: Fcm.myBackgroundMessageHandler,
       onBackgroundMessage: Fcm.myBackgroundMessageHandler,
     );
-    /*notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);*/
   }
-
-
-  /*onFCMNotificationClick(String payload) async {
-    print(click);
-    *//*if(click == true){
-      payload = "";
-      click = !click;
-    }*//*
-  }
-
-  onNotificationClick(String payload) async {
-    print("함수실행");
-    *//*print("payload : $payload");
-    click = true;
-
-
-    Stream<QuerySnapshot> k =  _repository.getSelectedDateCompanyWork(
-        companyCode: _loginUser.companyCode,
-        selectedDate: _format.dateTimeToTimeStamp(selectTime)
-    );
-
-    int index = 0;
-    int i = 0;
-
-    test.forEach((key, value) {
-      if(key != int.parse(payload)){
-        i++;
-      }
-      else
-        index = i;
-    });
-    print("test = $test");
-
-    print("index = $index");
-
-    setState(() {
-      test[int.parse(payload)] = true;
-    });
-    print("test : $test");
-    _scrollController.scrollTo(index: index, duration: Duration(seconds: 1));*//*
-  }*/
 
   @override
   void dispose() {
@@ -432,14 +390,12 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                           }
 
                         }
-                        print("isDetail $isDetail");
                         return Expanded(
                           child: ScrollablePositionedList.builder(
                             itemScrollController: _scrollController,
                             itemCount: _companyWork.length,
                             itemBuilder: (context, index) {
                               dynamic _companyData;
-                              print(_companyWork[index].data()["type"]);
                               if (_companyWork[index].data()["type"] == "내근" ||
                                   _companyWork[index].data()["type"] == "외근" ||
                                   _companyWork[index].data()["type"] == "연차" ||

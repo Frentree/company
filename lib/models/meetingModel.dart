@@ -28,6 +28,10 @@ class MeetingModel {
   Timestamp startDate;
   Timestamp startTime;
   int timeSlot;
+  int alarmId;
+
+
+
   int level;
   String location;
 
@@ -44,6 +48,7 @@ class MeetingModel {
     this.startDate,
     this.startTime,
     this.timeSlot,
+    this.alarmId,
   });
 
   MeetingModel.fromMap(Map snapshot, String id)
@@ -58,7 +63,9 @@ class MeetingModel {
         lastModDate = snapshot["lastModDate"] ?? null,
         startDate = snapshot["startDate"] ?? null,
         startTime = snapshot["startTime"] ?? null,
-        timeSlot = snapshot["timeSlot"],
+        timeSlot = snapshot["timeSlot"] ?? 0,
+        alarmId = snapshot["alarmId"] ?? 0,
+
         location = snapshot["location"],
         level = snapshot["level"];
 
@@ -75,6 +82,8 @@ class MeetingModel {
       "startDate": startDate,
       "startTime": startTime,
       "timeSlot": timeSlot,
+      "alarmId": alarmId,
+
       "location": "",
       "level": 2,
     };

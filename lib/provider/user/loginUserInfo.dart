@@ -66,6 +66,7 @@ class LoginUserInfoProvider with ChangeNotifier{
     SharedPreferences _sharedPreferences;
     _sharedPreferences = await SharedPreferences.getInstance();
     await _sharedPreferences.remove("loginUser");
+    await _sharedPreferences.remove("payloadOld");
     setLoginUser(null);
   }
 }
