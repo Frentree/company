@@ -137,6 +137,9 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
                                 size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
                               onPressed: _titleController.text == "" ? () {} : () async {
+                                var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
+                                CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
                                 if(choseWorkItem == "외근" && _locationController.text.trim() == ""){
                                   FailedData(context, "외근지 미입력", "외근지를 입력해주세요");
                                   return false;
@@ -145,20 +148,6 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
                                   FailedData(context, "대상자 미선택 ", "대상자를 선택해주세요");
                                   return false;
                                 }
-
-                                var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
-                                CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
-
-                                Alarm _alarmModel = Alarm(
-                                  alarmId: DateTime.now().hashCode,
-                                  createName: _loginUser.name,
-                                  createMail: _loginUser.mail,
-                                  createProfilePhoto: loginUserInfo.profilePhoto,
-                                  collectionName: "requestWork",
-                                  alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 업무를 요청했습니다.",
-                                  read: false,
-                                  alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                );
 
                                 await FirebaseRepository().createAnnualLeave(
                                   companyCode: _loginUser.companyCode,
@@ -176,74 +165,40 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     approvalMail: approvalUser.mail,
                                     location: choseWorkItem != "내근" ? _locationController.text : "",
                                   ),
-                                );
-
-                                await _repository.saveAlarm(
-                                  alarmModel: _alarmModel,
-                                  companyCode: _loginUser.companyCode,
-                                  mail: _loginUser.mail,
                                 ).whenComplete(() async {
-
-                                  List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: approvalUser.mail);
-                                  print(tokens);
-
-                                  fcm.sendFCMtoSelectedDevice(
-                                      alarmId: _alarmModel.alarmId.toString(),
-                                      tokenList: tokens,
-                                      name: _loginUser.name,
-                                      team: loginUserInfo.team,
-                                      position: loginUserInfo.position,
-                                      collection: "requestWork"
+                                  //결재요청 알림 생성
+                                  Alarm _alarmModel = Alarm(
+                                    alarmId: 0,
+                                    createName: _loginUser.name,
+                                    createMail: _loginUser.mail,
+                                    collectionName: "requestWork",
+                                    alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 업무를 요청했습니다.",
+                                    read: false,
+                                    alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
                                   );
+
+                                  List<String> token = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: approvalUser.mail);
+
+                                  //결재자 알림 DB에 저장
+                                  await _repository.saveOneUserAlarm(
+                                    alarmModel: _alarmModel,
+                                    companyCode: _loginUser.companyCode,
+                                    mail: approvalUser.mail,
+                                  ).whenComplete(() async {
+                                    fcm.sendFCMtoSelectedDevice(
+                                        alarmId: _alarmModel.alarmId.toString(),
+                                        tokenList: token,
+                                        name: _loginUser.name,
+                                        team: loginUserInfo.team,
+                                        position: loginUserInfo.position,
+                                        collection: "requestWork"
+                                    );
+                                  });
                                 });
 
                                 result = true;
                                 Navigator.of(context).pop(result);
                                 return result;
-                                /*switch(type){
-                                  case 1: //내근
-                                    _workModel =  WorkModel(
-                                      createUid: _loginUser.mail,
-                                      name: _loginUser.name,
-                                      type: "내근",
-                                      title: _titleController.text,
-                                      contents: _contentController.text,
-                                      location: _locationController.text,
-                                      createDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                      lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                      startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
-                                      startTime: _format.dateTimeToTimeStamp(startTime),
-                                      timeSlot: _format.timeSlot(startTime),
-                                      level: 0,
-                                      alarmId: DateTime.now().hashCode,
-                                    );
-
-                                    await _repository.saveWork(
-                                      workModel: _workModel,
-                                      companyCode: _loginUser.companyCode,
-                                    );
-                                    *//*dailyAtTimeNotification(
-                                    alarmTime: startTime,
-                                    title: "일정이 있습니다.",
-                                    contents: "일정 내용 : ${_titleController.text}"
-                                  );*//*
-                                    if(startTime.isAfter(DateTime.now())){
-                                      await notificationPlugin.scheduleNotification(
-                                        alarmId: _workModel.alarmId,
-                                        alarmTime: startTime,
-                                        title: "일정이 있습니다.",
-                                        contents: "일정 내용 : ${_titleController.text}",
-                                        payload: _workModel.alarmId.toString(),
-                                      );
-                                    }
-                                    break;
-                                  case 2: //외근
-                                    if(approvalUser == null){
-                                      FailedData(context, "대상자 미선택", "대상자를 선택 후에 신청해주세요");
-                                      break;
-                                    }
-
-                              }*/
                               }
                           ),
                         ),

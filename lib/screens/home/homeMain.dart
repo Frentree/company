@@ -71,7 +71,6 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   @override
   void initState(){
-    print("홈메인 페이지 입니다.");
     super.initState();
     currentPageIndex = 0;
     click = false;
@@ -82,9 +81,6 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   onFCMNotificationClick(String payload) async {
     SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
-    print("click1 $click");
-    print("payloadOld1 $payloadOld");
-    print("payload1 $payload");
     if(_sharedPreferences.getString("payloadOld") != null){
       payloadOld = _sharedPreferences.getString("payloadOld");
     }
@@ -94,9 +90,6 @@ class HomeMainPageState extends State<HomeMainPage> {
       }
       click = !click;
     }
-    print("payloadOld2 $payloadOld");
-    print("payload2 $payload");
-    print("click2 $click");
     if(payload.split(",")[0] == "alarm" && click == true){
       setState(() {
         currentPageIndex = 2;
@@ -114,9 +107,6 @@ class HomeMainPageState extends State<HomeMainPage> {
     else{
       print("실패입니다");
     }
-    print("payloadOld3 $payloadOld");
-    print("payload3 $payload");
-    print("click3 $click");
     _sharedPreferences.setString("payloadOld", payload);
   }
 

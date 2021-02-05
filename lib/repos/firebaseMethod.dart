@@ -218,6 +218,14 @@ class FirebaseMethods {
     });
   }
 
+  Future<void> saveOneUserAlarm({Alarm alarmModel, String companyCode, String mail}) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode).collection(USER).doc(mail)
+        .collection(ALARM)
+        .add(alarmModel.toJson());
+  }
+
   Future<void> deleteAlarm({String companyCode, String mail, String documentID}) async {
     return await firestore
         .collection(COMPANY)
@@ -467,7 +475,9 @@ class FirebaseMethods {
     QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection(USER).where("mail", isNotEqualTo: mail).get();
 
     querySnapshot.docs.forEach((element) {
-      tokenList.add(element.data()["token"]);
+      if(element.data()["token"] != null){
+        tokenList.add(element.data()["token"]);
+      }
     });
 
     return tokenList;

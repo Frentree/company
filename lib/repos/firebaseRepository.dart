@@ -76,6 +76,12 @@ class FirebaseRepository {
     mail: mail
   );
 
+  Future<void> saveOneUserAlarm({Alarm alarmModel, String companyCode, String mail}) => _firebaseMethods.saveOneUserAlarm(
+    alarmModel: alarmModel,
+    companyCode: companyCode,
+    mail: mail
+  );
+
   Future<void> deleteAlarm({String companyCode, String mail, String documentID}) => _firebaseMethods.deleteAlarm(
     companyCode: companyCode,
     mail: mail,
