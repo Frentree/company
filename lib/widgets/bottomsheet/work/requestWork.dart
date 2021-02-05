@@ -3,10 +3,13 @@ import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/models/workModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
@@ -26,6 +29,7 @@ import 'package:sizer/sizer.dart';
 final word = Words();
 
 requestWork({BuildContext context, int type, WorkModel workModel, WorkData workData}) async {
+  Fcm fcm = Fcm();
   WorkModel _workModel = workModel;
   bool _detailClicked = false;
   bool result = false;
@@ -142,6 +146,20 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
                                   return false;
                                 }
 
+                                var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
+                                CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
+                                Alarm _alarmModel = Alarm(
+                                  alarmId: DateTime.now().hashCode,
+                                  createName: _loginUser.name,
+                                  createMail: _loginUser.mail,
+                                  createProfilePhoto: loginUserInfo.profilePhoto,
+                                  collectionName: "requestWork",
+                                  alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 업무를 요청했습니다.",
+                                  read: false,
+                                  alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                );
+
                                 await FirebaseRepository().createAnnualLeave(
                                   companyCode: _loginUser.companyCode,
                                   workApproval: WorkApproval(
@@ -159,6 +177,26 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     location: choseWorkItem != "내근" ? _locationController.text : "",
                                   ),
                                 );
+
+                                await _repository.saveAlarm(
+                                  alarmModel: _alarmModel,
+                                  companyCode: _loginUser.companyCode,
+                                  mail: _loginUser.mail,
+                                ).whenComplete(() async {
+
+                                  List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: approvalUser.mail);
+                                  print(tokens);
+
+                                  fcm.sendFCMtoSelectedDevice(
+                                      alarmId: _alarmModel.alarmId.toString(),
+                                      tokenList: tokens,
+                                      name: _loginUser.name,
+                                      team: loginUserInfo.team,
+                                      position: loginUserInfo.position,
+                                      collection: "requestWork"
+                                  );
+                                });
+
                                 result = true;
                                 Navigator.of(context).pop(result);
                                 return result;

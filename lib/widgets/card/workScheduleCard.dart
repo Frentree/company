@@ -1,6 +1,7 @@
 //Flutter
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
@@ -163,6 +164,7 @@ Container popupMenu({BuildContext context, WorkModel workModel, String companyCo
             documentID: workModel.id,
             companyCode: companyCode,
           );
+          notificationPlugin.deleteNotification(alarmId: workModel.alarmId);
         }
       },
       itemBuilder: (BuildContext context) => [

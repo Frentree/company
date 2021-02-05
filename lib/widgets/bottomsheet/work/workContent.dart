@@ -162,8 +162,19 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                   workModel: _workModel,
                                   companyCode: _loginUser.companyCode,
                                 );
-                              } else {// 입력단계
 
+                                await notificationPlugin.deleteNotification(alarmId: _workModel.alarmId);
+
+                                if(startTime.isAfter(DateTime.now())){
+                                  await notificationPlugin.scheduleNotification(
+                                    alarmId: _workModel.alarmId,
+                                    alarmTime: startTime,
+                                    title: "일정이 있습니다.",
+                                    contents: "일정 내용 : ${_titleController.text}",
+                                    payload: _workModel.alarmId.toString(),
+                                  );
+                                }
+                              } else {// 입력단계
                                 Alarm _alarmModel = Alarm(
                                   alarmId: DateTime.now().hashCode,
                                   createName: _loginUser.name,
@@ -192,8 +203,6 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                       level: 0,
                                       alarmId: DateTime.now().hashCode,
                                     );
-
-
 
                                     await _repository.saveWork(
                                       workModel: _workModel,
@@ -249,6 +258,29 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                           location: _locationController.text,
                                         ),
                                     );
+
+                                    _alarmModel.collectionName = "approvalWork";
+                                    _alarmModel.alarmContents = loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 외근일정 결재를 요청하였습니다.";
+
+                                    await _repository.saveAlarm(
+                                      alarmModel: _alarmModel,
+                                      companyCode: _loginUser.companyCode,
+                                      mail: _loginUser.mail,
+                                    ).whenComplete(() async {
+
+                                      List<String> tokens = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: approvalUser.mail);
+                                      print(tokens);
+
+                                      fcm.sendFCMtoSelectedDevice(
+                                          alarmId: _alarmModel.alarmId.toString(),
+                                          tokenList: tokens,
+                                          name: _loginUser.name,
+                                          team: loginUserInfo.team,
+                                          position: loginUserInfo.position,
+                                          collection: "approvalWork"
+                                      );
+                                    });
+
                                     break;
                                 }
                               }

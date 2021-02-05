@@ -38,21 +38,45 @@ class Fcm {
       String collection = "";
 
       if(data["body"] == "work"){
-        collection = "일정";
+        collection = "새로운 일정을 등록했습니다.";
       }
 
       else if(data["body"] == "meeting"){
-        collection = "회의 일정";
+        collection = "새로운 회의 일정을 등록했습니다.";
       }
 
-      else{
-        collection = "공지";
+      else if(data["body"] == "notice"){
+        collection = "새로운 공지를 등록했습니다.";
+      }
+
+      else if(data["body"] == "approvalWork"){
+        collection = "님이 외근일정 결재를 요청하였습니다.";
+      }
+
+      else if(data["body"] == "approvalWorkOk"){
+        collection = "님이 외근일정 결재를 수락했습니다.";
+      }
+
+      else if(data["body"] == "approvalWorkNo"){
+        collection = "님이 외근일정 결재를 거절했습니다.";
+      }
+
+      else if(data["body"] == "requestWork"){
+        collection = "님이 업무를 요청했습니다.";
+      }
+
+      else if(data["body"] == "requestWorkOk"){
+        collection = "님이 업무요청을 수락했습니다.";
+      }
+
+      else if(data["body"] == "requestWorkNo"){
+        collection = "님이 업무요청을 거절했습니다.";
       }
 
       notificationPlugin.showNotification(
           alarmId: int.parse(data["alarmId"]),
           title: "새로운 알림",
-          contents: data["title"] + "님이 새로운 " + collection + "를 등록 했습니다." ,
+          contents: data["title"] + collection,
           payload: "alarm"
       );
     }

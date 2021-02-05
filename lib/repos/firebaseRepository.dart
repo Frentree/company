@@ -258,6 +258,11 @@ class FirebaseRepository {
     mail: mail
   );
 
+  Future<List<String>> getApprovalUserTokens({String companyCode, String mail}) => _firebaseMethods.getApprovalUserTokens(
+      companyCode: companyCode,
+      mail: mail
+  );
+
   // 프로필 핸드폰번호 변경
   Future<void> updatePhone({String companyCode, String mail, String phone}) =>
       _firebaseMethods.updatePhone(companyCode, mail, phone);
