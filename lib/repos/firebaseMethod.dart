@@ -1032,7 +1032,7 @@ class FirebaseMethods {
         .collection(COMPANY)
         .doc(companyCode)
         .collection(WORK)
-        .where("startTime", isGreaterThan: Timestamp.fromDate(DateTime.parse("${date}-01-01 00:00:01")), isLessThan: Timestamp.fromDate(DateTime.parse("${date}-12-31 23:59:59")))
+        .where("startTime", isGreaterThan: Timestamp.fromDate(DateTime.parse("${date}-01-01 00:00:00")), isLessThan: Timestamp.fromDate(DateTime.parse("${date}-12-31 23:59:59")))
         .where("createUid", isEqualTo: mail)
         .where("type", whereIn: ['연차', '반차'])
         //.orderBy(orderByType, descending: isOrderBy)
