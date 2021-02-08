@@ -24,7 +24,7 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/form/customInputFormatter.dart';
 import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tesseract_ocr/tesseract_ocr.dart';
+//import 'package:tesseract_ocr/tesseract_ocr.dart';
 
 ExpenseMain(BuildContext context) async {
   FirebaseRepository _reposistory = FirebaseRepository();
@@ -623,7 +623,7 @@ ExpenseMain(BuildContext context) async {
                                                     _scanning=true;
                                                   });
                                                   _pickeimage = await ImagePicker.pickImage(source: ImageSource.gallery);
-                                                  _extractText = await TesseractOcr.extractText(_pickeimage.path, language: "kor");
+                                                  //_extractText = await TesseractOcr.extractText(_pickeimage.path, language: "kor");
                                                   setState(() {
                                                     _scanning=false;
                                                   });

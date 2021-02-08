@@ -399,7 +399,8 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                               if (_companyWork[index].data()["type"] == "내근" ||
                                   _companyWork[index].data()["type"] == "외근" ||
                                   _companyWork[index].data()["type"] == "연차" ||
-                                  _companyWork[index].data()["type"] == "반차") {
+                                  _companyWork[index].data()["type"] == "반차" ||
+                                  _companyWork[index].data()["type"] == "요청") {
                                 _companyData = WorkModel.fromMap(
                                     _companyWork[index].data(),
                                     _companyWork[index].documentID);

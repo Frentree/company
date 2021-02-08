@@ -81,6 +81,7 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
               FocusScope.of(context).unfocus();
             },
             child: Container(
+              color: whiteColor,
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
                     left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
