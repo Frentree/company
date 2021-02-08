@@ -98,10 +98,20 @@ class NoReadAlarmState extends State<NoReadAlarm> {
                                   Container(
                                     height: 9.0.h,
                                     alignment: Alignment.center,
-                                    child: CircleAvatar(
-                                      backgroundColor: whiteColor,
-                                      radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
-                                      backgroundImage: NetworkImage(alarm.createProfilePhoto),
+                                    child: FutureBuilder(
+                                      future: FirebaseRepository().photoProfile(_loginUser.companyCode, alarm.createMail),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return CircularProgressIndicator();
+                                        }
+                                        else{
+                                          return CircleAvatar(
+                                            backgroundColor: whiteColor,
+                                            radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                            backgroundImage: NetworkImage(snapshot.data['profilePhoto']),
+                                          );
+                                        }
+                                      }
                                     ),
                                   ),
                                   cardSpace,

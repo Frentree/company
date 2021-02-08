@@ -1,12 +1,14 @@
 import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,6 +17,8 @@ import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:sizer/sizer.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+
 
 final word = Words();
 meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}) async {
@@ -23,6 +27,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
   bool isChk = false;
 
   Format _format = Format();
+  Fcm fcm = Fcm();
 
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
@@ -121,44 +126,137 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
                               size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                             ),
                             onPressed: _titleController.text == "" ? () {} : () async {
-                              _meetingModel = meetingModel != null ? MeetingModel(
-                                id: meetingModel.id,
-                                createUid: meetingModel.createUid,
-                                name: meetingModel.name,
-                                type: meetingModel.type,
-                                title: _titleController.text,
-                                contents: _contentController.text,
-                                createDate: meetingModel.createDate,
-                                lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
-                                startTime: _format.dateTimeToTimeStamp(startTime),
-                                timeSlot: _format.timeSlot(startTime),
-                                attendees: attendees,
-                              ) : MeetingModel(
-                                createUid: _loginUser.mail,
-                                name: _loginUser.name,
-                                type: "미팅",
-                                title: _titleController.text,
-                                contents: _contentController.text,
-                                createDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                lastModDate:_format.dateTimeToTimeStamp(DateTime.now()),
-                                startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
-                                startTime: _format.dateTimeToTimeStamp(startTime),
-                                timeSlot: _format.timeSlot(startTime),
-                                attendees: attendees
-                              );
 
-                              if (meetingModel == null) {
-                                await _repository.saveMeeting(
-                                  meetingModel: _meetingModel,
-                                  companyCode: _loginUser.companyCode,
+                              var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
+                              CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
+                              if(meetingModel != null) { // 수정
+                                _meetingModel = MeetingModel(
+                                  id: meetingModel.id,
+                                  createUid: meetingModel.createUid,
+                                  name: meetingModel.name,
+                                  type: meetingModel.type,
+                                  title: _titleController.text,
+                                  contents: _contentController.text,
+                                  createDate: meetingModel.createDate,
+                                  lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
+                                  startTime: _format.dateTimeToTimeStamp(startTime),
+                                  timeSlot: _format.timeSlot(startTime),
+                                  attendees: attendees,
+                                  alarmId: meetingModel.alarmId,
                                 );
-                              } else {
+
                                 await _repository.updateMeeting(
                                   meetingModel: _meetingModel,
                                   companyCode: _loginUser.companyCode,
-                                );
+                                ).whenComplete(() async {
+                                  await notificationPlugin.deleteNotification(alarmId: _meetingModel.alarmId);
+                                  //스케줄 등록
+                                  if(startTime.isAfter(DateTime.now())){
+                                    await notificationPlugin.scheduleNotification(
+                                      alarmId: _meetingModel.alarmId,
+                                      alarmTime: startTime,
+                                      title: "일정이 있습니다.",
+                                      contents: "회의 : ${_titleController.text}",
+                                      payload: _meetingModel.alarmId.toString(),
+                                    );
+                                  }
+
+                                  //알림데이터 생성
+                                  Alarm _alarmModel = Alarm(
+                                    alarmId: _meetingModel.alarmId,
+                                    createName: _loginUser.name,
+                                    createMail: _loginUser.mail,
+                                    collectionName: "meetingUpdate",
+                                    alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 " + "회의 일정" + "을 수정 했습니다.",
+                                    read: false,
+                                    alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  );
+
+                                  List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+
+                                  await _repository.saveAlarm(
+                                    alarmModel: _alarmModel,
+                                    companyCode: _loginUser.companyCode,
+                                    mail: _loginUser.mail,
+                                  ).whenComplete(() async {
+                                    //동료들에게 알림 보내기
+                                    fcm.sendFCMtoSelectedDevice(
+                                        alarmId: _alarmModel.alarmId.toString(),
+                                        tokenList: tokens,
+                                        name: _loginUser.name,
+                                        team: loginUserInfo.team,
+                                        position: loginUserInfo.position,
+                                        collection: "meetingUpdate@${startTime}@${_titleController.text}"
+                                    );
+                                  });
+
+                                });
                               }
+                              else{//새로 입력
+                                _meetingModel = MeetingModel(
+                                  createUid: _loginUser.mail,
+                                  name: _loginUser.name,
+                                  type: "미팅",
+                                  title: _titleController.text,
+                                  contents: _contentController.text,
+                                  createDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  lastModDate:_format.dateTimeToTimeStamp(DateTime.now()),
+                                  startDate: _format.dateTimeToTimeStamp(DateTime(startTime.year, startTime.month, startTime.day, 21, 00,)),
+                                  startTime: _format.dateTimeToTimeStamp(startTime),
+                                  timeSlot: _format.timeSlot(startTime),
+                                  attendees: attendees,
+                                  alarmId: DateTime.now().hashCode,
+                                );
+                                await _repository.saveMeeting(
+                                  meetingModel: _meetingModel,
+                                  companyCode: _loginUser.companyCode,
+                                ).whenComplete(() async {
+                                  Alarm _alarmModel = Alarm(
+                                    alarmId: _meetingModel.alarmId,
+                                    createName: _loginUser.name,
+                                    createMail: _loginUser.mail,
+                                    collectionName: "meeting",
+                                    alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "회의 일정" + "을 등록 했습니다.",
+                                    read: false,
+                                    alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  );
+
+                                  //알림 스케줄 등록
+                                  if(startTime.isAfter(DateTime.now())){
+                                    await notificationPlugin.scheduleNotification(
+                                      alarmId: _meetingModel.alarmId,
+                                      alarmTime: startTime,
+                                      title: "일정이 있습니다.",
+                                      contents: "회의 : ${_titleController.text}",
+                                      payload: _meetingModel.alarmId.toString(),
+                                    );
+                                  }
+
+                                  //동료들 토큰 가져오기
+                                  List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+
+                                  //알림 DB에 저장
+                                  await _repository.saveAlarm(
+                                    alarmModel: _alarmModel,
+                                    companyCode: _loginUser.companyCode,
+                                    mail: _loginUser.mail,
+                                  ).whenComplete(() async {
+                                    //동료들에게 알림 보내기
+                                    fcm.sendFCMtoSelectedDevice(
+                                        alarmId: _alarmModel.alarmId.toString(),
+                                        tokenList: tokens,
+                                        name: _loginUser.name,
+                                        team: loginUserInfo.team,
+                                        position: loginUserInfo.position,
+                                        collection: "meeting@${startTime}@${_titleController.text}"
+                                    );
+                                  });
+
+                                });
+                              }
+
                               result = true;
                               Navigator.of(context).pop(result);
                               return result;

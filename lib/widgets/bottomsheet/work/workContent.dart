@@ -155,26 +155,26 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     startTime: _format.dateTimeToTimeStamp(startTime),
                                     timeSlot: _format.timeSlot(startTime),
                                     level: 0,
-                                    alarmId: _workModel.alarmId,
+                                    alarmId: workModel.alarmId,
                                 );
 
                                 await _repository.updateWork(
                                   workModel: _workModel,
                                   companyCode: _loginUser.companyCode,
                                 );
+
+                                await notificationPlugin.deleteNotification(alarmId: _workModel.alarmId);
+
+                                if(startTime.isAfter(DateTime.now())){
+                                  await notificationPlugin.scheduleNotification(
+                                    alarmId: _workModel.alarmId,
+                                    alarmTime: startTime,
+                                    title: "일정이 있습니다.",
+                                    contents: "일정 내용 : ${_titleController.text}",
+                                    payload: _workModel.alarmId.toString(),
+                                  );
+                                }
                               } else {// 입력단계
-
-                                Alarm _alarmModel = Alarm(
-                                  alarmId: DateTime.now().hashCode,
-                                  createName: _loginUser.name,
-                                  createMail: _loginUser.mail,
-                                  createProfilePhoto: loginUserInfo.profilePhoto,
-                                  collectionName: "work",
-                                  alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "일정" + "을 등록 했습니다.",
-                                  read: false,
-                                  alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
-                                );
-
                                 switch(type){
                                   case 1: //내근
                                     _workModel =  WorkModel(
@@ -193,39 +193,52 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                       alarmId: DateTime.now().hashCode,
                                     );
 
-
-
                                     await _repository.saveWork(
                                       workModel: _workModel,
                                       companyCode: _loginUser.companyCode,
-                                    );
-
-                                    await _repository.saveAlarm(
-                                      alarmModel: _alarmModel,
-                                      companyCode: _loginUser.companyCode,
-                                      mail: _loginUser.mail,
-                                    ).whenComplete(() async {
-
-                                      List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
-                                      fcm.sendFCMtoSelectedDevice(
-                                          alarmId: _alarmModel.alarmId.toString(),
-                                          tokenList: tokens,
-                                          name: _loginUser.name,
-                                          team: loginUserInfo.team,
-                                          position: loginUserInfo.position,
-                                          collection: "work"
-                                      );
-                                    });
-
-                                    if(startTime.isAfter(DateTime.now())){
-                                      await notificationPlugin.scheduleNotification(
+                                    ).whenComplete(()async{
+                                      //알림 데이터 생성
+                                      Alarm _alarmModel = Alarm(
                                         alarmId: _workModel.alarmId,
-                                        alarmTime: startTime,
-                                        title: "일정이 있습니다.",
-                                        contents: "일정 내용 : ${_titleController.text}",
-                                        payload: _workModel.alarmId.toString(),
+                                        createName: _loginUser.name,
+                                        createMail: _loginUser.mail,
+                                        collectionName: "work",
+                                        alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "일정" + "을 등록 했습니다.",
+                                        read: false,
+                                        alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
                                       );
-                                    }
+
+                                      //알림 스케줄 등록
+                                      if(startTime.isAfter(DateTime.now())){
+                                        await notificationPlugin.scheduleNotification(
+                                          alarmId: _workModel.alarmId,
+                                          alarmTime: startTime,
+                                          title: "일정이 있습니다.",
+                                          contents: "일정 내용 : ${_titleController.text}",
+                                          payload: _workModel.alarmId.toString(),
+                                        );
+                                      }
+
+                                      //동료들 토큰 가져오기
+                                      List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+
+                                      //알림 DB에 저장
+                                      await _repository.saveAlarm(
+                                        alarmModel: _alarmModel,
+                                        companyCode: _loginUser.companyCode,
+                                        mail: _loginUser.mail,
+                                      ).whenComplete(() async {
+                                        //동료들에게 알림 보내기
+                                        fcm.sendFCMtoSelectedDevice(
+                                            alarmId: _alarmModel.alarmId.toString(),
+                                            tokenList: tokens,
+                                            name: _loginUser.name,
+                                            team: loginUserInfo.team,
+                                            position: loginUserInfo.position,
+                                            collection: "work"
+                                        );
+                                      });
+                                    });
                                     break;
                                   case 2: //외근
                                     if(approvalUser == null){
@@ -248,7 +261,36 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                           approvalMail: approvalUser.mail,
                                           location: _locationController.text,
                                         ),
-                                    );
+                                    ).whenComplete(() async {
+                                      //결재요청 알림 생성
+                                      Alarm _alarmModel = Alarm(
+                                        alarmId: 0,
+                                        createName: _loginUser.name,
+                                        createMail: _loginUser.mail,
+                                        collectionName: "approvalWork",
+                                        alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 외근일정 결재를 요청하였습니다.",
+                                        read: false,
+                                        alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                      );
+
+                                      List<String> token = await _repository.getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: approvalUser.mail);
+
+                                      //결재자 알림 DB에 저장
+                                      await _repository.saveOneUserAlarm(
+                                        alarmModel: _alarmModel,
+                                        companyCode: _loginUser.companyCode,
+                                        mail: approvalUser.mail,
+                                      ).whenComplete(() async {
+                                        fcm.sendFCMtoSelectedDevice(
+                                            alarmId: _alarmModel.alarmId.toString(),
+                                            tokenList: token,
+                                            name: _loginUser.name,
+                                            team: loginUserInfo.team,
+                                            position: loginUserInfo.position,
+                                            collection: "approvalWork"
+                                        );
+                                      });
+                                    });
                                     break;
                                 }
                               }
@@ -435,29 +477,6 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                         ],
                       ),
                     ),
-                    /*Container(
-                      child: Row(
-                        children: [
-                          Container(
-                            width: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
-                            height: 6.0.h,
-                            child: Checkbox(
-                              value: isChk,
-                              onChanged: (value) {
-                                setState(() {
-                                  isChk = value;
-                                });
-                              },
-                            ),
-                          ),
-                          cardSpace,
-                          Text(
-                            word.addItem(),
-                            style: defaultRegularStyle,
-                          ),
-                        ],
-                      ),
-                    ),*/
                     Visibility(
                       visible: isChk,
                       child: emptySpace,

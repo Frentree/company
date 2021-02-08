@@ -2,6 +2,8 @@
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -19,13 +21,14 @@ import 'package:flutter/material.dart';
 //Screen
 import 'package:MyCompany/screens/home/homeScheduleMain.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-HomeMainPageState hpState = new HomeMainPageState();
+
 
 class HomeMainPage extends StatefulWidget {
   @override
-  HomeMainPageState createState() => hpState;
+  HomeMainPageState createState() => HomeMainPageState();
 }
 
 class HomeMainPageState extends State<HomeMainPage> {
@@ -41,12 +44,15 @@ class HomeMainPageState extends State<HomeMainPage> {
 
   //현재 페이지 인덱스
   int currentPageIndex = 0;
-
+  String payloadOld = "";
   Attendance _attendance = Attendance();
 
   // 프로필
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   User _loginUser;
+  FirebaseRepository _repository = FirebaseRepository();
+
+  bool click = true;
 
   //페이지 이동
   void _pageChange(int pageIndex) {
@@ -66,7 +72,49 @@ class HomeMainPageState extends State<HomeMainPage> {
   @override
   void initState(){
     super.initState();
+    currentPageIndex = 0;
+    click = false;
+    notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
   }
+
+
+
+  onFCMNotificationClick(String payload) async {
+    SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
+    if(_sharedPreferences.getString("payloadOld") != null){
+      payloadOld = _sharedPreferences.getString("payloadOld");
+    }
+    if(click == false) {
+      if(payloadOld == payload){
+        payload = "";
+      }
+      click = !click;
+    }
+    if(payload.split(",")[0] == "alarm" && click == true){
+      setState(() {
+        currentPageIndex = 2;
+      });
+
+      await _repository.updateReadAlarm(
+        companyCode: _loginUser.companyCode,
+        mail: _loginUser.mail,
+        alarmId: payload.split(",")[1],
+      ).whenComplete((){
+        click = false;
+      });
+    }
+
+    else{
+      print("실패입니다");
+    }
+    _sharedPreferences.setString("payloadOld", payload);
+  }
+
+  onNotificationClick(String payload) {setState(() {
+      currentPageIndex = 0;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {

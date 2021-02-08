@@ -29,7 +29,6 @@ class AlarmMainPageState extends State<AlarmMainPage> {
   @override
   void initState() {
     super.initState();
-    click = true;
   }
 
 

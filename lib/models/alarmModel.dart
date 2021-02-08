@@ -15,7 +15,6 @@ class Alarm {
   int alarmId;
   String createName;
   String createMail;
-  String createProfilePhoto;
   String collectionName;
   String alarmContents;
   bool read;
@@ -26,7 +25,6 @@ class Alarm {
     this.alarmId,
     this.createName,
     this.createMail,
-    this.createProfilePhoto,
     this.collectionName,
     this.alarmContents,
     this.read = false,
@@ -38,7 +36,6 @@ class Alarm {
         alarmId = snapshot["alarmId"] ?? 0,
         createName = snapshot["createName"] ?? "",
         createMail = snapshot["createMail"] ?? "",
-        createProfilePhoto = snapshot["createProfilePhoto"] ?? "",
         collectionName = snapshot["collectionName"] ?? "",
         alarmContents = snapshot["alarmContents"] ?? "",
         read = snapshot["read"] ?? false,
@@ -49,7 +46,6 @@ class Alarm {
       "alarmId": alarmId,
       "createName": createName,
       "createMail": createMail,
-      "createProfilePhoto": createProfilePhoto,
       "collectionName": collectionName,
       "alarmContents": alarmContents,
       "read": read,

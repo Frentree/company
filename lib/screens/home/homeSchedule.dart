@@ -10,6 +10,7 @@ import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 //Flutter
@@ -37,7 +38,7 @@ import 'package:sizer/sizer.dart';
 import 'homeMain.dart';
 
 final word = Words();
-bool click = true;
+
 
 class HomeSchedulePage extends StatefulWidget {
   @override
@@ -83,7 +84,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   FirebaseMessaging _fcm = FirebaseMessaging();
 
-  List<bool> isDetail = List<bool>();
+  List<bool> isDetail = [];
   bool isBirthdayDetail = false;
 
   Map<int, bool> test = {};
@@ -101,52 +102,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
       onMessage: Fcm.myBackgroundMessageHandler,
       onBackgroundMessage: Fcm.myBackgroundMessageHandler,
     );
-    notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
-  }
-
-
-  onFCMNotificationClick(String payload) async {
-    print(click);
-    if(click == true){
-      payload = "";
-      click = !click;
-    }
-    if(payload.split(",")[0] == "alarm" && click == false){
-      hpState.setState(() {
-        hpState.currentPageIndex = 2;
-      });
-
-      await _repository.updateReadAlarm(
-        companyCode: _loginUser.companyCode,
-        mail: _loginUser.mail,
-        alarmId: payload.split(",")[1],
-      );
-    }
-  }
-
-  onNotificationClick(String payload){
-    /*click = true;*/
-    hpState.setState(() {
-      hpState.currentPageIndex = 0;
-    });
-    int index = 0;
-    int i = 0;
-
-    test.forEach((key, value) {
-      if(key != int.parse(payload)){
-        i++;
-      }
-      else
-        index = i;
-    });
-
-    print("index = $index");
-
-    setState(() {
-      test[int.parse(payload)] = true;
-    });
-    print("test : $test");
-    _scrollController.scrollTo(index: index, duration: Duration(seconds: 1));
   }
 
   @override
@@ -435,14 +390,12 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                           }
 
                         }
-                        print("isDetail $isDetail");
                         return Expanded(
                           child: ScrollablePositionedList.builder(
                             itemScrollController: _scrollController,
                             itemCount: _companyWork.length,
                             itemBuilder: (context, index) {
                               dynamic _companyData;
-                              print(_companyWork[index].data()["type"]);
                               if (_companyWork[index].data()["type"] == "내근" ||
                                   _companyWork[index].data()["type"] == "외근" ||
                                   _companyWork[index].data()["type"] == "연차" ||

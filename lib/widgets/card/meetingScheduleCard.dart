@@ -1,8 +1,13 @@
 //Flutter
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/meetingModel.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMain.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -150,6 +155,8 @@ Column meetingDetailContents({BuildContext context, String loginUserMail, String
 }
 
 Container popupMenu({BuildContext context, MeetingModel meetingModel, String companyCode}) {
+  Format _format = Format();
+  Fcm fcm = Fcm();
   FirebaseRepository _repository = FirebaseRepository();
   return Container(
     width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
@@ -170,7 +177,41 @@ Container popupMenu({BuildContext context, MeetingModel meetingModel, String com
           await _repository.deleteMeeting(
             documentID: meetingModel.id,
             companyCode: companyCode,
-          );
+          ).whenComplete(() async {
+            var doc = await FirebaseFirestore.instance.collection("company").doc(companyCode).collection("user").doc(meetingModel.createUid).get();
+            CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
+            notificationPlugin.deleteNotification(alarmId: meetingModel.alarmId);
+            Alarm _alarmModel = Alarm(
+              alarmId: meetingModel.alarmId,
+              createName: meetingModel.name,
+              createMail: meetingModel.createUid,
+              collectionName: "meetingDelete",
+              alarmContents: loginUserInfo.team + " " + loginUserInfo.name + " " + loginUserInfo.position + "님이 " + "${meetingModel.title} 회의 일정을 삭제했습니다.",
+              read: false,
+              alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+            );
+
+            List<String> tokens = await _repository.getTokens(companyCode: companyCode, mail: meetingModel.createUid);
+
+            await _repository.saveAlarm(
+              alarmModel: _alarmModel,
+              companyCode: companyCode,
+              mail: meetingModel.createUid,
+            ).whenComplete(() async {
+              //동료들에게 알림 보내기
+              fcm.sendFCMtoSelectedDevice(
+                  alarmId: _alarmModel.alarmId.toString(),
+                  tokenList: tokens,
+                  name: loginUserInfo.name,
+                  team: loginUserInfo.team,
+                  position: loginUserInfo.position,
+                  collection: "meetingDelete@${meetingModel.title}"
+              );
+            });
+
+
+          });
         }
       },
       itemBuilder: (BuildContext context) => [
