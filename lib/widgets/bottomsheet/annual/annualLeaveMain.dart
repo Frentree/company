@@ -1,29 +1,25 @@
-import 'dart:io';
-import 'package:MyCompany/consts/screenSize/style.dart';
-import 'package:MyCompany/i18n/word.dart';
-import 'package:MyCompany/models/workApprovalModel.dart';
-import 'package:MyCompany/screens/alarm/signBoxExpensePickDate.dart';
-import 'package:MyCompany/utils/date/dateFormat.dart';
-import 'package:intl/intl.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/models/expenseModel.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/widgets/form/customInputFormatter.dart';
+import 'package:MyCompany/screens/alarm/signBoxExpensePickDate.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 AnnualLeaveMain(BuildContext context) async {
@@ -278,6 +274,9 @@ AnnualLeaveMain(BuildContext context) async {
                                   size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                                 ),
                               onPressed: () async {
+                                var doc = await FirebaseFirestore.instance.collection("company").doc(user.companyCode).collection("user").doc(user.mail).get();
+                                CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
                                  if(approvalUser == null){
                                    FailedData(context, "결재자 미선택", "결재자를 선택 후에 신청해주세요");
                                    return;
@@ -305,7 +304,35 @@ AnnualLeaveMain(BuildContext context) async {
                                 FirebaseRepository().createAnnualLeave(
                                   companyCode: user.companyCode,
                                   workApproval: _approval
-                                );
+                                ).whenComplete(() async {
+                                  Alarm _alarmModel = Alarm(
+                                    alarmId: 0,
+                                    createName: user.name,
+                                    createMail: user.mail,
+                                    collectionName: "annualLeave",
+                                    alarmContents: loginUserInfo.team + " " + user.name + " " + loginUserInfo.position + "님이 " + _approval.approvalType + "를 요청했습니다.",
+                                    read: false,
+                                    alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  );
+
+                                  List<String> token = await FirebaseRepository().getApprovalUserTokens(companyCode: user.companyCode, mail: approvalUser.mail);
+
+                                  //결재자 알림 DB에 저장
+                                  await FirebaseRepository().saveOneUserAlarm(
+                                    alarmModel: _alarmModel,
+                                    companyCode: user.companyCode,
+                                    mail: approvalUser.mail,
+                                  ).whenComplete(() async {
+                                    Fcm().sendFCMtoSelectedDevice(
+                                        alarmId: _alarmModel.alarmId.toString(),
+                                        tokenList: token,
+                                        name: user.name,
+                                        team: loginUserInfo.team,
+                                        position: loginUserInfo.position,
+                                        collection: "annualLeave@${_approval.approvalType}"
+                                    );
+                                  });
+                                });
 
                                 Navigator.of(context).pop(true);
                               },
