@@ -33,7 +33,7 @@ pickDate(BuildContext context, DateTime startTime) async {
                     DateTimePickerWidget(
                       initDateTime: startTime != null ? startTime : DateTime.now().minute < 30 ? DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,00) : DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,30),
                       locale: DateTimePickerLocale.ko,
-                      dateFormat: "yyyy년 MM월 dd일",
+                      dateFormat: "yyyy년 MM월 dd일 EE요일",
                       onConfirm: (dateTime, selectedIndex) {
                         date= dateTime;
                       },

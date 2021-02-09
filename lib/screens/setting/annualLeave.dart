@@ -137,7 +137,7 @@ class _AnnualLeavePageState extends State<AnnualLeavePage> {
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseRepository().selectAnnualLeave(mail: _loginUser.mail, companyCode: _loginUser.companyCode, date: yearDate),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return LinearProgressIndicator();
+                if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
 
                 return _buildList(context, snapshot.data.docs, _loginUser.companyCode);
               },

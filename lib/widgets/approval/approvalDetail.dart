@@ -144,6 +144,35 @@ annualLeaveRequestApprovalBottomSheet({BuildContext context, String companyCode,
                           child: Row(
                             children: [
                               Icon(
+                                Icons.navigation_outlined,
+                                size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                              ),
+                              cardSpace,
+                              Text(
+                                "위치",
+                                style: defaultRegularStyle,
+                              ),
+                            ],
+                          ),
+                        ),
+                        cardSpace,
+                        Expanded(
+                          child: Text(
+                            model.location,
+                            style: defaultRegularStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    cardSpace,
+                    Row(
+                      children: [
+                        Container(
+                          height: 6.0.h,
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                          child: Row(
+                            children: [
+                              Icon(
                                 Icons.stream,
                                 size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                               ),
@@ -988,8 +1017,8 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                       createUid: model.userMail,
                                                       createDate: Timestamp.now(),
                                                       startDate: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 21, 00,)),
-                                                      startTime: _format.dateTimeToTimeStamp(DateTime(requestDate.year, requestDate.month, requestDate.day, 09, 00,)),
-                                                      timeSlot: 1,
+                                                      startTime: model.requestDate,
+                                                      timeSlot: _format.timeSlot(requestDate),
                                                       type: model.approvalType,
                                                       title: model.approvalType,
                                                       level: 0,

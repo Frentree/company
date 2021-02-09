@@ -412,6 +412,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                               switch (_companyData.type) {
                                 case '내근':
                                 case '외근':
+                                case '요청':
                                   return GestureDetector(
                                     child: workScheduleCard(
                                       context: context,
