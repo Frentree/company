@@ -2,6 +2,7 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/provider/screen/alarmScreenChange.dart';
+import 'package:MyCompany/screens/alarm/alarmInquiry.dart';
 import 'package:MyCompany/screens/alarm/alarmNotice.dart';
 import 'package:MyCompany/screens/alarm/signBox.dart';
 import 'package:MyCompany/screens/home/homeMain.dart';
@@ -23,7 +24,7 @@ class AlarmMainPage extends StatefulWidget {
 
 class AlarmMainPageState extends State<AlarmMainPage> {
   int tabIndex = 0;
-  List<Widget> _page = [AlarmPage(),SignBox(),AlarmNoticePage()];
+  List<Widget> _page = [AlarmPage(),SignBox(),AlarmInquiry(),AlarmNoticePage()];
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                   InkWell(
                     child: Container(
                       height: 5.0.h,
-                      width: 30.0.w,
+                      width: 22.5.w,
                       alignment: Alignment.center,
                       decoration: tabIndex == 0 ? BoxDecoration(
                         color: whiteColor,
@@ -75,7 +76,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                   InkWell(
                     child: Container(
                       height: 5.0.h,
-                      width: 30.0.w,
+                      width: 22.5.w,
                       alignment: Alignment.center,
                       decoration: tabIndex == 1 ? BoxDecoration(
                         color: whiteColor,
@@ -95,9 +96,29 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                   InkWell(
                     child: Container(
                       height: 5.0.h,
-                      width: 30.0.w,
+                      width: 22.5.w,
                       alignment: Alignment.center,
                       decoration: tabIndex == 2 ? BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w),
+                      ) : null,
+                      child: Text(
+                        "조회",
+                        style: defaultMediumStyle,
+                      ),
+                    ),
+                    onTap: (){
+                      setState(() {
+                        tabIndex = 2;
+                      });
+                    },
+                  ),
+                  InkWell(
+                    child: Container(
+                      height: 5.0.h,
+                      width: 22.5.w,
+                      alignment: Alignment.center,
+                      decoration: tabIndex == 3 ? BoxDecoration(
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w),
                       ) : null,
@@ -108,7 +129,7 @@ class AlarmMainPageState extends State<AlarmMainPage> {
                     ),
                     onTap: (){
                       setState(() {
-                        tabIndex = 2;
+                        tabIndex = 3;
                       });
                     },
                   ),

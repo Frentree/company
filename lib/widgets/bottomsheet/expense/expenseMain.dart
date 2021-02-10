@@ -24,11 +24,17 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/form/customInputFormatter.dart';
 import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
 import 'package:sizer/sizer.dart';
+//import 'package:tesseract_ocr/tesseract_ocr.dart';
 
 ExpenseMain(BuildContext context) async {
   FirebaseRepository _reposistory = FirebaseRepository();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+  //OCR 관련 변수
+  bool _scanning=false;
+  String _extractText="";
+  File _pickeimage;
 
   LoginUserInfoProvider _loginUserInfoProvider;
 
@@ -63,6 +69,7 @@ ExpenseMain(BuildContext context) async {
     }
     return false;
   }
+
 
   // 이미지 파일 업로드 메서드
   void _uploadImageToStorage(ImageSource source) async {
@@ -582,6 +589,12 @@ ExpenseMain(BuildContext context) async {
                                         cardSpace,
                                         cardSpace,
                                         Icon(
+                                          Icons.qr_code,
+                                          size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                          color: mainColor,
+                                        ),
+                                        cardSpace,
+                                        Icon(
                                           Icons.linked_camera,
                                           size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                                           color: mainColor,
@@ -604,6 +617,24 @@ ExpenseMain(BuildContext context) async {
                                               style: defaultMediumStyle,
                                             ),
                                             children: [
+                                              SimpleDialogOption(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    _scanning=true;
+                                                  });
+                                                  _pickeimage = await ImagePicker.pickImage(source: ImageSource.gallery);
+                                                  //_extractText = await TesseractOcr.extractText(_pickeimage.path, language: "kor");
+                                                  setState(() {
+                                                    _scanning=false;
+                                                  });
+
+                                                  print("_extractText ===> " + _extractText);
+                                                },
+                                                child: Text(
+                                                  "OCR",
+                                                  style: defaultRegularStyle,
+                                                ),
+                                              ),
                                               SimpleDialogOption(
                                                 onPressed: () {
                                                   _uploadImageToStorage(ImageSource.camera);

@@ -1,31 +1,25 @@
-import 'dart:io';
+
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/models/alarmModel.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
+import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
+import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/fcm/pushFCM.dart';
+import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/alarm/signBoxExpensePickDate.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
-import 'package:intl/intl.dart';
-
+import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import 'package:MyCompany/consts/colorCode.dart';
-import 'package:MyCompany/consts/font.dart';
-import 'package:MyCompany/consts/widgetSize.dart';
-import 'package:MyCompany/models/expenseModel.dart';
-import 'package:MyCompany/models/userModel.dart';
-import 'package:MyCompany/provider/user/loginUserInfo.dart';
-import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/widgets/form/customInputFormatter.dart';
-import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
 import 'package:sizer/sizer.dart';
 
 AnnualLeaveMain(BuildContext context) async {
@@ -48,6 +42,7 @@ AnnualLeaveMain(BuildContext context) async {
   WorkApproval _approval;
 
   int _chosenItem = 0;
+  int _chosenTimeItem = 0;
   String _approvalUserItem = "선택";
 
   /// Which holds the selected date
@@ -286,7 +281,11 @@ AnnualLeaveMain(BuildContext context) async {
                                    FailedData(context, "결재자 미선택", "결재자를 선택 후에 신청해주세요");
                                    return;
                                  }
-
+                                 if(_chosenItem == 1 && _chosenTimeItem == 1 ){  //반차, 오후
+                                   selectedDate = DateTime.parse(DateFormat('yyyy-MM-dd 13:00:00').format(selectedDate).toString());
+                                 } else {
+                                   selectedDate = DateTime.parse(DateFormat('yyyy-MM-dd 09:00:00').format(selectedDate).toString());
+                                 }
                                 _approval = WorkApproval(
                                   title: DateFormat('yyyyMMdd').format(selectedDate).toString() + "_" +  _buildAnnualItem(_chosenItem) + "_" + user.name,
                                   status: "요청",
@@ -368,8 +367,13 @@ AnnualLeaveMain(BuildContext context) async {
                                 DateFormat('yyyy-MM-dd').format(selectedDate),
                                 style: defaultRegularStyle,
                               ),
-                              onTap: () {
-                                _selectDate(context);
+                              onTap: () async {
+                                //_selectDate(context);
+                                selectedDate = await pickDate(
+                                    context,
+                                    selectedDate
+                                );
+                                setState((){});
                               },
                             ),
                           ),
@@ -440,6 +444,75 @@ AnnualLeaveMain(BuildContext context) async {
                             )
                           ),
                         ],
+                      ),
+                      cardSpace,
+                      Visibility(
+                        visible: _chosenItem == 1,
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 6.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.person_outline,
+                                    size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                                  ),
+                                  cardSpace,
+                                  Text(
+                                    "반차 시간",
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            cardSpace,
+                            Expanded(
+                                child: PopupMenuButton(
+                                    child: RaisedButton(
+                                      disabledColor: whiteColor,
+                                      child: Text(
+                                        _buildTimeItem(_chosenTimeItem),
+                                        style: defaultRegularStyle,
+                                      ),
+                                    ),
+                                    onSelected: (value) {
+                                      _chosenTimeItem = value;
+                                      setState(() {});
+                                    },
+                                    itemBuilder: (BuildContext context) => [
+                                      PopupMenuItem(
+                                        height: 7.0.h,
+                                        value: 0,
+                                        child: Row(
+                                          children: [
+                                            cardSpace,
+                                            Text(
+                                              "오전",
+                                              style: defaultRegularStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        height: 7.0.h,
+                                        value: 1,
+                                        child: Row(
+                                          children: [
+                                            cardSpace,
+                                            Text(
+                                              "오후",
+                                              style: defaultRegularStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ]
+                                )
+                            ),
+                          ],
+                        ),
                       ),
                       cardSpace,
                       Row(
@@ -616,6 +689,17 @@ String _buildAnnualItem(int chosenItem) {
       return "연차";
     case '1':
       return "반차";
+  }
+}
+
+/// 연차 종류 선택 메뉴
+String _buildTimeItem(int chosenItem) {
+  String _chosenItem = chosenItem.toString();
+  switch (_chosenItem) {
+    case '0':
+      return "오전";
+    case '1':
+      return "오후";
   }
 }
 
