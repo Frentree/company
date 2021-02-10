@@ -32,7 +32,7 @@ import 'package:sizer/sizer.dart';
 class AttendanceCheck extends ChangeNotifier {
   Format _format = Format();
 
-  List<String> wifiList = ["AndroidWifi"];
+  List<String> wifiList = ["AndroidWifi", "Frentree", "Frentree5G"];
 
   //로그인 사용자 정보 저장
   User _loginUser;
@@ -55,6 +55,7 @@ class AttendanceCheck extends ChangeNotifier {
 
   //출근 체크
   Future<Attendance> attendanceCheck() async {
+    print("출근 처리 시작");
     //자동 로그인 정보를 가져온다
     SharedPreferences _sharedPreferences =
         await SharedPreferences.getInstance();
@@ -73,7 +74,6 @@ class AttendanceCheck extends ChangeNotifier {
 
     //연결된 wifi 이름 저장
     Future<String> connectWifiName () async {
-
       switch (foundation.defaultTargetPlatform) {
         case foundation.TargetPlatform.iOS:
           return await IosNetworkInfo.ssid;
@@ -110,7 +110,8 @@ class AttendanceCheck extends ChangeNotifier {
 
       //wifi 연결 여부 확인
       //wifi에 연결되어 있을 경우
-      if (wifiList.contains(connectWifiName)) {
+      String wifiName = await connectWifiName();
+      if (wifiList.contains(wifiName)) {
         _attendance.status = 1;
         _attendance.attendTime = _format.dateTimeToTimeStamp(nowTime);
         _repository.updateAttendance(
@@ -128,13 +129,14 @@ class AttendanceCheck extends ChangeNotifier {
 
     //출퇴근 데이터가 있을 경우
     else {
+      String wifiName = await connectWifiName();
       _attendance = Attendance.fromMap(
           result.docs.first.data(), result.docs.first.id);
       if(_attendance.status != 0){
         return _attendance;
       }
       else{
-        if (wifiList.contains(connectWifiName)) {
+        if (wifiList.contains(wifiName)) {
           _attendance.status = 1;
           _attendance.attendTime = _format.dateTimeToTimeStamp(nowTime);
           _repository.updateAttendance(
