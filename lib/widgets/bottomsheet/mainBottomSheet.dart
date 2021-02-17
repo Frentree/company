@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
+
+import 'expense/modExpense.dart';
 final word = Words();
 
 MainBottomSheet({BuildContext context, String companyCode, String mail, double statusBarHeight}) {

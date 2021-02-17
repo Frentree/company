@@ -21,6 +21,10 @@ class FirebaseRepository {
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
 
+  // 경비 청구 항목 수정 메서드
+  Future<void> updateExpense(ExpenseModel expenseModel, String companyCode, String docId) =>
+      _firebaseMethods.updateExpense(expenseModel, companyCode, docId);
+
   // 경비 항목 조회 메서드
   Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
       _firebaseMethods.getExpense(companyCode, uid);

@@ -1,4 +1,6 @@
 //Firebase
+import 'dart:math';
+
 import 'package:MyCompany/models/alarmModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,6 +37,20 @@ class FirebaseMethods {
         .add(map);
 
     return doc;
+  }
+
+  // 경비 청구 항목 수정 메서드
+  Future<void> updateExpense(
+      ExpenseModel expenseModel, String companyCode, String docId) async {
+    var map = expenseModel.toMap();
+    Future<void> update = firestore
+        .collection(COMPANY)
+        .doc(expenseModel.companyCode)
+        .collection(USER)
+        .doc(expenseModel.mail)
+        .collection(EXPENSE)
+        .doc(docId)
+        .update(map);
   }
 
   // 경비 청구 항목 불러오기 메서드

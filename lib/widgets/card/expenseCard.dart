@@ -10,6 +10,7 @@ import 'package:MyCompany/repos/showSnackBarMethod.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/alarm/expenseImageDialog.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/bottomsheet/expense/modExpense.dart';
 import 'package:MyCompany/widgets/popupMenu/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -99,14 +100,14 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model,
                     style: containerChipStyle,
                   ),
                 ),
-                _popupMenu(context, companyCode, docId, uid),
+                _popupMenu(context, companyCode, docId, uid, model),
               ],
             ))),
   );
 }
 
 Container _popupMenu(
-    BuildContext context, String companyCode, String docId, String uid) {
+    BuildContext context, String companyCode, String docId, String uid, ExpenseModel model) {
   bool _checker = true;
   FirebaseRepository _repository = FirebaseRepository();
   void showToast(String msg, {int duration, int gravity}) {}
@@ -124,26 +125,31 @@ Container _popupMenu(
               PopupMenuItem(
                 height: 7.0.h,
                 value: 1,
-                child: Row(
-                  children: [
-                    Container(
-                      child: Icon(
-                        Icons.edit,
-                        size: SizerUtil.deviceType == DeviceType.Tablet
-                            ? popupMenuIconSizeTW.w
-                            : popupMenuIconSizeMW.w,
+                child: GestureDetector(
+                  onTap: () {
+                    ModExpense(context, companyCode, docId, uid, model);
+                  },
+                  child: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.edit,
+                          size: SizerUtil.deviceType == DeviceType.Tablet
+                              ? popupMenuIconSizeTW.w
+                              : popupMenuIconSizeMW.w,
+                        ),
                       ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: SizerUtil.deviceType == DeviceType.Tablet
-                                ? 1.5.w
-                                : 2.0.w)),
-                    Text(
-                      word.update(),
-                      style: popupMenuStyle,
-                    )
-                  ],
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: SizerUtil.deviceType == DeviceType.Tablet
+                                  ? 1.5.w
+                                  : 2.0.w)),
+                      Text(
+                        word.update(),
+                        style: popupMenuStyle,
+                      )
+                    ],
+                  ),
                 ),
               ),
               PopupMenuItem(
