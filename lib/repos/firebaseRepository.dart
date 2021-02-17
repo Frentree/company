@@ -26,8 +26,8 @@ class FirebaseRepository {
       _firebaseMethods.updateExpense(expenseModel, companyCode, docId);
 
   // 경비 항목 조회 메서드
-  Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
-      _firebaseMethods.getExpense(companyCode, uid);
+  Stream<QuerySnapshot> getExpense(String companyCode, String uid, DateTime thisMonth) =>
+      _firebaseMethods.getExpense(companyCode, uid, thisMonth);
 
   // 경비 항목 삭제 메서드
   Future<void> deleteExpense(String companyCode, String documentID, String uid) =>

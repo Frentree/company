@@ -25,6 +25,7 @@ class ExpenseModel {
   String imageUrl;
   int status;
   String detailNote;
+  Timestamp searchDate;
 
   ExpenseModel(
       {this.name,
@@ -37,7 +38,8 @@ class ExpenseModel {
       this.memo,
       this.imageUrl,
       this.status = 0,
-      this.detailNote});
+      this.detailNote,
+      this.searchDate});
 
   ExpenseModel.fromMap(Map snapshot, String id)
       : name = snapshot["name"],
@@ -50,7 +52,8 @@ class ExpenseModel {
         memo = snapshot["memo"],
         imageUrl = snapshot["imageUrl"],
         status = snapshot["status"],
-        detailNote = snapshot["detailNote"];
+        detailNote = snapshot["detailNote"],
+        searchDate = snapshot["searchDate"];
 
   toJson() => {
         "name": name,
@@ -64,6 +67,7 @@ class ExpenseModel {
         "imageUrl": imageUrl,
         "status": status,
         "detailNote": detailNote,
+        "searchDate": searchDate
       };
 
   Map toMap() {
@@ -79,6 +83,7 @@ class ExpenseModel {
     map['imageUrl'] = this.imageUrl;
     map['status'] = this.status;
     map['detailNote'] = this.detailNote;
+    map['searchDate'] = this.searchDate;
     return map;
   }
 }

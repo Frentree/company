@@ -53,14 +53,27 @@ class FirebaseMethods {
         .update(map);
   }
 
+  Timestamp dateTimeToTimeStamp(DateTime time){
+    Timestamp dateTime;
+    dateTime = Timestamp.fromDate(time);
+
+    return dateTime;
+  }
+
   // 경비 청구 항목 불러오기 메서드
-  Stream<QuerySnapshot> getExpense(String companyCode, String uid) {
+  Stream<QuerySnapshot> getExpense(String companyCode, String uid, DateTime thisMonth) {
+
+    DateTime _thisMonth = DateTime(thisMonth.year, thisMonth.month);
+    DateTime _nextMonth = DateTime(thisMonth.year, thisMonth.month+1);
+
     return firestore
         .collection(COMPANY)
-        .document(companyCode)
+        .doc(companyCode)
         .collection(USER)
-        .document(uid)
+        .doc(uid)
         .collection(EXPENSE)
+        .where("buyDate", isGreaterThanOrEqualTo: dateTimeToTimeStamp(_thisMonth))
+        .where("buyDate", isLessThan: dateTimeToTimeStamp(_nextMonth))
         .orderBy("buyDate", descending: true)
         .snapshots();
   }

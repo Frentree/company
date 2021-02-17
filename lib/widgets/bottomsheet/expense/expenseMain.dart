@@ -106,6 +106,7 @@ ExpenseMain(BuildContext context) async {
 
   /// 설정한 경비 데이터들을 파이어스토어에 저장하고 URL을 변수에 저장하는 메서드
   saveExpense() {
+    DateTime _searchDate = DateTime(selectedDate.year, selectedDate.month);
     ExpenseModel _expenseModel = ExpenseModel(
       name: user.name,
       mail: user.mail,
@@ -118,6 +119,7 @@ ExpenseMain(BuildContext context) async {
       imageUrl: _downloadUrl == null ? "" : _downloadUrl,
       status: 0,
       detailNote: _detailController.text,
+      searchDate: _format.dateTimeToTimeStamp(_searchDate)
     );
     debugPrint(_downloadUrl);
 
