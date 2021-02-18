@@ -106,6 +106,8 @@ class AttendanceCheck extends ChangeNotifier {
         companyCode: _loginUser.companyCode,
       );
 
+      _attendance.id = newAttendance.id;
+
       //wifi 연결 여부 확인
       //wifi에 연결되어 있을 경우
       String wifiName = await connectWifiName();
@@ -513,6 +515,7 @@ class AttendanceCheck extends ChangeNotifier {
                       documentId: _attendance.id,
                       companyCode: _loginUser.companyCode,
                     );
+
                     notifyListeners();
                     Navigator.pop(context, "OK");
                   } : null,
