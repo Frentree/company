@@ -115,7 +115,7 @@ ExpenseMain(BuildContext context) async {
       contentType: _buildChosenItem(_chosenItem),
       buyDate: _format.dateTimeToTimeStamp(selectedDate),
       cost: CustomTextInputFormatterReverse(_expenseController.text),
-      memo: "",
+      index: null,
       imageUrl: _downloadUrl == null ? "" : _downloadUrl,
       status: 0,
       detailNote: _detailController.text,

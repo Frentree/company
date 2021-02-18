@@ -26,83 +26,87 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model,
   return Card(
     elevation: 0,
     shape: cardShape,
-    child: Padding(
-        padding: cardPadding,
-        child: Container(
-            height: scheduleCardDefaultSizeH.h,
-            child: Row(
-              children: [
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 16.0.w
-                      : 17.0.w,
-                  alignment: Alignment.center,
-                  child: Text(
-                    _format.dateFormatForExpenseCard(model.buyDate),
-                    style: containerChipStyle,
+    child: GestureDetector(
+
+      child: Padding(
+          padding: cardPadding,
+          child: Container(
+              height: scheduleCardDefaultSizeH.h,
+              child: Row(
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 16.0.w
+                        : 17.0.w,
+                    alignment: Alignment.center,
+                    child: Text(
+                      _format.dateFormatForExpenseCard(model.buyDate),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 15.0.w
-                      : 13.0.w,
-                  alignment: Alignment.center,
-                  child: Text(
-                    model.contentType == "석식비"
-                        ? word.dinner()
-                        : model.contentType == "중식비"
-                            ? word.lunch()
-                            : model.contentType == "교통비"
-                                ? word.transportation()
-                                : word.etc(),
-                    style: containerChipStyle,
+                  cardSpace,
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 15.0.w
+                        : 13.0.w,
+                    alignment: Alignment.center,
+                    child: Text(
+                      model.contentType == "석식비"
+                          ? word.dinner()
+                          : model.contentType == "중식비"
+                              ? word.lunch()
+                              : model.contentType == "교통비"
+                                  ? word.transportation()
+                                  : word.etc(),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 15.0.w
-                      : 13.0.w,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    returnString.format(model.cost),
-                    style: containerChipStyle,
+                  cardSpace,
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 15.0.w
+                        : 13.0.w,
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      returnString.format(model.cost),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 15.0.w
-                      : 13.0.w,
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () {
-                      ExpenseImageDialog(context, model.imageUrl);
-                    },
-                    child: model.imageUrl == ""
-                        ? Container()
-                        : Icon(
-                            Icons.receipt_long_outlined,
-                            size: SizerUtil.deviceType == DeviceType.Tablet
-                                ? iconSizeTW.w
-                                : iconSizeMW.w,
-                          ),
+                  cardSpace,
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 15.0.w
+                        : 13.0.w,
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () {
+                        ExpenseImageDialog(context, model.imageUrl);
+                      },
+                      child: model.imageUrl == ""
+                          ? Container()
+                          : Icon(
+                              Icons.receipt_long_outlined,
+                              size: SizerUtil.deviceType == DeviceType.Tablet
+                                  ? iconSizeTW.w
+                                  : iconSizeMW.w,
+                            ),
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width:
-                      SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 9.0.w,
-                  alignment: Alignment.center,
-                  child: Text(
-                    model.status.toString(),
-                    style: containerChipStyle,
+                  cardSpace,
+                  Container(
+                    width:
+                        SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 9.0.w,
+                    alignment: Alignment.center,
+                    child: Text(
+                      //model.status.toString(),
+                      model.isSelected.toString(),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                _popupMenu(context, companyCode, docId, uid, model),
-              ],
-            ))),
+                  _popupMenu(context, companyCode, docId, uid, model),
+                ],
+              ))),
+    ),
   );
 }
 

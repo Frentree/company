@@ -85,7 +85,7 @@ PurchaseMain(BuildContext context) {
       contentType: _buildChosenItem(_chosenItem),
       //buyDate: selected,
       cost: CustomTextInputFormatterReverse(_expenseController.text),
-      memo: "",
+      index: null,
       imageUrl: "",
       status: 0,
     );

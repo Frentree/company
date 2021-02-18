@@ -95,28 +95,6 @@ ModExpense(BuildContext context, String companyCode, String docId, String uid,
         .update({"imageUrl": _downloadUrl});
   }
 
-  saveExpense() {
-    ExpenseModel _expenseModel = ExpenseModel(
-      name: user.name,
-      mail: user.mail,
-      companyCode: user.companyCode,
-      createDate: Timestamp.now(),
-      contentType: _buildChosenItem(_chosenItem),
-      buyDate: _format.dateTimeToTimeStamp(selectedDate),
-      cost: CustomTextInputFormatterReverse(_expenseController.text),
-      memo: "",
-      imageUrl: _downloadUrl == null ? "" : _downloadUrl,
-      status: 0,
-      detailNote: _detailController.text,
-    );
-    debugPrint(_downloadUrl);
-
-    _returnValue() async {
-      DocumentReference doc = await _reposistory.saveExpense(_expenseModel);
-      _documentID = doc.id.toString();
-    }
-    _returnValue();
-  }
 
   updateExpense() {
     ExpenseModel _expenseModel = ExpenseModel(
@@ -127,9 +105,8 @@ ModExpense(BuildContext context, String companyCode, String docId, String uid,
       contentType: _buildChosenItem(_chosenItem),
       buyDate: _format.dateTimeToTimeStamp(selectedDate),
       cost: CustomTextInputFormatterReverse(_expenseController.text),
-      memo: "",
+      index: null,
       imageUrl: _downloadUrl == null ? "" : _downloadUrl,
-      status: 0,
       detailNote: _detailController.text,
     );
     debugPrint(_downloadUrl);
@@ -140,8 +117,6 @@ ModExpense(BuildContext context, String companyCode, String docId, String uid,
     _executeUpdate();
   }
   //ExpenseModel expenseModel, String companyCode, String docId
-
-
 
   await showModalBottomSheet(
       isScrollControlled: true,
