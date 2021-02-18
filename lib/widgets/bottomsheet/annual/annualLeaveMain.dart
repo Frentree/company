@@ -306,7 +306,7 @@ AnnualLeaveMain(BuildContext context) async {
                                   workApproval: _approval
                                 ).whenComplete(() async {
                                   Alarm _alarmModel = Alarm(
-                                    alarmId: 0,
+                                    alarmId: DateTime.now().hashCode,
                                     createName: user.name,
                                     createMail: user.mail,
                                     collectionName: "annualLeave",

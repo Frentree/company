@@ -169,7 +169,7 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
                                 ).whenComplete(() async {
                                   //결재요청 알림 생성
                                   Alarm _alarmModel = Alarm(
-                                    alarmId: 0,
+                                    alarmId: DateTime.now().hashCode,
                                     createName: _loginUser.name,
                                     createMail: _loginUser.mail,
                                     collectionName: "requestWork",

@@ -1012,7 +1012,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                     //연반차
                                                   default:
                                                     WorkModel _workModel = WorkModel(
-                                                      alarmId: 0,
+                                                      alarmId: DateTime.now().hashCode,
                                                       contents: model.requestContent,
                                                       createUid: model.userMail,
                                                       createDate: Timestamp.now(),
@@ -1132,7 +1132,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                 switch(model.approvalType){
                                                   case '업무':
                                                     Alarm _alarmModel = Alarm(
-                                                      alarmId: 0,
+                                                      alarmId: DateTime.now().hashCode,
                                                       createName: _loginUser.name,
                                                       createMail: _loginUser.mail,
                                                       collectionName: "requestWorkNo",
@@ -1161,7 +1161,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                     break;
                                                   case '외근':
                                                     Alarm _alarmModel = Alarm(
-                                                      alarmId: 0,
+                                                      alarmId: DateTime.now().hashCode,
                                                       createName: _loginUser.name,
                                                       createMail: _loginUser.mail,
                                                       collectionName: "approvalWorkNo",
@@ -1189,7 +1189,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                     break;
                                                   default:
                                                     Alarm _alarmModel = Alarm(
-                                                      alarmId: 0,
+                                                      alarmId: DateTime.now().hashCode,
                                                       createName: _loginUser.name,
                                                       createMail: _loginUser.mail,
                                                       collectionName: "annualLeaveNo",
