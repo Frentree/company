@@ -1,5 +1,6 @@
 //Firebase
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/wifiListModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/universalString.dart';
@@ -455,7 +456,64 @@ class FirebaseMethods {
         "profilePhoto": url,
       });
   }
-  
+  //WIFI 리스트 가져오기
+  Future<List<DocumentSnapshot>> getWifiList({String companyCode}) async {
+
+    List<DocumentSnapshot> wifiList = [];
+
+    QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection("wifi").get();
+    querySnapshot.docs.forEach((element) {
+      wifiList.add(element);
+    });
+
+    return wifiList;
+  }
+
+  //WIFI 리스트 가져오기
+  Future<List<String>> getWifiName({String companyCode}) async {
+
+    List<String> wifiNameList = [];
+
+    QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection("wifi").get();
+    querySnapshot.docs.forEach((element) {
+      wifiNameList.add(element.data()["wifiName"]);
+    });
+
+    return wifiNameList;
+  }
+
+  //WIFI 리스트 추가
+  Future<void> addWifiList({List<String> wifiList, User loginUser}) async {
+    Format _format = Format();
+
+
+    wifiList.forEach((element) async {
+      WifiList tempWifi = WifiList(
+        wifiName: element,
+        registrantMail: loginUser.mail,
+        registrantName: loginUser.name,
+        registrationDate: _format.dateTimeToTimeStamp(DateTime.now())
+      );
+      
+      await firestore.collection(COMPANY).doc(loginUser.companyCode).collection(WIFI).add(tempWifi.toJson());
+    });
+  }
+
+  //WIFI 리스트 삭제
+  Future<void> deleteWifiList({String companyCode, List<String> documentID}) async {
+    documentID.forEach((element) async {
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(WIFI)
+          .doc(element)
+          .delete();
+    });
+  }
+
+
+
+
   //FCM 토큰 업데이트 
   Future<void> updateToken(
       {String companyCode, String mail, String token}) async {

@@ -6,6 +6,7 @@
 사업자번호 <businessNumber>
 회사로고<companyLogo>
 회사홈페이지<companyLink>
+회사출퇴근
 <추가예정>
 */
 

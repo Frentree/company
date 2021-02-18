@@ -4,7 +4,7 @@
 DB 생성 날짜<createDate>
 출근시간 <attendTime>
 퇴근시간 <endTime>
-상태 <status>
+상태 <status> // 0: 출근전 1 : 내근 , 2 : 외근, 3 : 퇴근
 인증기기 <certificationDevice>
 네트워크 정보 <networkInfo>
 수동출근이유 <manualOnWorkReason>

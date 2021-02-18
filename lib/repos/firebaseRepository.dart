@@ -251,6 +251,26 @@ class FirebaseRepository {
           {String companyCode, String mail, String url}) =>
       _firebaseMethods.updatePhotoProfile(companyCode, mail, url);
 
+  //WIFI 리스트 가져오기
+  Future<List<DocumentSnapshot>> getWifiList({String companyCode}) => _firebaseMethods.getWifiList(
+    companyCode: companyCode
+  );
+
+  Future<List<String>> getWifiName({String companyCode}) => _firebaseMethods.getWifiName(
+      companyCode: companyCode
+  );
+
+  Future<void> addWifiList({List<String> wifiList, User loginUser}) => _firebaseMethods.addWifiList(
+    wifiList: wifiList,
+    loginUser: loginUser,
+  );
+
+  Future<void> deleteWifiList({String companyCode, List<String> documentID}) => _firebaseMethods.deleteWifiList(
+    companyCode: companyCode,
+    documentID: documentID,
+  );
+
+
   //FCM 토큰 업데이트
   Future<void> updateToken({String companyCode, String mail, String token}) => _firebaseMethods.updateToken(
     companyCode: companyCode,

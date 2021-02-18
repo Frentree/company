@@ -160,13 +160,12 @@ class HomeMainPageState extends State<HomeMainPage> {
                                       context: context,
                                     );
                                   }
-                                      : _attendance.status != 3
-                                      ? () async {
-                                    await _attendanceCheckProvider.manualOffWork(
+                                      :  () async {
+                                    await _attendanceCheckProvider.attendanceChange(
                                       context: context,
+                                      nowStatus: _attendance.status,
                                     );
                                   }
-                                      : null,
                                 ),
                               ),
                               Text(

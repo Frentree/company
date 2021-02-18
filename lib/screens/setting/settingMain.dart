@@ -10,6 +10,7 @@ import 'package:MyCompany/widgets/bottomsheet/setting/settingOrganizationChart.d
 import 'package:MyCompany/widgets/bottomsheet/setting/settingPosition.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserManager.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingWifi.dart';
 import 'package:MyCompany/widgets/card/settingInfomationCard.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +27,7 @@ class SettingMainPage extends StatefulWidget {
 }
 
 class SettingMainPageState extends State<SettingMainPage> {
-  List<bool> tabIndex = [false, false, false, false];
+  List<bool> tabIndex = [false, false, false, false, false];
   User _loginUser;
   bool co_worker_alert = true;
   bool approval_alert = false;
@@ -326,8 +327,113 @@ class SettingMainPageState extends State<SettingMainPage> {
                     ],
                   ),
                 ) : Container(),
-                Container(
+                (grade.contains(9) || grade.contains(8)) ? Container(
                   decoration: tabIndex[2] == false ? BoxDecoration() : BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                        bottom: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                      )
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.power_settings_new,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
+                            ),
+                          ),
+                          cardSpace,
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "출퇴근 인증 기기",
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  tabIndex[2] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    tabIndex[2] = !tabIndex[2];
+                                  });
+                                },
+                              )
+                          )
+                        ],
+                      ),
+                      tabIndex[2] == false ? Container() : Column(
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.wifi,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "WIFI 허용 목록 보기",
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              settingWifi(
+                                  context: context,
+                                  statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top
+                              );
+                            },
+                          ),
+                          emptySpace,
+                        ],
+                      ),
+                    ],
+                  ),
+                ) : Container(),
+                Container(
+                  decoration: tabIndex[3] == false ? BoxDecoration() : BoxDecoration(
                       border: Border(
                         top: BorderSide(
                           width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
@@ -373,20 +479,20 @@ class SettingMainPageState extends State<SettingMainPage> {
                                 constraints: BoxConstraints(),
                                 padding: EdgeInsets.zero,
                                 icon: Icon(
-                                  tabIndex[2] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  tabIndex[3] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
                                   size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                                   color: mainColor,
                                 ),
                                 onPressed: (){
                                   setState(() {
-                                    tabIndex[2] = !tabIndex[2];
+                                    tabIndex[3] = !tabIndex[3];
                                   });
                                 },
                               )
                           )
                         ],
                       ),
-                      tabIndex[2] == false ? Container() : getMyInfomationCard(
+                      tabIndex[3] == false ? Container() : getMyInfomationCard(
                         context: context, user: _loginUser,
                         statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top,
                       ),
@@ -395,7 +501,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                 ),
 
                 Container(
-                  decoration: tabIndex[3] == false ? BoxDecoration() : BoxDecoration(
+                  decoration: tabIndex[4] == false ? BoxDecoration() : BoxDecoration(
                       border: Border(
                         top: BorderSide(
                           width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
@@ -441,20 +547,20 @@ class SettingMainPageState extends State<SettingMainPage> {
                                 constraints: BoxConstraints(),
                                 padding: EdgeInsets.zero,
                                 icon: Icon(
-                                  tabIndex[3] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  tabIndex[4] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
                                   size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                                   color: mainColor,
                                 ),
                                 onPressed: (){
                                   setState(() {
-                                    tabIndex[3] = !tabIndex[3];
+                                    tabIndex[4] = !tabIndex[4];
                                   });
                                 },
                               )
                           )
                         ],
                       ),
-                      tabIndex[3] == false ? Container() : Column(
+                      tabIndex[4] == false ? Container() : Column(
                         children: [
                           GestureDetector(
                             child: Container(

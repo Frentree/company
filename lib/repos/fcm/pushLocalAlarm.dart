@@ -123,18 +123,20 @@ class NotificationPlugin {
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
       payload:payload,
     );
   }
 
   tz.TZDateTime _setNotiTime(DateTime alarmTime) {
+    print("alarmTime = ${alarmTime}");
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate = tz.TZDateTime(tz.local, alarmTime.year, alarmTime.month, alarmTime.day,
         alarmTime.hour, alarmTime.minute);
+
+    print("scheduledDate = ${scheduledDate}");
 
     return scheduledDate;
   }
