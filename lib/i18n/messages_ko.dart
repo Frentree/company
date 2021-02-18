@@ -175,7 +175,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "save" : MessageLookupByLibrary.simpleMessage("저장"),
     "second" : MessageLookupByLibrary.simpleMessage("초"),
     "select" : MessageLookupByLibrary.simpleMessage("선택"),
-    "serviceCenter" : MessageLookupByLibrary.simpleMessage("고객센터"),
+    "serviceCenter" : MessageLookupByLibrary.simpleMessage("고객지원"),
     "settlement" : MessageLookupByLibrary.simpleMessage("경비 정산"),
     "signIn" : MessageLookupByLibrary.simpleMessage("로그인"),
     "signUp" : MessageLookupByLibrary.simpleMessage("회원가입"),

@@ -1,4 +1,5 @@
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/inquireModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/models/approvalModel.dart';
@@ -510,4 +511,10 @@ class FirebaseRepository {
 
   Stream<QuerySnapshot> selectAnnualLeave({String companyCode, String whereUser, String mail, String orderByType, bool isOrderBy, String date}) =>
       _firebaseMethods.selectAnnualLeave(companyCode, whereUser, mail, orderByType, isOrderBy, date);
+
+  Stream<QuerySnapshot> getQnA({String mail}) =>
+      _firebaseMethods.getQnA(mail) ;
+
+  Future<void> createQnA({InquireModel model}) =>
+      _firebaseMethods.createQnA(model);
 }

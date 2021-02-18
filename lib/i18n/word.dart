@@ -93,7 +93,7 @@ class Words {
 
   String accountSecession() => Intl.message("계정탈퇴", name: "accountSecession", args: [], desc: "accountSecession message");
 
-  String serviceCenter() => Intl.message("고객센터", name: "serviceCenter", args: [], desc: "serviceCenter message");
+  String serviceCenter() => Intl.message("고객지원", name: "serviceCenter", args: [], desc: "serviceCenter message");
 
   String appVersion() => Intl.message("앱버전", name: "appVersion", args: [], desc: "appVersion message");
 
@@ -320,4 +320,11 @@ class Words {
   String copyScheduleCon() => Intl.message("복사할 일정을 선택하세요", name: "copyScheduleCon", args: [], desc: "copyScheduleCon message");
   String currentWorkStatus() => Intl.message("현재 동료 근무 현황", name: "currentWorkStatus", args: [], desc: "Current status of co-workers message");
   String nowScheduleBring() => Intl.message("더 보기", name: "nowScheduleBring", args: [], desc: "Current status of co-workers message");
+
+  String Help() => Intl.message("도움말", name: "Help", args: [], desc: "Help");
+  String Inquire() => Intl.message("1:1 문의하기", name: "Inquire", args: [], desc: "Inquire");
+  String TermsOfService() => Intl.message("서비스 이용약관", name: "TermsOfService", args: [], desc: "Terms of Service");
+  String personalInfomation() => Intl.message("개인정보 취급방식", name: "personalInfomation", args: [], desc: "Personal information handling method");
+
+
 }
