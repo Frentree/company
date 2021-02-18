@@ -1,10 +1,8 @@
 //Flutter
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/consts/font.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:ios_network_info/ios_network_info.dart';
 import 'package:wifi/wifi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,8 +21,6 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 //Widget
 import 'package:MyCompany/widgets/button/textButton.dart';
 
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
 
@@ -32,7 +28,7 @@ import 'package:sizer/sizer.dart';
 class AttendanceCheck extends ChangeNotifier {
   Format _format = Format();
 
-  List<String> wifiList = ["AndroidWifi", "Frentree", "Frentree5G"];
+  List<String> wifiList = [];
 
   //로그인 사용자 정보 저장
   User _loginUser;
@@ -55,7 +51,7 @@ class AttendanceCheck extends ChangeNotifier {
 
   //출근 체크
   Future<Attendance> attendanceCheck() async {
-    print("출근 처리 시작");
+
     //자동 로그인 정보를 가져온다
     SharedPreferences _sharedPreferences =
         await SharedPreferences.getInstance();
@@ -71,6 +67,8 @@ class AttendanceCheck extends ChangeNotifier {
     } else {
       return null;
     }
+
+    wifiList = await _repository.getWifiName(companyCode: _loginUser.companyCode);
 
     //연결된 wifi 이름 저장
     Future<String> connectWifiName () async {
@@ -170,10 +168,117 @@ class AttendanceCheck extends ChangeNotifier {
     }
   }
 
-  Future<void> manualOffWork(
-      {BuildContext context}) async {
+  Future<void> attendanceChange({BuildContext context, int nowStatus}) async {
+    List<bool> isSelect = [false, false];
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context){
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                "근무 상태 변경",
+                style: defaultMediumStyle,
+              ),
+              content: Container(
+                height: 10.0.h,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "근무 상태를 선택해 주세요",
+                      style: defaultRegularStyle,
+                    ),
+                    emptySpace,
+                    Row(
+                      children: [
+                        manualOnWorkBtn(
+                          context: context,
+                          btnText: nowStatus == 1 ? "외근" : nowStatus == 2 ? "내근" : "퇴근 철회",
+                          btnAction: (){
+                            setState(() {
+                              isSelect[0] = !isSelect[0];
+                              isSelect[1] = false;
+                            });
+                          },
+                          isSelect: isSelect[0]
+                        ),
+                        cardSpace,
+                        Visibility(
+                          visible: nowStatus != 3,
+                          child: manualOnWorkBtn(
+                              context: context,
+                              btnText: "퇴근",
+                              btnAction: (){
+                                setState(() {
+                                  isSelect[1] = !isSelect[1];
+                                  isSelect[0] = false;
+                                });
+                              },
+                              isSelect: isSelect[1]
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              actions: [
+                FlatButton(
+                  child: Text(
+                    "확인",
+                    style: buttonBlueStyle,
+                  ),
+                  onPressed: isSelect.contains(true) ? () async {
+                    if(isSelect[0] == true){
+                      if(nowStatus == 1){
+                        _attendance.status = 2;
+                      }
+                      else if(nowStatus == 2){
+                        _attendance.status = 1;
+                      }
+                      else{
+                        await cancelOffWork(context: context);
+                      }
+                      _repository.updateAttendance(
+                        attendanceModel: _attendance,
+                        documentId: _attendance.id,
+                        companyCode: _loginUser.companyCode,
+                      );
+                      notifyListeners();
+                      Navigator.pop(context, "OK");
+                    }
+                    else{
+                      bool result = await manualOffWork(context: context);
+                      if(result){
+                        Navigator.of(context).pop();
+                      }
+                    }
+                  } : null,
+                ),
+                FlatButton(
+                  child: Text(
+                    "취소",
+                    style: buttonBlueStyle,
+                  ),
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    );
+  }
+
+  manualOffWork({BuildContext context}) async {
+    bool result = false;
     DateTime nowTime = DateTime.now();
-    showDialog(
+    await showDialog(
       context: context,
       barrierDismissible: false, //취소 버튼을 통해서만 알림박스를 끌 수 있다.
       builder: (BuildContext context) {
@@ -201,7 +306,9 @@ class AttendanceCheck extends ChangeNotifier {
                   companyCode: _loginUser.companyCode,
                 );
                 notifyListeners();
-                Navigator.pop(context, "OK");
+                result = true;
+                Navigator.of(context).pop(result);
+                return result;
               },
             ),
             FlatButton(
@@ -210,13 +317,112 @@ class AttendanceCheck extends ChangeNotifier {
                 style: buttonBlueStyle,
               ),
               onPressed: (){
-                Navigator.pop(context, "NO");
+                result = false;
+                Navigator.of(context).pop(result);
+                return result;
               },
             ),
           ],
         );
       },
     );
+    return result;
+  }
+
+  cancelOffWork({BuildContext context}) async {
+    List<bool> isSelect = [false, false];
+    bool result = false;
+    await showDialog(
+      context: context,
+      barrierDismissible: false, //취소 버튼을 통해서만 알림박스를 끌 수 있다.
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                "퇴근처리 철회",
+                style: defaultMediumStyle,
+              ),
+              content: Container(
+                height: 10.0.h,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "근무 상태 선택",
+                      style: defaultRegularStyle,
+                    ),
+                    emptySpace,
+                    Row(
+                      children: [
+                        manualOnWorkBtn(
+                            context: context,
+                            btnText: "내근",
+                            btnAction: () {
+                              setState(() {
+                                isSelect[0] = !isSelect[0];
+                                isSelect[1] = false;
+                              });
+                            },
+                            isSelect: isSelect[0]),
+                        cardSpace,
+                        manualOnWorkBtn(
+                            context: context,
+                            btnText: "외근",
+                            btnAction: () {
+                              setState(() {
+                                isSelect[1] = !isSelect[1];
+                                isSelect[0] = false;
+                              });
+                            },
+                            isSelect: isSelect[1]),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    "확인",
+                    style: buttonBlueStyle,
+                  ),
+                  onPressed: isSelect.contains(true) ? () {
+                    if (isSelect[0] == true) {
+                      _attendance.status = 1;
+                    } else {
+                      _attendance.status = 2;
+                    }
+                    _attendance.endTime = null;
+                    _repository.updateAttendance(
+                      attendanceModel: _attendance,
+                      documentId: _attendance.id,
+                      companyCode: _loginUser.companyCode,
+                    );
+                    notifyListeners();
+                    result = true;
+                    Navigator.of(context).pop(result);
+                    return result;
+                  } : null,
+                ),
+                FlatButton(
+                  child: Text(
+                    "취소",
+                    style: buttonBlueStyle,
+                  ),
+                  onPressed: () {
+                    result = false;
+                    Navigator.of(context).pop(result);
+                    return result;
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+    return result;
   }
 
   Future<void> manualOnWork({BuildContext context}) async {
