@@ -246,7 +246,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "serviceCenter": "고객센터",
+  "serviceCenter": "고객지원",
   "@serviceCenter": {
     "description": "serviceCenter message",
     "type": "text",

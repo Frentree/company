@@ -14,4 +14,5 @@ const String APP_NAME = "MY COMPANY";
 const String APP_VERSION = "1.0.1";
 const String GRADE = "grade";
 const String WORKAPPROVAL = "workApproval";
+const String QNA = "QnA";
 

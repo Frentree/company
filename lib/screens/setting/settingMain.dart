@@ -6,6 +6,8 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingAnnualLeave.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingHelp.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingInquire.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingOrganizationChart.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingPosition.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
@@ -26,7 +28,7 @@ class SettingMainPage extends StatefulWidget {
 }
 
 class SettingMainPageState extends State<SettingMainPage> {
-  List<bool> tabIndex = [false, false, false, false];
+  List<bool> tabIndex = [false, false, false, false, false];
   User _loginUser;
   bool co_worker_alert = true;
   bool approval_alert = false;
@@ -326,7 +328,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                     ],
                   ),
                 ) : Container(),
-                Container(
+                 Container(
                   decoration: tabIndex[2] == false ? BoxDecoration() : BoxDecoration(
                       border: Border(
                         top: BorderSide(
@@ -623,7 +625,20 @@ class SettingMainPageState extends State<SettingMainPage> {
                     )
                   ],
                 ),*/
+
                 Container(
+                  decoration: tabIndex[4] == false ? BoxDecoration() : BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                        bottom: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                      )
+                  ),
                   padding: EdgeInsets.symmetric(
                     horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   ),
@@ -644,6 +659,237 @@ class SettingMainPageState extends State<SettingMainPage> {
                           cardSpace,
                           Container(
                             height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              Words.word.serviceCenter(), // 고객지원
+                              style: defaultMediumStyle,
+                            ),
+                          ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  tabIndex[4] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    tabIndex[4] = !tabIndex[4];
+                                  });
+                                },
+                              )
+                          )
+                        ],
+                      ),
+                      tabIndex[4] == false ? Container() : Column(
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.help,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      Words.word.Help(),
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingHelp(
+                                  context: context,
+                                  statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top
+                              );
+                            },
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.question_answer_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      Words.word.Inquire(),
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingInquire(
+                                  context: context,
+                                  statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top
+                              );
+                            },
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.person_add_alt_1_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      Words.word.notice(),
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              settingUserAddDelete(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
+                            },
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.badge,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      Words.word.TermsOfService(), // 서비스 이용약관
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingUserManager(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
+                            },
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.badge,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      Words.word.personalInfomation(), // 개인정보 취급방식
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingUserManager(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
+                            },
+                          ),
+                          emptySpace,
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                /*Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                            child: Icon(
+                              Icons.info_outline,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                              color: mainColor,
+                            ),
+                          ),
+                          cardSpace,
+                          Container(
                             width: SizerUtil.deviceType == DeviceType.Tablet ? 78.5.w : 72.0.w,
                             alignment: Alignment.centerLeft,
                             child: Column(
@@ -664,7 +910,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                       ),
                     ],
                   ),
-                ),
+                ),*/
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
@@ -678,14 +924,13 @@ class SettingMainPageState extends State<SettingMainPage> {
                             height: 9.0.h,
                             width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
                             child: Icon(
-                              Icons.info_outline,
+                              Icons.perm_device_info,
                               size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                               color: mainColor,
                             ),
                           ),
                           cardSpace,
                           Container(
-                            height: 9.0.h,
                             width: SizerUtil.deviceType == DeviceType.Tablet ? 71.5.w : 62.0.w,
                             alignment: Alignment.centerLeft,
                             child: Column(

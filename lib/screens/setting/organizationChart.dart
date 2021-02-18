@@ -41,7 +41,9 @@ class OrganizationChartPageState extends State<OrganizationChartPage> {
 
 Widget _buildBody(BuildContext context, User user) {
   return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseMethods().getTeamList(user.companyCode),
+    stream: FirebaseRepository().getTeamList(
+        companyCode: user.companyCode
+    ),
     builder: (context, snapshot) {
       if (!snapshot.hasData) return LinearProgressIndicator();
 

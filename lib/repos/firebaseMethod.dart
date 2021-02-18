@@ -1,5 +1,6 @@
 //Firebase
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/inquireModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/universalString.dart';
@@ -1060,6 +1061,7 @@ class FirebaseMethods {
         .snapshots();
   }
 
+
   /*Future<String> firebaseStorege(String companyCode, String mail) async {
     String data = await firestorage.ref("profile/${mail}").getDownloadURL().catchError({
 
@@ -1080,6 +1082,21 @@ class FirebaseMethods {
         .collection(USER)
         .where("mail", isNotEqualTo: mail)
         .snapshots();
+  }
+
+  Stream<QuerySnapshot> getQnA(String mail) {
+
+    return firestore
+        .collection(QNA)
+        .orderBy("createDate")
+        .where("mail", isEqualTo: mail)
+        .snapshots();
+  }
+
+  Future<void> createQnA(InquireModel model) async {
+    return await firestore
+        .collection(QNA)
+        .add(model.toJson());
   }
 
 }
