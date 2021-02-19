@@ -1,5 +1,6 @@
 /*MOBILE TEXT SIZE*/
 const double defaultSizeM = 11.0;
+const double smallSizeM = 11.0;
 const double appNameSizeM = 25.0;
 const double appVersionSizeM = 15.0;
 const double pageNameSizeM = 14.0;
@@ -24,6 +25,7 @@ const double popupMenuIconSizeMW = 7.0;
 
 /*TABLET TEXT SIZE*/
 const double defaultSizeT = 9.75;
+const double smallSizeT = 9.75;
 const double appNameSizeT = 18.75;
 const double appVersionSizeT = 11.25;
 const double pageNameSizeT = 10.5;

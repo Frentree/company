@@ -10,6 +10,7 @@ import 'package:MyCompany/repos/showSnackBarMethod.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/alarm/expenseImageDialog.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/bottomsheet/expense/modExpense.dart';
 import 'package:MyCompany/widgets/popupMenu/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,88 +26,92 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model,
   return Card(
     elevation: 0,
     shape: cardShape,
-    child: Padding(
-        padding: cardPadding,
-        child: Container(
-            height: scheduleCardDefaultSizeH.h,
-            child: Row(
-              children: [
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 16.0.w
-                      : 17.0.w,
-                  alignment: Alignment.center,
-                  child: Text(
-                    _format.dateFormatForExpenseCard(model.buyDate),
-                    style: containerChipStyle,
+    child: GestureDetector(
+
+      child: Padding(
+          padding: cardPadding,
+          child: Container(
+              height: scheduleCardDefaultSizeH.h,
+              child: Row(
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 16.0.w
+                        : 17.0.w,
+                    alignment: Alignment.center,
+                    child: Text(
+                      _format.dateFormatForExpenseCard(model.buyDate),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 15.0.w
-                      : 13.0.w,
-                  alignment: Alignment.center,
-                  child: Text(
-                    model.contentType == "석식비"
-                        ? word.dinner()
-                        : model.contentType == "중식비"
-                            ? word.lunch()
-                            : model.contentType == "교통비"
-                                ? word.transportation()
-                                : word.etc(),
-                    style: containerChipStyle,
+                  cardSpace,
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 15.0.w
+                        : 13.0.w,
+                    alignment: Alignment.center,
+                    child: Text(
+                      model.contentType == "석식비"
+                          ? word.dinner()
+                          : model.contentType == "중식비"
+                              ? word.lunch()
+                              : model.contentType == "교통비"
+                                  ? word.transportation()
+                                  : word.etc(),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 15.0.w
-                      : 13.0.w,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    returnString.format(model.cost),
-                    style: containerChipStyle,
+                  cardSpace,
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 15.0.w
+                        : 13.0.w,
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      returnString.format(model.cost),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width: SizerUtil.deviceType == DeviceType.Tablet
-                      ? 15.0.w
-                      : 13.0.w,
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () {
-                      ExpenseImageDialog(context, model.imageUrl);
-                    },
-                    child: model.imageUrl == ""
-                        ? Container()
-                        : Icon(
-                            Icons.receipt_long_outlined,
-                            size: SizerUtil.deviceType == DeviceType.Tablet
-                                ? iconSizeTW.w
-                                : iconSizeMW.w,
-                          ),
+                  cardSpace,
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet
+                        ? 15.0.w
+                        : 13.0.w,
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () {
+                        ExpenseImageDialog(context, model.imageUrl);
+                      },
+                      child: model.imageUrl == ""
+                          ? Container()
+                          : Icon(
+                              Icons.receipt_long_outlined,
+                              size: SizerUtil.deviceType == DeviceType.Tablet
+                                  ? iconSizeTW.w
+                                  : iconSizeMW.w,
+                            ),
+                    ),
                   ),
-                ),
-                cardSpace,
-                Container(
-                  width:
-                      SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 9.0.w,
-                  alignment: Alignment.center,
-                  child: Text(
-                    model.status.toString(),
-                    style: containerChipStyle,
+                  cardSpace,
+                  Container(
+                    width:
+                        SizerUtil.deviceType == DeviceType.Tablet ? 6.0.w : 9.0.w,
+                    alignment: Alignment.center,
+                    child: Text(
+                      //model.status.toString(),
+                      model.isSelected.toString(),
+                      style: containerChipStyle,
+                    ),
                   ),
-                ),
-                _popupMenu(context, companyCode, docId, uid),
-              ],
-            ))),
+                  _popupMenu(context, companyCode, docId, uid, model),
+                ],
+              ))),
+    ),
   );
 }
 
 Container _popupMenu(
-    BuildContext context, String companyCode, String docId, String uid) {
+    BuildContext context, String companyCode, String docId, String uid, ExpenseModel model) {
   bool _checker = true;
   FirebaseRepository _repository = FirebaseRepository();
   void showToast(String msg, {int duration, int gravity}) {}
@@ -124,26 +129,31 @@ Container _popupMenu(
               PopupMenuItem(
                 height: 7.0.h,
                 value: 1,
-                child: Row(
-                  children: [
-                    Container(
-                      child: Icon(
-                        Icons.edit,
-                        size: SizerUtil.deviceType == DeviceType.Tablet
-                            ? popupMenuIconSizeTW.w
-                            : popupMenuIconSizeMW.w,
+                child: GestureDetector(
+                  onTap: () {
+                    ModExpense(context, companyCode, docId, uid, model);
+                  },
+                  child: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.edit,
+                          size: SizerUtil.deviceType == DeviceType.Tablet
+                              ? popupMenuIconSizeTW.w
+                              : popupMenuIconSizeMW.w,
+                        ),
                       ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: SizerUtil.deviceType == DeviceType.Tablet
-                                ? 1.5.w
-                                : 2.0.w)),
-                    Text(
-                      word.update(),
-                      style: popupMenuStyle,
-                    )
-                  ],
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: SizerUtil.deviceType == DeviceType.Tablet
+                                  ? 1.5.w
+                                  : 2.0.w)),
+                      Text(
+                        word.update(),
+                        style: popupMenuStyle,
+                      )
+                    ],
+                  ),
                 ),
               ),
               PopupMenuItem(

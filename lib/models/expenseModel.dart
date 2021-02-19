@@ -21,10 +21,13 @@ class ExpenseModel {
   String contentType;
   Timestamp buyDate;
   int cost;
-  String memo;
+  int index;
   String imageUrl;
   int status;
   String detailNote;
+  Timestamp searchDate;
+  bool isSelected = false;
+  bool isApproved = false;
 
   ExpenseModel(
       {this.name,
@@ -34,12 +37,15 @@ class ExpenseModel {
       this.contentType,
       this.buyDate,
       this.cost,
-      this.memo,
+      this.index,
       this.imageUrl,
       this.status = 0,
-      this.detailNote});
+      this.detailNote,
+      this.searchDate,
+      this.isSelected,
+      this.isApproved});
 
-  ExpenseModel.fromMap(Map snapshot, String id)
+  ExpenseModel.fromMap(int Index, Map snapshot, String id)
       : name = snapshot["name"],
         mail = snapshot["mail"],
         companyCode = snapshot["companyCode"],
@@ -47,10 +53,13 @@ class ExpenseModel {
         contentType = snapshot["contentType"],
         buyDate = snapshot["buyDate"],
         cost = snapshot["cost"],
-        memo = snapshot["memo"],
         imageUrl = snapshot["imageUrl"],
         status = snapshot["status"],
-        detailNote = snapshot["detailNote"];
+        detailNote = snapshot["detailNote"],
+        searchDate = snapshot["searchDate"],
+        index = Index,
+        //isSelected = snapshot["isSelected"],
+        isApproved = snapshot["isApproved"];
 
   toJson() => {
         "name": name,
@@ -60,10 +69,13 @@ class ExpenseModel {
         "contentType": contentType,
         "buyDate": buyDate,
         "cost": cost,
-        "memo": memo,
+        "index": index,
         "imageUrl": imageUrl,
         "status": status,
         "detailNote": detailNote,
+        "searchDate": searchDate,
+        "isSelected": isSelected,
+        "isApproved": isApproved
       };
 
   Map toMap() {
@@ -75,10 +87,13 @@ class ExpenseModel {
     map['contentType'] = this.contentType;
     map['buyDate'] = this.buyDate;
     map['cost'] = this.cost;
-    map['memo'] = this.memo;
+    map['index'] = this.index;
     map['imageUrl'] = this.imageUrl;
     map['status'] = this.status;
     map['detailNote'] = this.detailNote;
+    map['searchDate'] = this.searchDate;
+    map['isSelected'] = this.isSelected;
+    map['isApproved'] = this.isApproved;
     return map;
   }
 }

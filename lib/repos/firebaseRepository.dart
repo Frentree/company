@@ -22,9 +22,13 @@ class FirebaseRepository {
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
 
+  // 경비 청구 항목 수정 메서드
+  Future<void> updateExpense(ExpenseModel expenseModel, String companyCode, String docId) =>
+      _firebaseMethods.updateExpense(expenseModel, companyCode, docId);
+
   // 경비 항목 조회 메서드
-  Stream<QuerySnapshot> getExpense(String companyCode, String uid) =>
-      _firebaseMethods.getExpense(companyCode, uid);
+  Stream<QuerySnapshot> getExpense(String companyCode, String uid, DateTime thisMonth) =>
+      _firebaseMethods.getExpense(companyCode, uid, thisMonth);
 
   // 경비 항목 삭제 메서드
   Future<void> deleteExpense(String companyCode, String documentID, String uid) =>

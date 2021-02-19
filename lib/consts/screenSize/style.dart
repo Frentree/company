@@ -30,9 +30,21 @@ TextStyle hintStyle = customStyle(
   fontWeightName: "Regular",
 );
 
+TextStyle defaultSmallStyle = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? smallSizeT.sp : smallSizeM.sp,
+  fontColor: mainColor,
+  fontWeightName: "Regular",
+);
+
 TextStyle defaultRegularStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
   fontColor: mainColor,
+  fontWeightName: "Regular",
+);
+
+TextStyle defaultRegularStyleWhite = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+  fontColor: whiteColor,
   fontWeightName: "Regular",
 );
 
@@ -81,6 +93,12 @@ TextStyle cardBlueStyle = customStyle(
 TextStyle containerChipStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
   fontColor: mainColor,
+  fontWeightName: "Regular",
+);
+
+TextStyle reversContainerChipStyle = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
+  fontColor: whiteColor,
   fontWeightName: "Regular",
 );
 
