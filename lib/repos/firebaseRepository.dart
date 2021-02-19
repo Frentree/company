@@ -38,6 +38,10 @@ class FirebaseRepository {
   Future<void> postProcessApprovedExpense(User user, WorkApproval model) =>
       _firebaseMethods.postProcessApprovedExpense(user, model);
 
+  // 결재자 경비 항목 조회 메서드
+  List<ExpenseModel> getExpenses(WorkApproval model, String companyCode) =>
+      _firebaseMethods.getExpenses(model, companyCode);
+
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
         userModel: userModel,
       );

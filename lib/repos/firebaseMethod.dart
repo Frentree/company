@@ -64,24 +64,50 @@ class FirebaseMethods {
 
   // 경비 결재 완료 후 프로세스
   Future<void> postProcessApprovedExpense(User user, WorkApproval model) async {
-    String docId;
-
+    String _docId;
     int _index = model.docIds.length;
 
     for (int i = 0; i < _index; i++) {
-      docId = model.docIds[i];
-      firestore
+      _docId = model.docIds[i];
+      await firestore
           .collection(COMPANY)
           .doc(user.companyCode)
           .collection(USER)
           .doc(model.userMail)
           .collection(EXPENSE)
-          .doc(docId)
+          .doc(_docId)
           .update({
         "isApproved": true,
         "status": "결",
       });
     }
+  }
+
+  // 결재자 경비 항목 조회 메서드
+  List<ExpenseModel> getExpenses(
+      WorkApproval model, String companyCode)  {
+    List<ExpenseModel> _eModel;
+    String _docId;
+    int _index = model.docIds.length;
+    var _temp;
+
+    for (int i = 0; i < _index; i++) {
+      _docId = model.docIds[i];
+      _temp = firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(USER)
+          .doc(model.userMail)
+          .collection(EXPENSE)
+          .doc(_docId)
+          .snapshots();
+    }
+
+    _temp.data.documents.forEach((element) {
+      _eModel.add(element);
+    });
+
+    return _eModel;
   }
 
   Timestamp dateTimeToTimeStamp(DateTime time) {

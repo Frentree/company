@@ -11,6 +11,8 @@ import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/widgets/bottomsheet/expense/expenseApprovalDetail.dart';
+import 'package:MyCompany/widgets/popupMenu/toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -193,6 +195,37 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                           child: Text(
                             returnString.format(model.totalCost),
                             style: defaultRegularStyle,
+                          ),
+                        ),
+                        cardSpace,
+                        type==1? Container() : GestureDetector(
+                          onTap: () {
+                            toastCreate(context);
+                            ExpenseApprovalDetail(context, _loginUser.companyCode, model);
+                          },
+                          child: Container(
+                            height: 4.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet
+                                ? 18.0.w
+                                : 25.0.w,
+                            decoration: BoxDecoration(
+                              color: chipColorBlue,
+                              borderRadius: BorderRadius.circular(
+                                  SizerUtil.deviceType == DeviceType.Tablet
+                                      ? 6.0.w
+                                      : 8.0.w),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                              SizerUtil.deviceType == DeviceType.Tablet
+                                  ? 0.75.w
+                                  : 1.0.w,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "세부 정보",
+                              style: defaultMediumStyle,
+                            ),
                           ),
                         ),
                       ],
