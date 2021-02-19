@@ -27,7 +27,7 @@ import 'package:sizer/sizer.dart';
 //import 'package:tesseract_ocr/tesseract_ocr.dart';
 
 ExpenseMain(BuildContext context) async {
-  FirebaseRepository _reposistory = FirebaseRepository();
+  FirebaseRepository _repository = FirebaseRepository();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
@@ -106,7 +106,8 @@ ExpenseMain(BuildContext context) async {
 
   /// 설정한 경비 데이터들을 파이어스토어에 저장하고 URL을 변수에 저장하는 메서드
   saveExpense() {
-    DateTime _searchDate = DateTime(selectedDate.year, selectedDate.month);
+    //DateTime _searchDate = DateTime(selectedDate.year, selectedDate.month);
+    //var _docId = _repository.getExpenseDocument(user.companyCode, user.mail);
     ExpenseModel _expenseModel = ExpenseModel(
       name: user.name,
       mail: user.mail,
@@ -117,15 +118,16 @@ ExpenseMain(BuildContext context) async {
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       index: null,
       imageUrl: _downloadUrl == null ? "" : _downloadUrl,
-      status: 0,
+      status: "미",
       detailNote: _detailController.text,
-      searchDate: _format.dateTimeToTimeStamp(_searchDate)
+      //searchDate: _format.dateTimeToTimeStamp(_searchDate),
+      docId: null
     );
     debugPrint(_downloadUrl);
 
     _returnValue() async {
-      DocumentReference doc = await _reposistory.saveExpense(_expenseModel);
-      _documentID = doc.documentID.toString();
+      await _repository.saveExpense(_expenseModel);
+      //_documentID = doc.documentID.toString();
     }
     _returnValue();
   }

@@ -5,6 +5,7 @@ import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/approval/approvalDetail.dart';
+import 'package:MyCompany/widgets/bottomsheet/expense/expenseDetail.dart';
 import 'package:MyCompany/widgets/card/approvalCard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -151,6 +152,8 @@ Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, Us
               );
               break;
             case "경비" :
+              ExpenseDetail(context, user.companyCode, approval, 1);
+              break;
             default :
               break;
           };

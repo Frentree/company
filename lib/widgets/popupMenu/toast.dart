@@ -16,3 +16,7 @@ toastCreate(BuildContext context) {
 toastModified(BuildContext context) {
   Toast.show("Modified", context, duration: 2, gravity: Toast.BOTTOM);
 }
+
+toastNoItems(BuildContext context) {
+  Toast.show("No Items", context, duration: 2, gravity: Toast.BOTTOM);
+}

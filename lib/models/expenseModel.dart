@@ -23,11 +23,12 @@ class ExpenseModel {
   int cost;
   int index;
   String imageUrl;
-  int status;
+  String status;
   String detailNote;
   Timestamp searchDate;
-  bool isSelected = false;
-  bool isApproved = false;
+  bool isSelected;
+  bool isApproved;
+  String docId;
 
   ExpenseModel(
       {this.name,
@@ -39,11 +40,12 @@ class ExpenseModel {
       this.cost,
       this.index,
       this.imageUrl,
-      this.status = 0,
+      this.status = "미",
       this.detailNote,
       this.searchDate,
-      this.isSelected,
-      this.isApproved});
+      this.isSelected = false,
+      this.isApproved = false,
+      this.docId});
 
   ExpenseModel.fromMap(int Index, Map snapshot, String id)
       : name = snapshot["name"],
@@ -58,6 +60,7 @@ class ExpenseModel {
         detailNote = snapshot["detailNote"],
         searchDate = snapshot["searchDate"],
         index = Index,
+        docId = snapshot["docId"],
         //isSelected = snapshot["isSelected"],
         isApproved = snapshot["isApproved"];
 
@@ -75,7 +78,8 @@ class ExpenseModel {
         "detailNote": detailNote,
         "searchDate": searchDate,
         "isSelected": isSelected,
-        "isApproved": isApproved
+        "isApproved": isApproved,
+        "docId": docId,
       };
 
   Map toMap() {
@@ -94,6 +98,7 @@ class ExpenseModel {
     map['searchDate'] = this.searchDate;
     map['isSelected'] = this.isSelected;
     map['isApproved'] = this.isApproved;
+    map['docId'] = this.docId;
     return map;
   }
 }

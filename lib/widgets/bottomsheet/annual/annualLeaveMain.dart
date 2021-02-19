@@ -764,5 +764,11 @@ String userNameChange (UserData user){
   return approvalUser;
 }
 
+String userNameChangeWithoutTeam (UserData user){
+  String approvalUser = user.name;
 
-
+  if(user.position != "" && user.position != null) {
+    approvalUser = approvalUser + " " + user.position;
+  }
+  return approvalUser;
+}

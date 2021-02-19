@@ -104,6 +104,18 @@ class Fcm {
         collection = "님이 외근일정 결재를 거절했습니다.";
       }
 
+      else if(data["body"] == "expenseRequest"){
+        collection = "님이 경비정산 결재를 요청했습니다.";
+      }
+
+      else if(data["body"] == "expenseAccept"){
+        collection = "님이 경비정산 결재를 승인했습니다.";
+      }
+
+      else if(data["body"] == "expenseReject"){
+        collection = "님이 경비정산 결재를 거절했습니다.";
+      }
+
       else if(data["body"] == "requestWork"){
         collection = "님이 업무를 요청했습니다.";
       }
