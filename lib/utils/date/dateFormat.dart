@@ -55,6 +55,19 @@ class Format{
     return newDate;
   }
 
+  String dateFormatFortimeAndAttendanceCard(Timestamp date1, Timestamp date2){
+    String dateText;
+    DateTime _dateTime1 = timeStampToDateTime(date1);
+    DateTime _dateTime2 = timeStampToDateTime(date2);
+    Duration _timeInterval = _dateTime1.difference(_dateTime2);
+
+    int hoursInterval = _timeInterval.inHours;
+    int minutesInterval = _timeInterval.inMinutes - (60* hoursInterval);
+    dateText = hoursInterval != 0 ? "${hoursInterval}시간 ${minutesInterval}분" : "${minutesInterval}분";
+
+    return dateText;
+  }
+
   String dateFormatForExpenseCard(Timestamp date) {
     String dateText;
     DateTime _date = timeStampToDateTime(date);

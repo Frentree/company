@@ -203,7 +203,6 @@ class FirebaseMethods {
       }
     });
 
-    print(birthday);
     return birthday;
   }
 
@@ -224,6 +223,11 @@ class FirebaseMethods {
     });
 
     return colleague;
+  }
+
+  Future<CompanyUser> getMyCompanyInfo({String companyCode, String myMail}) async {
+    var doc = await firestore.collection(COMPANY).doc(companyCode).collection(USER).doc(myMail).get();
+    return CompanyUser.fromMap(doc.data(), doc.id);
   }
 
   Stream<QuerySnapshot> getColleagueInfo(
@@ -383,6 +387,15 @@ class FirebaseMethods {
         .add(attendanceModel.toJson());
   }
 
+  Future<void> deleteAttendance(
+      {String companyCode, String documentId}) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(ATTENDANCE)
+        .doc(documentId).delete();
+  }
+
   Future<QuerySnapshot> getMyTodayAttendance(
       {String companyCode, String loginUserMail, Timestamp today}) async {
     return await firestore
@@ -394,8 +407,6 @@ class FirebaseMethods {
         .get();
   }
 
-
-
   Stream<QuerySnapshot> getColleagueNowAttendance(
       {String companyCode, String loginUserMail, Timestamp today}){
 
@@ -403,8 +414,39 @@ class FirebaseMethods {
         .collection(COMPANY)
         .doc(companyCode)
         .collection(ATTENDANCE)
-        .where("mail", isNotEqualTo: loginUserMail)
+        /*.where("mail", isNotEqualTo: loginUserMail)*/
         .where("createDate", isEqualTo: today)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getMyAttendance({String companyCode, String loginUserMail, DateTime thisMonth}){
+
+    DateTime _thisMonth = DateTime(thisMonth.year, thisMonth.month);
+    DateTime _nextMonth = DateTime(thisMonth.year, thisMonth.month+1);
+
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(ATTENDANCE)
+        .where("mail", isEqualTo: loginUserMail)
+        .where("createDate", isGreaterThanOrEqualTo: dateTimeToTimeStamp(_thisMonth))
+        .where("createDate", isLessThan: dateTimeToTimeStamp(_nextMonth))
+        .orderBy("createDate", descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getAllAttendance({String companyCode, DateTime thisMonth}){
+
+    DateTime _thisMonth = DateTime(thisMonth.year, thisMonth.month);
+    DateTime _nextMonth = DateTime(thisMonth.year, thisMonth.month+1);
+
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(ATTENDANCE)
+        .where("createDate", isGreaterThanOrEqualTo: dateTimeToTimeStamp(_thisMonth))
+        .where("createDate", isLessThan: dateTimeToTimeStamp(_nextMonth))
+        .orderBy("createDate", descending: true)
         .snapshots();
   }
 
@@ -488,7 +530,7 @@ class FirebaseMethods {
   }
   //WIFI 리스트 가져오기
   Future<List<DocumentSnapshot>> getWifiList({String companyCode}) async {
-
+    print("wifi 리스트 가져옵니다.");
     List<DocumentSnapshot> wifiList = [];
 
     QuerySnapshot querySnapshot = await firestore.collection(COMPANY).doc(companyCode).collection("wifi").get();

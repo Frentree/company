@@ -442,10 +442,11 @@ class AlarmNoticeDetailPageState extends State<AlarmNoticeDetailPage> {
                                               fontWeightName: 'Medium',
                                               fontSize: cardTitleFontSize.sp),
                                         ),
-                                        /*Text(
+Text(
                                         _loginUser.name.toString(),
                                         style: customStyle(fontColor: mainColor, fontWeightName: 'Medium', fontSize: 15),
-                                      ),*/
+                                      ),
+
                                       ],
                                     ),
                                     Text(

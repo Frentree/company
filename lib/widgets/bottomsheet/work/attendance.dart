@@ -168,15 +168,18 @@ attendance({BuildContext context, double statusBarHeight}) async {
                             child: CircularProgressIndicator(),
                           );
                         }
-                        Map<dynamic, dynamic> colleague = {};
+                        /*Map<dynamic, dynamic> colleague = {};*/
+                        Map<dynamic, dynamic> colleague = {_loginUser.mail: _loginUser.name};
                         List<CompanyUser> _companyUserInfo = [];
 
                         snapshot.data.documents.forEach((element){
                           var elementData = element.data();
-                          if(elementData["mail"] != _loginUser.mail){
+                          _companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
+                          colleague.addAll({elementData["mail"]: elementData["name"]});
+                          /*if(elementData["mail"] != _loginUser.mail){
                             _companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
                             colleague.addAll({elementData["mail"]: elementData["name"]});
-                          }
+                          }*/
                         });
                         return StreamBuilder(
                           stream: _repository.getColleagueNowAttendance(companyCode: _loginUser.companyCode, loginUserMail: _loginUser.mail, today: _format.dateTimeToTimeStamp(today),),
@@ -192,17 +195,21 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               attendanceData.addAll({element: ""});
                             });
 
+                            print("rkqt : ${snapshot.data.documents}");
                             snapshot.data.documents.forEach((element){
                               var elementData = element.data();
                               attendanceData.update(elementData["mail"], (value) => elementData);
                             });
 
-                            print(attendanceData);
+
+                            print(attendanceData[attendanceData.keys.elementAt(2)] == "");
                             return Expanded(
                               child: ListView.builder(
                                 itemCount: attendanceData.keys.length,
                                 itemBuilder: (context, index){
                                   Attendance _attendance = attendanceData[attendanceData.keys.elementAt(index)] == "" ? null : Attendance.fromMap(attendanceData[attendanceData.keys.elementAt(index)], "");
+                                  print("이름 : ${colleague.values.elementAt(index)}");
+                                  print("팀 : ${_companyUserInfo[index].team}");
                                   return Card(
                                     elevation: 0,
                                     shape: cardShape,

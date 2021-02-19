@@ -171,6 +171,8 @@ class FirebaseRepository {
       _firebaseMethods.getColleague(
           loginUserMail: loginUserMail, companyCode: companyCode);
 
+  Future<CompanyUser> getMyCompanyInfo({String companyCode, String myMail}) => _firebaseMethods.getMyCompanyInfo(companyCode: companyCode, myMail: myMail);
+
   Stream<QuerySnapshot> getColleagueInfo(
           {String companyCode}) =>
       _firebaseMethods.getColleagueInfo(companyCode: companyCode);
@@ -181,6 +183,11 @@ class FirebaseRepository {
         attendanceModel: attendanceModel,
         companyCode: companyCode,
       );
+
+  Future<void> deleteAttendance({String companyCode, String documentId}) => _firebaseMethods.deleteAttendance(
+    companyCode: companyCode,
+    documentId: documentId,
+  );
 
   Future<QuerySnapshot> getMyTodayAttendance(
           {String companyCode, String loginUserMail, Timestamp today}) =>
@@ -197,6 +204,17 @@ class FirebaseRepository {
         loginUserMail: loginUserMail,
         today: today,
       );
+
+  Stream<QuerySnapshot> getMyAttendance({String companyCode, String loginUserMail, DateTime thisMonth}) => _firebaseMethods.getMyAttendance(
+    companyCode: companyCode,
+    loginUserMail: loginUserMail,
+    thisMonth: thisMonth,
+  );
+
+  Stream<QuerySnapshot> getAllAttendance({String companyCode, DateTime thisMonth}) => _firebaseMethods.getAllAttendance(
+    companyCode: companyCode,
+    thisMonth: thisMonth,
+  );
 
   Future<void> updateAttendance(
           {Attendance attendanceModel,

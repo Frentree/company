@@ -29,6 +29,7 @@ class AttendanceCheck extends ChangeNotifier {
   Format _format = Format();
 
   List<String> wifiList = [];
+  List<String> tempDocumentId = [];
 
   //로그인 사용자 정보 저장
   User _loginUser;
@@ -51,7 +52,7 @@ class AttendanceCheck extends ChangeNotifier {
 
   //출근 체크
   Future<Attendance> attendanceCheck() async {
-
+    tempDocumentId = [];
     //자동 로그인 정보를 가져온다
     SharedPreferences _sharedPreferences =
         await SharedPreferences.getInstance();
@@ -77,6 +78,8 @@ class AttendanceCheck extends ChangeNotifier {
           return await IosNetworkInfo.ssid;
         case foundation.TargetPlatform.android:
           return await Wifi.ssid;
+        default:
+          return "";
       }
     }
 
@@ -84,6 +87,7 @@ class AttendanceCheck extends ChangeNotifier {
     DateTime today = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day); //오늘 날짜
     DateTime nowTime = DateTime.now();
+    DateTime yesterday = today.subtract(Duration(days: 1));
 
     //오늘 날짜의 출퇴근 데이터를 불러온다.
     var result = await _repository.getMyTodayAttendance(
@@ -91,6 +95,21 @@ class AttendanceCheck extends ChangeNotifier {
       loginUserMail: _loginUser.mail,
       today: _format.dateTimeToTimeStamp(today),
     );
+
+    var yesterdayResult = await _repository.getMyTodayAttendance(
+      companyCode: _loginUser.companyCode,
+      loginUserMail: _loginUser.mail,
+      today: _format.dateTimeToTimeStamp(yesterday),
+    );
+
+    if(yesterdayResult.docs.length != 0){
+      Attendance _temp = Attendance.fromMap(yesterdayResult.docs.first.data(), yesterdayResult.docs.first.id);
+      if(_temp.endTime == null){
+        _temp.endTime = _format.dateTimeToTimeStamp(DateTime(yesterday.year, yesterday.month, yesterday.day, 18, 00));
+      }
+      _repository.updateAttendance(companyCode: _loginUser.companyCode, attendanceModel: _temp, documentId: yesterdayResult.docs.first.id);
+    }
+
     //출퇴근 데이터가 없을 경우
     if (result.docs.length == 0) {
       _attendance = Attendance(
@@ -105,6 +124,15 @@ class AttendanceCheck extends ChangeNotifier {
         attendanceModel: _attendance,
         companyCode: _loginUser.companyCode,
       );
+
+      tempDocumentId.add(newAttendance.id);
+
+      if(tempDocumentId.length == 2){
+        _repository.deleteAttendance(
+          companyCode: _loginUser.companyCode,
+          documentId: tempDocumentId[0],
+        );
+      }
 
       _attendance.id = newAttendance.id;
 
