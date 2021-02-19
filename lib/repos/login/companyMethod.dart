@@ -1,8 +1,10 @@
 //Flutter
 import 'package:MyCompany/models/approvalModel.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -92,19 +94,22 @@ class CompanyMethod{
 
   //회사 컬렉션 생성
   Future<void> createCompany({BuildContext context, Company companyModel}) async{
+    FirebaseMessaging _fcm = FirebaseMessaging();
     Format _format = Format();
     FirebaseRepository _repository = FirebaseRepository();
 
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
     User _loginUser = _loginUserInfoProvider.getLoginUser(); //로그인한 사용자 정보 가져오기
 
+    String token = await _fcm.getToken();
+
     CompanyUser _companyUser = CompanyUser(
       user: _loginUser,
       level: [8, 9],
       createDate: _format.dateTimeToTimeStamp(DateTime.now()),
       lastModDate: _format.dateTimeToTimeStamp(DateTime.now()),
+      token: token,
     );
-
     companyModel.companyCode = await createCompanyCode();
     _loginUser.companyCode = companyModel.companyCode;
     _loginUser.state = 1;

@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/screens/alarm/signBoxExpense.dart';
 import 'package:MyCompany/screens/alarm/signBoxPurchase.dart';
 import 'package:MyCompany/screens/alarm/signBoxReception.dart';
+import 'package:MyCompany/screens/alarm/timeAndAttendanceCheck.dart';
 import 'package:MyCompany/screens/setting/annualLeave.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class AlarmInquiry extends StatefulWidget {
 class _AlarmInquiryState extends State<AlarmInquiry> {
 
   int tabIndex = 0;
-  List<Widget> _page = [Container(),AnnualLeavePage(),Container()];
+  List<Widget> _page = [TimeAndAttendanceCheck(),AnnualLeavePage(),Container()];
 
   @override
   Widget build(BuildContext context) {

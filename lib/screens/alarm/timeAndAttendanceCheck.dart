@@ -3,20 +3,23 @@ import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/alarmModel.dart';
 import 'package:MyCompany/models/userModel.dart';
+import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/widgets/approval/approvalDetail.dart';
+import 'package:MyCompany/widgets/card/approvalCard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class AllAlarm extends StatefulWidget {
+class TimeAndAttendanceCheck extends StatefulWidget {
   @override
-  AllAlarmState createState() => AllAlarmState();
+  TimeAndAttendanceCheckState createState() => TimeAndAttendanceCheckState();
 }
 
-class AllAlarmState extends State<AllAlarm> {
+class TimeAndAttendanceCheckState extends State<TimeAndAttendanceCheck> {
   User _loginUser;
   FirebaseRepository _repository = FirebaseRepository();
 
@@ -30,7 +33,7 @@ class AllAlarmState extends State<AllAlarm> {
       body: Column(
         children: [
           StreamBuilder<QuerySnapshot>(
-            stream: _repository.getAllAlarm(companyCode: _loginUser.companyCode, mail: _loginUser.mail),
+            stream: _repository.getNoReadAlarm(companyCode: _loginUser.companyCode, mail: _loginUser.mail),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
                 return Center(
@@ -59,7 +62,7 @@ class AllAlarmState extends State<AllAlarm> {
                             height: scheduleCardDefaultSizeH.h,
                             alignment: Alignment.center,
                             child: Text(
-                              "알림이 없습니다.",
+                              "읽지않은 알림이 없습니다.",
                               style: cardTitleStyle,
                             ),
                           ),
@@ -84,7 +87,6 @@ class AllAlarmState extends State<AllAlarm> {
                           );
                         },
                         child: Card(
-                          color: alarm.read == false ? Colors.white : Colors.black.withOpacity(0.1),
                           elevation: 0,
                           shape: cardShape,
                           child: Padding(
@@ -116,41 +118,14 @@ class AllAlarmState extends State<AllAlarm> {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 67.0.w : 55.0.w,
-                                              height: 6.0.h,
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                alarm.alarmContents,
-                                                style: cardTitleStyle,
-                                              ),
-                                            ),
-                                            Visibility(
-                                              visible: alarm.read == true,
-                                              child: Container(
-                                                width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
-                                                alignment: Alignment.center,
-                                                child: IconButton(
-                                                  padding: EdgeInsets.zero,
-                                                  constraints: BoxConstraints(),
-                                                  icon: Icon(
-                                                    Icons.clear,
-                                                    size: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuIconSizeTW.w : popupMenuIconSizeMW.w,
-                                                  ),
-                                                  onPressed: (){
-                                                    _repository.deleteAlarm(
-                                                      companyCode: _loginUser.companyCode,
-                                                      mail: _loginUser.mail,
-                                                      documentID: alarm.id,
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                        Container(
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 67.0.w : 55.0.w,
+                                          height: 6.0.h,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            alarm.alarmContents,
+                                            style: cardTitleStyle,
+                                          ),
                                         ),
                                         Container(
                                           height: 3.0.h,
