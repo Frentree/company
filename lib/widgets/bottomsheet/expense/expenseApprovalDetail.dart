@@ -2,12 +2,14 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/models/expenseModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
+import 'package:MyCompany/widgets/card/expenseCard.dart';
 import 'package:MyCompany/widgets/popupMenu/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +27,28 @@ ExpenseApprovalDetail(
   User _loginUser;
   DateTime startTime = DateTime.parse(model.requestDate.toDate().toString());
   var returnString = NumberFormat("###,###", "en_US");
+  List<ExpenseModel> _expenseList;
+
+  Future<List<ExpenseModel>> _expenseFutureList =
+  _repository.getExpenses(model, companyCode);
+  //debugPrint("----- _expenseFutureList end -----");
+  _expenseList = List<ExpenseModel>();
+
+  futureToList() async {
+    _expenseList = await _expenseFutureList;
+    //debugPrint("_expenseList.length = " + _expenseList.length.toString());
+    //debugPrint("companyCode is = " + _expenseList[0].createDate.toString());
+    //debugPrint("companyCode is = " + _expenseList[1].createDate.toString());
+  }
+  futureToList();
+  //debugPrint("_expenseList.length after futureToList= " + _expenseList.length.toString());
 
   await showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     builder: (BuildContext context) {
       LoginUserInfoProvider _loginUserInfoProvider =
-      Provider.of<LoginUserInfoProvider>(context);
+          Provider.of<LoginUserInfoProvider>(context);
       _loginUser = _loginUserInfoProvider.getLoginUser();
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
@@ -43,9 +60,9 @@ ExpenseApprovalDetail(
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
                   left:
-                  SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                      SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   right:
-                  SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                      SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   top: 2.0.h,
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
@@ -55,10 +72,10 @@ ExpenseApprovalDetail(
                     Row(
                       children: [
                         Container(
-                          height: 6.0.h,
+                          height: 4.0.h,
                           width: SizerUtil.deviceType == DeviceType.Tablet
-                              ? 22.5.w
-                              : 30.0.w,
+                              ? 18.0.w
+                              : 25.0.w,
                           decoration: BoxDecoration(
                             color: chipColorBlue,
                             borderRadius: BorderRadius.circular(
@@ -68,13 +85,13 @@ ExpenseApprovalDetail(
                           ),
                           padding: EdgeInsets.symmetric(
                             horizontal:
-                            SizerUtil.deviceType == DeviceType.Tablet
-                                ? 0.75.w
-                                : 1.0.w,
+                                SizerUtil.deviceType == DeviceType.Tablet
+                                    ? 0.75.w
+                                    : 1.0.w,
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            "상세 내용",
+                            "세부 정보",
                             style: defaultMediumStyle,
                           ),
                         ),
@@ -155,8 +172,83 @@ ExpenseApprovalDetail(
                         ),
                       ),
                     ),
-
                     emptySpace,
+                    SizedBox(
+                      height: 300,
+                      child: Column(
+                        children: [
+
+                          /*debugPrint("----- _expenseFutureList init -----");
+                          Future<List<ExpenseModel>> _expenseFutureList =
+                              _repository.getExpenses(model, companyCode);
+                          debugPrint("----- _expenseFutureList end -----");
+                          _expenseList = List<ExpenseModel>();
+
+                          futureToList() async {
+                              _expenseList = await _expenseFutureList;
+                              debugPrint("_expenseList.length = " + _expenseList.length.toString());
+                              debugPrint("companyCode is = " + _expenseList[0].createDate.toString());
+                              debugPrint("companyCode is = " + _expenseList[1].createDate.toString());
+                          }
+                          futureToList();
+                          debugPrint("_expenseList.length after futureToList= " + _expenseList.length.toString());*/
+
+
+                        Expanded(
+                            //height: 250,
+                            child: ListView.builder(
+                              itemCount: _expenseList.length,
+                                itemBuilder: (context, index) {
+                                return ExpenseCard(
+                                  context,
+                                  _expenseList[index].companyCode,
+                                  _expenseList[index],
+                                  model.userMail,
+                                  _expenseList[index].docId
+                                );
+                                },
+                            ),
+                          )
+                        ,]
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 4.0.h,
+                          width: SizerUtil.deviceType == DeviceType.Tablet
+                              ? 18.0.w
+                              : 25.0.w,
+                          decoration: BoxDecoration(
+                            color: chipColorBlue,
+                            borderRadius: BorderRadius.circular(
+                                SizerUtil.deviceType == DeviceType.Tablet
+                                    ? 6.0.w
+                                    : 8.0.w),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal:
+                            SizerUtil.deviceType == DeviceType.Tablet
+                                ? 0.75.w
+                                : 1.0.w,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "세부 정보",
+                            style: defaultMediumStyle,
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),

@@ -23,6 +23,11 @@ Card ExpenseCard(BuildContext context, String companyCode, ExpenseModel model,
   Format _format = Format();
   var returnString = NumberFormat("###,###", "en_US");
 
+  debugPrint("ExpenseCard Print: companyCode = " + companyCode);
+  debugPrint("ExpenseCard Print: uid = " + uid);
+  debugPrint("ExpenseCard Print: dicId = " + docId);
+  debugPrint("ExpenseCard Print: cost = " + model.cost.toString());
+
   return Card(
     elevation: 0,
     shape: cardShape,

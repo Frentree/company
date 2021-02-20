@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 class FirebaseMethods {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static final FirebaseStorage firestorage = FirebaseStorage.instance;
+  Format _format = Format();
 
   // 경비 청구 항목 저장 메서드
   Future<DocumentReference> saveExpense(ExpenseModel expenseModel) async {
@@ -84,30 +85,59 @@ class FirebaseMethods {
   }
 
   // 결재자 경비 항목 조회 메서드
-  List<ExpenseModel> getExpenses(
-      WorkApproval model, String companyCode)  {
-    List<ExpenseModel> _eModel;
+  Future<List<ExpenseModel>> getExpenses(
+      WorkApproval model, String companyCode)  async {
+    debugPrint("----- async function executed -----");
+
+    List<ExpenseModel> _result = List<ExpenseModel>();
+    ExpenseModel _eModel = ExpenseModel();
+
+    //_eModel.createDate = _format.dateTimeToTimeStamp(DateTime.now());
+
+
     String _docId;
     int _index = model.docIds.length;
     var _temp;
 
     for (int i = 0; i < _index; i++) {
       _docId = model.docIds[i];
-      _temp = firestore
+      _eModel = ExpenseModel();
+      _temp = await firestore
           .collection(COMPANY)
           .doc(companyCode)
           .collection(USER)
           .doc(model.userMail)
           .collection(EXPENSE)
           .doc(_docId)
-          .snapshots();
+          .get();
+      debugPrint("");
+      debugPrint(_temp.toString());
+      debugPrint(_temp.data().toString());
+      debugPrint(_temp.data()["companyCode"]);
+      debugPrint(_docId);
+      debugPrint("");
+      debugPrint(_temp.data()["createDate"].toString());
+      debugPrint("The value of i is " + i.toString());
+
+      _eModel.buyDate = _temp.data()["buyDate"];
+      _eModel.contentType = _temp.data()["contentType"];
+      _eModel.cost = _temp.data()["cost"];
+      _eModel.imageUrl = _temp.data()["imageUrl"];
+      _eModel.status = _temp.data()["status"];
+      _eModel.companyCode = _temp.data()["companyCode"];
+      _eModel.docId = _temp.data()["docId"];
+      debugPrint(_eModel.createDate.toString());
+      _result.add(_eModel);
+
     }
 
-    _temp.data.documents.forEach((element) {
-      _eModel.add(element);
-    });
+    debugPrint("Print _result " + _result.toString());
+    debugPrint("Print _result  0 " + _result[0].createDate.toString());
+    debugPrint("Print _result  1 " + _result[1].createDate.toString());
 
-    return _eModel;
+
+    debugPrint("----- async function finished -----");
+    return _result;
   }
 
   Timestamp dateTimeToTimeStamp(DateTime time) {

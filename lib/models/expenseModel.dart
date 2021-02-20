@@ -11,9 +11,12 @@
 기안상태 <status>
 */
 
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ExpenseModel {
+  Format _format = Format();
+
   String name;
   String mail;
   String companyCode;
