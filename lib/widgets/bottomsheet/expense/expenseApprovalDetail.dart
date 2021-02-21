@@ -20,16 +20,16 @@ import 'package:sizer/sizer.dart';
 final word = Words();
 
 ExpenseApprovalDetail(
-    BuildContext context, String companyCode, WorkApproval model) async {
+    BuildContext context, String companyCode, WorkApproval model, List<ExpenseModel> expenseList)  {
   FirebaseRepository _repository = FirebaseRepository();
   Format _format = Format();
   bool result = false;
   User _loginUser;
   DateTime startTime = DateTime.parse(model.requestDate.toDate().toString());
   var returnString = NumberFormat("###,###", "en_US");
-  List<ExpenseModel> _expenseList;
+  List<ExpenseModel> _expenseList = expenseList;
 
-  Future<List<ExpenseModel>> _expenseFutureList =
+  /*Future<List<ExpenseModel>> _expenseFutureList =
   _repository.getExpenses(model, companyCode);
   //debugPrint("----- _expenseFutureList end -----");
   _expenseList = List<ExpenseModel>();
@@ -41,9 +41,9 @@ ExpenseApprovalDetail(
     //debugPrint("companyCode is = " + _expenseList[1].createDate.toString());
   }
   futureToList();
-  //debugPrint("_expenseList.length after futureToList= " + _expenseList.length.toString());
+  debugPrint("_expenseList.length after futureToList= " + _expenseList.length.toString());*/
 
-  await showModalBottomSheet(
+   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     builder: (BuildContext context) {
@@ -177,37 +177,20 @@ ExpenseApprovalDetail(
                       height: 300,
                       child: Column(
                         children: [
-
-                          /*debugPrint("----- _expenseFutureList init -----");
-                          Future<List<ExpenseModel>> _expenseFutureList =
-                              _repository.getExpenses(model, companyCode);
-                          debugPrint("----- _expenseFutureList end -----");
-                          _expenseList = List<ExpenseModel>();
-
-                          futureToList() async {
-                              _expenseList = await _expenseFutureList;
-                              debugPrint("_expenseList.length = " + _expenseList.length.toString());
-                              debugPrint("companyCode is = " + _expenseList[0].createDate.toString());
-                              debugPrint("companyCode is = " + _expenseList[1].createDate.toString());
-                          }
-                          futureToList();
-                          debugPrint("_expenseList.length after futureToList= " + _expenseList.length.toString());*/
-
-
                         Expanded(
                             //height: 250,
                             child: ListView.builder(
-                              itemCount: _expenseList.length,
-                                itemBuilder: (context, index) {
-                                return ExpenseCard(
-                                  context,
-                                  _expenseList[index].companyCode,
-                                  _expenseList[index],
-                                  model.userMail,
-                                  _expenseList[index].docId
-                                );
-                                },
-                            ),
+                                itemCount: _expenseList.length,
+                            itemBuilder: (context, index) {
+                            return ExpenseCard(
+                              context,
+                              _expenseList[index].companyCode,
+                              _expenseList[index],
+                              model.userMail,
+                              "결재자"
+                            );
+                            },
+                              ),
                           )
                         ,]
                       ),

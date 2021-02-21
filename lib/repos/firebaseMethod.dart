@@ -87,14 +87,8 @@ class FirebaseMethods {
   // 결재자 경비 항목 조회 메서드
   Future<List<ExpenseModel>> getExpenses(
       WorkApproval model, String companyCode)  async {
-    debugPrint("----- async function executed -----");
-
     List<ExpenseModel> _result = List<ExpenseModel>();
     ExpenseModel _eModel = ExpenseModel();
-
-    //_eModel.createDate = _format.dateTimeToTimeStamp(DateTime.now());
-
-
     String _docId;
     int _index = model.docIds.length;
     var _temp;
@@ -110,14 +104,6 @@ class FirebaseMethods {
           .collection(EXPENSE)
           .doc(_docId)
           .get();
-      debugPrint("");
-      debugPrint(_temp.toString());
-      debugPrint(_temp.data().toString());
-      debugPrint(_temp.data()["companyCode"]);
-      debugPrint(_docId);
-      debugPrint("");
-      debugPrint(_temp.data()["createDate"].toString());
-      debugPrint("The value of i is " + i.toString());
 
       _eModel.buyDate = _temp.data()["buyDate"];
       _eModel.contentType = _temp.data()["contentType"];
@@ -126,17 +112,8 @@ class FirebaseMethods {
       _eModel.status = _temp.data()["status"];
       _eModel.companyCode = _temp.data()["companyCode"];
       _eModel.docId = _temp.data()["docId"];
-      debugPrint(_eModel.createDate.toString());
       _result.add(_eModel);
-
     }
-
-    debugPrint("Print _result " + _result.toString());
-    debugPrint("Print _result  0 " + _result[0].createDate.toString());
-    debugPrint("Print _result  1 " + _result[1].createDate.toString());
-
-
-    debugPrint("----- async function finished -----");
     return _result;
   }
 

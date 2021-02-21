@@ -3,6 +3,7 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/models/alarmModel.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
+import 'package:MyCompany/models/expenseModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/models/workModel.dart';
@@ -32,6 +33,20 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
   User _loginUser;
   DateTime startTime = DateTime.parse(model.requestDate.toDate().toString());
   var returnString = NumberFormat("###,###", "en_US");
+  List<ExpenseModel> _expenseList;
+
+  Future<List<ExpenseModel>> _expenseFutureList =
+      _repository.getExpenses(model, companyCode);
+  //debugPrint("----- _expenseFutureList end -----");
+  _expenseList = List<ExpenseModel>();
+
+  futureToList() async {
+    _expenseList = await _expenseFutureList;
+    //debugPrint("_expenseList.length = " + _expenseList.length.toString());
+    //debugPrint("companyCode is = " + _expenseList[0].createDate.toString());
+    //debugPrint("companyCode is = " + _expenseList[1].createDate.toString());
+  }
+  //futureToList();
 
   await showModalBottomSheet(
     isScrollControlled: true,
@@ -198,36 +213,42 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                           ),
                         ),
                         cardSpace,
-                        type==1? Container() : GestureDetector(
-                          onTap: () {
-                            toastCreate(context);
-                            ExpenseApprovalDetail(context, _loginUser.companyCode, model);
-                          },
-                          child: Container(
-                            height: 4.0.h,
-                            width: SizerUtil.deviceType == DeviceType.Tablet
-                                ? 18.0.w
-                                : 25.0.w,
-                            decoration: BoxDecoration(
-                              color: chipColorBlue,
-                              borderRadius: BorderRadius.circular(
-                                  SizerUtil.deviceType == DeviceType.Tablet
-                                      ? 6.0.w
-                                      : 8.0.w),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal:
-                              SizerUtil.deviceType == DeviceType.Tablet
-                                  ? 0.75.w
-                                  : 1.0.w,
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "세부 정보",
-                              style: defaultMediumStyle,
-                            ),
-                          ),
-                        ),
+                        type == 1
+                            ? Container()
+                            : GestureDetector(
+                                onTap: () {
+                                  toastCreate(context);
+                                  futureToList().whenComplete(() =>
+                                      ExpenseApprovalDetail(context,
+                                          _loginUser.companyCode, model, _expenseList));
+                                },
+                                child: Container(
+                                  height: 4.0.h,
+                                  width:
+                                      SizerUtil.deviceType == DeviceType.Tablet
+                                          ? 18.0.w
+                                          : 25.0.w,
+                                  decoration: BoxDecoration(
+                                    color: chipColorBlue,
+                                    borderRadius: BorderRadius.circular(
+                                        SizerUtil.deviceType ==
+                                                DeviceType.Tablet
+                                            ? 6.0.w
+                                            : 8.0.w),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: SizerUtil.deviceType ==
+                                            DeviceType.Tablet
+                                        ? 0.75.w
+                                        : 1.0.w,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "세부 정보",
+                                    style: defaultMediumStyle,
+                                  ),
+                                ),
+                              ),
                       ],
                     ),
                     cardSpace,
@@ -655,7 +676,9 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                                                               DateTime.now()),
                                                     );
 
-                                                    await _repository.postProcessApprovedExpense(_loginUser, model);
+                                                    await _repository
+                                                        .postProcessApprovedExpense(
+                                                            _loginUser, model);
 
                                                     //업무 요청자에게 알림 보내기
                                                     List<String>

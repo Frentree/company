@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:MyCompany/consts/colorCode.dart';
+import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -138,10 +140,10 @@ ExpenseImageDialog(BuildContext context, String imageUrl) {
                                             Navigator.pop(context);
                                           },
                                           child: Text(
-                                            "Save",
-                                            style: TextStyle(color: Colors.white),
+                                            "Close",
+                                            style: defaultMediumWhiteStyle,
                                           ),
-                                          color: const Color(0xFF1BC0C5),
+                                          color: blueColor,
                                         ),
                                       ),
                                     ])
