@@ -35,8 +35,8 @@ class FirebaseRepository {
       _firebaseMethods.deleteExpense(companyCode, documentID, uid);
 
   // 경비 결재 완료 후 프로세스
-  Future<void> postProcessApprovedExpense(User user, WorkApproval model) =>
-      _firebaseMethods.postProcessApprovedExpense(user, model);
+  Future<void> postProcessApprovedExpense(User user, WorkApproval model, int type) =>
+      _firebaseMethods.postProcessApprovedExpense(user, model, type);
 
   // 결재자 경비 항목 조회 메서드
   Future<List<ExpenseModel>> getExpenses(WorkApproval model, String companyCode) =>

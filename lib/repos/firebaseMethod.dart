@@ -64,9 +64,22 @@ class FirebaseMethods {
   }
 
   // 경비 결재 완료 후 프로세스
-  Future<void> postProcessApprovedExpense(User user, WorkApproval model) async {
+  Future<void> postProcessApprovedExpense(
+      User user, WorkApproval model, int type) async {
     String _docId;
     int _index = model.docIds.length;
+    bool _isApproved = false;
+    String _status = "미";
+
+    switch (type) {
+    //1 : 결재요청 후, 2: 결재요청 취소 후, 3: 결재완료
+      case 1: _status = "진";
+        break;
+      case 2: _status = "미";
+        break;
+      case 3: _isApproved = true; _status = "결";
+        break;
+    }
 
     for (int i = 0; i < _index; i++) {
       _docId = model.docIds[i];
@@ -78,15 +91,15 @@ class FirebaseMethods {
           .collection(EXPENSE)
           .doc(_docId)
           .update({
-        "isApproved": true,
-        "status": "결",
+        "isApproved": _isApproved,
+        "status": _status,
       });
     }
   }
 
   // 결재자 경비 항목 조회 메서드
   Future<List<ExpenseModel>> getExpenses(
-      WorkApproval model, String companyCode)  async {
+      WorkApproval model, String companyCode) async {
     List<ExpenseModel> _result = List<ExpenseModel>();
     ExpenseModel _eModel = ExpenseModel();
     String _docId;

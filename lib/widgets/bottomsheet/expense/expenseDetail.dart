@@ -527,7 +527,12 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                                                   Words.word.confirm(),
                                                   style: buttonBlueStyle,
                                                 ),
-                                                onPressed: () {
+                                                onPressed: () async {
+
+                                                  await _repository
+                                                      .postProcessApprovedExpense(
+                                                      _loginUser, model, 2);
+
                                                   model.reference.delete();
                                                   Navigator.of(context)
                                                       .pop(true);
@@ -678,7 +683,7 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
 
                                                     await _repository
                                                         .postProcessApprovedExpense(
-                                                            _loginUser, model);
+                                                            _loginUser, model, 3);
 
                                                     //업무 요청자에게 알림 보내기
                                                     List<String>

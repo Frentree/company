@@ -43,6 +43,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
   String _approvalUserItem = "결재자";
   UserData approvalUser;
   var _expense = [];
+  dynamic _expenseData;
 
   Format _format = Format();
   DateTime startTime = DateTime.now().minute < 30
@@ -67,6 +68,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
 
   void fillSelect() {
     for (int i = 0; i < totalLength; i++) {
+      if (_expense[i]["status"] == "미")
       _isSelected[i] = true;
     }
   }
@@ -80,13 +82,29 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
 
   bool totalCheck() {
     for (int i = 0; i < totalLength; i++) {
-      if (_isSelected[i] == false) {
+
+      if (_expense[i]["status"] == "미" && _isSelected[i] == false) {
         _isTotal = false;
         return _isTotal;
       }
     }
     _isTotal = true;
     return _isTotal;
+  }
+
+  int totalCost() {
+    int total = 0;
+    dynamic _expenseData;
+
+    for (int i = 0; i < totalLength; i++) {
+      _expenseData = ExpenseModel.fromMap(
+        i,
+        _expense[i].data(),
+        _expense[i].documentID,
+      );
+      if (_isSelected[i]) total += _expenseData.cost;
+    }
+    return total;
   }
 
   bool buttonChecker() {
@@ -104,27 +122,13 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
     return _docId;
   }
 
-  int totalCost() {
-    int total = 0;
-    ExpenseModel _eModel = ExpenseModel();
-    dynamic _expenseData;
-
-    for (int i = 0; i < totalLength; i++) {
-      _expenseData = ExpenseModel.fromMap(
-        i,
-        _expense[i].data(),
-        _expense[i].documentID,
-      );
-      if (_isSelected[i]) total += _expenseData.cost;
-    }
-    return total;
-  }
-
   writeExpenseApproval() {
+    WorkApproval model = WorkApproval();
+
     _repository
         .createAnnualLeave(
       companyCode: user.companyCode,
-      workApproval: WorkApproval(
+      workApproval: model = WorkApproval(
         title: "경비 결재 요청",
         status: "요청",
         user: user.name,
@@ -160,6 +164,10 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
 
       List<String> token = await _repository.getApprovalUserTokens(
           companyCode: user.companyCode, mail: approvalUser.mail);
+
+      await _repository
+          .postProcessApprovedExpense(
+          user, model, 1);
 
       //결재자 알림 DB에 저장
       await _repository
@@ -301,7 +309,6 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                     child: ListView.builder(
                         itemCount: _expense.length,
                         itemBuilder: (context, index) {
-                          dynamic _expenseData;
                           _expenseData = ExpenseModel.fromMap(
                             index,
                             _expense[index].data(),
@@ -312,7 +319,10 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                _isSelected[index] = !_isSelected[index];
+                                if (_expense[index]["status"] == "미") {
+                                  _isSelected[index] = !_isSelected[index];
+                                }
+
                                 totalCheck();
                               });
                             },
@@ -404,7 +414,6 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                                 return Text("");
                               }
                               List<DocumentSnapshot> doc = snapshot.data.docs;
-                              debugPrint("DocumentSnapshot " + doc.toString());
                               return PopupMenuButton(
                                   child: RaisedButton(
                                     disabledColor: whiteColor,
