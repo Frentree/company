@@ -10,6 +10,7 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +28,6 @@ final word = Words();
 attendance({BuildContext context, double statusBarHeight}) async {
   bool result = false;
   Format _format = Format();
-
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
-  TextEditingController _contentController = TextEditingController();
 
   User _loginUser;
   DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -51,7 +48,6 @@ attendance({BuildContext context, double statusBarHeight}) async {
       LoginUserInfoProvider _loginUserInfoProvider =
       Provider.of<LoginUserInfoProvider>(context);
       _loginUser = _loginUserInfoProvider.getLoginUser();
-      print(statusBarHeight);
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return GestureDetector(
@@ -200,8 +196,6 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               attendanceData.update(elementData["mail"], (value) => elementData);
                             });
 
-
-                            print(attendanceData[attendanceData.keys.elementAt(2)] == "");
                             return Expanded(
                               child: ListView.builder(
                                 itemCount: attendanceData.keys.length,
@@ -242,6 +236,33 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                                 style: containerChipStyle,
                                               ),
                                             ),
+                                            cardSpace,
+                                            Container(
+                                              alignment: Alignment.center,
+                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                                              child: _attendance.status == 2 ? StreamBuilder(
+                                                stream: _repository.getNowOutCompanyWork(companyCode: _loginUser.companyCode, userMail: _attendance.mail),
+                                                builder: (BuildContext context, AsyncSnapshot snapshot){
+                                                  String location = "";
+                                                  if (snapshot.data == null) {
+                                                    return Text("");
+                                                  }
+                                                  if(snapshot.data.documents.length != 0){
+                                                    WorkModel _workModel = WorkModel.fromMap(snapshot.data.documents.last.data(), "");
+                                                    location = _workModel.location;
+                                                  }
+
+                                                  else{
+                                                    location = "외근지 등록 안됨";
+                                                  }
+
+                                                  return Text(
+                                                    location,
+                                                    style: containerChipStyle,
+                                                  );
+                                                }
+                                              ) : Container(),
+                                            )
                                           ],
                                         ),
                                       ),
