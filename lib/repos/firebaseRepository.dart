@@ -172,6 +172,8 @@ class FirebaseRepository {
         selectedWeek: selectedWeek,
       );
 
+  Stream<QuerySnapshot> getNowOutCompanyWork({String companyCode, String userMail}) => _firebaseMethods.getNowOutCompanyWork(companyCode: companyCode, userMail: userMail);
+
   Future<Map<DateTime, List<CompanyUser>>> getBirthday({String companyCode}) => _firebaseMethods.getBirthday(companyCode: companyCode);
 
   Future<Map<String, String>> getColleague(

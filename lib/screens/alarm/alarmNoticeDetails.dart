@@ -6,10 +6,13 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/models/alarmModel.dart';
 import 'package:MyCompany/models/commentListModel.dart';
 import 'package:MyCompany/models/commentModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
@@ -52,6 +55,7 @@ class NoticeDetailsPage extends StatefulWidget {
 int crudType = 0;
 String _commentId = "";
 String commnetUser = "";
+String commentMail = "";
 final TextEditingController _noticeComment = TextEditingController();
 final FocusNode _commnetFocusNode = FocusNode();
 
@@ -75,6 +79,9 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
   User _loginUser;
   CommentModel _commnetModel;
   CommentListModel _commentList;
+
+  Format _format = Format();
+  Fcm _fcm = Fcm();
 
   @override
   Widget build(BuildContext context) {
@@ -256,6 +263,7 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                                     setState(() {
                                       _commentId = "";
                                       commnetUser = "";
+                                      commentMail = "";
                                       _noticeComment.text = "";
                                     });
                                   },
@@ -309,9 +317,11 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                                         color: whiteColor,
                                         size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                                       ),
-                                      onPressed: () {
-                                        Map<String, String> _commentMap = {"name": _loginUser.name, "mail": _loginUser.mail};
+                                      onPressed: () async {
+                                        var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
+                                        CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
 
+                                        Map<String, String> _commentMap = {"name": _loginUser.name, "mail": _loginUser.mail};
                                         setState(() {
                                           if (_noticeComment.text.trim() != "") {
                                             if (_commentId.trim() == "") {
@@ -322,7 +332,36 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                                                 createDate: Timestamp.now(),
                                               );
                                               FirebaseRepository().addNoticeComment(
-                                                  companyCode: _loginUser.companyCode, noticeDocumentID: noticeUid, comment: _commnetModel);
+                                                  companyCode: _loginUser.companyCode, noticeDocumentID: noticeUid, comment: _commnetModel).whenComplete(() async {
+                                                    if(noticeCreateUser != _loginUser.mail){
+                                                      Alarm _alarmModel = Alarm(
+                                                        alarmId: _commnetModel.createDate.hashCode,
+                                                        createName: _loginUser.name,
+                                                        createMail: _loginUser.mail,
+                                                        collectionName: "comment",
+                                                        alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 공지에 댓글을 남겼습니다.",
+                                                        read: false,
+                                                        alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                                      );
+
+                                                      List<String> token = await FirebaseRepository().getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: noticeCreateUser);
+
+                                                      await FirebaseRepository().saveOneUserAlarm(
+                                                        alarmModel: _alarmModel,
+                                                        companyCode: _loginUser.companyCode,
+                                                        mail: noticeCreateUser,
+                                                      ).whenComplete(() async {
+                                                        _fcm.sendFCMtoSelectedDevice(
+                                                          alarmId: _alarmModel.alarmId.toString(),
+                                                          tokenList: token,
+                                                          name: _loginUser.name,
+                                                          team: loginUserInfo.team,
+                                                          position: loginUserInfo.position,
+                                                          collection: "comment"
+                                                        );
+                                                      });
+                                                    }
+                                              });
                                             } else {
                                               //print("답글 선택 ====> " + _commentId);
 
@@ -337,7 +376,36 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                                                     companyCode: _loginUser.companyCode,
                                                     noticeDocumentID: noticeUid,
                                                     commntDocumentID: _commentId,
-                                                    comment: _commentList);
+                                                    comment: _commentList).whenComplete(() async {
+                                                      if(commentMail != _loginUser.mail){
+                                                        Alarm _alarmModel = Alarm(
+                                                          alarmId: _commentList.createDate.hashCode,
+                                                          createName: _loginUser.name,
+                                                          createMail: _loginUser.mail,
+                                                          collectionName: "comment2",
+                                                          alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 내 댓글에 댓글을 남겼습니다.",
+                                                          read: false,
+                                                          alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                                        );
+                                                        List<String> token = await FirebaseRepository().getApprovalUserTokens(companyCode: _loginUser.companyCode, mail: commentMail);
+
+                                                        await FirebaseRepository().saveOneUserAlarm(
+                                                          alarmModel: _alarmModel,
+                                                          companyCode: _loginUser.companyCode,
+                                                          mail: commentMail,
+                                                        ).whenComplete(() async {
+                                                          _fcm.sendFCMtoSelectedDevice(
+                                                              alarmId: _alarmModel.alarmId.toString(),
+                                                              tokenList: token,
+                                                              name: _loginUser.name,
+                                                              team: loginUserInfo.team,
+                                                              position: loginUserInfo.position,
+                                                              collection: "comment2"
+                                                          );
+                                                        });
+
+                                                      }
+                                                });
                                               } else if (crudType == 2) {
                                                 // 수정 클릭시
                                                 _commentList = CommentListModel(
@@ -443,6 +511,7 @@ Widget getCommentList({BuildContext context, DocumentSnapshot document, User use
                   _commentId = comment.reference.id;
                   print("_commentId >>> " + _commentId);
                   commnetUser = comment.createUser['name'];
+                  commentMail = comment.createUser["mail"];
                   _noticeComment.text = commnetUser + " ";
                   _commnetFocusNode.requestFocus();
                 });
@@ -680,6 +749,7 @@ Widget getCommentsList({BuildContext context,
                 crudType = 1;
                 _commentId = documentID;
                 commnetUser = comments.commentsUser['name'];
+                commentMail = comments.commentsUser["mail"];
                 _noticeComment.text = commnetUser + " ";
                 _commnetFocusNode.requestFocus();
               });

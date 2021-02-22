@@ -544,6 +544,20 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getNowOutCompanyWork(
+      {String companyCode, String userMail}) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("createUid", isEqualTo: userMail)
+        .where("type", isEqualTo: "외근")
+        .where("startDate", isEqualTo: Timestamp.fromDate(DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day, 21, 00)))
+        .where("startTime", isLessThanOrEqualTo: Timestamp.now())
+        .orderBy("startTime")
+        .snapshots();
+  }
+
   //출퇴근 관련
   Future<DocumentReference> saveAttendance(
       {Attendance attendanceModel, String companyCode}) async {
