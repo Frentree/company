@@ -195,7 +195,6 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               attendanceData.addAll({element: ""});
                             });
 
-                            print("rkqt : ${snapshot.data.documents}");
                             snapshot.data.documents.forEach((element){
                               var elementData = element.data();
                               attendanceData.update(elementData["mail"], (value) => elementData);
@@ -208,8 +207,6 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                 itemCount: attendanceData.keys.length,
                                 itemBuilder: (context, index){
                                   Attendance _attendance = attendanceData[attendanceData.keys.elementAt(index)] == "" ? null : Attendance.fromMap(attendanceData[attendanceData.keys.elementAt(index)], "");
-                                  print("이름 : ${colleague.values.elementAt(index)}");
-                                  print("팀 : ${_companyUserInfo[index].team}");
                                   return Card(
                                     elevation: 0,
                                     shape: cardShape,

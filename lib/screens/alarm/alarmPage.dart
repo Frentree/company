@@ -3,6 +3,7 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/screens/alarm/allAlarm.dart';
 import 'package:MyCompany/screens/alarm/noReadAlarm.dart';
 import 'package:MyCompany/screens/alarm/signBoxPurchase.dart';
+import 'package:MyCompany/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 class AlarmPage extends StatefulWidget {
@@ -14,6 +15,15 @@ class AlarmPageState extends State<AlarmPage> {
 
   int tabIndex = 0;
   List<Widget> _page = [NoReadAlarm(),AllAlarm()];
+
+  @override
+  void initState(){
+    super.initState();
+    if(clickTest == true){
+      tabIndex = 1;
+      clickTest = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
