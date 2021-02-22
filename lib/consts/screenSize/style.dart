@@ -66,6 +66,12 @@ TextStyle cardContentsStyle = customStyle(
   fontWeightName: "Regular",
 );
 
+TextStyle timeStyle = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
+  fontColor: mainColor,
+  fontWeightName: "Regular",
+);
+
 /*TextStyle cardBlueStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? cardTimeSizeT.sp : cardTimeSizeM.sp,
   fontWeightName: "Regular",
@@ -127,6 +133,14 @@ ShapeBorder cardShape = RoundedRectangleBorder(
   side: BorderSide(
     width: 1,
     color: boarderColor,
+  ),
+);
+
+ShapeBorder converShape = RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(SizerUtil.deviceType == DeviceType.Tablet ? buttonRadiusTW.w : buttonRadiusMW.w),
+  side: BorderSide(
+    width: 1,
+    color: chipColorBlue,
   ),
 );
 
