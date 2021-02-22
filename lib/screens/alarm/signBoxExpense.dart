@@ -21,8 +21,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
-import 'package:MyCompany/consts/screenSize/login.dart';
 import 'package:sizer/sizer.dart';
 
 final word = Words();
@@ -81,14 +79,18 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
   }
 
   bool totalCheck() {
+    int y = 0, k = 0, sum = 0;
+    _isTotal = false;
     for (int i = 0; i < totalLength; i++) {
 
       if (_expense[i]["status"] == "미" && _isSelected[i] == false) {
-        _isTotal = false;
         return _isTotal;
-      }
+      } else if (_expense[i]["status"] == "미" && _isSelected[i] == true) {
+        y++;
+      } else k++;
     }
-    _isTotal = true;
+    sum = y + k;
+    (sum == totalLength && y != 0)? _isTotal = true : _isTotal = false;
     return _isTotal;
   }
 
@@ -360,7 +362,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                         InkWell(
                           child: Text(
                             DateFormat('yyyy년 MM월').format(selectedMonth),
-                            style: defaultRegularStyle,
+                            style: containerChipStyle,
                           ),
                           onTap: () async {
                             selectedMonth =
@@ -395,14 +397,13 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                           child: RaisedButton(
                               child: Text("전체",
                                   style: _isTotal
-                                      ? defaultRegularStyleWhite
-                                      : defaultRegularStyle),
+                                      ? containerChipStyleWhite
+                                      : containerChipStyle),
                               color: _isTotal ? mainColor : whiteColor,
                               onPressed: () {
                                 setState(() {
-                                  totalCheck();
                                   _isTotal ? refreshSelect() : fillSelect();
-                                  _isTotal = !_isTotal;
+                                  totalCheck();
                                 });
                               }),
                         ),
@@ -419,7 +420,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                                     disabledColor: whiteColor,
                                     child: Text(
                                       _approvalUserItem,
-                                      style: defaultSmallStyle,
+                                      style: containerChipStyle,
                                     ),
                                   ),
                                   onSelected: (value) {
@@ -468,6 +469,8 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
                                 writeExpenseApproval();
                                 toastSuccess(context);
                               }
+
+                              refreshSelect();
 
                               //bool _isInput = !(_expenseController.text == '' || _chosenItem == 0);
                               //await _isInput ? saveExpense() : InvalidData(context);

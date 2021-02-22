@@ -213,9 +213,7 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                           ),
                         ),
                         cardSpace,
-                        type == 1
-                            ? Container()
-                            : GestureDetector(
+                        GestureDetector(
                                 onTap: () {
                                   toastCreate(context);
                                   futureToList().whenComplete(() =>
@@ -850,6 +848,10 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                                                           collection:
                                                               "expenseReject");
                                                     });
+
+                                                    await _repository
+                                                        .postProcessApprovedExpense(
+                                                        _loginUser, model, 2);
 
                                                     Navigator.of(context)
                                                         .pop(true);
