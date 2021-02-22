@@ -19,7 +19,7 @@ class FirebaseRepository {
   FirebaseMethods _firebaseMethods = FirebaseMethods();
 
   // 경비 청구 항목 저장 메서드
-  Future<DocumentReference> saveExpense(ExpenseModel expenseModel) =>
+  Future<void> saveExpense(ExpenseModel expenseModel) =>
       _firebaseMethods.saveExpense(expenseModel);
 
   // 경비 청구 항목 수정 메서드
@@ -33,6 +33,14 @@ class FirebaseRepository {
   // 경비 항목 삭제 메서드
   Future<void> deleteExpense(String companyCode, String documentID, String uid) =>
       _firebaseMethods.deleteExpense(companyCode, documentID, uid);
+
+  // 경비 결재 완료 후 프로세스
+  Future<void> postProcessApprovedExpense(User user, WorkApproval model, int type) =>
+      _firebaseMethods.postProcessApprovedExpense(user, model, type);
+
+  // 결재자 경비 항목 조회 메서드
+  Future<List<ExpenseModel>> getExpenses(WorkApproval model, String companyCode) =>
+      _firebaseMethods.getExpenses(model, companyCode);
 
   Future<void> saveUser({User userModel}) => _firebaseMethods.saveUser(
         userModel: userModel,

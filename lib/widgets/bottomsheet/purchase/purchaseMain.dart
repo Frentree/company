@@ -87,7 +87,7 @@ PurchaseMain(BuildContext context) {
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       index: null,
       imageUrl: "",
-      status: 0,
+      //status: 0,
     );
     debugPrint("In an instance of saveExpense() " +
         _expenseModel.name +

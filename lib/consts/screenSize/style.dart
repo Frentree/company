@@ -96,6 +96,12 @@ TextStyle containerChipStyle = customStyle(
   fontWeightName: "Regular",
 );
 
+TextStyle containerChipStyleWhite = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
+  fontColor: whiteColor,
+  fontWeightName: "Regular",
+);
+
 TextStyle reversContainerChipStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
   fontColor: whiteColor,

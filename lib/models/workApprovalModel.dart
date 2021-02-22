@@ -23,30 +23,33 @@ class WorkApproval {
   final String userMail;
   final String status; // 결재 상태
   final String location; // 결재 상태
+  List<dynamic> docIds;
   DocumentReference reference;
+  int totalCost;
 
-  WorkApproval({
-    this.createDate,
-    this.requestDate,
-    this.approvalDate,
-    this.title,
-    this.requestContent,
-    this.approvalContent,
-    this.approvalType,
-    this.approvalUser,
-    this.approvalMail,
-    this.user,
-    this.userMail,
-    this.status,
-    this.location,
-  });
+  WorkApproval(
+      {this.createDate,
+      this.requestDate,
+      this.approvalDate,
+      this.title,
+      this.requestContent = "",
+      this.approvalContent,
+      this.approvalType,
+      this.approvalUser,
+      this.approvalMail,
+      this.user,
+      this.userMail,
+      this.status,
+      this.location,
+      this.docIds,
+      this.totalCost = 0});
 
   WorkApproval.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['createDate'] != null),
         assert(map['requestDate'] != null),
         assert(map['approvalDate'] != null),
         assert(map['title'] != null),
-        assert(map['requestContent'] != null),
+        //assert(map['requestContent']),
         assert(map['approvalContent'] != null),
         assert(map['approvalType'] != null),
         assert(map['approvalUser'] != null),
@@ -54,7 +57,7 @@ class WorkApproval {
         assert(map['user'] != null),
         assert(map['userMail'] != null),
         assert(map['status'] != null),
-        assert(map['location'] != null),
+        //assert(map['location'] != null),
         createDate = map['createDate'],
         requestDate = map['requestDate'],
         approvalDate = map['approvalDate'],
@@ -67,7 +70,9 @@ class WorkApproval {
         user = map['user'],
         userMail = map['userMail'],
         status = map['status'],
-        location = map['location'];
+        location = map['location'],
+        docIds = map['docIds'],
+        totalCost = map['totalCost'];
 
   toJson() {
     return {
@@ -84,8 +89,11 @@ class WorkApproval {
       "userMail": userMail,
       "status": status,
       "location": location,
+      "docIds": docIds,
+      "totalCost": totalCost,
     };
   }
 
-  WorkApproval.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap(snapshot.data(), reference: snapshot.reference);
+  WorkApproval.fromSnapshow(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data(), reference: snapshot.reference);
 }
