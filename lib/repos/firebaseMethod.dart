@@ -401,6 +401,20 @@ class FirebaseMethods {
         .add(alarmModel.toJson());
   }
 
+  Future<void> saveAttendeesUserAlarm(
+      {Alarm alarmModel, String companyCode, List<String> mail}) async {
+
+    mail.forEach((element) async {
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(USER)
+          .doc(element)
+          .collection(ALARM)
+          .add(alarmModel.toJson());
+    });
+  }
+
   Future<void> deleteAlarm(
       {String companyCode, String mail, String documentID}) async {
     return await firestore
@@ -788,6 +802,29 @@ class FirebaseMethods {
         .collection(USER)
         .where("mail", isNotEqualTo: mail)
         .get();
+
+    querySnapshot.docs.forEach((element) {
+
+      if (element.data()["token"] != null && element.data()["token"] != "") {
+        print("tokens 값 == ${element.data()["token"]}");
+        tokenList.add(element.data()["token"]);
+      }
+    });
+
+    return tokenList;
+  }
+
+  //FCM 토큰 가져오기
+  Future<List<String>> getAttendeesTokens({String companyCode, List<String> mail}) async {
+    List<String> tokenList = [];
+    QuerySnapshot querySnapshot = await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("mail", whereIn: mail)
+        .get();
+
+    print(mail);
 
     querySnapshot.docs.forEach((element) {
 

@@ -192,7 +192,26 @@ Container popupMenu({BuildContext context, MeetingModel meetingModel, String com
               alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
             );
 
-            List<String> tokens = await _repository.getTokens(companyCode: companyCode, mail: meetingModel.createUid);
+            if(meetingModel.attendees != null){
+              List<String> tokens = await _repository.getAttendeesTokens(companyCode: companyCode, mail: meetingModel.attendees.keys.toList());
+
+              await _repository.saveAttendeesUserAlarm(
+                alarmModel: _alarmModel,
+                companyCode: companyCode,
+                mail: meetingModel.attendees.keys.toList(),
+              ).whenComplete(() async {
+                //동료들에게 알림 보내기
+                fcm.sendFCMtoSelectedDevice(
+                    alarmId: _alarmModel.alarmId.toString(),
+                    tokenList: tokens,
+                    name: loginUserInfo.name,
+                    team: loginUserInfo.team,
+                    position: loginUserInfo.position,
+                    collection: "meetingDelete@${meetingModel.title}"
+                );
+              });
+            }
+           /* List<String> tokens = await _repository.getTokens(companyCode: companyCode, mail: meetingModel.createUid);
 
             await _repository.saveAlarm(
               alarmModel: _alarmModel,
@@ -208,7 +227,7 @@ Container popupMenu({BuildContext context, MeetingModel meetingModel, String com
                   position: loginUserInfo.position,
                   collection: "meetingDelete@${meetingModel.title}"
               );
-            });
+            });*/
 
 
           });

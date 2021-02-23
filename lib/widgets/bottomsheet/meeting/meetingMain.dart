@@ -168,30 +168,33 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
                                     alarmId: _meetingModel.alarmId,
                                     createName: _loginUser.name,
                                     createMail: _loginUser.mail,
-                                    collectionName: "meetingUpdate",
-                                    alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 " + "회의 일정" + "을 수정 했습니다.",
+                                    collectionName: meetingModel.attendees != null ? "meetingUpdate" : "meeting",
+                                    alarmContents: meetingModel.attendees != null ? loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 " + "회의 일정" + "을 수정 했습니다." : loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "회의 일정" + "을 등록 했습니다.",
                                     read: false,
                                     alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
                                   );
 
-                                  List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+                                  //동료들 토큰 가져오기
+                                  if(attendees != null){
+                                    List<String> tokens = await _repository.getAttendeesTokens(companyCode: _loginUser.companyCode, mail: attendees.keys.toList());
 
-                                  await _repository.saveAlarm(
-                                    alarmModel: _alarmModel,
-                                    companyCode: _loginUser.companyCode,
-                                    mail: _loginUser.mail,
-                                  ).whenComplete(() async {
-                                    //동료들에게 알림 보내기
-                                    fcm.sendFCMtoSelectedDevice(
-                                        alarmId: _alarmModel.alarmId.toString(),
-                                        tokenList: tokens,
-                                        name: _loginUser.name,
-                                        team: loginUserInfo.team,
-                                        position: loginUserInfo.position,
-                                        collection: "meetingUpdate@${startTime}@${_titleController.text}"
-                                    );
-                                  });
-
+                                    //알림 DB에 저장
+                                    await _repository.saveAttendeesUserAlarm(
+                                      alarmModel: _alarmModel,
+                                      companyCode: _loginUser.companyCode,
+                                      mail: attendees.keys.toList(),
+                                    ).whenComplete(() async {
+                                      //동료들에게 알림 보내기
+                                      fcm.sendFCMtoSelectedDevice(
+                                          alarmId: _alarmModel.alarmId.toString(),
+                                          tokenList: tokens,
+                                          name: _loginUser.name,
+                                          team: loginUserInfo.team,
+                                          position: loginUserInfo.position,
+                                          collection: meetingModel.attendees != null ? "meetingUpdate@${startTime}@${_titleController.text}" : "meeting@${startTime}@${_titleController.text}"
+                                      );
+                                    });
+                                  }
                                 });
                               }
                               else{//새로 입력
@@ -234,26 +237,30 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
                                     );
                                   }
 
+
+
                                   //동료들 토큰 가져오기
-                                  List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+                                  if(attendees != null){
+                                    print(attendees.keys.toList().runtimeType);
+                                    List<String> tokens = await _repository.getAttendeesTokens(companyCode: _loginUser.companyCode, mail: attendees.keys.toList());
 
-                                  //알림 DB에 저장
-                                  await _repository.saveAlarm(
-                                    alarmModel: _alarmModel,
-                                    companyCode: _loginUser.companyCode,
-                                    mail: _loginUser.mail,
-                                  ).whenComplete(() async {
-                                    //동료들에게 알림 보내기
-                                    fcm.sendFCMtoSelectedDevice(
-                                        alarmId: _alarmModel.alarmId.toString(),
-                                        tokenList: tokens,
-                                        name: _loginUser.name,
-                                        team: loginUserInfo.team,
-                                        position: loginUserInfo.position,
-                                        collection: "meeting@${startTime}@${_titleController.text}"
-                                    );
-                                  });
-
+                                    //알림 DB에 저장
+                                    await _repository.saveAttendeesUserAlarm(
+                                      alarmModel: _alarmModel,
+                                      companyCode: _loginUser.companyCode,
+                                      mail: attendees.keys.toList(),
+                                    ).whenComplete(() async {
+                                      //동료들에게 알림 보내기
+                                      fcm.sendFCMtoSelectedDevice(
+                                          alarmId: _alarmModel.alarmId.toString(),
+                                          tokenList: tokens,
+                                          name: _loginUser.name,
+                                          team: loginUserInfo.team,
+                                          position: loginUserInfo.position,
+                                          collection: "meeting@${startTime}@${_titleController.text}"
+                                      );
+                                    });
+                                  }
                                 });
                               }
 
