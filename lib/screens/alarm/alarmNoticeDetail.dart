@@ -539,9 +539,6 @@ Text(
                                                       },
                                                     ),
                                                   ),
-                                                  onTap: () {
-                                                    _loginUserInfoProvider.logoutUesr();
-                                                  },
                                                 ),
                                               ),
 

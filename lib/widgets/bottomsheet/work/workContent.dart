@@ -301,6 +301,8 @@ workContent(
                                                           .companyCode,
                                                       mail: _loginUser.mail);
 
+                                              print("tokens = ${tokens}");
+
                                               //알림 DB에 저장
                                               await _repository
                                                   .saveAlarm(
@@ -391,15 +393,18 @@ workContent(
                                                 mail: approvalUser.mail,
                                               )
                                                   .whenComplete(() async {
-                                                fcm.sendFCMtoSelectedDevice(
-                                                    alarmId: _alarmModel.alarmId
-                                                        .toString(),
-                                                    tokenList: token,
-                                                    name: _loginUser.name,
-                                                    team: loginUserInfo.team,
-                                                    position:
-                                                        loginUserInfo.position,
-                                                    collection: "approvalWork");
+                                                if(token.length != 0){
+                                                  fcm.sendFCMtoSelectedDevice(
+                                                      alarmId: _alarmModel.alarmId
+                                                          .toString(),
+                                                      tokenList: token,
+                                                      name: _loginUser.name,
+                                                      team: loginUserInfo.team,
+                                                      position:
+                                                      loginUserInfo.position,
+                                                      collection: "approvalWork");
+                                                }
+
                                               });
                                             });
                                             break;

@@ -170,12 +170,15 @@ attendance({BuildContext context, double statusBarHeight}) async {
 
                         snapshot.data.documents.forEach((element){
                           var elementData = element.data();
-                          _companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
-                          colleague.addAll({elementData["mail"]: elementData["name"]});
-                          /*if(elementData["mail"] != _loginUser.mail){
+                          /*_companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
+                          colleague.addAll({elementData["mail"]: elementData["name"]});*/
+                          if(elementData["mail"] != _loginUser.mail){
                             _companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
                             colleague.addAll({elementData["mail"]: elementData["name"]});
-                          }*/
+                          }
+                          else{
+                            _companyUserInfo.insert(0, CompanyUser.fromMap(elementData, element.documentID));
+                          }
                         });
                         return StreamBuilder(
                           stream: _repository.getColleagueNowAttendance(companyCode: _loginUser.companyCode, loginUserMail: _loginUser.mail, today: _format.dateTimeToTimeStamp(today),),
@@ -196,11 +199,14 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               attendanceData.update(elementData["mail"], (value) => elementData);
                             });
 
+                            /*print("attendanceData ${attendanceData[attendanceData.keys.elementAt(5)]} ${attendanceData[attendanceData.keys.elementAt(5)] == ""}");*/
+
                             return Expanded(
                               child: ListView.builder(
                                 itemCount: attendanceData.keys.length,
                                 itemBuilder: (context, index){
                                   Attendance _attendance = attendanceData[attendanceData.keys.elementAt(index)] == "" ? null : Attendance.fromMap(attendanceData[attendanceData.keys.elementAt(index)], "");
+                                  print("attendance ====> ${index} : ${_attendance}");
                                   return Card(
                                     elevation: 0,
                                     shape: cardShape,
@@ -232,7 +238,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                               alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                                               child: Text(
-                                                ( _attendance == null || _attendance.status == 0) ? Words.word.beforeWork() : _attendance.status == 1 ? Words.word.workIn() : _attendance.status == 2 ? Words.word.workOut() : Words.word.leaveWork(),
+                                                (_attendance == null || _attendance.status == 0) ? Words.word.beforeWork() : _attendance.status == 1 ? Words.word.workIn() : _attendance.status == 2 ? Words.word.workOut() : Words.word.leaveWork(),
                                                 style: containerChipStyle,
                                               ),
                                             ),
@@ -240,7 +246,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                             Container(
                                               alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
-                                              child: _attendance.status == 2 ? StreamBuilder(
+                                              child: (_attendance != null && _attendance.status == 2) ? StreamBuilder(
                                                 stream: _repository.getNowOutCompanyWork(companyCode: _loginUser.companyCode, userMail: _attendance.mail),
                                                 builder: (BuildContext context, AsyncSnapshot snapshot){
                                                   String location = "";

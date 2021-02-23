@@ -78,6 +78,10 @@ class NotificationPlugin {
     await flutterLocalNotificationsPlugin.cancel(alarmId);
   }
 
+  Future<void> deleteAllNotification() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   Future<void> showNotification(
       {int alarmId, String title, String contents, String payload}) async {
     var androidChannelSpecifics = AndroidNotificationDetails(
@@ -128,15 +132,12 @@ class NotificationPlugin {
   }
 
   tz.TZDateTime _setNotiTime(DateTime alarmTime) {
-    print("alarmTime = ${alarmTime}");
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate = tz.TZDateTime(tz.local, alarmTime.year, alarmTime.month, alarmTime.day,
         alarmTime.hour, alarmTime.minute);
-
-    print("scheduledDate = ${scheduledDate}");
 
     return scheduledDate;
   }

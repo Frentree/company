@@ -85,12 +85,14 @@ class HomeMainPageState extends State<HomeMainPage> {
     if(_sharedPreferences.getString("payloadOld") != null){
       payloadOld = _sharedPreferences.getString("payloadOld");
     }
+
     if(click == false) {
-      if(payloadOld == payload){
+      if(payloadOld == payload || payloadOld == ""){
         payload = "";
       }
       click = !click;
     }
+
     if(payload.split(",")[0] == "alarm" && click == true){
       setState(() {
         clickTest = true;

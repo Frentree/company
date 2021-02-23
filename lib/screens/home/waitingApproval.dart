@@ -35,7 +35,7 @@ class WaitingApprovalPage extends StatelessWidget {
                 style: buttonBlueStyle,
               ),
               onPressed: () {
-                _loginUserInfoProvider.logoutUesr();
+                _loginUserInfoProvider.logoutUser();
               },
             ),
           ],

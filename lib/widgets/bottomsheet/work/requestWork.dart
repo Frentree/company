@@ -186,14 +186,17 @@ requestWork({BuildContext context, int type, WorkModel workModel, WorkData workD
                                     companyCode: _loginUser.companyCode,
                                     mail: approvalUser.mail,
                                   ).whenComplete(() async {
-                                    fcm.sendFCMtoSelectedDevice(
-                                        alarmId: _alarmModel.alarmId.toString(),
-                                        tokenList: token,
-                                        name: _loginUser.name,
-                                        team: loginUserInfo.team,
-                                        position: loginUserInfo.position,
-                                        collection: "requestWork"
-                                    );
+                                    if(token.length != 0){
+                                      fcm.sendFCMtoSelectedDevice(
+                                          alarmId: _alarmModel.alarmId.toString(),
+                                          tokenList: token,
+                                          name: _loginUser.name,
+                                          team: loginUserInfo.team,
+                                          position: loginUserInfo.position,
+                                          collection: "requestWork"
+                                      );
+                                    }
+
                                   });
                                 });
 

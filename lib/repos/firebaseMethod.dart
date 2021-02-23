@@ -182,6 +182,8 @@ class FirebaseMethods {
     return CompanyUser.fromMap(doc.data(), doc.id);
   }
 
+
+
   Future<void> deleteAttendance(
       {String companyCode, String documentId}) async {
     return await firestore
@@ -558,6 +560,41 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Future<List<WorkModel>> getWorkForAlarm({String companyCode, String userMail}) async {
+    List<WorkModel> _workModelList = [];
+
+    List<String> temp = ["연차", "반차"];
+
+    QuerySnapshot querySnapshot = await firestore.collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("createUid", isEqualTo: userMail)
+        .where("startTime", isGreaterThan: Timestamp.now())
+        .get();
+
+    querySnapshot.docs.forEach((element) {
+      if(element.data()["type"] != "연차" && element.data()["type"] != "반차"){
+        _workModelList.add(WorkModel.fromMap(element.data(), element.id));
+      }
+    });
+
+    QuerySnapshot querySnapshot2 = await firestore.collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("type", isEqualTo: "미팅")
+        .where("attendees", arrayContains: userMail)
+        .where("startTime", isGreaterThan: Timestamp.now())
+        .get();
+
+    querySnapshot2.docs.forEach((element) {
+      _workModelList.add(WorkModel.fromMap(element.data(), element.id));
+    });
+
+
+    return _workModelList;
+  }
+
+
   //출퇴근 관련
   Future<DocumentReference> saveAttendance(
       {Attendance attendanceModel, String companyCode}) async {
@@ -585,7 +622,7 @@ class FirebaseMethods {
         .collection(COMPANY)
         .doc(companyCode)
         .collection(ATTENDANCE)
-        .where("mail", isNotEqualTo: loginUserMail)
+        /*.where("mail", isNotEqualTo: loginUserMail)*/
         .where("createDate", isEqualTo: today)
         .snapshots();
   }
@@ -753,7 +790,9 @@ class FirebaseMethods {
         .get();
 
     querySnapshot.docs.forEach((element) {
-      if (element.data()["token"] != null) {
+
+      if (element.data()["token"] != null && element.data()["token"] != "") {
+        print("tokens 값 == ${element.data()["token"]}");
         tokenList.add(element.data()["token"]);
       }
     });
@@ -772,7 +811,9 @@ class FirebaseMethods {
         .get();
 
     querySnapshot.docs.forEach((element) {
-      tokenList.add(element.data()["token"]);
+      if (element.data()["token"] != null && element.data()["token"] != "") {
+        tokenList.add(element.data()["token"]);
+      }
     });
 
     return tokenList;

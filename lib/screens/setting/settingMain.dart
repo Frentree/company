@@ -1103,7 +1103,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                     ),
                   ),
                   onTap: (){
-                    _loginUserInfoProvider.logoutUesr();
+                    _loginUserInfoProvider.logoutUser();
                   },
                 ),
               ],

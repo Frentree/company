@@ -351,14 +351,16 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                                                         companyCode: _loginUser.companyCode,
                                                         mail: noticeCreateUser,
                                                       ).whenComplete(() async {
-                                                        _fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: token,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo.team,
-                                                          position: loginUserInfo.position,
-                                                          collection: "comment"
-                                                        );
+                                                        if(token.length != 0){
+                                                          _fcm.sendFCMtoSelectedDevice(
+                                                              alarmId: _alarmModel.alarmId.toString(),
+                                                              tokenList: token,
+                                                              name: _loginUser.name,
+                                                              team: loginUserInfo.team,
+                                                              position: loginUserInfo.position,
+                                                              collection: "comment"
+                                                          );
+                                                        }
                                                       });
                                                     }
                                               });
@@ -394,14 +396,16 @@ class NoticeDetailsPageState extends State<NoticeDetailsPage> {
                                                           companyCode: _loginUser.companyCode,
                                                           mail: commentMail,
                                                         ).whenComplete(() async {
-                                                          _fcm.sendFCMtoSelectedDevice(
-                                                              alarmId: _alarmModel.alarmId.toString(),
-                                                              tokenList: token,
-                                                              name: _loginUser.name,
-                                                              team: loginUserInfo.team,
-                                                              position: loginUserInfo.position,
-                                                              collection: "comment2"
-                                                          );
+                                                          if(token.length != 0){
+                                                            _fcm.sendFCMtoSelectedDevice(
+                                                                alarmId: _alarmModel.alarmId.toString(),
+                                                                tokenList: token,
+                                                                name: _loginUser.name,
+                                                                team: loginUserInfo.team,
+                                                                position: loginUserInfo.position,
+                                                                collection: "comment2"
+                                                            );
+                                                          }
                                                         });
 
                                                       }

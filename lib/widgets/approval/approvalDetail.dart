@@ -909,14 +909,17 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                         companyCode: _loginUser.companyCode,
                                                         mail: model.userMail,
                                                       ).whenComplete(() async {
-                                                        fcm.sendFCMtoSelectedDevice(
-                                                            alarmId: _alarmModel.alarmId.toString(),
-                                                            tokenList: token,
-                                                            name: _loginUser.name,
-                                                            team: loginUserInfo.team,
-                                                            position: loginUserInfo.position,
-                                                            collection: "requestWorkOk"
-                                                        );
+                                                        if(token.length !=0){
+                                                          fcm.sendFCMtoSelectedDevice(
+                                                              alarmId: _alarmModel.alarmId.toString(),
+                                                              tokenList: token,
+                                                              name: _loginUser.name,
+                                                              team: loginUserInfo.team,
+                                                              position: loginUserInfo.position,
+                                                              collection: "requestWorkOk"
+                                                          );
+                                                        }
+
                                                       });
                                                     });
 
@@ -959,20 +962,20 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                         companyCode: _loginUser.companyCode,
                                                         mail: model.userMail,
                                                       ).whenComplete(() async {
-                                                        fcm.sendFCMtoSelectedDevice(
-                                                            alarmId: _alarmModel.alarmId.toString(),
-                                                            tokenList: token,
-                                                            name: _loginUser.name,
-                                                            team: loginUserInfo.team,
-                                                            position: loginUserInfo.position,
-                                                            collection: "approvalWorkOk@${startTime}@${model.title}"
-                                                        );
+                                                        if(token.length != 0){
+                                                          fcm.sendFCMtoSelectedDevice(
+                                                              alarmId: _alarmModel.alarmId.toString(),
+                                                              tokenList: token,
+                                                              name: _loginUser.name,
+                                                              team: loginUserInfo.team,
+                                                              position: loginUserInfo.position,
+                                                              collection: "approvalWorkOk@${startTime}@${model.title}"
+                                                          );
+                                                        }
                                                       });
 
                                                       var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(model.userMail).get();
                                                       CompanyUser workCreateUser = CompanyUser.fromMap(doc.data(), doc.id);
-
-                                                      print(model.user);
 
                                                       Alarm _alarmModel2 = Alarm(
                                                         alarmId: _workModel.alarmId,
@@ -987,7 +990,6 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
 
                                                       List<String> tokens = await _repository.getTokens(companyCode: _loginUser.companyCode, mail: model.userMail);
 
-                                                      print(tokens);
 
                                                       //알림 DB에 저장
                                                       await _repository.saveAlarm(
@@ -1048,14 +1050,17 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                         companyCode: _loginUser.companyCode,
                                                         mail: model.userMail,
                                                       ).whenComplete(() async {
-                                                        fcm.sendFCMtoSelectedDevice(
-                                                            alarmId: _alarmModel.alarmId.toString(),
-                                                            tokenList: token,
-                                                            name: _loginUser.name,
-                                                            team: loginUserInfo.team,
-                                                            position: loginUserInfo.position,
-                                                            collection: "annualLeaveOk@${model.approvalType}"
-                                                        );
+                                                        if(token.length != 0){
+                                                          fcm.sendFCMtoSelectedDevice(
+                                                              alarmId: _alarmModel.alarmId.toString(),
+                                                              tokenList: token,
+                                                              name: _loginUser.name,
+                                                              team: loginUserInfo.team,
+                                                              position: loginUserInfo.position,
+                                                              collection: "annualLeaveOk@${model.approvalType}"
+                                                          );
+                                                        }
+
                                                       });
                                                     });
 
@@ -1148,14 +1153,16 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                       companyCode: _loginUser.companyCode,
                                                       mail: model.userMail,
                                                     ).whenComplete(() async {
-                                                      fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: token,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo.team,
-                                                          position: loginUserInfo.position,
-                                                          collection: "requestWorkNo"
-                                                      );
+                                                      if(token.length != 0){
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel.alarmId.toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo.team,
+                                                            position: loginUserInfo.position,
+                                                            collection: "requestWorkNo"
+                                                        );
+                                                      }
                                                     });
 
                                                     break;
@@ -1177,14 +1184,16 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                       companyCode: _loginUser.companyCode,
                                                       mail: model.userMail,
                                                     ).whenComplete(() async {
-                                                      fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: token,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo.team,
-                                                          position: loginUserInfo.position,
-                                                          collection: "annualLeaveNo"
-                                                      );
+                                                      if(token.length != 0){
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel.alarmId.toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo.team,
+                                                            position: loginUserInfo.position,
+                                                            collection: "annualLeaveNo"
+                                                        );
+                                                      }
                                                     });
                                                     break;
                                                   default:
@@ -1205,14 +1214,16 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                       companyCode: _loginUser.companyCode,
                                                       mail: model.userMail,
                                                     ).whenComplete(() async {
-                                                      fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel.alarmId.toString(),
-                                                          tokenList: token,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo.team,
-                                                          position: loginUserInfo.position,
-                                                          collection: "annualLeaveNo@${model.approvalType}"
-                                                      );
+                                                      if(token.length != 0){
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel.alarmId.toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo.team,
+                                                            position: loginUserInfo.position,
+                                                            collection: "annualLeaveNo@${model.approvalType}"
+                                                        );
+                                                      }
                                                     });
 
                                                     break;

@@ -17,7 +17,7 @@ class Fcm {
       String position,
       String collection,
       String alarmId}) async {
-    print("함수 실행");
+
     final HttpsCallableResult result = await sendFCM.call(
       <String, dynamic>{
         "token": tokenList,

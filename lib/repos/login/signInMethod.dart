@@ -1,4 +1,6 @@
 //Flutter
+import 'package:MyCompany/models/workModel.dart';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +38,20 @@ class SignInMethod{
             mail: _loginUser.mail,
             token: token,
           );
+
+          List<WorkModel> _workModel = await _repository.getWorkForAlarm(companyCode: _loginUser.companyCode, userMail: _loginUser.mail);
+
+          _workModel.forEach((element) async {
+            await notificationPlugin.scheduleNotification(
+              alarmId: element.alarmId,
+              alarmTime: element.startTime.toDate(),
+              title: "일정이 있습니다.",
+              contents:
+              "일정 내용 : ${element.title}",
+              payload: element.alarmId.toString(),
+            );
+          });
+
         }
       } else{
         showLastFirebaseMessage(

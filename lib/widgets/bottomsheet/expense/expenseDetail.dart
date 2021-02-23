@@ -700,19 +700,22 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                                                       mail: model.userMail,
                                                     )
                                                         .whenComplete(() async {
-                                                      fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel
-                                                              .alarmId
-                                                              .toString(),
-                                                          tokenList: token,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo
-                                                              .team,
-                                                          position:
-                                                              loginUserInfo
-                                                                  .position,
-                                                          collection:
-                                                              "expenseAccept");
+                                                      if(token.length != 0){
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel
+                                                                .alarmId
+                                                                .toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo
+                                                                .team,
+                                                            position:
+                                                            loginUserInfo
+                                                                .position,
+                                                            collection:
+                                                            "expenseAccept");
+                                                      }
+
                                                     });
 
                                                     Navigator.of(context)
@@ -834,19 +837,22 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
                                                       mail: model.userMail,
                                                     )
                                                         .whenComplete(() async {
-                                                      fcm.sendFCMtoSelectedDevice(
-                                                          alarmId: _alarmModel
-                                                              .alarmId
-                                                              .toString(),
-                                                          tokenList: token,
-                                                          name: _loginUser.name,
-                                                          team: loginUserInfo
-                                                              .team,
-                                                          position:
-                                                              loginUserInfo
-                                                                  .position,
-                                                          collection:
-                                                              "expenseReject");
+                                                      if(token.length != 0){
+                                                        fcm.sendFCMtoSelectedDevice(
+                                                            alarmId: _alarmModel
+                                                                .alarmId
+                                                                .toString(),
+                                                            tokenList: token,
+                                                            name: _loginUser.name,
+                                                            team: loginUserInfo
+                                                                .team,
+                                                            position:
+                                                            loginUserInfo
+                                                                .position,
+                                                            collection:
+                                                            "expenseReject");
+                                                      }
+
                                                     });
 
                                                     await _repository

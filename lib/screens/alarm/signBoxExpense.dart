@@ -179,13 +179,16 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
         mail: approvalUser.mail,
       )
           .whenComplete(() async {
-        fcm.sendFCMtoSelectedDevice(
-            alarmId: _alarmModel.alarmId.toString(),
-            tokenList: token,
-            name: user.name,
-            team: loginUserInfo.team,
-            position: loginUserInfo.position,
-            collection: "expenseRequest");
+            if(token.length != 0){
+              fcm.sendFCMtoSelectedDevice(
+                  alarmId: _alarmModel.alarmId.toString(),
+                  tokenList: token,
+                  name: user.name,
+                  team: loginUserInfo.team,
+                  position: loginUserInfo.position,
+                  collection: "expenseRequest");
+
+            }
       });
     });
   }
