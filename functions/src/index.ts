@@ -2,6 +2,8 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 
+export const test =
+
 
 export const sendFCM = functions.https.onCall((data, context) => {
   var token = data["token"];
