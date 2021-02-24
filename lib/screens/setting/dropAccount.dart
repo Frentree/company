@@ -53,7 +53,7 @@ class DropAcountPage extends StatelessWidget {
                     companyCode: _loginUserInfoProvider.getLoginUser().companyCode,
                     mail: _loginUserInfoProvider.getLoginUser().mail
                 );
-                _loginUserInfoProvider.logoutUesr();
+                _loginUserInfoProvider.logoutUser();
               },
             ),
           ],

@@ -46,7 +46,7 @@ class myInfomationMethod{
     print("result =================> " + result.toString());
 
     if(result){
-      _loginUserInfoProvider.logoutUesr();
+      _loginUserInfoProvider.logoutUser();
       Navigator.pop(context);
     } else {
       Navigator.pop(context);

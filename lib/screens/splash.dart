@@ -13,6 +13,8 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+bool clickTest = false;
+
 class SplashPage extends StatefulWidget {
   @override
   SplashPageState createState() => SplashPageState();
@@ -32,6 +34,7 @@ class SplashPageState extends State<SplashPage>{
   void initState(){
     super.initState();
     startTime();
+    clickTest = false;
   }
 
   @override

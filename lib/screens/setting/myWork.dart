@@ -94,7 +94,7 @@ class _MyWorkPageState extends State<MyWork>{
                 ),
               ),
               onTap: (){
-                _loginUserInfoProvider.logoutUesr();
+                _loginUserInfoProvider.logoutUser();
               },
             ),
           ),

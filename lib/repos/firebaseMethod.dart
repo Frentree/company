@@ -182,6 +182,8 @@ class FirebaseMethods {
     return CompanyUser.fromMap(doc.data(), doc.id);
   }
 
+
+
   Future<void> deleteAttendance(
       {String companyCode, String documentId}) async {
     return await firestore
@@ -399,6 +401,20 @@ class FirebaseMethods {
         .add(alarmModel.toJson());
   }
 
+  Future<void> saveAttendeesUserAlarm(
+      {Alarm alarmModel, String companyCode, List<String> mail}) async {
+
+    mail.forEach((element) async {
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(USER)
+          .doc(element)
+          .collection(ALARM)
+          .add(alarmModel.toJson());
+    });
+  }
+
   Future<void> deleteAlarm(
       {String companyCode, String mail, String documentID}) async {
     return await firestore
@@ -544,6 +560,55 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getNowOutCompanyWork(
+      {String companyCode, String userMail}) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("createUid", isEqualTo: userMail)
+        .where("type", isEqualTo: "외근")
+        .where("startDate", isEqualTo: Timestamp.fromDate(DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day, 21, 00)))
+        .where("startTime", isLessThanOrEqualTo: Timestamp.now())
+        .orderBy("startTime")
+        .snapshots();
+  }
+
+  Future<List<WorkModel>> getWorkForAlarm({String companyCode, String userMail}) async {
+    List<WorkModel> _workModelList = [];
+
+    List<String> temp = ["연차", "반차"];
+
+    QuerySnapshot querySnapshot = await firestore.collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("createUid", isEqualTo: userMail)
+        .where("startTime", isGreaterThan: Timestamp.now())
+        .get();
+
+    querySnapshot.docs.forEach((element) {
+      if(element.data()["type"] != "연차" && element.data()["type"] != "반차"){
+        _workModelList.add(WorkModel.fromMap(element.data(), element.id));
+      }
+    });
+
+    QuerySnapshot querySnapshot2 = await firestore.collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .where("type", isEqualTo: "미팅")
+        .where("attendees", arrayContains: userMail)
+        .where("startTime", isGreaterThan: Timestamp.now())
+        .get();
+
+    querySnapshot2.docs.forEach((element) {
+      _workModelList.add(WorkModel.fromMap(element.data(), element.id));
+    });
+
+
+    return _workModelList;
+  }
+
+
   //출퇴근 관련
   Future<DocumentReference> saveAttendance(
       {Attendance attendanceModel, String companyCode}) async {
@@ -571,7 +636,7 @@ class FirebaseMethods {
         .collection(COMPANY)
         .doc(companyCode)
         .collection(ATTENDANCE)
-        .where("mail", isNotEqualTo: loginUserMail)
+        /*.where("mail", isNotEqualTo: loginUserMail)*/
         .where("createDate", isEqualTo: today)
         .snapshots();
   }
@@ -739,7 +804,32 @@ class FirebaseMethods {
         .get();
 
     querySnapshot.docs.forEach((element) {
-      if (element.data()["token"] != null) {
+
+      if (element.data()["token"] != null && element.data()["token"] != "") {
+        print("tokens 값 == ${element.data()["token"]}");
+        tokenList.add(element.data()["token"]);
+      }
+    });
+
+    return tokenList;
+  }
+
+  //FCM 토큰 가져오기
+  Future<List<String>> getAttendeesTokens({String companyCode, List<String> mail}) async {
+    List<String> tokenList = [];
+    QuerySnapshot querySnapshot = await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .where("mail", whereIn: mail)
+        .get();
+
+    print(mail);
+
+    querySnapshot.docs.forEach((element) {
+
+      if (element.data()["token"] != null && element.data()["token"] != "") {
+        print("tokens 값 == ${element.data()["token"]}");
         tokenList.add(element.data()["token"]);
       }
     });
@@ -758,7 +848,9 @@ class FirebaseMethods {
         .get();
 
     querySnapshot.docs.forEach((element) {
-      tokenList.add(element.data()["token"]);
+      if (element.data()["token"] != null && element.data()["token"] != "") {
+        tokenList.add(element.data()["token"]);
+      }
     });
 
     return tokenList;

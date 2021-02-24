@@ -95,6 +95,12 @@ class FirebaseRepository {
     mail: mail
   );
 
+  Future<void> saveAttendeesUserAlarm({Alarm alarmModel, String companyCode, List<String> mail}) => _firebaseMethods.saveAttendeesUserAlarm(
+    alarmModel: alarmModel,
+    companyCode: companyCode,
+    mail: mail,
+  );
+
   Future<void> deleteAlarm({String companyCode, String mail, String documentID}) => _firebaseMethods.deleteAlarm(
     companyCode: companyCode,
     mail: mail,
@@ -171,6 +177,12 @@ class FirebaseRepository {
         companyCode: companyCode,
         selectedWeek: selectedWeek,
       );
+
+  Stream<QuerySnapshot> getNowOutCompanyWork({String companyCode, String userMail}) => _firebaseMethods.getNowOutCompanyWork(companyCode: companyCode, userMail: userMail);
+
+  Future<List<WorkModel>> getWorkForAlarm({String companyCode, String userMail}) => _firebaseMethods.getWorkForAlarm(companyCode: companyCode, userMail: userMail);
+
+
 
   Future<Map<DateTime, List<CompanyUser>>> getBirthday({String companyCode}) => _firebaseMethods.getBirthday(companyCode: companyCode);
 
@@ -313,6 +325,11 @@ class FirebaseRepository {
   Future<List<String>> getTokens({String companyCode, String mail}) => _firebaseMethods.getTokens(
     companyCode: companyCode,
     mail: mail
+  );
+
+  Future<List<String>> getAttendeesTokens({String companyCode, List<String> mail}) => _firebaseMethods.getAttendeesTokens(
+    companyCode: companyCode,
+    mail: mail,
   );
 
   Future<List<String>> getApprovalUserTokens({String companyCode, String mail}) => _firebaseMethods.getApprovalUserTokens(

@@ -17,7 +17,7 @@ class Fcm {
       String position,
       String collection,
       String alarmId}) async {
-    print("함수 실행");
+
     final HttpsCallableResult result = await sendFCM.call(
       <String, dynamic>{
         "token": tokenList,
@@ -79,7 +79,15 @@ class Fcm {
       }
 
       else if(data["body"] == "notice"){
-        collection = "새로운 공지를 등록했습니다.";
+        collection = "님이 새로운 공지를 등록했습니다.";
+      }
+
+      else if(data["body"] == "comment"){
+        collection = "님이 공지에 댓글을 남겼습니다.";
+      }
+
+      else if(data["body"] == "comment2"){
+        collection = "님이 내 댓글에 댓글을 남겼습니다.";
       }
 
       else if(data["body"] == "approvalWork"){

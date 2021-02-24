@@ -1,5 +1,8 @@
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyUserModel.dart';
+import 'package:MyCompany/repos/fcm/pushFCM.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
@@ -26,6 +29,9 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID,
   TextEditingController _noticeContent = TextEditingController();
 
   FocusNode _noticeFocusNode = FocusNode();
+
+  Format _format = Format();
+  Fcm fcm = Fcm();
 
   User _loginUser;
 
@@ -106,6 +112,9 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID,
                             size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                           ),
                           onPressed: _noticeTitle.text == '' ? () {} : () async {
+                            var doc = await FirebaseFirestore.instance.collection("company").doc(_loginUser.companyCode).collection("user").doc(_loginUser.mail).get();
+                            CompanyUser loginUserInfo = CompanyUser.fromMap(doc.data(), doc.id);
+
                             if (_noticeTitle.text != '' &&
                                 _noticeContent.text != '') {
                               if (noticeDocumentID == "") {
@@ -118,16 +127,42 @@ WorkNoticeBottomSheet(BuildContext context, String noticeDocumentID,
                                       _noticeTitle.text),
                                   //noticeUpdateDate: Timestamp.fromDate(DateTime.now()),
                                 );
-                                /*Alarm _alarm = Alarm(
 
-                                );*/
                                 await FirebaseRepository().addNotice(
                                     companyCode: _loginUser.companyCode,
                                     notice: _notice,
-                                );
-                                await FirebaseRepository().saveAlarm(
+                                ).whenComplete(() async {
+                                  Alarm _alarmModel = Alarm(
+                                    alarmId: _notice.noticeCreateDate.hashCode,
+                                    createName: _loginUser.name,
+                                    createMail: _loginUser.mail,
+                                    collectionName: "notice",
+                                    alarmContents: loginUserInfo.team + " " + _loginUser.name + " " + loginUserInfo.position + "님이 새로운 " + "공지" + "를 등록 했습니다.",
+                                    read: false,
+                                    alarmDate: _format.dateTimeToTimeStamp(DateTime.now()),
+                                  );
 
-                                );
+                                  //동료들 토큰 가져오기
+                                  List<String> tokens = await FirebaseRepository().getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
+
+                                  await FirebaseRepository().saveAlarm(
+                                    alarmModel: _alarmModel,
+                                    companyCode: _loginUser.companyCode,
+                                    mail: _loginUser.mail,
+                                  ).whenComplete(() async{
+                                    //동료들에게 알림 보내기
+                                    fcm.sendFCMtoSelectedDevice(
+                                        alarmId: _alarmModel.alarmId.toString(),
+                                        tokenList: tokens,
+                                        name: _loginUser.name,
+                                        team: loginUserInfo.team,
+                                        position: loginUserInfo.position,
+                                        collection: "notice"
+                                    );
+                                  });
+
+
+                                });
                               } else {
                                 await FirebaseFirestore.instance
                                     .collection('company')

@@ -141,6 +141,14 @@ class Format{
     return dateTime;
   }
 
+  String timeStampToTimes(Timestamp time){
+    String dateTime;
+    dateTime = DateFormat('MM월 dd일 hh:mm').format(
+        DateTime.parse(time.toDate().toString()));
+
+    return dateTime;
+  }
+
   String yearMonthDay(Timestamp time){
     String dateTime;
     dateTime = DateFormat('yyyy/MM/dd').format(

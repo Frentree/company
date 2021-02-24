@@ -87,7 +87,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
   List<bool> isDetail = [];
   bool isBirthdayDetail = false;
 
-  Map<int, bool> test = {};
   Map<DateTime, List<dynamic>> _events;
   Map<DateTime, List<dynamic>> _holidays;
 
@@ -338,7 +337,6 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                         }
                       });
                       if (_companyWork.length == 0) {
-                        test = {};
                         isDetail = [];
                         return Expanded(
                           child: ListView(
@@ -362,15 +360,17 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                           ),
                         );
                       } else {
-                        if (test.length != _companyWork.length) {
+                        while(isDetail.length != _companyWork.length){
+                          isDetail = List.generate(_companyWork.length, (index) => false);
+                        }
+                        /*if (test.length != _companyWork.length) {
                           test = {};
                           _companyWork.forEach((element) {
                             test.addAll({element.data()["alarmId"] : false});
                           });
-                          isDetail = List.generate(_companyWork.length, (index) => false);
-                        }
 
-                        if((test.length == _companyWork.length) && isDetail.contains(true)){
+                        }*/
+                        /*if((test.length == _companyWork.length) && isDetail.contains(true)){
                           int i = isDetail.indexOf(true);
                           if(test[_companyWork[i].data()["alarmId"]] != true){
                             test = {};
@@ -379,13 +379,13 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                             });
                           }
                         }
-
-                        if (test.length > _companyWork.length) {
-                          if (test.containsValue(true)) {
-                            test.removeWhere((key, value) => value == true);
+*/
+                        if (isDetail.length > _companyWork.length) {
+                          if (isDetail.contains(true)) {
+                            /*test.removeWhere((key, value) => value == true);*/
                             isDetail.remove(true);
                           } else{
-                            test = {};
+                            /*test = {};*/
                             isDetail = [];
                           }
 
@@ -418,15 +418,15 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                       context: context,
                                       companyCode: _loginUser.companyCode,
                                       workModel: _companyData,
-                                      isDetail: test[_companyWork[index].data()["alarmId"]],
+                                      isDetail: /*test[_companyWork[index].data()["alarmId"]],*/isDetail[index],
                                     ),
                                     onTap: () {
                                       setState(() {
                                         isDetail[index] = !isDetail[index];
-                                        test[_companyWork[index].data()["alarmId"]] = !test[_companyWork[index].data()["alarmId"]];
-                                        for (int i = 0; i < test.length; i++) {
+                                        /*test[_companyWork[index].data()["alarmId"]] = !test[_companyWork[index].data()["alarmId"]];*/
+                                        for (int i = 0; i < isDetail.length; i++) {
                                           if (i != index) {
-                                            test[_companyWork[i].data()["alarmId"]] = false;
+                                            /*test[_companyWork[i].data()["alarmId"]] = false;*/
                                             isDetail[i] = false;
                                           }
                                         }
@@ -462,15 +462,15 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                       loginUserMail: _loginUser.mail,
                                       companyCode: _loginUser.companyCode,
                                       meetingModel: _companyData,
-                                      isDetail: test[_companyWork[index].data()["alarmId"]],
+                                      isDetail: /*test[_companyWork[index].data()["alarmId"]],*/isDetail[index],
                                     ),
                                     onTap: () {
                                       setState(() {
                                         isDetail[index] = !isDetail[index];
-                                        test[_companyWork[index].data()["alarmId"]] = !test[_companyWork[index].data()["alarmId"]];
-                                        for (int i = 0; i < test.length; i++) {
+                                        /*test[_companyWork[index].data()["alarmId"]] = !test[_companyWork[index].data()["alarmId"]];*/
+                                        for (int i = 0; i < isDetail.length; i++) {
                                           if (i != index) {
-                                            test[_companyWork[i].data()["alarmId"]] = false;
+                                            /*test[_companyWork[i].data()["alarmId"]] = false;*/
                                             isDetail[i] = false;
                                           }
                                         }

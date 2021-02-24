@@ -323,14 +323,16 @@ AnnualLeaveMain(BuildContext context) async {
                                     companyCode: user.companyCode,
                                     mail: approvalUser.mail,
                                   ).whenComplete(() async {
-                                    Fcm().sendFCMtoSelectedDevice(
-                                        alarmId: _alarmModel.alarmId.toString(),
-                                        tokenList: token,
-                                        name: user.name,
-                                        team: loginUserInfo.team,
-                                        position: loginUserInfo.position,
-                                        collection: "annualLeave@${_approval.approvalType}"
-                                    );
+                                    if(token.length != 0){
+                                      Fcm().sendFCMtoSelectedDevice(
+                                          alarmId: _alarmModel.alarmId.toString(),
+                                          tokenList: token,
+                                          name: user.name,
+                                          team: loginUserInfo.team,
+                                          position: loginUserInfo.position,
+                                          collection: "annualLeave@${_approval.approvalType}"
+                                      );
+                                    }
                                   });
                                 });
 

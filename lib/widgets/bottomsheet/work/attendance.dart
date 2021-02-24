@@ -10,6 +10,7 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +28,6 @@ final word = Words();
 attendance({BuildContext context, double statusBarHeight}) async {
   bool result = false;
   Format _format = Format();
-
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
-  TextEditingController _contentController = TextEditingController();
 
   User _loginUser;
   DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -51,7 +48,6 @@ attendance({BuildContext context, double statusBarHeight}) async {
       LoginUserInfoProvider _loginUserInfoProvider =
       Provider.of<LoginUserInfoProvider>(context);
       _loginUser = _loginUserInfoProvider.getLoginUser();
-      print(statusBarHeight);
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return GestureDetector(
@@ -174,12 +170,15 @@ attendance({BuildContext context, double statusBarHeight}) async {
 
                         snapshot.data.documents.forEach((element){
                           var elementData = element.data();
-                          _companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
-                          colleague.addAll({elementData["mail"]: elementData["name"]});
-                          /*if(elementData["mail"] != _loginUser.mail){
+                          /*_companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
+                          colleague.addAll({elementData["mail"]: elementData["name"]});*/
+                          if(elementData["mail"] != _loginUser.mail){
                             _companyUserInfo.add(CompanyUser.fromMap(elementData, element.documentID));
                             colleague.addAll({elementData["mail"]: elementData["name"]});
-                          }*/
+                          }
+                          else{
+                            _companyUserInfo.insert(0, CompanyUser.fromMap(elementData, element.documentID));
+                          }
                         });
                         return StreamBuilder(
                           stream: _repository.getColleagueNowAttendance(companyCode: _loginUser.companyCode, loginUserMail: _loginUser.mail, today: _format.dateTimeToTimeStamp(today),),
@@ -195,21 +194,19 @@ attendance({BuildContext context, double statusBarHeight}) async {
                               attendanceData.addAll({element: ""});
                             });
 
-                            print("rkqt : ${snapshot.data.documents}");
                             snapshot.data.documents.forEach((element){
                               var elementData = element.data();
                               attendanceData.update(elementData["mail"], (value) => elementData);
                             });
 
+                            /*print("attendanceData ${attendanceData[attendanceData.keys.elementAt(5)]} ${attendanceData[attendanceData.keys.elementAt(5)] == ""}");*/
 
-                            print(attendanceData[attendanceData.keys.elementAt(2)] == "");
                             return Expanded(
                               child: ListView.builder(
                                 itemCount: attendanceData.keys.length,
                                 itemBuilder: (context, index){
                                   Attendance _attendance = attendanceData[attendanceData.keys.elementAt(index)] == "" ? null : Attendance.fromMap(attendanceData[attendanceData.keys.elementAt(index)], "");
-                                  print("이름 : ${colleague.values.elementAt(index)}");
-                                  print("팀 : ${_companyUserInfo[index].team}");
+                                  print("attendance ====> ${index} : ${_attendance}");
                                   return Card(
                                     elevation: 0,
                                     shape: cardShape,
@@ -241,10 +238,37 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                               alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                                               child: Text(
-                                                ( _attendance == null || _attendance.status == 0) ? Words.word.beforeWork() : _attendance.status == 1 ? Words.word.workIn() : _attendance.status == 2 ? Words.word.workOut() : Words.word.leaveWork(),
+                                                (_attendance == null || _attendance.status == 0) ? Words.word.beforeWork() : _attendance.status == 1 ? Words.word.workIn() : _attendance.status == 2 ? Words.word.workOut() : Words.word.leaveWork(),
                                                 style: containerChipStyle,
                                               ),
                                             ),
+                                            cardSpace,
+                                            Container(
+                                              alignment: Alignment.center,
+                                              width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
+                                              child: (_attendance != null && _attendance.status == 2) ? StreamBuilder(
+                                                stream: _repository.getNowOutCompanyWork(companyCode: _loginUser.companyCode, userMail: _attendance.mail),
+                                                builder: (BuildContext context, AsyncSnapshot snapshot){
+                                                  String location = "";
+                                                  if (snapshot.data == null) {
+                                                    return Text("");
+                                                  }
+                                                  if(snapshot.data.documents.length != 0){
+                                                    WorkModel _workModel = WorkModel.fromMap(snapshot.data.documents.last.data(), "");
+                                                    location = _workModel.location;
+                                                  }
+
+                                                  else{
+                                                    location = "외근지 등록 안됨";
+                                                  }
+
+                                                  return Text(
+                                                    location,
+                                                    style: containerChipStyle,
+                                                  );
+                                                }
+                                              ) : Container(),
+                                            )
                                           ],
                                         ),
                                       ),

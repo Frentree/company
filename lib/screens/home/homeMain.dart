@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/home/homeSchedule.dart';
+import 'package:MyCompany/screens/splash.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -84,14 +85,17 @@ class HomeMainPageState extends State<HomeMainPage> {
     if(_sharedPreferences.getString("payloadOld") != null){
       payloadOld = _sharedPreferences.getString("payloadOld");
     }
+
     if(click == false) {
-      if(payloadOld == payload){
+      if(payloadOld == payload || payloadOld == ""){
         payload = "";
       }
       click = !click;
     }
+
     if(payload.split(",")[0] == "alarm" && click == true){
       setState(() {
+        clickTest = true;
         currentPageIndex = 2;
       });
 

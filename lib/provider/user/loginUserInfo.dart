@@ -1,5 +1,6 @@
 //Flutter
 import 'dart:convert';
+import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
@@ -62,11 +63,16 @@ class LoginUserInfoProvider with ChangeNotifier{
   }
 
   //로그아웃
-  Future<void> logoutUesr() async {
+  Future<void> logoutUser() async {
+    FirebaseRepository _repository = FirebaseRepository();
+    await _repository.updateToken(companyCode: _loginUser.companyCode, mail: _loginUser.mail, token: "");
+    await notificationPlugin.deleteAllNotification();
+
     SharedPreferences _sharedPreferences;
     _sharedPreferences = await SharedPreferences.getInstance();
     await _sharedPreferences.remove("loginUser");
     await _sharedPreferences.remove("payloadOld");
+
     setLoginUser(null);
   }
 }

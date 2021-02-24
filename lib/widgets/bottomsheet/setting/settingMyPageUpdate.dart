@@ -58,7 +58,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
           builder: (BuildContext context, StateSetter setState) {
             LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context, listen: false);
             if(result){
-              _loginUserInfoProvider.logoutUesr();
+              _loginUserInfoProvider.logoutUser();
               Navigator.of(context).pop();
             }
             // 프로필 사진을 업로드할 경로와 파일명을 정의. 사용자의 uid를 이용하여 파일명의 중복 가능성 제거
