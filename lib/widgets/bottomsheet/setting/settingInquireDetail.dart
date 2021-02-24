@@ -152,7 +152,6 @@ Widget _buildInquireList(BuildContext context, List<DocumentSnapshot> snapshot, 
 Widget _buildInquireListItem(BuildContext context, DocumentSnapshot data, User user, setState) {
   final inquire = InquireModel.fromSnapshow(data);
   Format _format = Format();
-
   return (inquire.sender == user.mail)
       ? Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -163,75 +162,41 @@ Widget _buildInquireListItem(BuildContext context, DocumentSnapshot data, User u
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  (inquire.sender == user.mail)
-                      ? InkWell(
-                    child: Text(
-                      word.delete(),
-                      style: customStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.Tablet ? cardTimeSizeT.sp : cardTimeSizeM.sp,
-                          fontWeightName: "Medium",
-                          fontColor: redColor
-                      ),
-                    ),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          // return object of type Dialog
-                          return AlertDialog(
-                            title: Text(
-                              "문의 삭제",
-                              style: defaultMediumStyle,
-                            ),
-                            content: Text(
-                              "문의 내용을 삭제 하시겠습니까?",
-                              style: defaultRegularStyle,
-                            ),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text(
-                                  word.yes(),
-                                  style: buttonBlueStyle,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    inquire.reference.delete();
-                                    Navigator.pop(context);
-                                  });
-                                },
-                              ),
-                              FlatButton(
-                                child: Text(
-                                  word.no(),
-                                  style: buttonBlueStyle,
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  )
-                      : SizedBox(),
                   cardSpace,
                   Text(
                     _format.timeStampToTimes(inquire.createDate),
                     style: timeStyle
                   ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: Card(
-                        color: Colors.yellow,
-                        elevation: 0,
-                        shape: converShape,
-                        child: Container(
-                          padding: EdgeInsets.all(3.0),
-                          width: 170.0,
-                          child: Text(inquire.content, style: cardContentsStyle),
-                        )),
+                  GestureDetector(
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      child: Card(
+                          color: Colors.yellow,
+                          elevation: 0,
+                          shape: converShape,
+                          child: Container(
+                            padding: EdgeInsets.all(3.0),
+                            width: 170.0,
+                            child: Text(inquire.content, style: cardContentsStyle),
+                          )),
+                    ),
+                    onLongPress: (){
+                      showMenu(
+                        position: RelativeRect.fromLTRB(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height / 2, 0.0, 0.0),
+                        items: <PopupMenuEntry>[
+                          PopupMenuItem(
+                            value: 0,
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.delete),
+                                Text("삭제"),
+                              ],
+                            ),
+                          )
+                        ],
+                        context: context,
+                      );
+                    },
                   ),
                 ],
               ),
