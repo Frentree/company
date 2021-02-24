@@ -890,5 +890,3 @@ ExpenseDetail(BuildContext context, String companyCode, WorkApproval model,
   );
   return result;
 }
-
-Row requestRow() {}

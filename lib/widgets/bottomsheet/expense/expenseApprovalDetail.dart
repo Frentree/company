@@ -29,20 +29,6 @@ ExpenseApprovalDetail(
   var returnString = NumberFormat("###,###", "en_US");
   List<ExpenseModel> _expenseList = expenseList;
 
-  /*Future<List<ExpenseModel>> _expenseFutureList =
-  _repository.getExpenses(model, companyCode);
-  //debugPrint("----- _expenseFutureList end -----");
-  _expenseList = List<ExpenseModel>();
-
-  futureToList() async {
-    _expenseList = await _expenseFutureList;
-    //debugPrint("_expenseList.length = " + _expenseList.length.toString());
-    //debugPrint("companyCode is = " + _expenseList[0].createDate.toString());
-    //debugPrint("companyCode is = " + _expenseList[1].createDate.toString());
-  }
-  futureToList();
-  debugPrint("_expenseList.length after futureToList= " + _expenseList.length.toString());*/
-
    showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -194,43 +180,6 @@ ExpenseApprovalDetail(
                           )
                         ,]
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          height: 4.0.h,
-                          width: SizerUtil.deviceType == DeviceType.Tablet
-                              ? 18.0.w
-                              : 25.0.w,
-                          decoration: BoxDecoration(
-                            color: chipColorBlue,
-                            borderRadius: BorderRadius.circular(
-                                SizerUtil.deviceType == DeviceType.Tablet
-                                    ? 6.0.w
-                                    : 8.0.w),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal:
-                            SizerUtil.deviceType == DeviceType.Tablet
-                                ? 0.75.w
-                                : 1.0.w,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "세부 정보",
-                            style: defaultMediumStyle,
-                          ),
-                        ),
-                        Expanded(
-                          child: SizedBox(),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
                     ),
                   ],
                 ),
