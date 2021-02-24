@@ -1,10 +1,12 @@
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/models/inquireAdminModel.dart';
 import 'package:MyCompany/screens/setting/organizationChart.dart';
 import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingInquireAdminChatDetail.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingInquireDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,18 +17,12 @@ import 'package:MyCompany/consts/screenSize/login.dart';
 
 
 
-SettingAdminInquire({BuildContext context, double statusBarHeight}) {
+SettingInquireAdminChat({BuildContext context, InquireAdminModel model}) {
   User _loginUser;
 
   showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(pageRadiusW.w),
-          topLeft: Radius.circular(pageRadiusW.w),
-        ),
-      ),
       builder: (context) {
         LoginUserInfoProvider _loginUserInfoProvider =
         Provider.of<LoginUserInfoProvider>(context);
@@ -35,11 +31,10 @@ SettingAdminInquire({BuildContext context, double statusBarHeight}) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return Container(
-                height: MediaQuery.of(context).size.height - 10.0.h - statusBarHeight,
                 padding: EdgeInsets.only(
                   left: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   right: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
-                  top: 2.0.h,
+                  top: 4.0.h,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -77,7 +72,7 @@ SettingAdminInquire({BuildContext context, double statusBarHeight}) {
                             child: Container(
                               alignment: Alignment.center,
                               child: Text(
-                                Words.word.Inquire(),
+                                model.mail,
                                 style: defaultMediumStyle,
                               ),
                             ),
@@ -87,7 +82,7 @@ SettingAdminInquire({BuildContext context, double statusBarHeight}) {
                     ),
                     emptySpace,
                     Expanded(
-                      child: SettingInquireDetail(),
+                      child: SettingInquireAdminChatDetail(model : model),
                     ),
                   ],
                 ),

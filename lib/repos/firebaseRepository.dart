@@ -564,4 +564,10 @@ class FirebaseRepository {
 
   Future<void> createQnA({InquireModel model}) =>
       _firebaseMethods.createQnA(model);
+
+  Stream<QuerySnapshot> getQnAAdmin() =>
+      _firebaseMethods.getQnAAdmin() ;
+
+  Future<void> senderQnAReset({String mail}) =>
+      _firebaseMethods.senderQnAReset(mail);
 }

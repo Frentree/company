@@ -1450,7 +1450,46 @@ class FirebaseMethods {
   }
 
   Future<void> createQnA(InquireModel model) async {
+    if(model.mail == model.sender) {
+      await firestore.collection(QNAUSER).doc(model.mail).update({
+        "senderCount": FieldValue.increment(1),
+        "lastDate": Timestamp.now(),
+        "name": model.name,
+        "mail": model.mail,
+        "lastContent": model.content
+      }).catchError((e) {
+        firestore.collection(QNAUSER).doc(model.mail).set({
+          "senderCount": FieldValue.increment(1),
+          "lastDate": Timestamp.now(),
+          "name": model.name,
+          "mail": model.mail,
+          "lastContent": model.content
+        });
+      });
+    } else {
+      await firestore.collection(QNAUSER).doc(model.mail).update({
+        "senderCount": 0,
+        "lastDate": Timestamp.now(),
+        "name": model.name,
+        "mail": model.mail,
+        "lastContent": model.content
+      });
+    }
+
     return await firestore.collection(QNA).add(model.toJson());
+  }
+
+  Future<void> senderQnAReset(String mail) async {
+    return await firestore.collection(QNAUSER).doc(mail).update({
+      "senderCount" : 0,
+    });
+  }
+
+  Stream<QuerySnapshot> getQnAAdmin() {
+    return firestore
+        .collection(QNAUSER)
+        .orderBy("lastDate", descending: true)
+        .snapshots();
   }
 }
 
