@@ -132,6 +132,13 @@ TextStyle buttonWhiteStyle = customStyle(
   fontWeightName: "Medium",
 );
 
+TextStyle inquireDateBlackStyle = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
+  fontColor: blackColor,
+  fontWeightName: "Regular",
+);
+
+
 /*WIDGET STYLE*/
 Container emptySpace = Container(
   height: widgetDistanceH.h,

@@ -325,6 +325,7 @@ class Words {
   String Inquire() => Intl.message("1:1 문의하기", name: "Inquire", args: [], desc: "Inquire");
   String TermsOfService() => Intl.message("서비스 이용약관", name: "TermsOfService", args: [], desc: "Terms of Service");
   String personalInfomation() => Intl.message("개인정보 취급방식", name: "personalInfomation", args: [], desc: "Personal information handling method");
+  String InquireResponse() => Intl.message("1:1 답변하기", name: "InquireResponse", args: [], desc: "Inquire");
 
 
 }

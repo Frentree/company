@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/models/inquireAdminModel.dart';
 import 'package:MyCompany/models/inquireModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
@@ -15,12 +16,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class SettingInquireDetail extends StatefulWidget {
+class SettingInquireAdminChatDetail extends StatefulWidget {
   @override
-  _SettingInquireDetailState createState() => _SettingInquireDetailState();
+  final model;
+  SettingInquireAdminChatDetail({
+    this.model
+  });
+  _SettingInquireDetailAdminChatState createState() => _SettingInquireDetailAdminChatState(model: model);
 }
 
-class _SettingInquireDetailState extends State<SettingInquireDetail> {
+class _SettingInquireDetailAdminChatState extends State<SettingInquireAdminChatDetail> {
+  final model;
+  _SettingInquireDetailAdminChatState({
+    this.model
+  });
   User _loginUser;
 
   @override
@@ -42,18 +51,18 @@ class _SettingInquireDetailState extends State<SettingInquireDetail> {
     );
     return Scaffold(
       backgroundColor: whiteColor,
-      body: _buildInquireBody(context, _loginUser, setState),
+      body: _buildInquireBody(context, _loginUser, setState, model),
     );
   }
 }
 
-Widget _buildInquireBody(BuildContext context, User user, setState) {
+Widget _buildInquireBody(BuildContext context, User user, setState, InquireAdminModel model) {
   return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseRepository().getQnA(mail: user.mail),
+    stream: FirebaseRepository().getQnA(mail: model.mail),
     builder: (context, snapshot) {
       if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
 
-      return _buildInquireList(context, snapshot.data.docs, user, setState);
+      return _buildInquireList(context, snapshot.data.docs, user, setState, model);
     },
   );
 }
@@ -61,32 +70,13 @@ Widget _buildInquireBody(BuildContext context, User user, setState) {
 final TextEditingController _commentControll = TextEditingController();
 final ScrollController _scrollController = ScrollController();
 
-Widget _buildInquireList(BuildContext context, List<DocumentSnapshot> snapshot, User user, setState) {
+Widget _buildInquireList(BuildContext context, List<DocumentSnapshot> snapshot, User user, setState, InquireAdminModel userModel) {
   return Column(
     children: [
       Expanded(
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                  (context, index) => Card(
-                        elevation: 0,
-                        shape: cardShape,
-                        child: Padding(
-                          padding: cardPadding,
-                          child: Container(
-                            height: pageNameSizeT.h,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "사적인 광고나 부적절한 내용은 고객지원\n센터에서 답변을 드리지않습니다.\n빠른시간 내에 답변드리도록 노력하겠습니다.",
-                              style: cardContentsStyle,
-                            ),
-                          ),
-                        ),
-                      ),
-                  childCount: 1),
-            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                   (context, index) => _buildInquireListItem(context, snapshot[index], user, setState), //_buildListItem(context, snapshot[index], user),
@@ -110,7 +100,7 @@ Widget _buildInquireList(BuildContext context, List<DocumentSnapshot> snapshot, 
                 isDense: true,
                 contentPadding: textFormPadding,
                 border: OutlineInputBorder(),
-                hintText: "1:1 문의 내용을 입력해 주세요",
+                hintText: "1:1 문의 답변 내용을 입력해주세요",
                 hintStyle: hintStyle,
               ),
             ),
@@ -129,11 +119,11 @@ Widget _buildInquireList(BuildContext context, List<DocumentSnapshot> snapshot, 
                 onPressed: () async {
                   InquireModel model = InquireModel(
                       chk: 0,
-                      name: user.name,
-                      mail: user.mail,
+                      mail: userModel.mail,
+                      name: userModel.name,
                       sender: user.mail,
                       content: _commentControll.text,
-                      receiver: "",
+                      receiver: userModel.mail,
                       createDate: Timestamp.now());
                   await FirebaseRepository().createQnA(model: model);
                   setState(() {
@@ -236,7 +226,7 @@ Widget _buildInquireListItem(BuildContext context, DocumentSnapshot data, User u
               child: CircleAvatar(
                 backgroundColor: chipColorPurple,
                 radius: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
-                child: Image.asset("assets/images/launcher.png"),
+                child: Image.asset("assets/images/personal.png"),
               )
             ),
             Row(
@@ -246,7 +236,7 @@ Widget _buildInquireListItem(BuildContext context, DocumentSnapshot data, User u
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        "고객센터",
+                        "사용자",
                         style: cardContentsStyle
                     ),
                     Container(
