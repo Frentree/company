@@ -11,6 +11,7 @@ import 'package:MyCompany/widgets/bottomsheet/setting/settingHelp.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingInquire.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingOrganizationChart.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingPosition.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingTermsOfService.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserAddDelete.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingUserManager.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingWifi.dart';
@@ -940,8 +941,8 @@ class SettingMainPageState extends State<SettingMainPage> {
                             onTap: (){
                               settingUserAddDelete(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
                             },
-                          ),
-                          GestureDetector(
+                          ),*/
+                          /*GestureDetector(
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
@@ -953,7 +954,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                                     height: 8.0.h,
                                     width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
                                     child: Icon(
-                                      Icons.badge,
+                                      Icons.medical_services_outlined,
                                       size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
                                       color: mainColor,
                                     ),
@@ -972,10 +973,10 @@ class SettingMainPageState extends State<SettingMainPage> {
                               ),
                             ),
                             onTap: (){
-                              SettingUserManager(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
+                              SettingTermsOfService(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
                             },
-                          ),
-                          GestureDetector(
+                          ),*/
+                          /*GestureDetector(
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
