@@ -157,6 +157,7 @@ class AttendanceCheck extends ChangeNotifier {
 
     //출퇴근 데이터가 있을 경우
     else {
+      print("데이터가 있습니다.");
       String wifiName = await connectWifiName();
       _attendance = Attendance.fromMap(
           result.docs.first.data(), result.docs.first.id);

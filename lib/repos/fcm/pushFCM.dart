@@ -36,6 +36,7 @@ class Fcm {
       // Handle data message
       final dynamic data = message['data'];
 
+
       String collection = "";
 
       if(data["body"] == "work"){
@@ -148,12 +149,30 @@ class Fcm {
         collection = "님이 " + data["body"].toString().split("@")[1] + "결재를 거절했습니다.";
       }
 
-      notificationPlugin.showNotification(
-          alarmId: int.parse(data["alarmId"]),
-          title: "새로운 알림",
-          contents: data["title"] + collection,
-          payload: "alarm"
-      );
+      if(data["body"] == "onWork"){
+        notificationPlugin.showNotification(
+            alarmId: 0,
+            title: "새로운 알림",
+            contents: "출근 시간이 지났습니다. 출근 처리를 해주세요",
+            payload: "alarm"
+        );
+      }
+      else if(data["body"] == "offWork"){
+        notificationPlugin.showNotification(
+            alarmId: 0,
+            title: "새로운 알림",
+            contents: "퇴근 시간이 지났습니다. 퇴근 처리를 해주세요",
+            payload: "alarm"
+        );
+      }
+      else{
+        notificationPlugin.showNotification(
+            alarmId: int.parse(data["alarmId"]),
+            title: "새로운 알림",
+            contents: data["title"] + collection,
+            payload: "alarm"
+        );
+      }
     }
   }
 }
