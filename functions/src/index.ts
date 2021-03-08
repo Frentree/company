@@ -2,21 +2,142 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 
-export const test = functions.pubsub.schedule('43 15 * * *').timeZone('Asia/Seoul').onRun((context) => {
+class Person {
+    mail : string;
+    name : string;
+    token : string;
+    constructor(mail: string, name: string, token: string) {
+        this.mail = mail;
+        this.name = name;
+        this.token = token;
+    }
+};
+
+var userInfo:Person[] = [];
+
+export const createAttendanceDB = functions.pubsub.schedule('00 04 * * *').timeZone('Asia/Seoul').onRun(async (context) => {
     const db = admin.firestore();
-    var companyId:string[] = [];
+    const today = new Date();
+    const utc = today.getTime() + (today.getTimezoneOffset() * 60 * 1000);
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    const kr_today = new Date(utc + (KR_TIME_DIFF));
+    const year = kr_today.getFullYear(); // 년도
+    const month = kr_today.getMonth();  // 월
+    const date = kr_today.getDate() - 1;  // 날짜
+    const createDate = new Date(year, month, date, 15);
+
     var companyRef = db.collection("company");
-    var queryRef = companyRef.get().then(snapshot => {
-        snapshot.forEach(doc => {
-            companyId.push(doc.id);
-            console.log("리스트");
-            console.log(companyId);
+
+    companyRef.get().then(snapshot => {
+        snapshot.forEach(async doc => {
+            await doc.ref.collection("user").get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    var person = new Person(doc.data().mail, doc.data().name, doc.data().token);
+                    userInfo.push(person);
+                })
+            })
+
+            userInfo.forEach(async data => {
+                console.log('name =====> ', data.name);
+                console.log('data =====> ', data.mail);
+                await db.collection("company").doc(doc.id).collection("attendance").add({name : data.name, createDate : createDate, mail : data.mail, attendTime : null});
+            })
+            userInfo = [];
         });
     });
-    console.log(queryRef);
-    console.log(companyId[0]);
     return null;
 });
+
+export const onWorkCheck = functions.pubsub.schedule('05 09 * * *').timeZone('Asia/Seoul').onRun(async (context) => {
+    const db = admin.firestore();
+    const today = new Date();
+    const utc = today.getTime() + (today.getTimezoneOffset() * 60 * 1000);
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    const kr_today = new Date(utc + (KR_TIME_DIFF));
+    const year = kr_today.getFullYear(); // 년도
+    const month = kr_today.getMonth();  // 월
+    const date = kr_today.getDate() - 1;  // 날짜
+    const createDate = new Date(year, month, date, 15);
+
+    var companyRef = db.collection("company");
+
+    var payload = {
+        data: {
+          title : "onWork",
+          body: "onWork",
+          clickAction: 'FLUTTER_NOTIFICATION_CLICK',
+        }
+    };
+
+    companyRef.get().then(snapshot => {
+        snapshot.forEach(async doc => {
+            await doc.ref.collection("user").get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    var person = new Person(doc.data().mail, doc.data().name, doc.data().token);
+                    userInfo.push(person);
+                })
+            })
+
+            userInfo.forEach(data => {
+                doc.ref.collection("attendance").where("mail", "==" ,data.mail).where("createDate", "==", createDate).get().then(snapshot => {
+                    snapshot.forEach(doc =>{
+                        if(doc.data().attendTime == null && data.token != null){
+                            var result = admin.messaging().sendToDevice(data.token, payload);
+                        }
+                    })
+                })
+            })
+            userInfo = [];
+        });
+    });
+    return null;
+});
+
+export const offWorkCheck = functions.pubsub.schedule('05 18 * * *').timeZone('Asia/Seoul').onRun(async (context) => {
+    const db = admin.firestore();
+    const today = new Date();
+    const utc = today.getTime() + (today.getTimezoneOffset() * 60 * 1000);
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    const kr_today = new Date(utc + (KR_TIME_DIFF));
+    const year = kr_today.getFullYear(); // 년도
+    const month = kr_today.getMonth();  // 월
+    const date = kr_today.getDate() - 1;  // 날짜
+    const createDate = new Date(year, month, date, 15);
+
+    var companyRef = db.collection("company");
+
+    var payload = {
+        data: {
+          title : "offWork",
+          body: "offWork",
+          clickAction: 'FLUTTER_NOTIFICATION_CLICK',
+        }
+    };
+
+    companyRef.get().then(snapshot => {
+        snapshot.forEach(async doc => {
+            await doc.ref.collection("user").get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    var person = new Person(doc.data().mail, doc.data().name, doc.data().token);
+                    userInfo.push(person);
+                })
+            })
+
+            userInfo.forEach(data => {
+                doc.ref.collection("attendance").where("mail", "==" ,data.mail).where("createDate", "==", createDate).get().then(snapshot => {
+                    snapshot.forEach(doc =>{
+                        if(doc.data().attendTime != null && data.token != null && doc.data().endTime == null){
+                            var result = admin.messaging().sendToDevice(data.token, payload);
+                        }
+                    })
+                })
+            })
+            userInfo = [];
+        });
+    });
+    return null;
+});
+
 
 export const sendFCM = functions.https.onCall((data, context) => {
   var token = data["token"];

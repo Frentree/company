@@ -621,12 +621,15 @@ class FirebaseMethods {
 
   Future<QuerySnapshot> getMyTodayAttendance(
       {String companyCode, String loginUserMail, Timestamp today}) async {
+    Timestamp tomorrow = _format.dateTimeToTimeStamp(_format.timeStampToDateTime(today).add(Duration(days: 1)));
+    print(tomorrow);
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
         .collection(ATTENDANCE)
         .where("mail", isEqualTo: loginUserMail)
-        .where("createDate", isEqualTo: today)
+        .where("createDate", isGreaterThanOrEqualTo: today)
+        .where("createDate", isLessThan: tomorrow)
         .get();
   }
 
