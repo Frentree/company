@@ -77,6 +77,7 @@ Container titleCard({BuildContext context, String companyCode, WorkModel workMod
         //제목
         Expanded(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
