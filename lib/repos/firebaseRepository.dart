@@ -570,4 +570,7 @@ class FirebaseRepository {
 
   Future<void> senderQnAReset({String mail}) =>
       _firebaseMethods.senderQnAReset(mail);
+
+  Stream<QuerySnapshot> getNotice() =>
+      _firebaseMethods.getNotice() ;
 }

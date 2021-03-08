@@ -48,6 +48,12 @@ TextStyle defaultRegularStyleWhite = customStyle(
   fontWeightName: "Regular",
 );
 
+TextStyle defaultRegularStyleGray = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
+  fontColor: grayColor,
+  fontWeightName: "Regular",
+);
+
 TextStyle defaultMediumStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? defaultSizeT.sp : defaultSizeM.sp,
   fontColor: mainColor,

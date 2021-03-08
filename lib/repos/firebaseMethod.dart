@@ -1491,6 +1491,13 @@ class FirebaseMethods {
         .orderBy("lastDate", descending: true)
         .snapshots();
   }
+
+  Stream<QuerySnapshot> getNotice() {
+    return firestore
+        .collection(NOTICE)
+        .orderBy("createDate", descending: true)
+        .snapshots();
+  }
 }
 
 class FirestoreApi {
