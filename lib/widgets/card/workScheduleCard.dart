@@ -75,23 +75,29 @@ Container titleCard({BuildContext context, String companyCode, WorkModel workMod
         ),
         cardSpace,
         //제목
-        Container(
-          width: workModel.type == "외근" ? SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 22.0.w : SizerUtil.deviceType == DeviceType.Tablet ? 53.5.w : 37.0.w,
-          child: Text(
-            workModel.title,
-            style: cardTitleStyle,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  workModel.title,
+                  style: containerMediumStyle,
+                ),
+              ),
+              Visibility(
+                visible: workModel.type == "외근",
+                child: Container(
+                  child: Text(
+                    workModel.location == "" ? "" : "[${workModel.location}]",
+                    style: containerChipStyle,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        Visibility(
-          visible: workModel.type == "외근",
-          child: Container(
-            width: SizerUtil.deviceType == DeviceType.Tablet ? 15.5.w : 15.0.w,
-            child: Text(
-              workModel.location == "" ? "" : "[${workModel.location}]",
-              style: cardTitleStyle,
-            ),
-          ),
-        ),
+
         //popup 버튼
         isDetail ? popupMenu(
           context: context,

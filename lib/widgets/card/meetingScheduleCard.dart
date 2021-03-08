@@ -80,7 +80,7 @@ Container titleCard({BuildContext context, String loginUserMail, String companyC
           width: SizerUtil.deviceType == DeviceType.Tablet ? 53.5.w : 37.0.w,
           child: Text(
             meetingModel.title,
-            style: cardTitleStyle,
+            style: containerMediumStyle,
           ),
         ),
 

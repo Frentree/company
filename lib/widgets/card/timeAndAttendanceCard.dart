@@ -44,7 +44,7 @@ Card timeAndAttendanceCard({BuildContext context, Attendance attendanceModel, bo
               alignment: Alignment.center,
               child: Text(
                 _format.dateFormatForExpenseCard(attendanceModel.createDate),
-                style: cardBlueStyle,
+                style: containerChipStyle,
               ),
             ),
             cardSpace,
@@ -57,7 +57,7 @@ Card timeAndAttendanceCard({BuildContext context, Attendance attendanceModel, bo
                 alignment: Alignment.center,
                 child: Text(
                   isAllQuery ? "${companyUserInfo.team} ${companyUserInfo.name} ${companyUserInfo.position}" : "",
-                  style: cardBlueStyle,
+                  style: containerChipStyle,
                 ),
               ),
             ),
@@ -69,7 +69,7 @@ Card timeAndAttendanceCard({BuildContext context, Attendance attendanceModel, bo
               alignment: Alignment.center,
               child: Text(
                 attendanceModel.attendTime != null ? _format.timeToString(attendanceModel.attendTime) : "-",
-                style: cardBlueStyle,
+                style: containerChipStyle,
               ),
             ),
             cardSpace,
@@ -80,7 +80,7 @@ Card timeAndAttendanceCard({BuildContext context, Attendance attendanceModel, bo
               alignment: Alignment.center,
               child: Text(
                 attendanceModel.endTime != null ? _format.timeToString(attendanceModel.endTime) : "-",
-                style: cardBlueStyle,
+                style: containerChipStyle,
               ),
             ),
             cardSpace,
@@ -91,7 +91,7 @@ Card timeAndAttendanceCard({BuildContext context, Attendance attendanceModel, bo
               alignment: Alignment.center,
               child: Text(
                 attendanceModel.attendTime != null ? attendanceModel.endTime != null ? _format.dateFormatFortimeAndAttendanceCard(attendanceModel.endTime, attendanceModel.attendTime) : _format.dateFormatFortimeAndAttendanceCard(Timestamp.now(), attendanceModel.attendTime) : "-",
-                style: cardBlueStyle,
+                style: containerChipStyle,
               ),
             ),
           ],

@@ -351,7 +351,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       word.noSchedule(),
-                                      style: cardTitleStyle,
+                                      style: containerMediumStyle,
                                     ),
                                   ),
                                 ),

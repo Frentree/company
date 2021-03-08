@@ -43,23 +43,29 @@ Column childColumn({BuildContext context, List<dynamic> workData}) {
               ),
             ),
             cardSpace,
-            Container(
-              width: elementData["type"] == "외근" ? SizerUtil.deviceType == DeviceType.Tablet ? 34.0.w : 18.0.w : SizerUtil.deviceType == DeviceType.Tablet ? 49.5.w : 33.0.w,
-              child: Text(
-                elementData["title"],
-                style: cardTitleStyle,
-              ),
-            ),
-            Visibility(
-              visible: elementData["type"] == "외근",
-              child: Container(
-                width: SizerUtil.deviceType == DeviceType.Tablet ? 15.5.w : 15.0.w,
-                child: Text(
-                  elementData["location"] == "" ? "" : "[${elementData["location"]}]",
-                  style: cardTitleStyle,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  //: elementData["type"] == "외근" ? SizerUtil.deviceType == DeviceType.Tablet ? 34.0.w : 18.0.w : SizerUtil.deviceType == DeviceType.Tablet ? 49.5.w : 33.0.w,
+                  child: Text(
+                    elementData["title"],
+                    style: containerMediumStyle,
+                  ),
                 ),
-              ),
-            )
+                Visibility(
+                  visible: elementData["type"] == "외근",
+                  child: Container(
+                    //width: SizerUtil.deviceType == DeviceType.Tablet ? 15.5.w : 15.0.w,
+                    child: Text(
+                      elementData["location"] == "" ? "" : "[${elementData["location"]}]",
+                      style: containerChipStyle,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),
@@ -86,7 +92,7 @@ Card workCoScheduleCard({BuildContext context, String name, List<dynamic> workDa
             width: SizerUtil.deviceType == DeviceType.Tablet ? 9.0.w : 12.0.w,
             child: Text(
               name,
-              style: cardTitleStyle,
+              style: containerMediumStyle,
             ),
           ),
           Container(
@@ -97,7 +103,7 @@ Card workCoScheduleCard({BuildContext context, String name, List<dynamic> workDa
             alignment: Alignment.center,
             child: Text(
               word.noSchedule(),
-              style: cardTitleStyle,
+              style: containerMediumStyle,
             ),
           ) : childColumn(
             context: context,

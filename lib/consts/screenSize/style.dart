@@ -120,6 +120,12 @@ TextStyle reversContainerChipStyle = customStyle(
   fontWeightName: "Regular",
 );
 
+TextStyle containerMediumStyle = customStyle(
+  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
+  fontColor: mainColor,
+  fontWeightName: "Medium",
+);
+
 TextStyle popupMenuStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? popupMenuSizeT.sp : popupMenuSizeM.sp,
   fontColor: mainColor,

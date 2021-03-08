@@ -52,7 +52,7 @@ class TimeAndAttendanceCheckState extends State<TimeAndAttendanceCheck> {
                 child: Padding(
                   padding: cardPadding,
                   child: Container(
-                    height: scheduleCardDefaultSizeH.h,
+                    height: cardTitleSizeH.h,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -166,7 +166,7 @@ class TimeAndAttendanceCheckState extends State<TimeAndAttendanceCheck> {
                             return FutureBuilder(
                               future: _repository.getMyCompanyInfo(companyCode: _loginUser.companyCode, myMail: _attendance.mail),
                               builder: (context, snapshot) {
-                                if (!snapshot.hasData) return CircularProgressIndicator();
+                                if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
                                 return timeAndAttendanceCard(
                                   context: context,
                                   attendanceModel: _attendance,

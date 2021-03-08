@@ -1400,8 +1400,8 @@ class FirebaseMethods {
         .collection(COMPANY)
         .doc(companyCode)
         .collection(WORKAPPROVAL)
-        .where(whereUser, isEqualTo: mail)
         .orderBy(orderByType, descending: isOrderBy)
+        .where(whereUser, isEqualTo: mail)
         .snapshots();
   }
 

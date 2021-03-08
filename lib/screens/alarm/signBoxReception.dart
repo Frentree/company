@@ -20,7 +20,7 @@ class SignBoxReception extends StatefulWidget {
 List<WorkApproval> approvalList;
 
 class _SignBoxReceptionState extends State<SignBoxReception> {
-  String orderByType = "status";
+  String orderByType = "createDate";
   bool _isOrderBy = true;
   LoginUserInfoProvider _loginUserInfoProvider;
   User user;
@@ -95,7 +95,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                     alignment: Alignment.center,
                     child: Text(
-                      "대상일",
+                      "요청자",
                       style: cardBlueStyle,
                     ),
                   ),

@@ -213,7 +213,7 @@ class _SignBoxExpenseState extends State<SignBoxExpense> {
             child: Padding(
               padding: cardPadding,
               child: Container(
-                height: scheduleCardDefaultSizeH.h,
+                height: cardTitleSizeH.h,
                 child: Row(children: [
                   Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet
