@@ -1,9 +1,9 @@
 //Flutter
+import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
-import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/screens/splash.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
@@ -14,7 +14,7 @@ import 'package:MyCompany/screens/alarm/alarmMain.dart';
 import 'package:MyCompany/screens/setting/settingMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/mainBottomSheet.dart';
 import 'package:MyCompany/consts/colorCode.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -224,7 +224,6 @@ class HomeMainPageState extends State<HomeMainPage> {
 
       //네비게이션 바
       bottomNavigationBar: Container(
-        height: 10.0.h,
         child: BottomNavigationBar(
           backgroundColor: whiteColor,
           selectedItemColor: mainColor,
@@ -278,15 +277,63 @@ class HomeMainPageState extends State<HomeMainPage> {
               label: "Create",
             ),
             BottomNavigationBarItem(
-              icon: (currentPageIndex == 2) ? Icon(
-                Icons.notifications_none,
-                size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
-                color: blueColor,
-              ) : Icon(
-                Icons.notifications_none,
-                size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
-              ),
               label: "Push",
+              icon: Stack(
+                children: [
+                  (currentPageIndex == 2) ? Icon(
+                    Icons.notifications_none,
+                    size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                    color: blueColor,
+                  ) : Icon(
+                    Icons.notifications_none,
+                    size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                  ),
+                  StreamBuilder(
+                    stream: _repository.getNoReadAlarm(companyCode: _loginUser.companyCode, mail: _loginUser.mail),
+                    builder: (context, snapshot){
+                      if(snapshot.data == null){
+                        return Center(
+                          child: Text(""),
+                        );
+                      }
+                      List<DocumentSnapshot> document = snapshot.data.docs;
+
+                      if(document.length == 0){
+                        return Positioned(
+                          right: 0,
+                          child: new Container(
+
+                          ),
+                        );
+                      }
+                      else {
+                        return Positioned(
+                          right: 0,
+                          child: new Container(
+                              padding: EdgeInsets.all(1),
+                              constraints: BoxConstraints(
+                                minWidth: 4.0.w,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                document.length.toString(),
+                                style: customStyle(
+                                  fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.sp : 9.0.sp,
+                                  fontColor: whiteColor,
+                                  fontWeightName: "Medium"
+                                ),
+                                textAlign: TextAlign.center,
+                              )
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
             BottomNavigationBarItem(
               icon: (currentPageIndex == 3) ? Icon(
