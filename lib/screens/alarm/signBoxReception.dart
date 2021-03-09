@@ -30,6 +30,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
     // TODO: implement initState
     super.initState();
     approvalList = List();
+
   }
 
   @override
