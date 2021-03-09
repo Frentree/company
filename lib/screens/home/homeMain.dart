@@ -25,7 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-
+bool btnClick = false;
 
 class HomeMainPage extends StatefulWidget {
   @override
@@ -212,7 +212,62 @@ class HomeMainPageState extends State<HomeMainPage> {
                 child: Column(
                   children: <Widget>[
                     Expanded(
-                      child: _page[currentPageIndex],
+                      child: Stack(
+                        children: [
+                          _page[currentPageIndex],
+                          StreamBuilder<QuerySnapshot>(
+                            stream: _repository.requestAnnualLeaveCount(companyCode: _loginUser.companyCode, loginUserMail: _loginUser.mail),
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) {
+                                return Container();
+                              }
+                              return Positioned(
+                                right: 0,
+                                bottom: 10,
+                                child: (currentPageIndex == 0 && snapshot.data.docs.length != 0) ? Stack(
+                                  children: [
+                                    FloatingActionButton(
+                                      backgroundColor: mainColor,
+                                      child: Icon(
+                                        Icons.mail
+                                      ),
+                                      onPressed: (){
+                                        setState(() {
+                                          currentPageIndex = 2;
+                                          btnClick = true;
+                                        });
+                                      },
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: new Container(
+                                          padding: EdgeInsets.all(1),
+                                          constraints: BoxConstraints(
+                                            minWidth: 4.0.w,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: redColor,
+                                            borderRadius: BorderRadius.circular(6),
+                                          ),
+                                          child: Text(
+                                            snapshot.data.docs.length.toString(),
+                                            style: customStyle(
+                                                fontSize: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.sp : 9.0.sp,
+                                                fontColor: whiteColor,
+                                                fontWeightName: "Medium"
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                      ),
+                                    ),
+                                  ],
+                                ) : Container(),
+                              );
+                            }
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -315,7 +370,7 @@ class HomeMainPageState extends State<HomeMainPage> {
                                 minWidth: 4.0.w,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: redColor,
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(

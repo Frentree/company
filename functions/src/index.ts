@@ -25,7 +25,7 @@ export const createAttendanceDB = functions.pubsub.schedule('00 04 * * *').timeZ
     const month = kr_today.getMonth();  // 월
     const date = kr_today.getDate() - 1;  // 날짜
     const createDate = new Date(year, month, date, 15);
-
+   console.log('date =====> ', kr_today.getDay());
     var companyRef = db.collection("company");
 
     companyRef.get().then(snapshot => {
@@ -40,7 +40,9 @@ export const createAttendanceDB = functions.pubsub.schedule('00 04 * * *').timeZ
             userInfo.forEach(async data => {
                 console.log('name =====> ', data.name);
                 console.log('data =====> ', data.mail);
-                await db.collection("company").doc(doc.id).collection("attendance").add({name : data.name, createDate : createDate, mail : data.mail, attendTime : null});
+                if(kr_today.getDay() != 0 && kr_today.getDay() != 6){
+                    await db.collection("company").doc(doc.id).collection("attendance").add({name : data.name, createDate : createDate, mail : data.mail, attendTime : null});
+                }
             })
             userInfo = [];
         });
@@ -82,7 +84,7 @@ export const onWorkCheck = functions.pubsub.schedule('05 09 * * *').timeZone('As
                 doc.ref.collection("attendance").where("mail", "==" ,data.mail).where("createDate", "==", createDate).get().then(snapshot => {
                     snapshot.forEach(doc =>{
                         if(doc.data().attendTime == null && data.token != null){
-                            var result = admin.messaging().sendToDevice(data.token, payload);
+                            admin.messaging().sendToDevice("eYQ9KmssSgGnI-pQDL2Bai:APA91bG2QdNYHClflSvQ12cQF8R4dUE_AYrVK6dHFCkUXS0cCg08-WHWlTCgGI95gaOYt6abZD2OSrHPczoGU5HlTUUPnwX42mjVU290fnqHJfP5FDA3Ln-3k5jLW-nHOI4l_lIRdR4U", payload);
                         }
                     })
                 })
@@ -127,7 +129,7 @@ export const offWorkCheck = functions.pubsub.schedule('05 18 * * *').timeZone('A
                 doc.ref.collection("attendance").where("mail", "==" ,data.mail).where("createDate", "==", createDate).get().then(snapshot => {
                     snapshot.forEach(doc =>{
                         if(doc.data().attendTime != null && data.token != null && doc.data().endTime == null){
-                            var result = admin.messaging().sendToDevice(data.token, payload);
+                            admin.messaging().sendToDevice(data.token, payload);
                         }
                     })
                 })
