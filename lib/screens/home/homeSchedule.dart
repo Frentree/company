@@ -149,7 +149,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                         events: _events,
                         holidays: _holidays,
                         calendarController: _calendarController,
-                        initialCalendarFormat: CalendarFormat.week,
+                        initialCalendarFormat: CalendarFormat.month,
                         startingDayOfWeek: StartingDayOfWeek.monday,
                         availableCalendarFormats: {
                           CalendarFormat.week: word.weekly(),
