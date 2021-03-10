@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/splash.dart';
+import 'package:MyCompany/widgets/drawer/menuDrawer.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/userModel.dart';
@@ -128,6 +129,14 @@ class HomeMainPageState extends State<HomeMainPage> {
         Provider.of<AttendanceCheck>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
     return Scaffold(
+      /*appBar: AppBar(
+        backgroundColor: mainColor,
+
+      ),
+
+      endDrawer: Drawer(
+        child: MenuDrawer(),
+      ),*/
       backgroundColor: mainColor,
       body: SafeArea(
         child: Column(

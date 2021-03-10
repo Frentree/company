@@ -102,6 +102,12 @@ TextStyle cardBlueStyle = customStyle(
     fontColor: blueColor
 );
 
+TextStyle cardMainStyle = customStyle(
+    fontSize: SizerUtil.deviceType == DeviceType.Tablet ? cardTimeSizeT.sp : cardTimeSizeM.sp,
+    fontWeightName: "Regular",
+    fontColor: mainColor
+);
+
 TextStyle containerChipStyle = customStyle(
   fontSize: SizerUtil.deviceType == DeviceType.Tablet ? containerChipSizeT.sp : containerChipSizeM.sp,
   fontColor: mainColor,

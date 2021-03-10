@@ -1,4 +1,5 @@
 //Firebase
+import 'dart:async';
 import 'dart:math';
 
 import 'package:MyCompany/models/alarmModel.dart';
@@ -969,8 +970,8 @@ class FirebaseMethods {
         .where("level", arrayContains: level)
         .get()
         .then((value) {
-      value.documents.forEach((element) {
-        element.reference.updateData({
+      value.docs.forEach((element) {
+        element.reference.update({
           "level": FieldValue.arrayRemove([level])
         });
       });
@@ -1336,7 +1337,7 @@ class FirebaseMethods {
         .where("position", isEqualTo: position)
         .get()
         .then((value) {
-      value.documents.forEach((element) {
+      value.docs.forEach((element) {
         element.reference.update({"position": ""});
       });
     });
@@ -1500,6 +1501,41 @@ class FirebaseMethods {
         .collection(NOTICE)
         .orderBy("createDate", descending: true)
         .snapshots();
+  }
+
+  Future<QuerySnapshot> getAnnual(String companyCode, String year, String team) async {
+    List<dynamic> mail = List();
+    if(team != "전체"){
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(USER)
+          .where("team", isEqualTo: team)
+          .get().then((value) async => value.docs.forEach(
+              (element) {
+            mail.add(element.get("mail"));
+          })
+      );
+
+      if(mail.length == 0){
+        mail.add("");
+      }
+
+      return await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(ANNUAL)
+          .where("year", isEqualTo: year)
+          .where("mail", whereIn: mail)
+          .get();
+    } else {
+      return await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(ANNUAL)
+          .where("year", isEqualTo: year)
+          .get();
+    }
   }
 }
 

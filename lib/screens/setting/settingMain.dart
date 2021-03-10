@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingExpenseAnnual.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingInquireAdmin.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingAnnualLeave.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingHelp.dart';
@@ -32,7 +33,7 @@ class SettingMainPage extends StatefulWidget {
 }
 
 class SettingMainPageState extends State<SettingMainPage> {
-  List<bool> tabIndex = [false, false, false, false, false];
+  List<bool> tabIndex = [false, false, false, false, false, false];
   User _loginUser;
   bool co_worker_alert = true;
   bool approval_alert = false;
@@ -1017,7 +1018,19 @@ class SettingMainPageState extends State<SettingMainPage> {
                     ],
                   ),
                 ),
-                /*Container(
+                Container(
+                  decoration: tabIndex[5] == false ? BoxDecoration() : BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                        bottom: BorderSide(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 0.075.w : 0.1.w,
+                          color: dividerColor,
+                        ),
+                      )
+                  ),
                   padding: EdgeInsets.symmetric(
                     horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
                   ),
@@ -1030,34 +1043,155 @@ class SettingMainPageState extends State<SettingMainPage> {
                             height: 9.0.h,
                             width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
                             child: Icon(
-                              Icons.info_outline,
+                              Icons.work_outline,
                               size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
                               color: mainColor,
                             ),
                           ),
                           cardSpace,
                           Container(
-                            width: SizerUtil.deviceType == DeviceType.Tablet ? 78.5.w : 72.0.w,
+                            height: 9.0.h,
+                            width: SizerUtil.deviceType == DeviceType.Tablet ? 71.0.w : 62.0.w,
                             alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  word.serviceCenter(), // 회사 정보
-                                  style: defaultMediumStyle,
-                                ),
-                                Text(
-                                  "frentreedev@frentree.com", // 회사 정보
-                                  style: hintStyle,
-                                ),
-                              ],
+                            child: Text(
+                              "연차/경비", // 고객지원
+                              style: defaultMediumStyle,
                             ),
                           ),
+                          Container(
+                              height: 9.0.h,
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                              child: IconButton(
+                                constraints: BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  tabIndex[5] == false ? Icons.keyboard_arrow_down_sharp : Icons.keyboard_arrow_up_sharp,
+                                  size: SizerUtil.deviceType == DeviceType.Tablet ? iconSizeTW.w : iconSizeMW.w,
+                                  color: mainColor,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    tabIndex[5] = !tabIndex[5];
+                                  });
+                                },
+                              )
+                          )
+                        ],
+                      ),
+                      tabIndex[5] == false ? Container() : Column(
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.update,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "직원 연차 수정",
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingHelp(
+                                  context: context,
+                                  statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top
+                              );
+                            },
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.home_work_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "직원 연차 내역",
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingExpenseAnnual(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
+                            },
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.add_alert_rounded,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "직원 경비 내역",
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+
+                            },
+                          ),
+                          emptySpace,
                         ],
                       ),
                     ],
                   ),
-                ),*/
+                ),
+
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,

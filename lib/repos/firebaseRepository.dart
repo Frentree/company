@@ -573,4 +573,7 @@ class FirebaseRepository {
 
   Stream<QuerySnapshot> getNotice() =>
       _firebaseMethods.getNotice() ;
+
+  Future<QuerySnapshot> getAnnual({String companyCode, String year, String team}) =>
+      _firebaseMethods.getAnnual(companyCode, year, team) ;   // 연차 사용일
 }
