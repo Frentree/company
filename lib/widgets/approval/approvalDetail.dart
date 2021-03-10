@@ -1027,9 +1027,15 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                       location: model.location,
                                                       lastModDate: Timestamp.now(),
                                                       name: model.user,
+
                                                     );
 
-                                                    FirebaseRepository().saveWork(
+                                                    await FirebaseRepository().saveAnnual(
+                                                        companyCode: _loginUser.companyCode,
+                                                        workModel: _workModel
+                                                    );
+
+                                                    await FirebaseRepository().saveWork(
                                                       companyCode: companyCode,
                                                       workModel: _workModel,
                                                     ).whenComplete(() async {

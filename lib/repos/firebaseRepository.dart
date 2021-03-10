@@ -578,4 +578,7 @@ class FirebaseRepository {
 
   Future<QuerySnapshot> getAnnual({String companyCode, String year, String team}) =>
       _firebaseMethods.getAnnual(companyCode, year, team) ;   // 연차 사용일
-}
+
+  Future<void> saveAnnual({WorkModel workModel, String companyCode})  =>
+      _firebaseMethods.saveAnnual(workModel, companyCode);
+  }

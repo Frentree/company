@@ -97,6 +97,11 @@ class Format{
     return dateText;
   }
 
+  String yearString(Timestamp time){
+    DateTime dateTime = timeStampToDateTime(time);
+    return dateTime.year.toString();
+  }
+
   int timeSlot(DateTime time){
     int timeSlot;
 

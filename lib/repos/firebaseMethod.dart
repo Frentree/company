@@ -476,6 +476,7 @@ class FirebaseMethods {
 
   //내외근 데이터 관련
   Future<void> saveWork({WorkModel workModel, String companyCode}) async {
+
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
@@ -1547,6 +1548,32 @@ class FirebaseMethods {
           .where("year", isEqualTo: year)
           .get();
     }
+  }
+
+  Future<void> saveAnnual(WorkModel workModel, String companyCode) async {    //연차 일수 저장
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(ANNUAL)
+        .where("year", isEqualTo: _format.yearString(workModel.startTime))
+        .where("mail", isEqualTo: workModel.createUid)
+        .get().then((value) => {
+          if(value.docs.length != 0){
+            value.docs.forEach((element) {
+              print(element);
+              element.reference.update({
+                "useAnnual" : workModel.type=="연차" ? FieldValue.increment(1) : FieldValue.increment(0.5)
+            });})
+          } else {
+            firestore.collection(COMPANY).doc(companyCode).collection(ANNUAL).add({
+              "useAnnual" : workModel.type=="연차" ? FieldValue.increment(1) : FieldValue.increment(0.5),
+              "maxAnnual" : 15,
+              "name": workModel.name,
+              "mail": workModel.createUid,
+              "year": _format.yearString(workModel.startTime)
+            })
+          }
+        });
   }
 }
 
