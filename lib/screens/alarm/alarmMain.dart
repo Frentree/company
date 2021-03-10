@@ -29,6 +29,11 @@ class AlarmMainPageState extends State<AlarmMainPage> {
   @override
   void initState() {
     super.initState();
+    if(btnClick == true){
+      setState(() {
+        tabIndex = 1;
+      });
+    }
   }
 
 

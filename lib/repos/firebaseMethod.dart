@@ -1406,6 +1406,17 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> requestAnnualLeaveCount(
+      {String companyCode, String loginUserMail}){
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORKAPPROVAL)
+        .where("approvalMail", isEqualTo: loginUserMail)
+        .where("status", isEqualTo: "요청")
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> selectAnnualLeave(String companyCode, String whereUser,
       String mail, String orderByType, bool isOrderBy, String date) {
     return firestore

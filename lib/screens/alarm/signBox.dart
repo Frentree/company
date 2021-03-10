@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/widgetSize.dart';
 import 'package:MyCompany/screens/alarm/signBoxExpense.dart';
 import 'package:MyCompany/screens/alarm/signBoxPurchase.dart';
 import 'package:MyCompany/screens/alarm/signBoxReception.dart';
+import 'package:MyCompany/screens/home/homeMain.dart';
 import 'package:MyCompany/widgets/button/textButton.dart';
 import 'package:flutter/material.dart';
 import 'package:MyCompany/consts/screenSize/widgetSize.dart';
@@ -18,6 +19,17 @@ class _SignBoxState extends State<SignBox> {
 
   int tabIndex = 0;
   List<Widget> _page = [SignBoxExpense(),SignBoxPurchase(),SignBoxReception()];
+
+  @override
+  void initState() {
+    super.initState();
+    if(btnClick == true){
+      setState(() {
+        tabIndex = 2;
+        btnClick = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

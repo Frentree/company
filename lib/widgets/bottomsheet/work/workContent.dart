@@ -141,7 +141,7 @@ workContent(
                           radius: SizerUtil.deviceType == DeviceType.Tablet
                               ? 4.5.w
                               : 6.0.w,
-                          backgroundColor: _titleController.text == ""
+                          backgroundColor: (_titleController.text == "" || (type == 2 && _locationController.text == ""))
                               ? disableUploadBtn
                               : blueColor,
                           child: IconButton(
@@ -153,9 +153,7 @@ workContent(
                                     ? 4.5.w
                                     : 6.0.w,
                               ),
-                              onPressed: _titleController.text == ""
-                                  ? () {}
-                                  : () async {
+                              onPressed: (_titleController.text == "" || (type == 2 && _locationController.text == "")) ? () {} : () async {
                                       var doc = await FirebaseFirestore.instance
                                           .collection("company")
                                           .doc(_loginUser.companyCode)
