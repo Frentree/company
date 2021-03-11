@@ -135,7 +135,7 @@ SettingExpenseAnnual({BuildContext context, double statusBarHeight}) {
                               width: 50,
                               alignment: Alignment.center,
                               child: Text(
-                                "열람",
+                                "",
                                 style: cardBlueStyle,
                               ),
                             ),
