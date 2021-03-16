@@ -6,11 +6,9 @@ import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/fcm/pushFCM.dart';
-import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 //Flutter
@@ -31,14 +29,12 @@ import 'package:MyCompany/utils/date/dateFormat.dart';
 //Widget
 import 'package:MyCompany/widgets/card/workScheduleCard.dart';
 
-import 'package:MyCompany/consts/screenSize/widgetSize.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sizer/sizer.dart';
 
-import 'homeMain.dart';
 
 final word = Words();
-
+DateTime selectedDate = DateTime.now();
 
 class HomeSchedulePage extends StatefulWidget {
   @override
@@ -95,6 +91,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
   @override
   void initState() {
     super.initState();
+    selectedDate = selectTime;
     _calendarController = CalendarController();
     _fcm.configure(
       // 앱이 실행중일 경우
@@ -105,6 +102,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
 
   @override
   void dispose() {
+    selectedDate = DateTime.now();
     _calendarController.dispose();
     super.dispose();
   }
@@ -160,6 +158,7 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                             selectTime = day;
                             _calendarController
                                 .setCalendarFormat(CalendarFormat.week);
+                            selectedDate = day;
                           });
                         },
                         headerStyle: HeaderStyle(

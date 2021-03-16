@@ -4,6 +4,7 @@ import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/widgets/bottomsheet/schedule/coScheduleDetail.dart';
 import 'package:MyCompany/widgets/table/workDetailTable.dart';
 import 'package:MyCompany/i18n/word.dart';
@@ -50,11 +51,13 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
   @override
   void initState() {
     super.initState();
+    selectedDate = selectTime;
     _calendarController = CalendarController();
   }
 
   @override
   void dispose() {
+    selectedDate = DateTime.now();
     _calendarController.dispose();
     super.dispose();
   }
@@ -80,6 +83,7 @@ class HomeScheduleCoPageState extends State<HomeScheduleCoPage> {
               onDaySelected: (day, events, holidays) {
                 setState(() {
                   selectTime = day;
+                  selectedDate = day;
                 });
               },
               //locale: 'ko_KR',

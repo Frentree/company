@@ -7,6 +7,7 @@ import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/widgets/bottomsheet/annual/annualLeaveMain.dart';
@@ -45,11 +46,11 @@ workContent(
 
   User _loginUser;
 
-  DateTime startTime = DateTime.now().minute < 30
-      ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,
-          DateTime.now().hour, 00)
-      : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,
-          DateTime.now().hour, 30);
+  DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime selectedDay = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+
+  DateTime startTime = selectedDay == today ? DateTime.now().minute < 30 ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, 00) : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, 30) : selectedDate.minute < 30 ? DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 09, 00) : DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 09, 30);
+
 
   FirebaseRepository _repository = FirebaseRepository();
 

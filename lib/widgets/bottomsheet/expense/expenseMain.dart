@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/screens/alarm/signBoxExpensePickDate.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/screens/work/workDate.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:intl/intl.dart';
@@ -57,7 +59,13 @@ ExpenseMain(BuildContext context) async {
 
   /// Which holds the selected date
   /// Defaults to today's date.
-  DateTime selectedDate = DateTime.now();
+  /*DateTime selectedDate = DateTime.now();*/
+
+  DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime selectedDay = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+
+  DateTime startTime = selectedDay == today ? DateTime.now() : selectedDate;
+
   Format _format = Format();
 
   /// This decides which day will be enabled
@@ -114,7 +122,7 @@ ExpenseMain(BuildContext context) async {
       companyCode: user.companyCode,
       createDate: Timestamp.now(),
       contentType: _buildChosenItem(_chosenItem),
-      buyDate: _format.dateTimeToTimeStamp(selectedDate),
+      buyDate: _format.dateTimeToTimeStamp(startTime),
       cost: CustomTextInputFormatterReverse(_expenseController.text),
       index: null,
       imageUrl: _downloadUrl == null ? "" : _downloadUrl,
@@ -211,12 +219,12 @@ ExpenseMain(BuildContext context) async {
                                   mode: CupertinoDatePickerMode.date,
                                   onDateTimeChanged: (picked) {
                                     if (picked != null &&
-                                        picked != selectedDate)
+                                        picked != startTime)
                                       setState(() {
-                                        selectedDate = picked;
+                                        startTime = picked;
                                       });
                                   },
-                                  initialDateTime: selectedDate,
+                                  initialDateTime: startTime,
                                   minimumYear: 2000,
                                   maximumYear: 2025,
                                 ),
@@ -229,7 +237,7 @@ ExpenseMain(BuildContext context) async {
             buildMaterialDatePicker(BuildContext context) async {
               final DateTime picked = await showDatePicker(
                 context: context,
-                initialDate: selectedDate,
+                initialDate: startTime,
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2025),
                 initialEntryMode: DatePickerEntryMode.calendar,
@@ -249,9 +257,9 @@ ExpenseMain(BuildContext context) async {
                   );
                 },
               );
-              if (picked != null && picked != selectedDate)
+              if (picked != null && picked != startTime)
                 setState(() {
-                  selectedDate = picked;
+                  startTime = picked;
                 });
             }
 
@@ -429,14 +437,14 @@ ExpenseMain(BuildContext context) async {
                           Expanded(
                             child: InkWell(
                               child: Text(
-                                DateFormat('yyyy-MM-dd').format(selectedDate),
+                                DateFormat('yyyy-MM-dd').format(startTime),
                                 style: defaultRegularStyle,
                               ),
                               onTap: () async {
                                 //_selectDate(context);
-                                selectedDate = await pickDate(
+                                startTime = await pickDate(
                                   context,
-                                  selectedDate
+                                    startTime
                                 );
                                 setState((){});
                               },
@@ -512,7 +520,7 @@ ExpenseMain(BuildContext context) async {
                                   padding: EdgeInsets.only(left: 8),
                                 ),
                                 Text(
-                                  word.addItem(),
+                                  Words.word.addItem(),
                                   style: defaultRegularStyle,
                                 ),
                                 Padding(
@@ -569,7 +577,7 @@ ExpenseMain(BuildContext context) async {
                                       ),
                                       cardSpace,
                                       Text(
-                                        word.content(),
+                                        Words.word.content(),
                                         style: defaultRegularStyle,
                                       ),
                                     ],
@@ -587,7 +595,7 @@ ExpenseMain(BuildContext context) async {
                                         ),
                                         cardSpace,
                                         Text(
-                                          word.content(),
+                                          Words.word.content(),
                                           style: defaultRegularStyle,
                                         ),
                                         cardSpace,
@@ -617,7 +625,7 @@ ExpenseMain(BuildContext context) async {
                                         builder: (BuildContext context) {
                                           return SimpleDialog(
                                             title: Text(
-                                              word.select(),
+                                              Words.word.select(),
                                               style: defaultMediumStyle,
                                             ),
                                             children: [
@@ -644,7 +652,7 @@ ExpenseMain(BuildContext context) async {
                                                   _uploadImageToStorage(ImageSource.camera);
                                                 },
                                                 child: Text(
-                                                  word.camera(),
+                                                  Words.word.camera(),
                                                   style: defaultRegularStyle,
                                                 ),
                                               ),
@@ -653,7 +661,7 @@ ExpenseMain(BuildContext context) async {
                                                   _uploadImageToStorage(ImageSource.gallery);
                                                 },
                                                 child: Text(
-                                                  word.gallery(),
+                                                  Words.word.gallery(),
                                                   style: defaultRegularStyle,
                                                 ),
                                               ),
@@ -677,7 +685,7 @@ ExpenseMain(BuildContext context) async {
                                 isDense: true,
                                 border: OutlineInputBorder(),
                                 contentPadding: textFormPadding,
-                                hintText: word.contentCon(),
+                                hintText: Words.word.contentCon(),
                                 hintStyle: hintStyle,
                               ),
                             ),

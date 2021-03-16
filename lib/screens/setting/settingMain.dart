@@ -6,6 +6,7 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingExpenseAnnual.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingExpenseDetails.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingInquireAdmin.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingAnnualLeave.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingHelp.dart';
@@ -1182,7 +1183,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                               ),
                             ),
                             onTap: (){
-
+                              SettingExpenseDetails(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
                             },
                           ),
                           emptySpace,
