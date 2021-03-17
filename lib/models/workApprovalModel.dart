@@ -26,7 +26,7 @@ class WorkApproval {
   List<dynamic> docIds;
   DocumentReference reference;
   int totalCost;
-  bool isSend;
+  bool isSend; //입금여부(true : 입금, false: 미입금)
 
   WorkApproval(
       {this.createDate,

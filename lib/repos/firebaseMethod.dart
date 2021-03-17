@@ -73,13 +73,14 @@ class FirebaseMethods {
     String _status = "미";
 
     switch (type) {
-    //1 : 결재요청 후, 2: 결재요청 취소 후, 3: 결재완료
+    //1 : 결재요청 후, 2: 결재요청 취소 후, 3: 결재완료, 4: 입금완료
       case 1: _status = "진";
         break;
       case 2: _status = "미";
         break;
       case 3: _isApproved = true; _status = "결";
         break;
+      case 4: _status = "입완";
     }
 
     for (int i = 0; i < _index; i++) {
@@ -157,6 +158,31 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getApprovalExpense({String companyCode}) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORKAPPROVAL)
+        .where("approvalType", isEqualTo: "경비")
+        .where("status", isEqualTo: "승인")
+        .where("isSend", isEqualTo: false)
+        .snapshots();
+  }
+
+  Future<void> getUserApprovalExpenseUpdate({String companyCode, List<String> documentID}) async {
+    documentID.forEach((element) async {
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(WORKAPPROVAL)
+          .doc(element)
+          .update({
+        "status": "입금완료",
+        "isSend": true,
+      });
+    });
+  }
+
   // 경비 저장 항목 삭제 메서드
   Future<void> deleteExpense(
       String companyCode, String documentID, String uid) async {
@@ -224,6 +250,8 @@ class FirebaseMethods {
         .orderBy("createDate", descending: true)
         .snapshots();
   }
+
+
 
   Future<User> getUser({String userMail}) async {
     var doc = await firestore.collection(USER).doc(userMail).get();
