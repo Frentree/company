@@ -168,7 +168,7 @@ export const sendFCM = functions.https.onCall((data, context) => {
   return result;
 });
 
-export const createAnnualDB = functions.pubsub.schedule('*/3 * * * *').timeZone('Asia/Seoul').onRun(async (context) => {
+export const createAnnualDB = functions.pubsub.schedule('0 0 1 1 *').timeZone('Asia/Seoul').onRun(async (context) => {
     console.log('Annual DB Update Start!!');
     const db = admin.firestore();
     const today = new Date();
@@ -181,15 +181,17 @@ export const createAnnualDB = functions.pubsub.schedule('*/3 * * * *').timeZone(
     companyRef.get().then(snapshot => {
         snapshot.forEach(async doc => {
             await doc.ref.collection("user").get().then(snapshot => {
-                snapshot.forEach(docs => {
-                    db.collection("company").doc(doc.id).collection("annual")
-                        .where("year", "==", year.toString)
-                        .where("mail", "==", docs.data().mail)
-                        .get().then(async value => {
-                            if(value.docs.length == 0) {
-                                await db.collection("company").doc(doc.id).collection("annual").add({name : docs.data().name, maxAnnual : 15, mail : docs.data().mail, useAnnual : 0, year : year.toString});
-                            }
-                        });
+                snapshot.forEach(async docs => {
+                    console.log('docs ===> ' + docs.data().mail + ' ' + year);
+                     await doc.ref.collection("annual")
+                         .where("year", "==", year+'')
+                         .where("mail", "==", docs.data().mail)
+                         .get().then(async value => {
+                             console.log(value.docs.length.toString);
+                             if(value.docs.length == 0) {
+                                 await db.collection("company").doc(doc.id).collection("annual").add({name : docs.data().name, maxAnnual : 15, mail : docs.data().mail, useAnnual : 0, year : year+''});
+                             }
+                         })
                 })
             })
 

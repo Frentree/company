@@ -1375,6 +1375,17 @@ class FirebaseMethods {
     return CompanyUser.fromMap(doc.data(), doc.id);
   }
 
+  Stream<QuerySnapshot> getCompanyUsers(
+      String companyCode) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .orderBy("team", descending: false)
+        .orderBy("name", descending: false)
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> getCopyMyShedule(
       String companyCode, String mail, int count) {
     return firestore

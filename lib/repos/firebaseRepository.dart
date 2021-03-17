@@ -543,6 +543,9 @@ class FirebaseRepository {
   Future<CompanyUser> getComapnyUser({String companyCode, String mail}) =>
       _firebaseMethods.getComapnyUser(companyCode, mail);
 
+  Stream<QuerySnapshot> getCompanyUsers({String companyCode}) =>
+      _firebaseMethods.getCompanyUsers(companyCode);
+
   // 최근일정 갖고오기
   Stream<QuerySnapshot> getCopyMyShedule({String companyCode, String mail, int count}) =>
       _firebaseMethods.getCopyMyShedule(companyCode, mail, count);
