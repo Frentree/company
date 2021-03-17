@@ -200,19 +200,64 @@ Widget _buildAnnaulListItem(BuildContext context, DocumentSnapshot data, User us
                   ),
                 )
               ),
-              IconButton(
-                iconSize: 15,
+              PopupMenuButton(
                 icon: Icon(
-                  Icons.arrow_forward_ios
+                  Icons.arrow_forward_ios,
+                  size: 15,
                 ),
-                onPressed: () {
-                  getAnnualListDialog(
-                    mail: annual.mail,
-                    year: selectedMonth.year.toString(),
-                    companyCode: user.companyCode,
-                    context: context,
-                  );
+                onSelected: (val) {
+                  if(val == 1){
+                    getAnnualListDialog(
+                      mail: annual.mail,
+                      year: selectedMonth.year.toString(),
+                      companyCode: user.companyCode,
+                      context: context,
+                    );
+                  } else {
+                    updateAnnualDialog(
+                      context: context,
+                      model: annual
+                    );
+                  }
                 },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    height: 7.0.h,
+                    value: 1,
+                    child: Row(
+                      children: [
+                        Container(
+                          child: Icon(
+                            Icons.remove_red_eye_outlined,
+                            size: 20,
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+                        Text(
+                          "보기",
+                          style: cardMainStyle,
+                        )
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    height: 7.0.h,
+                    value: 2,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.edit,
+                          size: 20,
+                        ),
+                        Padding(padding: EdgeInsets.only(left: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w)),
+                        Text(
+                          Words.word.update(),
+                          style: cardMainStyle,
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               )
             ],
           ),
