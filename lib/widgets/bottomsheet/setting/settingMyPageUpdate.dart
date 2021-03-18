@@ -39,6 +39,8 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
   File _image;
   String _profileImageURL = "";
 
+  bool _birthdayResult = false;
+
   TextEditingController _passwordNowConfirmTextCon = TextEditingController();
   TextEditingController _passwordNewTextCon = TextEditingController();
   TextEditingController _passwordNewConfirmTextCon = TextEditingController();
@@ -47,6 +49,8 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
   TextEditingController _accountEdit = TextEditingController();
 
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+  final _formKeyBirthday = GlobalKey<FormState>();
 
   showModalBottomSheet(
       isScrollControlled: true,
@@ -607,15 +611,32 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                         ),
                                       ),
                                       Expanded(
-                                        child: TextFormField(
-                                          controller: _birthdayEdit,
-                                          style: defaultRegularStyle,
-                                          decoration: InputDecoration(
-                                            isDense: true,
-                                            contentPadding: textFormPadding,
-                                            hintText: Format().yearMonthDay(user.birthday),
-                                            hintStyle: defaultRegularStyle,
-                                            border: InputBorder.none,
+                                        child: Form(
+                                          key: _formKeyBirthday,
+                                          child: TextFormField(
+                                            controller: _birthdayEdit,
+                                            style: defaultRegularStyle,
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              contentPadding: textFormPadding,
+                                              hintText: Format().yearMonthDay(user.birthday),
+                                              hintStyle: defaultRegularStyle,
+                                              border: InputBorder.none,
+                                            ),
+                                            validator: ((value) {
+                                              return _loginRepository.validationRegExpCheckMessage(
+                                                field: "생일",
+                                                value: value,
+                                              );
+                                            }),
+                                            onChanged: ((text){
+                                              bool _result = _loginRepository.isFormValidation(
+                                                validationFunction:  _formKeyBirthday.currentState.validate(),
+                                              );
+                                              setState(() {
+                                                _birthdayResult = _result;
+                                              });
+                                            }),
                                           ),
                                         ),
                                       ),
@@ -638,14 +659,14 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                             style: defaultMediumWhiteStyle,
                                           ),
                                         ),
-                                        onTap: (){
+                                        onTap: _birthdayResult == true ? (){
                                           FocusScope.of(context).unfocus();
                                           FirebaseRepository().updateBirthday(user.companyCode, user.mail, Format().dateTimeToTimeStamp(DateTime.parse(_birthdayEdit.text.replaceAll("/", ""))));
                                           setState(() {
                                             user.birthday = Format().dateTimeToTimeStamp(DateTime.parse(_birthdayEdit.text.replaceAll("/", "")));
                                             _loginUserInfoProvider.setLoginUser(user);
                                           });
-                                        },
+                                        }:null,
                                       ),
                                     ],
                                   ),
@@ -656,7 +677,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                       Container(
                                         width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
                                         child: Text(
-                                          "계좌",
+                                          "계좌번호",
                                           style: defaultRegularStyle,
                                         ),
                                       ),
