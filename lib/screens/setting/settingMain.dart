@@ -5,6 +5,7 @@ import 'package:MyCompany/consts/universalString.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/widgets/bottomsheet/setting/settingCompanyUser.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingExpenseAnnual.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingExpenseDetails.dart';
 import 'package:MyCompany/widgets/bottomsheet/setting/settingInquireAdmin.dart';
@@ -186,6 +187,44 @@ class SettingMainPageState extends State<SettingMainPage> {
                       ),
                       tabIndex[1] == false ? Container() : Column(
                         children: [
+
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 3.0.w : 4.0.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                                    child: Icon(
+                                      Icons.supervised_user_circle_outlined,
+                                      size: SizerUtil.deviceType == DeviceType.Tablet ? 5.25.w : 7.0.w,
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                  cardSpace,
+                                  Container(
+                                    height: 8.0.h,
+                                    width: SizerUtil.deviceType == DeviceType.Tablet ? 73.0.w : 64.0.w,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "직원 정보",
+                                      style: defaultRegularStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              SettingCompanyUser(
+                                  context: context,
+                                  statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top
+                              );
+                            },
+                          ),
                           GestureDetector(
                             child: Container(
                               padding: EdgeInsets.symmetric(

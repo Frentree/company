@@ -32,6 +32,7 @@ class CompanyUser {
   String position;
   String team;
   List<dynamic> userSearch;
+  DocumentReference reference;
 
   CompanyUser({
     this.id,
@@ -82,4 +83,29 @@ class CompanyUser {
       "userSearch": user.name.split(""),
     };
   }
+
+  CompanyUser.fromMap2(Map<String, dynamic> map, {this.reference})
+      : assert(map['name'] != null),
+        assert(map['mail'] != null),
+        assert(map['birthday'] != null),
+        assert(map['phone'] != null),
+        assert(map['profilePhoto'] != null),
+        assert(map['token'] != null),
+        assert(map['enteredDate'] != null),
+        assert(map['status'] != null),
+        assert(map['level'] != null),
+        assert(map['position'] != null),
+        assert(map['team'] != null),
+        name = map['name'],
+        mail = map['mail'],
+        birthday = map['birthday'],
+        phone = map['phone'],
+        profilePhoto = map['profilePhoto'],
+        token = map['token'],
+        enteredDate = map['enteredDate'],
+        status = map['status'],
+        position = map['position'],
+        level = map['level'],
+        team = map['team'];
+  CompanyUser.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap2(snapshot.data(), reference: snapshot.reference);
 }

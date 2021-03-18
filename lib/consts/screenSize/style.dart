@@ -162,6 +162,11 @@ Container emptySpace = Container(
   height: widgetDistanceH.h,
 );
 
+/*WIDGET STYLE*/
+Container treeSpace = Container(
+  height: cardPaddingH.h,
+);
+
 Container cardSpace = Container(
   width: SizerUtil.deviceType == DeviceType.Tablet ? 1.5.w : 2.0.w,
 );
