@@ -370,7 +370,6 @@ class FirebaseMethods {
       }
     });
 
-    print(birthday);
     return birthday;
   }
 
@@ -652,7 +651,6 @@ class FirebaseMethods {
   Future<QuerySnapshot> getMyTodayAttendance(
       {String companyCode, String loginUserMail, Timestamp today}) async {
     Timestamp tomorrow = _format.dateTimeToTimeStamp(_format.timeStampToDateTime(today).add(Duration(days: 1)));
-    print(tomorrow);
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
@@ -839,7 +837,6 @@ class FirebaseMethods {
     querySnapshot.docs.forEach((element) {
 
       if (element.data()["token"] != null && element.data()["token"] != "") {
-        print("tokens 값 == ${element.data()["token"]}");
         tokenList.add(element.data()["token"]);
       }
     });
@@ -857,12 +854,10 @@ class FirebaseMethods {
         .where("mail", whereIn: mail)
         .get();
 
-    print(mail);
 
     querySnapshot.docs.forEach((element) {
 
       if (element.data()["token"] != null && element.data()["token"] != "") {
-        print("tokens 값 == ${element.data()["token"]}");
         tokenList.add(element.data()["token"]);
       }
     });
@@ -1588,7 +1583,6 @@ class FirebaseMethods {
         .get().then((value) => {
           if(value.docs.length != 0){
             value.docs.forEach((element) {
-              print(element);
               element.reference.update({
                 "useAnnual" : workModel.type=="연차" ? FieldValue.increment(1) : FieldValue.increment(0.5)
             });})

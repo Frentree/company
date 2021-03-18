@@ -65,7 +65,6 @@ class HomeMainPageState extends State<HomeMainPage> {
           mail: _loginUser.mail);
     } else {
       setState(() {
-        print(pageIndex);
         currentPageIndex = pageIndex;
       });
     }
@@ -83,6 +82,8 @@ class HomeMainPageState extends State<HomeMainPage> {
 
 
   onFCMNotificationClick(String payload) async {
+    print("payload ====> $payload");
+    print("payloadOld ====> $payloadOld");
     SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
     if(_sharedPreferences.getString("payloadOld") != null){
       payloadOld = _sharedPreferences.getString("payloadOld");
