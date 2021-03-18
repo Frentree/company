@@ -6,10 +6,13 @@ import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/consts/widgetSize.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/dialog/accountDialogList.dart';
 import 'package:MyCompany/widgets/dialog/gradeDialogList.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -40,6 +43,8 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
   TextEditingController _passwordNewTextCon = TextEditingController();
   TextEditingController _passwordNewConfirmTextCon = TextEditingController();
   TextEditingController _phoneEdit = TextEditingController();
+  TextEditingController _birthdayEdit = MaskedTextController(mask: '0000/00/00');
+  TextEditingController _accountEdit = TextEditingController();
 
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
@@ -594,6 +599,117 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
+                                        child: Text(
+                                          "생일",
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: TextFormField(
+                                          controller: _birthdayEdit,
+                                          style: defaultRegularStyle,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: textFormPadding,
+                                            hintText: Format().yearMonthDay(user.birthday),
+                                            hintStyle: defaultRegularStyle,
+                                            border: InputBorder.none,
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        child: Container(
+                                          height: 4.0.h,
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+                                          decoration: BoxDecoration(
+                                            color: blueColor,
+                                            borderRadius: BorderRadius.circular(
+                                                SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            word.update(),
+                                            style: defaultMediumWhiteStyle,
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          FocusScope.of(context).unfocus();
+                                          FirebaseRepository().updateBirthday(user.companyCode, user.mail, Format().dateTimeToTimeStamp(DateTime.parse(_birthdayEdit.text.replaceAll("/", ""))));
+                                          setState(() {
+                                            user.birthday = Format().dateTimeToTimeStamp(DateTime.parse(_birthdayEdit.text.replaceAll("/", "")));
+                                            _loginUserInfoProvider.setLoginUser(user);
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 32.0.w : 29.0.w,
+                                        child: Text(
+                                          "계좌",
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: TextFormField(
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                          ],
+                                          controller: _accountEdit,
+                                          style: defaultRegularStyle,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: textFormPadding,
+                                            hintText: user.account,
+                                            hintStyle: defaultRegularStyle,
+                                            border: InputBorder.none,
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        child: Container(
+                                          height: 4.0.h,
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 13.5.w : 18.0.w,
+                                          decoration: BoxDecoration(
+                                            color: blueColor,
+                                            borderRadius: BorderRadius.circular(
+                                                SizerUtil.deviceType == DeviceType.Tablet ? containerChipRadiusTW.w : containerChipRadiusMW.w
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: SizerUtil.deviceType == DeviceType.Tablet ? 0.75.w : 1.0.w,
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            word.update(),
+                                            style: defaultMediumWhiteStyle,
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          FocusScope.of(context).unfocus();
+                                          FirebaseRepository().updateAccount(user.companyCode, user.mail, _accountEdit.text);
+                                          setState(() {
+                                            user.account = _accountEdit.text;
+                                            _loginUserInfoProvider.setLoginUser(user);
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
                                       GestureDetector(
                                         child: Container(
                                           height: 4.0.h,
@@ -629,6 +745,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                           }
                                         },
                                       ),
+
                                     ],
                                   ),
                                 ],
@@ -653,10 +770,11 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
   String _profileImageURL = imageUrl;
 
   TextEditingController _companyNameTextCon = TextEditingController();
-  TextEditingController _companyNoTextCon = TextEditingController();
+  TextEditingController _companyNoTextCon = MaskedTextController(mask: '000-00-00000');
   TextEditingController _companyAddrTextCon = TextEditingController();
   TextEditingController _companyPhoneTextCon = TextEditingController();
   TextEditingController _companyWebTextCon = TextEditingController();
+
 
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
@@ -921,6 +1039,34 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                   ),
                                   emptySpace,
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                        child: Text(
+                                          "사업자 번호",
+                                          style: defaultRegularStyle,
+                                        ),
+                                      ),
+                                      Container(
+                                          width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                                          child: TextFormField(
+                                            controller: _companyNoTextCon,
+                                            style: defaultRegularStyle,
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              hintText: snapshot.data["companyNo"] != "" ? snapshot.data["companyNo"] : "",
+                                              hintStyle: defaultRegularStyle,
+                                              contentPadding: textFormPadding,
+                                              border: InputBorder.none,
+                                            ),
+
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                  emptySpace,
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       GestureDetector(
@@ -950,6 +1096,7 @@ SettingCompanyPageUpdate({BuildContext context, String imageUrl, double statusBa
                                             companyPhone: _companyPhoneTextCon.text.trim() != "" ? _companyPhoneTextCon.text : snapshot.data["companyPhone"],
                                             companyWeb: _companyWebTextCon.text.trim() != "" ? _companyWebTextCon.text : snapshot.data["companyWeb"],
                                             url: _profileImageURL.trim() != "" ? _profileImageURL : snapshot.data["companyPhoto"],
+                                            companyNo: _companyNoTextCon.text.trim() != "" ? _companyNoTextCon.text : snapshot.data["companyNo"],
                                           );
                                           Navigator.pop(context);
                                         },

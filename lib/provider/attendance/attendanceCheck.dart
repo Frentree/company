@@ -63,6 +63,8 @@ class AttendanceCheck extends ChangeNotifier {
           _format.dateTimeToTimeStamp(DateTime.parse(decodeData["createDate"]));
       decodeData["lastModDate"] = _format
           .dateTimeToTimeStamp(DateTime.parse(decodeData["lastModDate"]));
+      decodeData["birthday"] = _format
+          .dateTimeToTimeStamp(DateTime.parse(decodeData["birthday"]));
 
       _loginUser = User.fromMap(decodeData, null);
     } else {

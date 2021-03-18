@@ -348,7 +348,7 @@ class FirebaseMethods {
   Future<Map<DateTime, List<CompanyUser>>> getBirthday(
       {String companyCode}) async {
     Map<DateTime, List<CompanyUser>> birthday = {};
-
+    
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
         .doc(companyCode)
@@ -357,12 +357,12 @@ class FirebaseMethods {
         .get();
     querySnapshot.docs.forEach((element) {
       if (element.data()["birthday"] != null) {
-        DateTime key = DateTime.parse(element.data()["birthday"]);
+        DateTime key = _format.timeStampToDateTime(element.data()["birthday"]);
 
-        if (birthday[DateTime(DateTime.now().year, key.month, key.day)] ==
-            null) {
-          birthday
-              .addAll({DateTime(DateTime.now().year, key.month, key.day): []});
+        print(key);
+
+        if (birthday[DateTime(DateTime.now().year, key.month, key.day)] == null) {
+          birthday.addAll({DateTime(DateTime.now().year, key.month, key.day): []});
         }
 
         birthday[DateTime(DateTime.now().year, key.month, key.day)]
@@ -894,7 +894,7 @@ class FirebaseMethods {
       String url) async {
     return await firestore.collection(COMPANY).document(companyCode).update({
       "companyName": companyName,
-      "comapnyNo": companyNo,
+      "companyNo": companyNo,
       "companyAddr": companyAddr,
       "companyPhone": companyPhone,
       "companyWeb": companyWeb,
@@ -915,6 +915,38 @@ class FirebaseMethods {
 
     return firestore.collection(USER).document(mail).update({
       "phone": phone,
+    });
+  }
+
+  Future<void> updateBirthday(
+      String companyCode, String mail, Timestamp birthday) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
+        .update({
+      "birthday": birthday,
+    });
+
+    return firestore.collection(USER).doc(mail).update({
+      "birthday": birthday,
+    });
+  }
+
+  Future<void> updateAccount(
+      String companyCode, String mail, String account) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
+        .update({
+      "account": account,
+    });
+
+    return firestore.collection(USER).doc(mail).update({
+      "account": account,
     });
   }
 

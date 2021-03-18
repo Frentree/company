@@ -344,6 +344,9 @@ class FirebaseRepository {
   Future<void> updatePhone({String companyCode, String mail, String phone}) =>
       _firebaseMethods.updatePhone(companyCode, mail, phone);
 
+  Future<void> updateBirthday(String companyCode, String mail, Timestamp birthday) => _firebaseMethods.updateBirthday(companyCode, mail, birthday);
+  Future<void> updateAccount(String companyCode, String mail, String account) => _firebaseMethods.updateAccount(companyCode, mail, account);
+
   Stream<QuerySnapshot> getGrade(String companyCode) =>
       _firebaseMethods.getGrade(companyCode);
 

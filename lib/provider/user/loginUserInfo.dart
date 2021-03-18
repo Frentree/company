@@ -33,7 +33,7 @@ class LoginUserInfoProvider with ChangeNotifier{
 
     encodeData["createDate"] = _format.timeStampToDateTime(encodeData["createDate"]).toIso8601String();
     encodeData["lastModDate"] = _format.timeStampToDateTime(encodeData["lastModDate"]).toIso8601String();
-
+    encodeData["birthday"] = _format.timeStampToDateTime(encodeData["birthday"]).toIso8601String();
     _sharedPreferences.setString("loginUser", jsonEncode(encodeData));
     setLoginUser(value);
   }
@@ -45,8 +45,10 @@ class LoginUserInfoProvider with ChangeNotifier{
     SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
     if(_sharedPreferences.getString("loginUser") != null){
       dynamic decodeData = jsonDecode(_sharedPreferences.getString("loginUser"));
+
       decodeData["createDate"] = _format.dateTimeToTimeStamp(DateTime.parse(decodeData["createDate"]));
       decodeData["lastModDate"] = _format.dateTimeToTimeStamp(DateTime.parse(decodeData["lastModDate"]));
+      decodeData["birthday"] = _format.dateTimeToTimeStamp(DateTime.parse(decodeData["birthday"]));
 
       _loginUser = User.fromMap(decodeData, null);
 

@@ -1,6 +1,7 @@
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/dialog/accountDialogList.dart';
 import 'package:MyCompany/widgets/dialog/gradeDialogList.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
@@ -189,6 +190,46 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
                 ],
               ),
               emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      "생일",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      Format().yearMonthDay(user.birthday),
+                      style: hintStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      "계좌번호",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      user.account == null ? "" : user.account,
+                      style: hintStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
             ],
           ),
         ),
@@ -332,6 +373,26 @@ Widget getCompanyInfomationCard({BuildContext context, User user, double statusB
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                     child: Text(
                       snapshot.data["companyWeb"],
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      "사업자 번호",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      snapshot.data["companyNo"],
                       style: defaultRegularStyle,
                     ),
                   ),

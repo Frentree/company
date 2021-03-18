@@ -20,9 +20,10 @@ class CompanyUser {
   User user;
   String name;
   String mail;
-  String birthday;
+  Timestamp birthday;
   String phone;
   String profilePhoto;
+  String account;
   String token;
   Timestamp createDate;
   Timestamp lastModDate;
@@ -52,9 +53,10 @@ class CompanyUser {
       : id = id ?? "",
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
-        birthday = snapshot["birthday"] ?? "",
+        birthday = snapshot["birthday"] ?? null,
         phone = snapshot["phone"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
+        account = snapshot["account"] ?? "",
         token = snapshot["token"] ?? "",
         createDate = snapshot["createDate"] ?? null,
         enteredDate = snapshot["enteredDate"] ?? null,
@@ -72,6 +74,7 @@ class CompanyUser {
       "birthday": user.birthday,
       "phone": user.phone,
       "profilePhoto": user.profilePhoto,
+      "account": user.account,
       "token": token,
       "createDate": createDate,
       "lastModDate": lastModDate,
