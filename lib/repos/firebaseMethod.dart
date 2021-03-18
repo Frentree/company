@@ -487,7 +487,7 @@ class FirebaseMethods {
         .doc(mail)
         .collection(ALARM)
         .where("read", isEqualTo: false)
-        .orderBy("alarmDate")
+        .orderBy("alarmDate", descending: true)
         .snapshots();
   }
 
