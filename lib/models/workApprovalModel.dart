@@ -26,6 +26,7 @@ class WorkApproval {
   List<dynamic> docIds;
   DocumentReference reference;
   int totalCost;
+  bool isSend; //입금여부(true : 입금, false: 미입금)
 
   WorkApproval(
       {this.createDate,
@@ -42,7 +43,9 @@ class WorkApproval {
       this.status,
       this.location,
       this.docIds,
-      this.totalCost = 0});
+      this.totalCost = 0,
+      this.isSend = false,
+      });
 
   WorkApproval.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['createDate'] != null),
@@ -72,7 +75,8 @@ class WorkApproval {
         status = map['status'],
         location = map['location'],
         docIds = map['docIds'],
-        totalCost = map['totalCost'];
+        totalCost = map['totalCost'],
+        isSend = map['isSend'];
 
   toJson() {
     return {
@@ -91,6 +95,7 @@ class WorkApproval {
       "location": location,
       "docIds": docIds,
       "totalCost": totalCost,
+      "isSend": isSend,
     };
   }
 

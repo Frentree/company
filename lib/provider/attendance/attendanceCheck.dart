@@ -104,7 +104,7 @@ class AttendanceCheck extends ChangeNotifier {
 
     if(yesterdayResult.docs.length != 0){
       Attendance _temp = Attendance.fromMap(yesterdayResult.docs.first.data(), yesterdayResult.docs.first.id);
-      if(_temp.endTime == null){
+      if(_temp.attendTime != null && _temp.endTime == null){
         _temp.endTime = _format.dateTimeToTimeStamp(DateTime(yesterday.year, yesterday.month, yesterday.day, 18, 00));
       }
       _repository.updateAttendance(companyCode: _loginUser.companyCode, attendanceModel: _temp, documentId: yesterdayResult.docs.first.id);

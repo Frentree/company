@@ -11,6 +11,7 @@ import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/alarm/signBoxExpensePickDate.dart';
+import 'package:MyCompany/screens/home/homeSchedule.dart';
 import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/popupMenu/invalidData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -47,7 +48,14 @@ AnnualLeaveMain(BuildContext context) async {
 
   /// Which holds the selected date
   /// Defaults to today's date.
-  DateTime selectedDate = DateTime.now();
+  /*DateTime selectedDate = DateTime.now();*/
+
+  DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime selectedDay = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+
+  DateTime startTime = selectedDay == today ? DateTime.now() : selectedDate;
+
+
   Format _format = Format();
 
   bool _decideWhichDayToEnable(DateTime day) {
@@ -132,12 +140,12 @@ AnnualLeaveMain(BuildContext context) async {
                                   mode: CupertinoDatePickerMode.date,
                                   onDateTimeChanged: (picked) {
                                     if (picked != null &&
-                                        picked != selectedDate)
+                                        picked != startTime)
                                       setState(() {
-                                        selectedDate = picked;
+                                        startTime = picked;
                                       });
                                   },
-                                  initialDateTime: selectedDate,
+                                  initialDateTime: startTime,
                                   minimumYear: 2000,
                                   maximumYear: 2025,
                                 ),
@@ -150,7 +158,7 @@ AnnualLeaveMain(BuildContext context) async {
             buildMaterialDatePicker(BuildContext context) async {
               final DateTime picked = await showDatePicker(
                 context: context,
-                initialDate: selectedDate,
+                initialDate: startTime,
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2025),
                 initialEntryMode: DatePickerEntryMode.calendar,
@@ -170,9 +178,9 @@ AnnualLeaveMain(BuildContext context) async {
                   );
                 },
               );
-              if (picked != null && picked != selectedDate)
+              if (picked != null && picked != startTime)
                 setState(() {
-                  selectedDate = picked;
+                  startTime = picked;
                 });
             }
 
@@ -282,17 +290,17 @@ AnnualLeaveMain(BuildContext context) async {
                                    return;
                                  }
                                  if(_chosenItem == 1 && _chosenTimeItem == 1 ){  //반차, 오후
-                                   selectedDate = DateTime.parse(DateFormat('yyyy-MM-dd 13:00:00').format(selectedDate).toString());
+                                   startTime = DateTime.parse(DateFormat('yyyy-MM-dd 13:00:00').format(startTime).toString());
                                  } else {
-                                   selectedDate = DateTime.parse(DateFormat('yyyy-MM-dd 09:00:00').format(selectedDate).toString());
+                                   startTime = DateTime.parse(DateFormat('yyyy-MM-dd 09:00:00').format(startTime).toString());
                                  }
                                 _approval = WorkApproval(
-                                  title: DateFormat('yyyyMMdd').format(selectedDate).toString() + "_" +  _buildAnnualItem(_chosenItem) + "_" + user.name,
+                                  title: DateFormat('yyyyMMdd').format(startTime).toString() + "_" +  _buildAnnualItem(_chosenItem) + "_" + user.name,
                                   status: "요청",
                                   user: user.name,
                                   userMail: user.mail,
                                   createDate: Timestamp.now(),
-                                  requestDate: _format.dateTimeToTimeStamp(selectedDate),
+                                  requestDate: _format.dateTimeToTimeStamp(startTime),
                                   approvalContent: "",
                                   approvalType: _buildAnnualItem(_chosenItem),
                                   requestContent: _contentController.text,
@@ -366,14 +374,14 @@ AnnualLeaveMain(BuildContext context) async {
                           Expanded(
                             child: InkWell(
                               child: Text(
-                                DateFormat('yyyy-MM-dd').format(selectedDate),
+                                DateFormat('yyyy-MM-dd').format(startTime),
                                 style: defaultRegularStyle,
                               ),
                               onTap: () async {
                                 //_selectDate(context);
-                                selectedDate = await pickDate(
+                                startTime = await pickDate(
                                     context,
-                                    selectedDate
+                                    startTime
                                 );
                                 setState((){});
                               },
@@ -593,7 +601,7 @@ AnnualLeaveMain(BuildContext context) async {
                                   padding: EdgeInsets.only(left: 8),
                                 ),
                                 Text(
-                                  word.addItem(),
+                                  Words.word.addItem(),
                                   style: defaultRegularStyle,
                                 ),
                                 Padding(
@@ -648,7 +656,7 @@ AnnualLeaveMain(BuildContext context) async {
                                   ),
                                   cardSpace,
                                   Text(
-                                    word.content(),
+                                    Words.word.content(),
                                     style: defaultRegularStyle,
                                   ),
                                 ],
@@ -665,7 +673,7 @@ AnnualLeaveMain(BuildContext context) async {
                                 isDense: true,
                                 border: OutlineInputBorder(),
                                 contentPadding: textFormPadding,
-                                hintText: word.contentCon(),
+                                hintText: Words.word.contentCon(),
                                 hintStyle: hintStyle,
                               ),
                             ),

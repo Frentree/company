@@ -42,7 +42,7 @@ class TimeAndAttendanceCheckState extends State<TimeAndAttendanceCheck> {
       body: FutureBuilder(
         future: _repository.userGrade(_loginUser.companyCode, _loginUser.mail),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator();
+          if (!snapshot.hasData) return Center();
           List<dynamic> grade = snapshot.data['level'];
           return Column(
             children: [
@@ -123,7 +123,7 @@ class TimeAndAttendanceCheckState extends State<TimeAndAttendanceCheck> {
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: Container(),
                     );
                   }
 
@@ -166,7 +166,7 @@ class TimeAndAttendanceCheckState extends State<TimeAndAttendanceCheck> {
                             return FutureBuilder(
                               future: _repository.getMyCompanyInfo(companyCode: _loginUser.companyCode, myMail: _attendance.mail),
                               builder: (context, snapshot) {
-                                if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+                                if (!snapshot.hasData) return Center(child: Text(""));
                                 return timeAndAttendanceCard(
                                   context: context,
                                   attendanceModel: _attendance,

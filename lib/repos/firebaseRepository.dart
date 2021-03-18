@@ -30,6 +30,9 @@ class FirebaseRepository {
   Stream<QuerySnapshot> getExpense(String companyCode, String uid, DateTime thisMonth) =>
       _firebaseMethods.getExpense(companyCode, uid, thisMonth);
 
+  Stream<QuerySnapshot> getApprovalExpense({String companyCode}) => _firebaseMethods.getApprovalExpense(companyCode: companyCode);
+  Future<void> getUserApprovalExpenseUpdate({String companyCode, List<String> documentID}) => _firebaseMethods.getUserApprovalExpenseUpdate(companyCode: companyCode, documentID: documentID);
+
   // 경비 항목 삭제 메서드
   Future<void> deleteExpense(String companyCode, String documentID, String uid) =>
       _firebaseMethods.deleteExpense(companyCode, documentID, uid);

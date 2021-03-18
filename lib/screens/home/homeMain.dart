@@ -76,6 +76,7 @@ class HomeMainPageState extends State<HomeMainPage> {
     super.initState();
     currentPageIndex = 0;
     click = false;
+
     notificationPlugin.setOnNotificationClick(onNotificationClick, onFCMNotificationClick);
   }
 
