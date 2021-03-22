@@ -7,6 +7,7 @@ import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:MyCompany/repos/fcm/pushLocalAlarm.dart';
 import 'package:MyCompany/repos/firebasecrud/crudRepository.dart';
+import 'package:MyCompany/widgets/bottomsheet/expense/expenseDetail.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/workContent.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,7 +49,6 @@ Card settingExpenseDetailCard({BuildContext context, List<dynamic> workApprovalM
     child: Padding(
       padding: cardPadding,
       child: Container(
-        height: scheduleCardDefaultSizeH.h,
         child: Row(
           children: [
             Container(
@@ -60,74 +60,134 @@ Card settingExpenseDetailCard({BuildContext context, List<dynamic> workApprovalM
               ),
             ),
             cardSpace,
-            Container(
-              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 17.5.w,
-              alignment: Alignment.center,
-              child: Text(
-                returnString.format(totalCost),
-                style: containerChipStyle,
-              ),
-            ),
-            cardSpace,
             Expanded(
-              child: Container(
-                height: 3.0.h,
-                padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                alignment: Alignment.center,
-                child: RaisedButton(
-                  color: whiteColor,
-                  shape: raisedButtonBlueShape,
-                  elevation: 0.0,
-                  child: Text(
-                    "입금",
-                    style: buttonBlueStyle,
-                  ),
-                  onPressed: () async {
-                    await showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context){
-                        return StatefulBuilder(
-                          builder: (context, setState){
-                            return AlertDialog(
-                              title: Text(
-                                "입금 완료",
-                                style: defaultMediumStyle,
-                              ),
-                              content: Container(
-                                child: Text("입금 완료로 처리하시겠습니까?", style: defaultRegularStyle,),
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text(
-                                    "확인",
-                                    style: buttonBlueStyle,
-                                  ),
-                                  onPressed: () async {
-                                    await FirebaseRepository().getUserApprovalExpenseUpdate(companyCode: loginUser.companyCode, documentID: documentID);
-                                    waData.forEach((element) async {
-                                      await FirebaseRepository().postProcessApprovedExpense(loginUser, element, 4);
-                                    });
-                                    Navigator.pop(context, "OK");
-                                  }
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: waData.length + 1,
+                itemBuilder: (context, index) {
+                  if(index < waData.length){
+                    return Row(
+                      children: [
+                        Container(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 15.5.w,
+                          alignment: Alignment.center,
+                          child: Text(
+                            _format.timeStampToDateTimeString(waData[index].requestDate).substring(2,10),
+                            style: containerChipStyle,
+                          ),
+                        ),
+                        cardSpace,
+                        Container(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 17.5.w,
+                          alignment: Alignment.center,
+                          child: Text(
+                            returnString.format(waData[index].totalCost),
+                            style: containerChipStyle,
+                          ),
+                        ),
+                        cardSpace,
+                        Expanded(
+                          child: Container(
+                            /*height: 3.0.h,
+                            padding: EdgeInsets.symmetric(horizontal: 5.0.w),*/
+                              alignment: Alignment.center,
+                              child: IconButton(
+                                icon: Icon(
+                                    Icons.library_books,
                                 ),
-                                FlatButton(
-                                  child: Text(
-                                    "취소",
-                                    style: buttonBlueStyle,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
+                                /*color: whiteColor,*/
+                                onPressed: () async {
+                                  ExpenseDetail(context, loginUser.companyCode, waData[index], 2);
+                                },
+                              )
+                          ),
+                        ),
+                      ],
                     );
-                  },
-                )
+                  }
+                  else{
+                    return Row(
+                      children: [
+                        Container(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 15.5.w,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "미지급",
+                            style: containerChipStyle,
+                          ),
+                        ),
+                        cardSpace,
+                        Container(
+                          width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 17.5.w,
+                          alignment: Alignment.center,
+                          child: Text(
+                            returnString.format(totalCost),
+                            style: containerChipStyle,
+                          ),
+                        ),
+                        cardSpace,
+                        Expanded(
+                          child: Container(
+                            /*height: 3.0.h,
+                            padding: EdgeInsets.symmetric(horizontal: 5.0.w),*/
+                              alignment: Alignment.center,
+                              child: IconButton(
+                                icon: Icon(
+                                    Icons.send,
+                                ),
+                                /*color: whiteColor,*/
+                                onPressed: () async {
+                                  await showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context){
+                                        return StatefulBuilder(
+                                          builder: (context, setState){
+                                            return AlertDialog(
+                                              title: Text(
+                                                "입금 완료",
+                                                style: defaultMediumStyle,
+                                              ),
+                                              content: Container(
+                                                child: Text("입금 완료로 처리하시겠습니까?", style: defaultRegularStyle,),
+                                              ),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                    child: Text(
+                                                      "확인",
+                                                      style: buttonBlueStyle,
+                                                    ),
+                                                    onPressed: () async {
+                                                      await FirebaseRepository().getUserApprovalExpenseUpdate(companyCode: loginUser.companyCode, documentID: documentID);
+                                                      waData.forEach((element) async {
+                                                        await FirebaseRepository().postProcessApprovedExpense(loginUser, element, 4);
+                                                      });
+                                                      Navigator.pop(context, "OK");
+                                                    }
+                                                ),
+                                                FlatButton(
+                                                  child: Text(
+                                                    "취소",
+                                                    style: buttonBlueStyle,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                  );
+                                },
+                              )
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }
               ),
             ),
           ],

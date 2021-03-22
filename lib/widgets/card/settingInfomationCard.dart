@@ -34,13 +34,16 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
         .doc(user.mail)
         .get(),
     builder: (context, snapshot) {
-
-
       if (!snapshot.hasData) {
         return Center(
           child: CircularProgressIndicator(),
         );
       }
+
+      print(snapshot.data.runtimeType);
+
+      CompanyUser companyUser = CompanyUser.fromMap(snapshot.data.data(), snapshot.data.id);
+
       return Container(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -144,6 +147,26 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                     child: Text(
                       snapshot.data['enteredDate'],
+                      style: hintStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      "사번",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      companyUser.employeeNum == "" ? "" : snapshot.data['employeeNum'],
                       style: hintStyle,
                     ),
                   ),

@@ -20,3 +20,7 @@ toastModified(BuildContext context) {
 toastNoItems(BuildContext context) {
   Toast.show("No Items", context, duration: 2, gravity: Toast.BOTTOM);
 }
+
+toastAppClose(BuildContext context) {
+  Toast.show("'뒤로'버튼 한번 더 누르시면 앱이 종료됩니다.", context, duration: 2, gravity: Toast.BOTTOM);
+}

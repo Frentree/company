@@ -34,6 +34,7 @@ class CompanyUser {
   String team;
   List<dynamic> userSearch;
   DocumentReference reference;
+  String employeeNum;
 
   CompanyUser({
     this.id,
@@ -47,6 +48,7 @@ class CompanyUser {
     this.position,
     this.team,
     this.userSearch,
+    this.employeeNum,
   });
 
   CompanyUser.fromMap(Map snapshot, String id)
@@ -65,7 +67,8 @@ class CompanyUser {
         level = snapshot["level"] ?? [],
         position = snapshot["position"] ?? "",
         team = snapshot["team"] ?? "",
-        userSearch = snapshot["userSearch"] ?? [];
+        userSearch = snapshot["userSearch"] ?? [],
+        employeeNum = snapshot["employeeNum"] ?? "";
 
   toJson() {
     return {
@@ -84,6 +87,7 @@ class CompanyUser {
       "position": position == null ? "" : position,
       "team": team == null ? "" : team,
       "userSearch": user.name.split(""),
+      "employeeNum": employeeNum,
     };
   }
 
