@@ -6,6 +6,7 @@ import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/work/workContent.dart';
 import 'package:MyCompany/widgets/bottomsheet/annual/annualLeaveMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/expense/expenseMain.dart';
+import 'package:MyCompany/widgets/bottomsheet/meeting/meetingMainCopy.dart';
 import 'package:MyCompany/widgets/bottomsheet/purchase/purchaseMain.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/copySchedule.dart';
 import 'package:MyCompany/widgets/bottomsheet/work/requestWork.dart';
@@ -40,7 +41,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
         }
         break;
       case 3: // 회의 일정 생성
-        result = await meetingMain(context: context);
+        result = await MeetingCopyMain(context: context);
         if (result) {
           Navigator.of(context).pop();
         }

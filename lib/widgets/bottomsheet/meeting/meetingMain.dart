@@ -26,6 +26,7 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
   MeetingModel _meetingModel = meetingModel;
   bool result = false;
   bool isChk = false;
+  int _repeatDateChoise = 0;
 
   Format _format = Format();
   Fcm fcm = Fcm();
@@ -86,7 +87,6 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
                   Row(
                     children: [
                       Container(
-                        height: 6.0.h,
                         width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
                         decoration: BoxDecoration(
                           color: chipColorBlue,
@@ -323,6 +323,109 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
                         child: Row(
                           children: [
                             Icon(
+                              Icons.timer,
+                              size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
+                            ),
+                            cardSpace,
+                            Text(
+                              "주기",
+                              style: defaultRegularStyle,
+                            ),
+                            cardSpace,
+                            Tooltip(
+                              message: "해당 주기마다 등록되는 갯 수가 정해져있습니다.\n최대 20개의 일정이 등록 되니 참고바랍니다.",
+                              child: Icon(
+                                Icons.announcement_outlined,
+                                color: redColor,
+                                size: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: PopupMenuButton(
+                          child: RaisedButton(
+                            disabledColor: Colors.white,
+                            child: Text(
+                              _buildChosenItem(_repeatDateChoise),
+                              style: defaultRegularStyle
+                            ),
+                          ),
+                          onSelected: (val) {
+                            _repeatDateChoise = val;
+                            setState((){});
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              height: 7.0.h,
+                              value: 0,
+                              child: Row(
+                                children: [
+                                  cardSpace,
+                                  Text(
+                                    "선택 안함",
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              height: 7.0.h,
+                              value: 1,
+                              child: Row(
+                                children: [
+                                  //Icon(Icons.delete),
+                                  cardSpace,
+                                  Text(
+                                    "일주일",
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              height: 7.0.h,
+                              value: 2,
+                              child: Row(
+                                children: [
+                                  //Icon(Icons.edit),
+                                  cardSpace,
+                                  Text(
+                                    "한  달",
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              height: 7.0.h,
+                              value: 3,
+                              child: Row(
+                                children: [
+                                  //Icon(Icons.edit),
+                                  cardSpace,
+                                  Text(
+                                    "일  년",
+                                    style: defaultRegularStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  emptySpace,
+                  Row(
+                    children: [
+                      Container(
+                        height: 6.0.h,
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 30.0.w,
+                        child: Row(
+                          children: [
+                            Icon(
                               Icons.supervisor_account,
                               size: SizerUtil.deviceType == DeviceType.Tablet ? 4.5.w : 6.0.w,
                             ),
@@ -494,4 +597,18 @@ meetingMain({BuildContext context, MeetingModel meetingModel, WorkData workData}
     },
   );
   return result;
+}
+
+String _buildChosenItem(int chosenItem) {
+  String _chosenItem = chosenItem.toString();
+  switch (_chosenItem) {
+    case '0':
+      return "선택 안함";
+    case '1':
+      return "일주일";
+    case '2':
+      return "한  달";
+    case '3':
+      return "일  년";
+  }
 }

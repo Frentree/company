@@ -96,12 +96,12 @@ ExpenseMain(BuildContext context) async {
 
     _db
         .collection("company")
-        .document(user.companyCode)
+        .doc(user.companyCode)
         .collection("user")
-        .document(user.mail)
+        .doc(user.mail)
         .collection("expense")
-        .document(_documentID)
-        .updateData({"imageUrl": _downloadUrl});
+        .doc(_documentID)
+        .update({"imageUrl": _downloadUrl});
   }
 
   /// 금액 입력 텍스트 위젯

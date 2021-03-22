@@ -532,7 +532,19 @@ class FirebaseMethods {
 
   //회의 데이터 관련 관련
   Future<void> saveMeeting(
-      {MeetingModel meetingModel, String companyCode}) async {
+      {MeetingModel meetingModel, String companyCode, int days}) async {
+    
+    if(days != 0) {
+      await firestore
+          .collection(COMPANY)
+          .doc(companyCode)
+          .collection(WORK)
+          .add(meetingModel.toJson());
+    } else {
+      for(int i = 0; i < 20; i++){
+
+      }
+    }
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
