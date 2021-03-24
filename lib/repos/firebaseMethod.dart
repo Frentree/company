@@ -431,7 +431,7 @@ class FirebaseMethods {
   }
 
   Future<void> saveAttendeesUserAlarm(
-      {Alarm alarmModel, String companyCode, List<String> mail}) async {
+      {Alarm alarmModel, String companyCode, List<dynamic> mail}) async {
 
     mail.forEach((element) async {
       await firestore
@@ -533,18 +533,7 @@ class FirebaseMethods {
   //회의 데이터 관련 관련
   Future<void> saveMeeting(
       {MeetingModel meetingModel, String companyCode, int days}) async {
-    
-    if(days != 0) {
-      await firestore
-          .collection(COMPANY)
-          .doc(companyCode)
-          .collection(WORK)
-          .add(meetingModel.toJson());
-    } else {
-      for(int i = 0; i < 20; i++){
 
-      }
-    }
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
@@ -860,7 +849,7 @@ class FirebaseMethods {
   }
 
   //FCM 토큰 가져오기
-  Future<List<String>> getAttendeesTokens({String companyCode, List<String> mail}) async {
+  Future<List<String>> getAttendeesTokens({String companyCode, List<dynamic> mail}) async {
     List<String> tokenList = [];
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
@@ -1416,7 +1405,18 @@ class FirebaseMethods {
   }
 
   Stream<QuerySnapshot> getCompanyUsers(
-      String companyCode) {
+      String companyCode, String mail) {
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .orderBy("team", descending: false)
+        .orderBy("name", descending: false)
+        .snapshots();
+  }
+
+  Future<void> getFutureCompanyUsers(
+      String companyCode) async {
     return firestore
         .collection(COMPANY)
         .doc(companyCode)

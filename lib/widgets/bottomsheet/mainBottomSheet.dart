@@ -41,7 +41,7 @@ MainBottomSheet({BuildContext context, String companyCode, String mail, double s
         }
         break;
       case 3: // 회의 일정 생성
-        result = await MeetingCopyMain(context: context);
+        result = await meetingMain(context: context);
         if (result) {
           Navigator.of(context).pop();
         }

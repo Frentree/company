@@ -28,6 +28,7 @@ MeetingCopyMain({BuildContext context, MeetingModel meetingModel, WorkData workD
     context: context,
     builder: (BuildContext context) {
       return Scaffold(
+        backgroundColor: whiteColor,
         body: MeetingMainDetail()
       );
     });

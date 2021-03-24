@@ -98,7 +98,7 @@ class FirebaseRepository {
     mail: mail
   );
 
-  Future<void> saveAttendeesUserAlarm({Alarm alarmModel, String companyCode, List<String> mail}) => _firebaseMethods.saveAttendeesUserAlarm(
+  Future<void> saveAttendeesUserAlarm({Alarm alarmModel, String companyCode, List<dynamic> mail}) => _firebaseMethods.saveAttendeesUserAlarm(
     alarmModel: alarmModel,
     companyCode: companyCode,
     mail: mail,
@@ -330,7 +330,7 @@ class FirebaseRepository {
     mail: mail
   );
 
-  Future<List<String>> getAttendeesTokens({String companyCode, List<String> mail}) => _firebaseMethods.getAttendeesTokens(
+  Future<List<String>> getAttendeesTokens({String companyCode, List<dynamic> mail}) => _firebaseMethods.getAttendeesTokens(
     companyCode: companyCode,
     mail: mail,
   );
@@ -546,8 +546,8 @@ class FirebaseRepository {
   Future<CompanyUser> getComapnyUser({String companyCode, String mail}) =>
       _firebaseMethods.getComapnyUser(companyCode, mail);
 
-  Stream<QuerySnapshot> getCompanyUsers({String companyCode}) =>
-      _firebaseMethods.getCompanyUsers(companyCode);
+  Stream<QuerySnapshot> getCompanyUsers({String companyCode, String mail}) =>
+      _firebaseMethods.getCompanyUsers(companyCode, mail);
 
   // 최근일정 갖고오기
   Stream<QuerySnapshot> getCopyMyShedule({String companyCode, String mail, int count}) =>

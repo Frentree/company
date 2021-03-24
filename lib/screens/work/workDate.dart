@@ -40,6 +40,9 @@ workDatePage({BuildContext context, DateTime startTime}) async {
                        onConfirm: (dateTime, selectedIndex) {
                          date= dateTime;
                        },
+                       onCancel: (){
+                         date= startTime;
+                       },
                        pickerTheme: DateTimePickerTheme(
                          titleHeight: 5.0.h,
                          cancelTextStyle: hintStyle,
