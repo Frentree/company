@@ -63,6 +63,8 @@ class AttendanceCheck extends ChangeNotifier {
           _format.dateTimeToTimeStamp(DateTime.parse(decodeData["createDate"]));
       decodeData["lastModDate"] = _format
           .dateTimeToTimeStamp(DateTime.parse(decodeData["lastModDate"]));
+      decodeData["birthday"] = _format
+          .dateTimeToTimeStamp(DateTime.parse(decodeData["birthday"]));
 
       _loginUser = User.fromMap(decodeData, null);
     } else {
@@ -157,7 +159,6 @@ class AttendanceCheck extends ChangeNotifier {
 
     //출퇴근 데이터가 있을 경우
     else {
-      print("데이터가 있습니다.");
       String wifiName = await connectWifiName();
       _attendance = Attendance.fromMap(
           result.docs.first.data(), result.docs.first.id);

@@ -1,5 +1,6 @@
 //Flutter
 import 'package:MyCompany/i18n/word.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
@@ -62,7 +63,7 @@ class SignUpPageState extends State<SignUpPage> {
   bool isPhoneVerify = true/*false*/;
 
   //폼 유효성 여부 확인을 위한 List
-  List<bool> isFormValidation = [false, false, false, false, false];
+  List<bool> isFormValidation = [false, false, false, false, false, false];
 
   //인증 코드 저장을 위한 List
   List<String> _smsCode = ["", "", "", "", "", ""];
@@ -74,7 +75,7 @@ class SignUpPageState extends State<SignUpPage> {
     _mailTextCon = TextEditingController();
     _passwordTextCon = TextEditingController();
     _passwordConfirmTextCon = TextEditingController();
-    _birthdayTextCon = MaskedTextController(mask: '0000.00.00');
+    _birthdayTextCon = MaskedTextController(mask: '0000/00/00');
     _phoneNumberTextCon = MaskedTextController(mask: '000-0000-0000');
     _certificationNumberTexCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(), TextEditingController()];
   }
@@ -98,12 +99,11 @@ class SignUpPageState extends State<SignUpPage> {
     //Firebase 인증 Provider
     FirebaseAuthProvider _firebaseAuthProvider =
         Provider.of<FirebaseAuthProvider>(context);
-
+    Format _format = Format();
     //User data model
     _newUser = User(
       mail: _mailTextCon.text.replaceAll(" ", ""),
       name: _nameTextCon.text.replaceAll(" ", ""),
-      birthday: _birthdayTextCon.text == null ? "" : _birthdayTextCon.text.replaceAll(".", ""),
       phone: _phoneNumberTextCon.text,
     );
 
@@ -284,10 +284,15 @@ class SignUpPageState extends State<SignUpPage> {
                             value: value,
                           );
                         }),
-                        onChanged: ((text) {
+                        onChanged: ((text){
+                          bool _result = _loginRepository.isFormValidation(
+                            validationFunction:  _formKeyBirthday.currentState.validate(),
+                          );
                           setState(() {
+                            isFormValidation[4] = _result;
                           });
-                        })
+
+                        }),
 
                         /*onChanged: ((text){
                           bool _result = _loginRepository.isFormValidation(
@@ -329,7 +334,7 @@ class SignUpPageState extends State<SignUpPage> {
                             validationFunction: _formKeyPhone.currentState.validate(),
                           );
                           setState(() {
-                            isFormValidation[4] = _result;
+                            isFormValidation[5] = _result;
                           });
                         }),
                       ),
@@ -587,6 +592,7 @@ class SignUpPageState extends State<SignUpPage> {
                           ),
                           onPressed: !(isFormValidation.contains(false) /*|| _smsCode.contains("")*/) ? () async {
                             FocusScope.of(context).unfocus();
+                            _newUser.birthday = _birthdayTextCon.text == "" ? null : _format.dateTimeToTimeStamp(DateTime.parse(_birthdayTextCon.text.replaceAll(".", "")));
                             await _loginRepository.signUpWithFirebaseAuth(
                               context: context,
                               /*smsCode: _smsCode.join(),*/

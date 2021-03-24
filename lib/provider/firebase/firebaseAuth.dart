@@ -94,7 +94,6 @@ class FirebaseAuthProvider with ChangeNotifier {
       return false;
 
     } on FirebaseAuthException catch (e) {
-      print("min ${e.code}");
       setLastFirebaseMessage(message: e.code);
       return false;
     }
@@ -113,8 +112,6 @@ class FirebaseAuthProvider with ChangeNotifier {
       }
       return false;
     } on FirebaseAuthException catch (e) {
-      print("min ${e.code}");
-
       setLastFirebaseMessage(message: e.code);
       return false;
     }

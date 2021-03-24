@@ -1,6 +1,7 @@
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/dialog/accountDialogList.dart';
 import 'package:MyCompany/widgets/dialog/gradeDialogList.dart';
 import 'package:MyCompany/widgets/photo/profilePhoto.dart';
@@ -33,13 +34,16 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
         .doc(user.mail)
         .get(),
     builder: (context, snapshot) {
-
-
       if (!snapshot.hasData) {
         return Center(
           child: CircularProgressIndicator(),
         );
       }
+
+      print(snapshot.data.runtimeType);
+
+      CompanyUser companyUser = CompanyUser.fromMap(snapshot.data.data(), snapshot.data.id);
+
       return Container(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -155,6 +159,26 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
                   Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                     child: Text(
+                      "사번",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      companyUser.employeeNum == "" ? "" : snapshot.data['employeeNum'],
+                      style: hintStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
                       word.email(),
                       style: defaultRegularStyle,
                     ),
@@ -183,6 +207,46 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                     child: Text(
                       user.phone,
+                      style: hintStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      "생일",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      Format().yearMonthDay(user.birthday),
+                      style: hintStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      "계좌번호",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      user.account == null ? "" : user.account,
                       style: hintStyle,
                     ),
                   ),
@@ -332,6 +396,26 @@ Widget getCompanyInfomationCard({BuildContext context, User user, double statusB
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                     child: Text(
                       snapshot.data["companyWeb"],
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                ],
+              ),
+              emptySpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      "사업자 번호",
+                      style: defaultRegularStyle,
+                    ),
+                  ),
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
+                    child: Text(
+                      snapshot.data["companyNo"],
                       style: defaultRegularStyle,
                     ),
                   ),

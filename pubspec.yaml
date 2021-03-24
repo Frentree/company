@@ -49,6 +49,7 @@ dependencies:
   photo_view: ^0.10.3
   flutter_launcher_icons:
   toast: ^0.1.5
+  flutter_grid_button: ^1.1.8
   #tesseract_ocr: ^0.3.1
 
   flutter_local_notifications: ^3.0.1+2

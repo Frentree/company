@@ -16,7 +16,7 @@ class ValidationMethod{
 
     RegExp emailRegExp = RegExp(r'^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$');
     RegExp passwordRegExp = RegExp(r'^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$');
-    RegExp birthdayRegExp = RegExp(r'^(19|20)\d{2}[.](0[1-9]|1[012])[.](0[1-9]|[12][0-9]|3[0-1])$');
+    RegExp birthdayRegExp = RegExp(r'^(19|20)\d{2}[/](0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[0-1])$');
     RegExp phoneRegExp = RegExp(r'^[0-9]{3}[-][0-9]{4}[-][0-9]{4}$');
 
     switch (field) {
@@ -34,7 +34,11 @@ class ValidationMethod{
 
       case "생일":
         {
+          if(value == ""){
+            _isValidRegExp = true;
+          }
           _isValidRegExp = birthdayRegExp.hasMatch(value);
+
         }
         break;
 
@@ -79,7 +83,9 @@ class ValidationMethod{
     }
 
     else {
-      return field + "을(를) 입력해 주세요.";
+      if(field != "생일"){
+        return field + "을(를) 입력해 주세요.";
+      }
     }
   }
 

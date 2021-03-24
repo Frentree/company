@@ -20,9 +20,10 @@ class CompanyUser {
   User user;
   String name;
   String mail;
-  String birthday;
+  Timestamp birthday;
   String phone;
   String profilePhoto;
+  String account;
   String token;
   Timestamp createDate;
   Timestamp lastModDate;
@@ -33,6 +34,7 @@ class CompanyUser {
   String team;
   List<dynamic> userSearch;
   DocumentReference reference;
+  String employeeNum;
 
   CompanyUser({
     this.id,
@@ -46,15 +48,17 @@ class CompanyUser {
     this.position,
     this.team,
     this.userSearch,
+    this.employeeNum,
   });
 
   CompanyUser.fromMap(Map snapshot, String id)
       : id = id ?? "",
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
-        birthday = snapshot["birthday"] ?? "",
+        birthday = snapshot["birthday"] ?? null,
         phone = snapshot["phone"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
+        account = snapshot["account"] ?? "",
         token = snapshot["token"] ?? "",
         createDate = snapshot["createDate"] ?? null,
         enteredDate = snapshot["enteredDate"] ?? null,
@@ -63,7 +67,8 @@ class CompanyUser {
         level = snapshot["level"] ?? [],
         position = snapshot["position"] ?? "",
         team = snapshot["team"] ?? "",
-        userSearch = snapshot["userSearch"] ?? [];
+        userSearch = snapshot["userSearch"] ?? [],
+        employeeNum = snapshot["employeeNum"] ?? "";
 
   toJson() {
     return {
@@ -72,6 +77,7 @@ class CompanyUser {
       "birthday": user.birthday,
       "phone": user.phone,
       "profilePhoto": user.profilePhoto,
+      "account": user.account,
       "token": token,
       "createDate": createDate,
       "lastModDate": lastModDate,
@@ -81,6 +87,7 @@ class CompanyUser {
       "position": position == null ? "" : position,
       "team": team == null ? "" : team,
       "userSearch": user.name.split(""),
+      "employeeNum": employeeNum,
     };
   }
 

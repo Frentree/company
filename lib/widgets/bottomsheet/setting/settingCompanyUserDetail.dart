@@ -10,6 +10,7 @@ import 'package:MyCompany/provider/user/loginUserInfo.dart';
 import 'package:MyCompany/repos/firebaseMethod.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
 import 'package:MyCompany/screens/alarm/alarmNoticeDetails.dart';
+import 'package:MyCompany/utils/date/dateFormat.dart';
 import 'package:MyCompany/widgets/dialog/annualDialogList.dart';
 import 'package:MyCompany/widgets/dialog/companyUserDialogList.dart';
 import 'package:MyCompany/widgets/dialog/organizationChartDialogList.dart';
@@ -31,16 +32,17 @@ class SettingCompanyUserDetailPage extends StatefulWidget {
 class _SettingCompanyUserDetailPageState extends State<SettingCompanyUserDetailPage> {
   @override
   Widget build(BuildContext context) {
+    User _loginUser;
     LoginUserInfoProvider _loginUserInfoProvider = Provider.of<LoginUserInfoProvider>(context);
     _loginUser = _loginUserInfoProvider.getLoginUser();
-
+    
     return Scaffold(
       backgroundColor: whiteColor,
       body: _buildBody(context, _loginUser),
     );
   }
 
-  User _loginUser;
+ 
 }
 
 Widget _buildBody(BuildContext context, User user) {
@@ -86,6 +88,8 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data, String compan
 }
 
 Widget _buildUserList(BuildContext context, CompanyUser companyUser, String companyCode) {
+  Format _format = Format();
+
   return Row(
     children: [
       Expanded(
@@ -126,7 +130,7 @@ Widget _buildUserList(BuildContext context, CompanyUser companyUser, String comp
             ),
             treeSpace,
             Text(
-              "생일 : " + companyUser.birthday,
+              "생일 : " + _format.yearMonthDay(companyUser.birthday),
               style: cardMainStyle,
             ),
           ],

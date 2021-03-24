@@ -29,7 +29,8 @@ class SignInMethod{
     if(mail != "" && password != ""){
       bool _signInEmailResult = await _firebaseAuthProvider.singInWithEmail(mail: mail, password: password);
       if(_signInEmailResult == true){
-        _loginUser = await _repository.getUser(userMail: mail);;
+        _loginUser = await _repository.getUser(userMail: mail);
+
         _loginUserInfoProvider.saveLoginUserToPhone(context: context, value: _loginUser);
         if(_loginUser.state == 1){
           String token = await _fcm.getToken();

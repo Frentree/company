@@ -16,6 +16,7 @@
 방해금지모드 <alrNoInterrupt>
 앱 테마 옵션 <screenTheme>
 승인 상태 <state> 0 : 미승인/ 1: 승인
+계좌번호 <account>
 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +25,7 @@ class User {
   String id; //Document ID
   String name;
   String mail;
-  String birthday;
+  Timestamp birthday;
   String phone;
   String companyCode;
   String profilePhoto;
@@ -36,6 +37,7 @@ class User {
   bool alrNoInterrupt;
   int screenTheme;
   int state;
+  String account;
 
   User({
     this.id,
@@ -53,13 +55,14 @@ class User {
     this.alrNoInterrupt = false,
     this.screenTheme = 1,
     this.state = 0,
+    this.account,
   });
 
   User.fromMap(Map snapshot, String id)
       : id = id ?? "",
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
-        birthday = snapshot["birthday"] ?? "",
+        birthday = snapshot["birthday"] ?? null,
         phone = snapshot["phone"] ?? "",
         companyCode = snapshot["companyCode"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
@@ -70,7 +73,8 @@ class User {
         alrAttendance = snapshot["alrAttendance"] ?? true,
         alrNoInterrupt = snapshot["alrNoInterrupt"] ?? false,
         screenTheme = snapshot["screenTheme"] ?? 1,
-        state = snapshot["state"] ?? 0;
+        state = snapshot["state"] ?? 0,
+        account = snapshot["account"] ?? "";
 
   toJson() {
     return {
@@ -88,6 +92,7 @@ class User {
       "alrNoInterrupt": alrNoInterrupt,
       "screenTheme": screenTheme,
       "state": state,
+      "account": account,
     };
   }
 }

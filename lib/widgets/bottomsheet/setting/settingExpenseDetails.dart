@@ -114,6 +114,15 @@ SettingExpenseDetails({BuildContext context, double statusBarHeight}) {
                             ),
                             cardSpace,
                             Container(
+                              width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 15.5.w,
+                              alignment: Alignment.center,
+                              child: Text(
+                                "요청일",
+                                style: cardBlueStyle,
+                              ),
+                            ),
+                            cardSpace,
+                            Container(
                               width: SizerUtil.deviceType == DeviceType.Tablet ? 22.5.w : 17.5.w,
                               alignment: Alignment.center,
                               child: Text(

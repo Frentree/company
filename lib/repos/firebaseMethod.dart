@@ -348,7 +348,7 @@ class FirebaseMethods {
   Future<Map<DateTime, List<CompanyUser>>> getBirthday(
       {String companyCode}) async {
     Map<DateTime, List<CompanyUser>> birthday = {};
-
+    
     QuerySnapshot querySnapshot = await firestore
         .collection(COMPANY)
         .doc(companyCode)
@@ -357,12 +357,12 @@ class FirebaseMethods {
         .get();
     querySnapshot.docs.forEach((element) {
       if (element.data()["birthday"] != null) {
-        DateTime key = DateTime.parse(element.data()["birthday"]);
+        DateTime key = _format.timeStampToDateTime(element.data()["birthday"]);
 
-        if (birthday[DateTime(DateTime.now().year, key.month, key.day)] ==
-            null) {
-          birthday
-              .addAll({DateTime(DateTime.now().year, key.month, key.day): []});
+        print(key);
+
+        if (birthday[DateTime(DateTime.now().year, key.month, key.day)] == null) {
+          birthday.addAll({DateTime(DateTime.now().year, key.month, key.day): []});
         }
 
         birthday[DateTime(DateTime.now().year, key.month, key.day)]
@@ -370,7 +370,6 @@ class FirebaseMethods {
       }
     });
 
-    print(birthday);
     return birthday;
   }
 
@@ -653,7 +652,6 @@ class FirebaseMethods {
   Future<QuerySnapshot> getMyTodayAttendance(
       {String companyCode, String loginUserMail, Timestamp today}) async {
     Timestamp tomorrow = _format.dateTimeToTimeStamp(_format.timeStampToDateTime(today).add(Duration(days: 1)));
-    print(tomorrow);
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)
@@ -840,7 +838,6 @@ class FirebaseMethods {
     querySnapshot.docs.forEach((element) {
 
       if (element.data()["token"] != null && element.data()["token"] != "") {
-        print("tokens 값 == ${element.data()["token"]}");
         tokenList.add(element.data()["token"]);
       }
     });
@@ -858,12 +855,10 @@ class FirebaseMethods {
         .where("mail", whereIn: mail)
         .get();
 
-    print(mail);
 
     querySnapshot.docs.forEach((element) {
 
       if (element.data()["token"] != null && element.data()["token"] != "") {
-        print("tokens 값 == ${element.data()["token"]}");
         tokenList.add(element.data()["token"]);
       }
     });
@@ -900,7 +895,7 @@ class FirebaseMethods {
       String url) async {
     return await firestore.collection(COMPANY).document(companyCode).update({
       "companyName": companyName,
-      "comapnyNo": companyNo,
+      "companyNo": companyNo,
       "companyAddr": companyAddr,
       "companyPhone": companyPhone,
       "companyWeb": companyWeb,
@@ -921,6 +916,38 @@ class FirebaseMethods {
 
     return firestore.collection(USER).document(mail).update({
       "phone": phone,
+    });
+  }
+
+  Future<void> updateBirthday(
+      String companyCode, String mail, Timestamp birthday) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
+        .update({
+      "birthday": birthday,
+    });
+
+    return firestore.collection(USER).doc(mail).update({
+      "birthday": birthday,
+    });
+  }
+
+  Future<void> updateAccount(
+      String companyCode, String mail, String account) async {
+    await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(USER)
+        .doc(mail)
+        .update({
+      "account": account,
+    });
+
+    return firestore.collection(USER).doc(mail).update({
+      "account": account,
     });
   }
 
@@ -1611,7 +1638,6 @@ class FirebaseMethods {
         .get().then((value) => {
           if(value.docs.length != 0){
             value.docs.forEach((element) {
-              print(element);
               element.reference.update({
                 "useAnnual" : workModel.type=="연차" ? FieldValue.increment(1) : FieldValue.increment(0.5)
             });})
