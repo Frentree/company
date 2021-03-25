@@ -592,7 +592,7 @@ class SignUpPageState extends State<SignUpPage> {
                           ),
                           onPressed: !(isFormValidation.contains(false) /*|| _smsCode.contains("")*/) ? () async {
                             FocusScope.of(context).unfocus();
-                            _newUser.birthday = _birthdayTextCon.text == "" ? null : _format.dateTimeToTimeStamp(DateTime.parse(_birthdayTextCon.text.replaceAll(".", "")));
+                            _newUser.birthday = _birthdayTextCon.text == "" ? null : _birthdayTextCon.text.replaceAll(".", "")/*_format.dateTimeToTimeStamp(DateTime.parse(_birthdayTextCon.text.replaceAll(".", "")))*/;
                             await _loginRepository.signUpWithFirebaseAuth(
                               context: context,
                               /*smsCode: _smsCode.join(),*/

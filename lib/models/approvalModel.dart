@@ -18,7 +18,8 @@ class Approval {
   String id; //Document ID
   String name;
   String mail;
-  Timestamp birthday;
+  String birthday;
+  /*Timestamp birthday;*/
   String phone;
   Timestamp requestDate;
   int state;
@@ -45,7 +46,8 @@ class Approval {
       : id = id ?? "",
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
-        birthday = snapshot["birthday"] ?? null,
+        birthday = snapshot["birthday"] ?? "",
+        /*birthday = snapshot["birthday"] ?? null,*/
         phone = snapshot["phone"] ?? "",
         requestDate = snapshot["requestDate"] ?? null,
         state = snapshot["state"] ?? 0,

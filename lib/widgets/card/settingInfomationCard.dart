@@ -40,8 +40,6 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
         );
       }
 
-      print(snapshot.data.runtimeType);
-
       CompanyUser companyUser = CompanyUser.fromMap(snapshot.data.data(), snapshot.data.id);
 
       return Container(
@@ -226,7 +224,8 @@ Widget getMyInfomationCard({BuildContext context, User user, double statusBarHei
                   Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 38.0.w : 35.0.w,
                     child: Text(
-                      Format().yearMonthDay(user.birthday),
+                      user.birthday,
+                      /*Format().yearMonthDay(user.birthday),*/
                       style: hintStyle,
                     ),
                   ),

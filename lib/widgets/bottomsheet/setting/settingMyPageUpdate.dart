@@ -600,7 +600,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                     ],
                                   ),
                                   emptySpace,
-                                  Row(
+                                  /*Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
@@ -619,7 +619,8 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                             decoration: InputDecoration(
                                               isDense: true,
                                               contentPadding: textFormPadding,
-                                              hintText: Format().yearMonthDay(user.birthday),
+                                              hintText: user.birthday,
+                                              *//*hintText: Format().yearMonthDay(user.birthday),*//*
                                               hintStyle: defaultRegularStyle,
                                               border: InputBorder.none,
                                             ),
@@ -669,7 +670,7 @@ SettingMyPageUpdate({BuildContext context, double statusBarHeight, User user}) {
                                         }:null,
                                       ),
                                     ],
-                                  ),
+                                  ),*/
                                   emptySpace,
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -359,8 +359,6 @@ class FirebaseMethods {
       if (element.data()["birthday"] != null) {
         DateTime key = _format.timeStampToDateTime(element.data()["birthday"]);
 
-        print(key);
-
         if (birthday[DateTime(DateTime.now().year, key.month, key.day)] == null) {
           birthday.addAll({DateTime(DateTime.now().year, key.month, key.day): []});
         }
@@ -1286,7 +1284,6 @@ class FirebaseMethods {
   Future<void> addTeamUser(
       String companyCode, List<Map<String, dynamic>> user) async {
     for (int i = 0; i < user.length; i++) {
-      //print("추가 ====> " + user[i]['mail']);
       await firestore
           .collection(COMPANY)
           .doc(companyCode)
@@ -1367,7 +1364,6 @@ class FirebaseMethods {
   Future<void> addPositionUser(
       String companyCode, List<Map<String, dynamic>> user) async {
     for (int i = 0; i < user.length; i++) {
-      //print("추가 ====> " + user[i]['mail']);
       await firestore
           .collection(COMPANY)
           .doc(companyCode)
