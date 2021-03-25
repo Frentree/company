@@ -51,23 +51,6 @@ class HomeMainPageState extends State<HomeMainPage> {
     else{
       return Future.value(true);
     }
-
-    /*return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("앱을 종료하시겠습니까?"),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("아니요"),
-              onPressed: ()=>Navigator.pop(context, false),
-            ),
-            FlatButton(
-              child: Text("예"),
-              onPressed: ()=>Navigator.pop(context, true),
-            )
-          ],
-        )
-    );*/
   }
 
   //불러올 페이지 리스트

@@ -72,7 +72,6 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot, String 
 
 Widget _buildListItem(BuildContext context, DocumentSnapshot data, String companyCode) {
   final companyUser = CompanyUser.fromSnapshow(data);
-
   return Container(
     padding: cardPadding,
     height: 15.0.h,
@@ -89,7 +88,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data, String compan
 
 Widget _buildUserList(BuildContext context, CompanyUser companyUser, String companyCode) {
   Format _format = Format();
-
+  print(companyUser.employeeNum);
   return Row(
     children: [
       Expanded(
@@ -111,6 +110,13 @@ Widget _buildUserList(BuildContext context, CompanyUser companyUser, String comp
               "전화 : " + companyUser.phone,
               style: cardMainStyle,
             ),
+            treeSpace,
+            Text(
+              /*"생일 : " + _format.yearMonthDay(companyUser.birthday),*/
+              "생일 : " + companyUser.birthday,
+              style: cardMainStyle,
+            ),
+
           ],
         ),
       ),
@@ -119,6 +125,11 @@ Widget _buildUserList(BuildContext context, CompanyUser companyUser, String comp
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              "사번 : " + (companyUser.employeeNum == null ? "" : companyUser.employeeNum),
+              style: cardMainStyle,
+            ),
+            treeSpace,
             Text(
               "직급 : " + companyUser.position,
               style: cardMainStyle,
@@ -130,7 +141,7 @@ Widget _buildUserList(BuildContext context, CompanyUser companyUser, String comp
             ),
             treeSpace,
             Text(
-              "생일 : " + _format.yearMonthDay(companyUser.birthday),
+              "",
               style: cardMainStyle,
             ),
           ],

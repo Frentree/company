@@ -20,7 +20,8 @@ class CompanyUser {
   User user;
   String name;
   String mail;
-  Timestamp birthday;
+  String birthday;
+  /*Timestamp birthday;*/
   String phone;
   String profilePhoto;
   String account;
@@ -55,7 +56,8 @@ class CompanyUser {
       : id = id ?? "",
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
-        birthday = snapshot["birthday"] ?? null,
+        birthday = snapshot["birthday"] ?? "",
+        /*birthday = snapshot["birthday"] ?? null,*/
         phone = snapshot["phone"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",
         account = snapshot["account"] ?? "",
@@ -103,6 +105,7 @@ class CompanyUser {
         assert(map['level'] != null),
         assert(map['position'] != null),
         assert(map['team'] != null),
+        assert(map['employeeNum'] != null),
         name = map['name'],
         mail = map['mail'],
         birthday = map['birthday'],
@@ -113,6 +116,7 @@ class CompanyUser {
         status = map['status'],
         position = map['position'],
         level = map['level'],
-        team = map['team'];
+        team = map['team'],
+        employeeNum = map['employeeNum'];
   CompanyUser.fromSnapshow(DocumentSnapshot snapshot) : this.fromMap2(snapshot.data(), reference: snapshot.reference);
 }

@@ -25,7 +25,8 @@ class User {
   String id; //Document ID
   String name;
   String mail;
-  Timestamp birthday;
+  String birthday;
+  /*Timestamp birthday;*/
   String phone;
   String companyCode;
   String profilePhoto;
@@ -62,7 +63,8 @@ class User {
       : id = id ?? "",
         name = snapshot["name"] ?? "",
         mail = snapshot["mail"] ?? "",
-        birthday = snapshot["birthday"] ?? null,
+        birthday = snapshot["birthday"] ?? "",
+        /*birthday = snapshot["birthday"] ?? null,*/
         phone = snapshot["phone"] ?? "",
         companyCode = snapshot["companyCode"] ?? "",
         profilePhoto = snapshot["profilePhoto"] ?? "",

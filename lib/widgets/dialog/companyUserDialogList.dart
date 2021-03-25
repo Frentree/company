@@ -14,7 +14,9 @@ import 'package:sizer/sizer.dart';
 
 Future<void> updateUserInfomation({BuildContext context, CompanyUser user, String companyCode}) {
   TextEditingController _enteredDateController = MaskedTextController(mask: '0000.00.00');
+  TextEditingController _employeeNumController = TextEditingController();
   _enteredDateController.text = user.enteredDate.toString();
+  _employeeNumController.text = user.employeeNum.toString();
 
   return showDialog(
     context: context,
@@ -32,9 +34,12 @@ Future<void> updateUserInfomation({BuildContext context, CompanyUser user, Strin
             children: [
               Row(
                 children: [
-                  Text(
-                    "입사일",
-                    style: cardMainStyle,
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                    child: Text(
+                      "입사일",
+                      style: cardMainStyle,
+                    ),
                   ),
                   cardSpace,
                   cardSpace,
@@ -54,6 +59,32 @@ Future<void> updateUserInfomation({BuildContext context, CompanyUser user, Strin
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 7.5.w : 10.0.w,
+                    child: Text(
+                      "사번",
+                      style: cardMainStyle,
+                    ),
+                  ),
+                  cardSpace,
+                  cardSpace,
+                  cardSpace,
+                  Expanded(
+                    child: TextFormField(
+                      controller: _employeeNumController,
+                      style: defaultRegularStyle,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: textFormPadding,
+                        labelText: user.employeeNum,
+                        labelStyle: defaultRegularStyle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -65,7 +96,8 @@ Future<void> updateUserInfomation({BuildContext context, CompanyUser user, Strin
             ),
             onPressed: () {
               user.reference.update({
-                "enteredDate" : _enteredDateController.text.trim() != "" ? _enteredDateController.text : user.enteredDate
+                "enteredDate" : _enteredDateController.text.trim() != "" ? _enteredDateController.text : user.enteredDate,
+                "employeeNum" : _employeeNumController.text.trim() != "" ? _employeeNumController.text : user.employeeNum,
               });
               Navigator.of(context).pop();
             },
