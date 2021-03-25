@@ -86,7 +86,7 @@ class Format{
   String dateToString(DateTime date){
     String dateText;
 
-    dateText = date.year.toString() + " / " + twoDigitsFormat(date.month) + " / " + twoDigitsFormat(date.day) + "  " + twoDigitsFormat(date.hour) + " : " + twoDigitsFormat(date.minute) + "";
+    dateText = date.year.toString() + "/" + twoDigitsFormat(date.month) + "/" + twoDigitsFormat(date.day) + "  " + twoDigitsFormat(date.hour) + " : " + twoDigitsFormat(date.minute) + "";
     return dateText;
   }
 

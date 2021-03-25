@@ -1481,6 +1481,20 @@ class FirebaseMethods {
         .snapshots();
   }
 
+  /*Stream<QuerySnapshot> requestAnnualLeaveSort(String companyCode, int count, String fieldName, String fieldValue) {
+    if(count == 1){
+
+    }
+    return firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORKAPPROVAL)
+        .where(field)
+        .orderBy(orderByType, descending: isOrderBy)
+        .where(whereUser, isEqualTo: mail)
+        .snapshots();
+  }*/
+
   Stream<QuerySnapshot> requestAnnualLeaveCount(
       {String companyCode, String loginUserMail}){
     return firestore

@@ -84,7 +84,7 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                 child: Row(
                   children: [
                     Container(
-                      width: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.w : 8.0.w,
+                      width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
                       alignment: Alignment.center,
                       child: Text(
                         model.approvalType,
@@ -94,7 +94,7 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                     cardSpace,
                     Container(
                       width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 19.0.w,
-                      alignment: Alignment.centerRight,
+                      alignment: Alignment.center,
                       child: Text(
                         _format.dateFormatForExpenseCard(model.createDate),
                         style: containerChipStyle,
@@ -102,7 +102,7 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                     ),
                     cardSpace,
                     Container(
-                      width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 19.0.w,
+                      width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
                       alignment: Alignment.center,
                       child: Text(
                         model.status,
@@ -110,12 +110,12 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                       ),
                     ),
                     cardSpace,
-                    Container(
-                      width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 19.0.w,
-                      alignment: Alignment.center,
-                      child: Text(
-                        model.user,
-                        style: containerChipStyle,
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          model.user,
+                          style: containerChipStyle,
+                        ),
                       ),
                     ),
                     /*Visibility(

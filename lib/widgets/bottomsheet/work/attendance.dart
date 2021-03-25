@@ -206,7 +206,6 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                 itemCount: attendanceData.keys.length,
                                 itemBuilder: (context, index){
                                   Attendance _attendance = attendanceData[attendanceData.keys.elementAt(index)] == "" ? null : Attendance.fromMap(attendanceData[attendanceData.keys.elementAt(index)], "");
-                                  print("attendance ====> ${index} : ${_attendance}");
                                   return Card(
                                     elevation: 0,
                                     shape: cardShape,
