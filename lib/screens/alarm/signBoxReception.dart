@@ -166,6 +166,107 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                   Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 19.0.w,
                     alignment: Alignment.center,
+                    child: PopupMenuButton(
+                      child: RaisedButton(
+                        padding: EdgeInsets.zero,
+                        disabledColor: whiteColor,
+                        child: Text(
+                          dateRange[0] == null ? "요청일자" : "${Format().dateToString(dateRange[0]).substring(6, 10)}" + (dateRange[1] == null ? "" : " ~ " + Format().dateToString(dateRange[1]).substring(6, 10)),
+                          style: cardBlueStyle,
+                        ),
+                      ),
+                      onSelected: (value){
+                        if(value != null){
+                          setState(() {
+                            dateRange = value;
+                          });
+                        }
+                      },
+                      itemBuilder: (context){
+                        DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+                        return <PopupMenuEntry<List<DateTime>>>[
+                          PopupMenuItem(
+                            height: 7.0.h,
+                            value: [null, null],
+                            child: Row(
+                              children: [
+                                Text(
+                                  "전체",
+                                  style: defaultRegularStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            height: 7.0.h,
+                            value: [today.subtract(Duration(days: 7)), today],
+                            child: Row(
+                              children: [
+                                Text(
+                                  "1주일",
+                                  style: defaultRegularStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            height: 7.0.h,
+                            value: [today.subtract(Duration(days: 31)), today],
+                            child: Row(
+                              children: [
+                                Text(
+                                  "1개월",
+                                  style: defaultRegularStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            height: 7.0.h,
+                            value: null,
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  child: Text(
+                                    "기간선택",
+                                    style: defaultRegularStyle,
+                                  ),
+                                  onTap: () async {
+                                    print("기간선택 클릭");
+                                    Navigator.pop(context, null);
+                                    DateTime firstDate = dateRange[0] != null ? dateRange[0] : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+                                    List<DateTime> pickedDateTime = await DateRangePicker.showDatePicker(
+                                      context: context,
+                                      initialFirstDate: firstDate,
+                                      initialLastDate: dateRange[1] == null ? DateTime(firstDate.year, firstDate.month, firstDate.day, 23, 59) :dateRange[1],
+                                      firstDate: DateTime(2020),
+                                      lastDate: DateTime(DateTime.now().year+2),
+                                    );
+                                    if (pickedDateTime != null && pickedDateTime.length >= 1) {
+                                      setState(() {
+                                        int i = 0;
+                                        pickedDateTime.forEach((element) {
+                                          dateRange[i] = element;
+                                          i++;
+                                        });
+
+                                        if(pickedDateTime.length != 2){
+                                          dateRange[1] = DateTime(dateRange[0].year, dateRange[0].month, dateRange[0].day, 23, 59);
+                                        }
+                                      });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ];
+                      },
+                    ),
+                  ),
+                  /*Container(
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 19.0.w,
+                    alignment: Alignment.center,
                     child: GestureDetector(
                       child: Text(
                         dateRange[0] == null ? "요청일자" : "${Format().dateToString(dateRange[0]).substring(6, 10)}" + (dateRange[1] == null ? "" : " ~ " + Format().dateToString(dateRange[1]).substring(6, 10)),
@@ -195,7 +296,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                         }
                       },
                     ),
-                  ),
+                  ),*/
                   cardSpace,
                   Container(
                     width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
