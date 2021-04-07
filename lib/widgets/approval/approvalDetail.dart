@@ -2,6 +2,7 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/attendanceModel.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/userModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
@@ -855,6 +856,7 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                   "status" : "승인",
                                                   "approvalDate" : Timestamp.now()
                                                 });
+
                                                 DateTime requestDate = DateTime.parse(model.requestDate.toDate().toString());
 
                                                 switch(model.approvalType){
@@ -1034,6 +1036,44 @@ annualLeaveApprovalBottomSheet({BuildContext context, String companyCode, WorkAp
                                                         companyCode: _loginUser.companyCode,
                                                         workModel: _workModel
                                                     );
+
+                                                    if(model.approvalType == "연차"){
+                                                      DateTime _temp = model.requestDate.toDate();
+                                                      Attendance _attendance = Attendance(
+                                                          attendTime: null,
+                                                          certificationDevice: 0,
+                                                          createDate: _format.dateTimeToTimeStamp(DateTime(_temp.year, _temp.month, _temp.day, 00, 00)),
+                                                          endTime: null,
+                                                          mail: model.userMail,
+                                                          manualOnWorkReason: 0,
+                                                          name: model.user,
+                                                          networkInfo: "",
+                                                          status: 4
+                                                      );
+
+                                                      var result = await _repository.getMyTodayAttendance(
+                                                        companyCode: _loginUser.companyCode,
+                                                        loginUserMail: model.userMail,
+                                                        today: _format.dateTimeToTimeStamp(DateTime(_temp.year, _temp.month, _temp.day, 00, 00)),
+                                                      );
+
+                                                      if(result.docs.length == 0){
+                                                        await FirebaseRepository().saveAttendance(
+                                                          attendanceModel: _attendance,
+                                                          companyCode: companyCode,
+                                                        );
+                                                      }
+
+                                                      else{
+                                                        await FirebaseRepository().updateAttendance(
+                                                          attendanceModel: _attendance,
+                                                          documentId: result.docs.first.id,
+                                                          companyCode: companyCode,
+                                                        );
+                                                      }
+
+
+                                                    }
 
                                                     await FirebaseRepository().saveWork(
                                                       companyCode: companyCode,

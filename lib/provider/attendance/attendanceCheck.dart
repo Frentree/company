@@ -195,6 +195,8 @@ class AttendanceCheck extends ChangeNotifier {
       case 2:
         return "외근";
         break;
+      case 4: 
+        return "연차";
       default:
         return "퇴근";
     }

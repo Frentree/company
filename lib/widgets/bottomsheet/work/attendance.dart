@@ -237,7 +237,7 @@ attendance({BuildContext context, double statusBarHeight}) async {
                                               alignment: Alignment.center,
                                               width: SizerUtil.deviceType == DeviceType.Tablet ? 18.0.w : 16.0.w,
                                               child: Text(
-                                                (_attendance == null || _attendance.status == 0) ? Words.word.beforeWork() : _attendance.status == 1 ? Words.word.workIn() : _attendance.status == 2 ? Words.word.workOut() : Words.word.leaveWork(),
+                                                (_attendance == null || _attendance.status == 0) ? Words.word.beforeWork() : _attendance.status == 1 ? Words.word.workIn() : _attendance.status == 2 ? Words.word.workOut() : _attendance.status == 4 ? "연차" : Words.word.leaveWork(),
                                                 style: containerChipStyle,
                                               ),
                                             ),

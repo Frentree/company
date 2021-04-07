@@ -444,7 +444,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                   child: CircularProgressIndicator(),
                 );
               }
-              List<Map<String, dynamic>> document = [];
+              List<DocumentSnapshot> document = [];
               snapshot.data.docs.forEach((element) {
                 if(dateRange[0] != null){
                 }
@@ -453,7 +453,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                     && (userMail == "" ? element.data()["userMail"] != userMail : element.data()["userMail"] == userMail)
                     && (dateRange[0] == null ? element.data()["requestDate"] != null : dateRange[0].isBefore(Format().timeStampToDateTime((element.data()["createDate"]))) && dateRange[1].isAfter(Format().timeStampToDateTime((element.data()["createDate"]))))
                 ){
-                  document.add(element.data());
+                  document.add(element);
                 }
               });
 
@@ -490,8 +490,8 @@ PopupMenuItem _buildUserItem(DocumentSnapshot data) {
   );
 }
 
-Widget _buildApprovalRequestList(BuildContext context, Map<String, dynamic> data, User user) {
-  final approval = WorkApproval.fromMap(data);
+Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, User user) {
+  final approval = WorkApproval.fromSnapshow(data);
 
   return StatefulBuilder(
     builder: (context, setState) {
