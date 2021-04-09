@@ -164,14 +164,14 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                   ),
                   cardSpace,
                   Container(
-                    width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 19.0.w,
+                    width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 21.0.w,
                     alignment: Alignment.center,
                     child: PopupMenuButton(
                       child: RaisedButton(
                         padding: EdgeInsets.zero,
                         disabledColor: whiteColor,
                         child: Text(
-                          dateRange[0] == null ? "요청일자" : "${Format().dateToString(dateRange[0]).substring(6, 10)}" + (dateRange[1] == null ? "" : " ~ " + Format().dateToString(dateRange[1]).substring(6, 10)),
+                          dateRange[0] == null ? "요청일자" : "${Format().dateToString(dateRange[0]).substring(5, 10)}" + (dateRange[1] == null ? "" : " ~ " + Format().dateToString(dateRange[1]).substring(5, 10)),
                           style: cardBlueStyle,
                         ),
                       ),
@@ -232,13 +232,12 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                                     style: defaultRegularStyle,
                                   ),
                                   onTap: () async {
-                                    print("기간선택 클릭");
                                     Navigator.pop(context, null);
                                     DateTime firstDate = dateRange[0] != null ? dateRange[0] : DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
                                     List<DateTime> pickedDateTime = await DateRangePicker.showDatePicker(
                                       context: context,
                                       initialFirstDate: firstDate,
-                                      initialLastDate: dateRange[1] == null ? DateTime(firstDate.year, firstDate.month, firstDate.day, 23, 59) :dateRange[1],
+                                      initialLastDate: dateRange[1] == null ? DateTime(firstDate.year, firstDate.month, firstDate.day, 23, 59) : dateRange[1],
                                       firstDate: DateTime(2020),
                                       lastDate: DateTime(DateTime.now().year+2),
                                     );
@@ -388,43 +387,43 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                   ),
                   cardSpace,
                   Expanded(
-                    child: Center(
-                      child: StreamBuilder(
-                        stream: FirebaseRepository().getColleagueInfo(companyCode: loginUser.companyCode),
-                        builder: (context, snapshot) {
-                          if(!snapshot.hasData){
-                            return Text(
-                              user,
-                              style: cardBlueStyle,
-                            );
-                          }
-                          List<DocumentSnapshot> doc = snapshot.data.docs;
-                          doc.add(null);
-                          return PopupMenuButton(
-                            child: RaisedButton(
-                              disabledColor: whiteColor,
-                              child: Text(
+                      child: Center(
+                        child: StreamBuilder(
+                          stream: FirebaseRepository().getColleagueInfo(companyCode: loginUser.companyCode),
+                          builder: (context, snapshot) {
+                            if(!snapshot.hasData){
+                              return Text(
                                 user,
                                 style: cardBlueStyle,
+                              );
+                            }
+                            List<DocumentSnapshot> doc = snapshot.data.docs;
+                            doc.add(null);
+                            return PopupMenuButton(
+                              child: RaisedButton(
+                                disabledColor: whiteColor,
+                                child: Text(
+                                  user,
+                                  style: cardBlueStyle,
+                                ),
                               ),
-                            ),
-                            onSelected: (value) {
-                              setState(() {
-                                if(value == "all"){
-                                  user = "요청자";
-                                  userMail = "";
-                                }
-                                else{
-                                  user = "${value.team} ${value.name} ${value.position}";
-                                  userMail = value.mail;
-                                }
-                              });
-                            },
-                            itemBuilder: (context) => doc.map((data) => _buildUserItem(data)).toList(),
-                          );
-                        },
-                      ),
-                    )
+                              onSelected: (value) {
+                                setState(() {
+                                  if(value == "all"){
+                                    user = "요청자";
+                                    userMail = "";
+                                  }
+                                  else{
+                                    user = "${value.team} ${value.name} ${value.position}";
+                                    userMail = value.mail;
+                                  }
+                                });
+                              },
+                              itemBuilder: (context) => doc.map((data) => _buildUserItem(data)).toList(),
+                            );
+                          },
+                        ),
+                      )
                   ),
                 ]),
               ),
@@ -444,7 +443,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                   child: CircularProgressIndicator(),
                 );
               }
-              List<DocumentSnapshot> document = [];
+              List<Map<String, dynamic>> document = [];
               snapshot.data.docs.forEach((element) {
                 if(dateRange[0] != null){
                 }
@@ -453,7 +452,7 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
                     && (userMail == "" ? element.data()["userMail"] != userMail : element.data()["userMail"] == userMail)
                     && (dateRange[0] == null ? element.data()["requestDate"] != null : dateRange[0].isBefore(Format().timeStampToDateTime((element.data()["createDate"]))) && dateRange[1].isAfter(Format().timeStampToDateTime((element.data()["createDate"]))))
                 ){
-                  document.add(element);
+                  document.add(element.data());
                 }
               });
 
@@ -461,8 +460,8 @@ class _SignBoxReceptionState extends State<SignBoxReception> {
 
               return Expanded(
                   child: ListView(
-                children: document.map((data) => _buildApprovalRequestList(context, data, loginUser)).toList(),
-              ));
+                    children: document.map((data) => _buildApprovalRequestList(context, data, loginUser)).toList(),
+                  ));
             },
           )
         ],
@@ -490,37 +489,37 @@ PopupMenuItem _buildUserItem(DocumentSnapshot data) {
   );
 }
 
-Widget _buildApprovalRequestList(BuildContext context, DocumentSnapshot data, User user) {
-  final approval = WorkApproval.fromSnapshow(data);
+Widget _buildApprovalRequestList(BuildContext context, Map<String, dynamic> data, User user) {
+  final approval = WorkApproval.fromMap(data);
 
   return StatefulBuilder(
     builder: (context, setState) {
       return InkWell(
-        child: ApprovalCard(
-            context:context,
-            companyCode: user.companyCode,
-            model: approval
-        ),
-        onTap: () {
-          //상세보기
-          switch(approval.approvalType) {
-            case "연차" :
-            case "반차" :
-            case "외근" :
-            case "업무" :
-              annualLeaveApprovalBottomSheet(
-                context: context,
-                companyCode: user.companyCode,
-                model: approval
-              );
-              break;
-            case "경비" :
-              ExpenseDetail(context, user.companyCode, approval, 2);
-              break;
-            default :
-              break;
-          };
-        }
+          child: ApprovalCard(
+              context:context,
+              companyCode: user.companyCode,
+              model: approval
+          ),
+          onTap: () {
+            //상세보기
+            switch(approval.approvalType) {
+              case "연차" :
+              case "반차" :
+              case "외근" :
+              case "업무" :
+                annualLeaveApprovalBottomSheet(
+                    context: context,
+                    companyCode: user.companyCode,
+                    model: approval
+                );
+                break;
+              case "경비" :
+                ExpenseDetail(context, user.companyCode, approval, 2);
+                break;
+              default :
+                break;
+            };
+          }
       );
     },
   );

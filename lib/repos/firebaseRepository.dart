@@ -1,4 +1,5 @@
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyScheduleModel.dart';
 import 'package:MyCompany/models/inquireModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -124,6 +125,11 @@ class FirebaseRepository {
   Stream<QuerySnapshot> getAllAlarm({String companyCode, String mail}) => _firebaseMethods.getAllAlarm(
     companyCode: companyCode,
     mail: mail,
+  );
+
+  Future<void> saveCompanySchedule({CompanySchedule companySchedule, String companyCode}) => _firebaseMethods.saveCompanySchedule(
+    companySchedule: companySchedule,
+    companyCode: companyCode
   );
 
   Future<void> saveWork({WorkModel workModel, String companyCode}) =>

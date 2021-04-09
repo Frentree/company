@@ -254,7 +254,7 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                               List<String> tokens =
                                                   await _repository.getTokens(companyCode: _loginUser.companyCode, mail: _loginUser.mail);
 
-                                              print("tokens = ${tokens}");
+
 
                                               //알림 DB에 저장
                                               await _repository
@@ -265,13 +265,15 @@ workContent({BuildContext context, int type, WorkModel workModel, WorkData workD
                                               )
                                                   .whenComplete(() async {
                                                 //동료들에게 알림 보내기
-                                                fcm.sendFCMtoSelectedDevice(
-                                                    alarmId: _alarmModel.alarmId.toString(),
-                                                    tokenList: tokens,
-                                                    name: _loginUser.name,
-                                                    team: loginUserInfo.team,
-                                                    position: loginUserInfo.position,
-                                                    collection: "work");
+                                                if(tokens.length != 0) {
+                                                  fcm.sendFCMtoSelectedDevice(
+                                                      alarmId: _alarmModel.alarmId.toString(),
+                                                      tokenList: tokens,
+                                                      name: _loginUser.name,
+                                                      team: loginUserInfo.team,
+                                                      position: loginUserInfo.position,
+                                                      collection: "work");
+                                                }
                                               });
                                             });
                                             break;

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:MyCompany/models/alarmModel.dart';
+import 'package:MyCompany/models/companyScheduleModel.dart';
 import 'package:MyCompany/models/wifiListModel.dart';
 import 'package:MyCompany/models/inquireModel.dart';
 import 'package:MyCompany/models/workApprovalModel.dart';
@@ -500,8 +501,15 @@ class FirebaseMethods {
   }
 
   //내외근 데이터 관련
-  Future<void> saveWork({WorkModel workModel, String companyCode}) async {
+  Future<void> saveCompanySchedule({CompanySchedule companySchedule, String companyCode}) async {
+    return await firestore
+        .collection(COMPANY)
+        .doc(companyCode)
+        .collection(WORK)
+        .add(companySchedule.toJson());
+  }
 
+  Future<void> saveWork({WorkModel workModel, String companyCode}) async {
     return await firestore
         .collection(COMPANY)
         .doc(companyCode)

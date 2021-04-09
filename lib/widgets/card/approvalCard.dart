@@ -73,52 +73,52 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
   bool isChk = false;
 
   return StatefulBuilder(
-    builder: (context, setState) {
-      return Card(
-        elevation: 0,
-        shape: cardShape,
-        child: Padding(
-            padding: cardPadding,
-            child: Container(
-                height: cardTitleSizeH.h,
-                child: Row(
-                  children: [
-                    Container(
-                      width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
-                      alignment: Alignment.center,
-                      child: Text(
-                        model.approvalType,
-                        style: containerChipStyle,
-                      ),
-                    ),
-                    cardSpace,
-                    Container(
-                      width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 19.0.w,
-                      alignment: Alignment.center,
-                      child: Text(
-                        _format.dateFormatForExpenseCard(model.createDate),
-                        style: containerChipStyle,
-                      ),
-                    ),
-                    cardSpace,
-                    Container(
-                      width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
-                      alignment: Alignment.center,
-                      child: Text(
-                        model.status,
-                        style: containerChipStyle,
-                      ),
-                    ),
-                    cardSpace,
-                    Expanded(
-                      child: Center(
+      builder: (context, setState) {
+        return Card(
+          elevation: 0,
+          shape: cardShape,
+          child: Padding(
+              padding: cardPadding,
+              child: Container(
+                  height: cardTitleSizeH.h,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
+                        alignment: Alignment.center,
                         child: Text(
-                          model.user,
+                          model.approvalType,
                           style: containerChipStyle,
                         ),
                       ),
-                    ),
-                    /*Visibility(
+                      cardSpace,
+                      Container(
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? 21.0.w : 21.0.w,
+                        alignment: Alignment.center,
+                        child: Text(
+                          _format.dateFormatForExpenseCard(model.createDate),
+                          style: containerChipStyle,
+                        ),
+                      ),
+                      cardSpace,
+                      Container(
+                        width: SizerUtil.deviceType == DeviceType.Tablet ? 15.0.w : 13.0.w,
+                        alignment: Alignment.center,
+                        child: Text(
+                          model.status,
+                          style: containerChipStyle,
+                        ),
+                      ),
+                      cardSpace,
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            model.user,
+                            style: containerChipStyle,
+                          ),
+                        ),
+                      ),
+                      /*Visibility(
                       visible: model.approvalType == "연차" || model.approvalType == "반차" || model.approvalType == "외근" || model.approvalType == "업무",
                       child: Container(
                         width: SizerUtil.deviceType == DeviceType.Tablet ? 19.0.w : 17.0.w,
@@ -129,8 +129,8 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                         ),
                       ),
                     ),*/
-                    cardSpace,
-                    /*Visibility(
+                      cardSpace,
+                      /*Visibility(
                       visible: model.status == "요청",
                       child: Container(
                         width: SizerUtil.deviceType == DeviceType.Tablet ? 10.0.w : 8.0.w,
@@ -151,12 +151,12 @@ Widget ApprovalCard({BuildContext context, String companyCode, WorkApproval mode
                       ),
                     ),
                     cardSpace,*/
-                    //_popupMenu(context),
-                  ],
-                )
-            )
-        ),
-      );
-    }
+                      //_popupMenu(context),
+                    ],
+                  )
+              )
+          ),
+        );
+      }
   );
 }
