@@ -1154,6 +1154,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                               SettingExpenseAnnual(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
                             },
                           ),
+                          (grade.contains(9) || grade.contains(8)) ?
                           GestureDetector(
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -1187,7 +1188,7 @@ class SettingMainPageState extends State<SettingMainPage> {
                             onTap: (){
                               SettingExpenseDetails(context: context, statusBarHeight: MediaQuery.of(Scaffold.of(Scaffold.of(context).context).context).padding.top);
                             },
-                          ),
+                          ) : Container(),
                           emptySpace,
                         ],
                       ),

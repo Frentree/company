@@ -3,10 +3,12 @@ import 'package:MyCompany/consts/colorCode.dart';
 import 'package:MyCompany/consts/font.dart';
 import 'package:MyCompany/consts/screenSize/size.dart';
 import 'package:MyCompany/consts/screenSize/style.dart';
+import 'package:MyCompany/models/companyScheduleModel.dart';
 import 'package:MyCompany/models/companyUserModel.dart';
 import 'package:MyCompany/models/meetingModel.dart';
 import 'package:MyCompany/repos/fcm/pushFCM.dart';
 import 'package:MyCompany/repos/firebaseRepository.dart';
+import 'package:MyCompany/widgets/card/companyScheduleCard.dart';
 import 'package:MyCompany/widgets/card/meetingScheduleCard.dart';
 import 'package:MyCompany/i18n/word.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -127,11 +129,28 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                 snapshot.data.documents.forEach((element) {
                   var elementData = element.data();
                   if (elementData["createUid"] == _loginUser.mail || elementData["attendees"] != null && elementData["attendees"].keys.contains(_loginUser.mail)) {
-                    DateTime _startDate = _format.timeStampToDateTime(elementData["startDate"]);
-                    if (_events[_startDate] == null) {
-                      _events.addAll({_startDate: []});
+                    if(elementData["endDate"] != null){
+                      DateTime c = _format.timeStampToDateTime(elementData["startDate"]);
+                      while(c.isBefore(_format.timeStampToDateTime(elementData["endDate"]))){
+                        if (_events[c] == null) {
+                          _events.addAll({c: []});
+                        }
+                        _events[c].add(element);
+                        c = c.add(Duration(days: 1));
+                      }
+                      if (_events[_format.timeStampToDateTime(elementData["endDate"])] == null) {
+                        _events.addAll({_format.timeStampToDateTime(elementData["endDate"]): []});
+                      }
+                      _events[_format.timeStampToDateTime(elementData["endDate"])].add(element);
                     }
-                    _events[_startDate].add(element);
+                    else{
+                      DateTime _startDate = _format.timeStampToDateTime(elementData["startDate"]);
+
+                      if (_events[_startDate] == null) {
+                        _events.addAll({_startDate: []});
+                      }
+                      _events[_startDate].add(element);
+                    }
                   }
                 });
               }
@@ -408,6 +427,12 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                     _companyWork[index].data(),
                                     _companyWork[index].documentID);
                               }
+
+                              else if (_companyWork[index].data()["type"] == "회사") {
+                                _companyData = CompanySchedule.fromMap(
+                                    _companyWork[index].data(),
+                                    _companyWork[index].documentID);
+                              }
                               switch (_companyData.type) {
                                 case '내근':
                                 case '외근':
@@ -461,6 +486,28 @@ class HomeSchedulePageState extends State<HomeSchedulePage> {
                                       loginUserMail: _loginUser.mail,
                                       companyCode: _loginUser.companyCode,
                                       meetingModel: _companyData,
+                                      isDetail: /*test[_companyWork[index].data()["alarmId"]],*/isDetail[index],
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        isDetail[index] = !isDetail[index];
+                                        /*test[_companyWork[index].data()["alarmId"]] = !test[_companyWork[index].data()["alarmId"]];*/
+                                        for (int i = 0; i < isDetail.length; i++) {
+                                          if (i != index) {
+                                            /*test[_companyWork[i].data()["alarmId"]] = false;*/
+                                            isDetail[i] = false;
+                                          }
+                                        }
+                                      });
+                                    },
+                                  );
+                                case '회사':
+                                  return GestureDetector(
+                                    child: companyScheduleCard(
+                                      context: context,
+                                      loginUserMail: _loginUser.mail,
+                                      companyCode: _loginUser.companyCode,
+                                      companyScheduleModel: _companyData,
                                       isDetail: /*test[_companyWork[index].data()["alarmId"]],*/isDetail[index],
                                     ),
                                     onTap: () {
